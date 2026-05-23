@@ -42,7 +42,8 @@
     "work_label": "Trajetória profissional",
     "edu_label": "Formação acadêmica",
     "current": "Atual",
-    "empty": "Conteúdo em breve."
+    "empty": "Conteúdo em breve.",
+    "download_cv": "Baixar CV"
   },
   "contact": {
     "title": "Contato",

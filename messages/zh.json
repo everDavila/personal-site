@@ -42,7 +42,8 @@
     "work_label": "工作经历",
     "edu_label": "教育背景",
     "current": "在职",
-    "empty": "内容即将上线。"
+    "empty": "内容即将上线。",
+    "download_cv": "下载简历"
   },
   "contact": {
     "title": "联系",

@@ -25,6 +25,7 @@ export type EducationEntry = {
 }
 
 export type ExperienceData = {
+  cvUrl?: string | null
   workExperience: WorkEntry[]
   education: EducationEntry[]
 }
@@ -32,6 +33,7 @@ export type ExperienceData = {
 export async function getExperience(): Promise<ExperienceData | null> {
   return client.fetch(
     `*[_type == "experience" && _id == "experience"][0]{
+      cvUrl,
       workExperience[] { _key, company, logo { asset->{ url } }, role, period, current, description, tags },
       education[]      { _key, institution, logo { asset->{ url } }, degree, period, description, tags }
     }`,

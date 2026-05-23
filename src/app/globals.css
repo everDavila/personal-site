@@ -185,27 +185,30 @@ body {
   opacity: 0.6;
 }
 
-/* Separador vertical entre columnas de experiencia */
+/* Experience section — 70/30 editorial grid */
 .exp-grid {
   display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(min(22rem, 100%), 1fr));
+  grid-template-columns: 1fr;
   gap: 3rem 0;
   align-items: start;
 }
 
-@media (min-width: 720px) {
+@media (min-width: 680px) {
   .exp-grid {
+    grid-template-columns: 2fr 1fr;
     gap: 0;
-    column-gap: 0;
   }
-  .exp-col + .exp-col {
+  .exp-col-edu {
     border-left: var(--border-width) solid var(--color-border);
-    padding-left: clamp(2rem, 5vw, 4rem);
+    padding-left: 2.5rem;
   }
-  .exp-col {
-    padding-right: clamp(2rem, 5vw, 4rem);
-  }
-  .exp-col + .exp-col {
-    padding-right: 0;
-  }
+}
+
+/* Tags reveal on hover — pure CSS, no JS */
+.exp-tags {
+  opacity: 0;
+  transition: opacity 200ms ease;
+}
+.exp-item:hover .exp-tags {
+  opacity: 1;
 }

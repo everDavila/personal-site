@@ -8,6 +8,12 @@ export const experienceType = defineType({
   icon: StarIcon,
   fields: [
     defineField({
+      name: 'cvUrl',
+      title: 'Enlace para descargar CV (PDF)',
+      type: 'url',
+      description: 'URL directa al PDF — puede ser Google Drive, Dropbox, etc. con acceso público.',
+    }),
+    defineField({
       name: 'workExperience',
       title: 'Experiencia laboral',
       type: 'array',

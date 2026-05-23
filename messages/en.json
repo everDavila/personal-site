@@ -42,7 +42,8 @@
     "work_label": "Professional background",
     "edu_label": "Education",
     "current": "Current",
-    "empty": "Content coming soon."
+    "empty": "Content coming soon.",
+    "download_cv": "Download CV"
   },
   "contact": {
     "title": "Contact",

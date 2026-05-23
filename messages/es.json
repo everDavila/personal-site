@@ -42,7 +42,8 @@
     "work_label": "Trayectoria profesional",
     "edu_label": "Formación académica",
     "current": "Actual",
-    "empty": "Contenido próximamente."
+    "empty": "Contenido próximamente.",
+    "download_cv": "Descargar CV"
   },
   "contact": {
     "title": "Contacto",
