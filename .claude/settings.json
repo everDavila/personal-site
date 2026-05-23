@@ -2,6 +2,9 @@
   "permissions": {
     "additionalDirectories": [
       "d:\\reposGIT\\personalPage\\src\\app\\[locale]\\work"
+    ],
+    "allow": [
+      "Read(//c/Users/ever/OneDrive/personalFiles/Postulaciones/ProCiencia/**)"
     ]
   }
 }
