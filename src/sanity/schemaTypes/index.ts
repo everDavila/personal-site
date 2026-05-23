@@ -6,6 +6,7 @@ import { categoryType } from './categoryType'
 import { postType } from './postType'
 import { projectType } from './projectType'
 import { authorType } from './authorType'
+import { siteSettingsType } from './siteSettingsType'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -13,6 +14,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     localizedStringType,
     localizedTextType,
     localizedBlockContentType,
+    siteSettingsType,
     categoryType,
     postType,
     projectType,

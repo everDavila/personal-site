@@ -7,7 +7,14 @@
     "playground": "实验室"
   },
   "home": {
-    "greeting": "你好，我是 Ever",
-    "tagline": "开发者，构建有用的东西。"
+    "hero": {
+      "headline": "UI/UX 设计师与政府顾问。",
+      "sub": "我专注于以用户为中心的设计与秘鲁数字公共服务的交叉领域。",
+      "cta_work": "查看作品",
+      "cta_blog": "阅读博客"
+    },
+    "competencies_label": "我擅长的事",
+    "projects_label": "精选项目",
+    "posts_label": "最新文章"
   }
 }

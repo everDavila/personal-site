@@ -1,12 +1,16 @@
-import { useTranslations } from 'next-intl'
+import { Hero } from '@/components/home/Hero'
+import { Competencies } from '@/components/home/Competencies'
+import { FunFacts } from '@/components/home/FunFacts'
+import { getSiteSettings } from '@/sanity/queries/siteSettings'
 
-export default function Home() {
-  const t = useTranslations('home')
+export default async function Home() {
+  const settings = await getSiteSettings()
 
   return (
-    <main className="flex flex-1 flex-col items-center justify-center min-h-screen">
-      <h1 className="text-4xl font-bold">{t('greeting')}</h1>
-      <p className="mt-4 text-lg text-zinc-600">{t('tagline')}</p>
-    </main>
+    <>
+      <Hero settings={settings} />
+      <Competencies competencies={settings?.competencies ?? []} />
+      <FunFacts funFacts={settings?.funFacts ?? []} />
+    </>
   )
 }

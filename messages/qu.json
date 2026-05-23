@@ -4,10 +4,17 @@
     "work": "Llank'ay",
     "blog": "Blog",
     "about": "Noqamanta",
-    "playground": "Playground"
+    "playground": "Pukllay"
   },
   "home": {
-    "greeting": "Napaykullayki, noqa Ever kani",
-    "tagline": "Desarrollador, allin imakunata ruwaq."
+    "hero": {
+      "headline": "UI/UX diseñador, suyupi llank'aq.",
+      "sub": "Runakunap munayninman hina diseñowan llank'ani, Perúpi hatun suyup digital imakunanpi.",
+      "cta_work": "Llank'aykunata qhaway",
+      "cta_blog": "Qillqaykunata leer"
+    },
+    "competencies_label": "Allinmi ruwani",
+    "projects_label": "Akllarusqa proyectokuna",
+    "posts_label": "Qhipa qillqaykuna"
   }
 }

@@ -4,10 +4,17 @@
     "work": "Trabajo",
     "blog": "Blog",
     "about": "Sobre mí",
-    "playground": "Playground"
+    "playground": "Experimentos"
   },
   "home": {
-    "greeting": "Hola, soy Ever",
-    "tagline": "Desarrollador y creador de cosas útiles."
+    "hero": {
+      "headline": "Diseñador UI/UX y consultor de gobierno.",
+      "sub": "Trabajo en la intersección del diseño centrado en el usuario y los servicios públicos digitales en Perú.",
+      "cta_work": "Ver trabajo",
+      "cta_blog": "Leer blog"
+    },
+    "competencies_label": "En lo que soy bueno",
+    "projects_label": "Proyectos seleccionados",
+    "posts_label": "Últimos posts"
   }
 }

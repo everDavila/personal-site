@@ -7,7 +7,14 @@
     "playground": "Playground"
   },
   "home": {
-    "greeting": "Hi, I'm Ever",
-    "tagline": "Developer and builder of useful things."
+    "hero": {
+      "headline": "UI/UX designer and government consultant.",
+      "sub": "I work at the intersection of user-centered design and digital public services in Peru.",
+      "cta_work": "See work",
+      "cta_blog": "Read blog"
+    },
+    "competencies_label": "Stuff I'm pretty good at",
+    "projects_label": "Selected projects",
+    "posts_label": "Latest posts"
   }
 }
