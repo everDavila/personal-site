@@ -1,9 +1,11 @@
 {
   "nav": {
     "home": "Qallariy",
-    "work": "Llank'ay",
-    "blog": "Blog",
     "about": "Noqamanta",
+    "work": "Llank'ay",
+    "experience": "Llankayhistorial",
+    "blog": "Blog",
+    "contact": "Qhariy",
     "playground": "Pukllay"
   },
   "home": {
@@ -16,6 +18,23 @@
     "competencies_label": "Allinmi ruwani",
     "projects_label": "Akllarusqa proyectokuna",
     "posts_label": "Qhipa qillqaykuna"
+  },
+  "about": {
+    "title": "Noqamanta",
+    "connect": "Qhariy noqawan",
+    "see_experience": "Llankayhistorialta qhaway"
+  },
+  "experience": {
+    "title": "Llankayhistorial",
+    "work_label": "Llank'ay kawsay",
+    "edu_label": "Yachay",
+    "current": "Kunan",
+    "empty": "Qhipaman hamunqa."
+  },
+  "contact": {
+    "title": "Qhariy",
+    "subtitle": "Imatapim munanki ruway? Qharimullaway.",
+    "email_label": "Email"
   },
   "blog": {
     "title": "Blog",

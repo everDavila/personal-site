@@ -5,9 +5,11 @@ import { LocaleSwitcher } from './LocaleSwitcher'
 import { MobileMenu } from './MobileMenu'
 
 const NAV_LINKS = [
-  { href: '/work',       key: 'work' },
-  { href: '/blog',       key: 'blog' },
   { href: '/about',      key: 'about' },
+  { href: '/work',       key: 'work' },
+  { href: '/experience', key: 'experience' },
+  { href: '/blog',       key: 'blog' },
+  { href: '/contact',    key: 'contact' },
   { href: '/playground', key: 'playground' },
 ] as const
 

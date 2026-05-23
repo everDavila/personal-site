@@ -7,6 +7,7 @@ import { postType } from './postType'
 import { projectType } from './projectType'
 import { authorType } from './authorType'
 import { siteSettingsType } from './siteSettingsType'
+import { experienceType } from './experienceType'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -15,6 +16,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     localizedTextType,
     localizedBlockContentType,
     siteSettingsType,
+    experienceType,
     categoryType,
     postType,
     projectType,

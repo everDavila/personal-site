@@ -1,9 +1,11 @@
 {
   "nav": {
     "home": "Home",
-    "work": "Work",
-    "blog": "Blog",
     "about": "About",
+    "work": "Work",
+    "experience": "Experience",
+    "blog": "Blog",
+    "contact": "Contact",
     "playground": "Playground"
   },
   "home": {
@@ -16,6 +18,23 @@
     "competencies_label": "Stuff I'm pretty good at",
     "projects_label": "Selected projects",
     "posts_label": "Latest posts"
+  },
+  "about": {
+    "title": "About",
+    "connect": "Get in touch",
+    "see_experience": "See experience"
+  },
+  "experience": {
+    "title": "Experience",
+    "work_label": "Professional background",
+    "edu_label": "Education",
+    "current": "Current",
+    "empty": "Content coming soon."
+  },
+  "contact": {
+    "title": "Contact",
+    "subtitle": "Have a project in mind or just want to chat? Reach out.",
+    "email_label": "Email"
   },
   "blog": {
     "title": "Blog",

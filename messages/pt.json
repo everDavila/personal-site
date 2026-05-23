@@ -1,9 +1,11 @@
 {
   "nav": {
     "home": "Início",
-    "work": "Trabalho",
-    "blog": "Blog",
     "about": "Sobre mim",
+    "work": "Trabalho",
+    "experience": "Experiência",
+    "blog": "Blog",
+    "contact": "Contato",
     "playground": "Experimentos"
   },
   "home": {
@@ -16,6 +18,23 @@
     "competencies_label": "No que sou bom",
     "projects_label": "Projetos selecionados",
     "posts_label": "Últimas publicações"
+  },
+  "about": {
+    "title": "Sobre mim",
+    "connect": "Entre em contato",
+    "see_experience": "Ver experiência"
+  },
+  "experience": {
+    "title": "Experiência",
+    "work_label": "Trajetória profissional",
+    "edu_label": "Formação acadêmica",
+    "current": "Atual",
+    "empty": "Conteúdo em breve."
+  },
+  "contact": {
+    "title": "Contato",
+    "subtitle": "Tem um projeto em mente ou quer conversar? Me escreva.",
+    "email_label": "Email"
   },
   "blog": {
     "title": "Blog",

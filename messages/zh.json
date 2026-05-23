@@ -1,9 +1,11 @@
 {
   "nav": {
     "home": "首页",
-    "work": "作品",
-    "blog": "博客",
     "about": "关于我",
+    "work": "作品",
+    "experience": "经历",
+    "blog": "博客",
+    "contact": "联系",
     "playground": "实验室"
   },
   "home": {
@@ -16,6 +18,23 @@
     "competencies_label": "我擅长的事",
     "projects_label": "精选项目",
     "posts_label": "最新文章"
+  },
+  "about": {
+    "title": "关于我",
+    "connect": "联系我",
+    "see_experience": "查看经历"
+  },
+  "experience": {
+    "title": "经历",
+    "work_label": "工作经历",
+    "edu_label": "教育背景",
+    "current": "在职",
+    "empty": "内容即将上线。"
+  },
+  "contact": {
+    "title": "联系",
+    "subtitle": "有项目想法或只是想聊聊？给我写信吧。",
+    "email_label": "邮箱"
   },
   "blog": {
     "title": "博客",

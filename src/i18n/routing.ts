@@ -46,6 +46,22 @@ export const routing = defineRouting({
       zh: '/guanyu',
     },
 
+    '/experience': {
+      es: '/experiencia',
+      en: '/experience',
+      pt: '/experiencia',
+      qu: '/llankayhistorial',
+      zh: '/jingyan',
+    },
+
+    '/contact': {
+      es: '/contacto',
+      en: '/contact',
+      pt: '/contato',
+      qu: '/qhariy',
+      zh: '/lianxi',
+    },
+
     '/playground': {
       es: '/experimentos',
       en: '/playground',
