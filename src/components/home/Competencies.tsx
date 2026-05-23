@@ -15,7 +15,7 @@ export async function Competencies({ competencies }: Props) {
 
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(18rem, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(18rem, 100%), 1fr))',
         gap: '2.5rem',
       }}>
         {competencies.map((c, i) => (

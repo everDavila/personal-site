@@ -12,7 +12,7 @@ export async function FunFacts({ funFacts }: Props) {
     <section className="container section" style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}>
       <div style={{
         display: 'grid',
-        gridTemplateColumns: 'repeat(auto-fit, minmax(10rem, 1fr))',
+        gridTemplateColumns: 'repeat(auto-fit, minmax(min(10rem, 45%), 1fr))',
         gap: '2rem',
       }}>
         {funFacts.map((f, i) => (

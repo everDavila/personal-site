@@ -98,6 +98,11 @@ html {
   -webkit-font-smoothing: antialiased;
   background-color: var(--color-bg);
   color: var(--color-text);
+  overflow-x: hidden;
+}
+
+body {
+  overflow-x: hidden;
 }
 
 body {
@@ -131,6 +136,7 @@ body {
   max-width: var(--max-width);
   margin-inline: auto;
   padding-inline: var(--spacing-container);
+  box-sizing: border-box;
 }
 
 .section {
