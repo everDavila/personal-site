@@ -38,6 +38,7 @@ export default async function WorkPage() {
                 style={{ textDecoration: 'none', display: 'block' }}
               >
                 <article
+                  className="card-hover"
                   style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr auto',
@@ -45,11 +46,8 @@ export default async function WorkPage() {
                     alignItems: 'start',
                     paddingBlock: '1.75rem',
                     borderTop: i === 0 ? 'none' : 'var(--border-width) solid var(--color-border)',
-                    transition: 'opacity var(--transition)',
                     cursor: 'pointer',
                   }}
-                  onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.6')}
-                  onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
                 >
                   <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
                     <h2 style={{

@@ -176,3 +176,11 @@ body {
 .prose {
   max-width: var(--max-width-prose);
 }
+
+/* Hover para cards de listado */
+.card-hover {
+  transition: opacity var(--transition);
+}
+.card-hover:hover {
+  opacity: 0.6;
+}

@@ -21,6 +21,7 @@ export function PostCard({ post, locale }: Props) {
       style={{ textDecoration: 'none', display: 'block' }}
     >
       <article
+        className="card-hover"
         style={{
           paddingBlock: '1.75rem',
           borderBottom: 'var(--border-width) solid var(--color-border)',
@@ -28,11 +29,8 @@ export function PostCard({ post, locale }: Props) {
           gridTemplateColumns: '1fr auto',
           gap: '1rem',
           alignItems: 'start',
-          transition: 'opacity var(--transition)',
           cursor: 'pointer',
         }}
-        onMouseEnter={e => ((e.currentTarget as HTMLElement).style.opacity = '0.6')}
-        onMouseLeave={e => ((e.currentTarget as HTMLElement).style.opacity = '1')}
       >
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap' }}>
