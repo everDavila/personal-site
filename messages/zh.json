@@ -12,13 +12,16 @@
     "hero": {
       "headline": "UI/UX 设计师与政府顾问。",
       "sub": "我专注于以用户为中心的设计与秘鲁数字公共服务的交叉领域。",
-      "cta_work": "查看作品",
+      "role_label": "UX/UI 设计师 & 系统顾问",
+      "cta_work": "查看精选作品",
       "cta_cv": "下载简历",
       "cta_blog": "阅读博客"
     },
     "competencies_label": "我擅长的事",
-    "projects_label": "精选项目",
-    "posts_label": "最新文章"
+    "projects_label": "精选作品",
+    "posts_label": "最新文章",
+    "more_about": "关于我",
+    "view_experience": "查看完整经历"
   },
   "work": {
     "title": "作品",

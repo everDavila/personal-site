@@ -28,7 +28,11 @@ export default async function Home() {
       <Hero settings={settings} cvUrl={settings?.cvUrl} />
       <SelectedWork projects={projects} />
       {philosophy && <Philosophy text={philosophy} />}
-      <ExperienceSnapshot entries={experience?.workExperience ?? []} />
+      <ExperienceSnapshot
+        workEntries={experience?.workExperience ?? []}
+        eduEntries={experience?.education ?? []}
+        cvUrl={experience?.cvUrl}
+      />
       <Writing posts={posts} />
     </>
   )

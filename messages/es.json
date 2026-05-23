@@ -12,13 +12,16 @@
     "hero": {
       "headline": "Diseñador UI/UX y consultor de gobierno.",
       "sub": "Trabajo en la intersección del diseño centrado en el usuario y los servicios públicos digitales en Perú.",
-      "cta_work": "Ver trabajo",
+      "role_label": "Diseñador UX/UI & consultor de sistemas",
+      "cta_work": "Ver trabajo seleccionado",
       "cta_cv": "Descargar CV",
       "cta_blog": "Leer blog"
     },
     "competencies_label": "En lo que soy bueno",
-    "projects_label": "Proyectos seleccionados",
-    "posts_label": "Últimos posts"
+    "projects_label": "Trabajo seleccionado",
+    "posts_label": "Últimos posts",
+    "more_about": "Más sobre mí",
+    "view_experience": "Ver experiencia completa"
   },
   "work": {
     "title": "Trabajo",

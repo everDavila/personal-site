@@ -16,10 +16,12 @@ export type FunFact = {
 
 export type SiteSettings = {
   hero: {
+    roleLabel: LocalizedString
     headline: LocalizedString
     sub: LocalizedString
     ctaWork: LocalizedString
     ctaCV: LocalizedString
+    heroImage: { asset: { url: string } } | null
   }
   cvUrl?: string | null
   philosophy?: LocalizedString | null
@@ -38,7 +40,7 @@ export type SiteSettings = {
 export async function getSiteSettings(): Promise<SiteSettings | null> {
   return client.fetch(
     `*[_type == "siteSettings"][0]{
-      hero { headline, sub, ctaWork, ctaCV },
+      hero { roleLabel, headline, sub, ctaWork, ctaCV, heroImage { asset->{ url } } },
       cvUrl,
       philosophy,
       footerText,

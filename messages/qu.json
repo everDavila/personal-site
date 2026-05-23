@@ -12,13 +12,16 @@
     "hero": {
       "headline": "UI/UX diseñador, suyupi llank'aq.",
       "sub": "Runakunap munayninman hina diseñowan llank'ani, Perúpi hatun suyup digital imakunanpi.",
+      "role_label": "UX/UI diseñador, suyupi llank'aq",
       "cta_work": "Llank'aykunata qhaway",
       "cta_cv": "CV descargay",
       "cta_blog": "Qillqaykunata leer"
     },
     "competencies_label": "Allinmi ruwani",
-    "projects_label": "Akllarusqa proyectokuna",
-    "posts_label": "Qhipa qillqaykuna"
+    "projects_label": "Akllarusqa llank'aykuna",
+    "posts_label": "Qhipa qillqaykuna",
+    "more_about": "Noqamanta astawan",
+    "view_experience": "Llankayhistorialta qhaway"
   },
   "work": {
     "title": "Llank'ay",

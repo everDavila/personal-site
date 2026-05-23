@@ -213,17 +213,50 @@ body {
   opacity: 1;
 }
 
-/* Selected work — project grid */
+/* ─────────────────────────────────────────
+   HERO — 2-col layout with optional image
+───────────────────────────────────────── */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: center;
+}
+
+@media (min-width: 768px) {
+  .hero-grid {
+    grid-template-columns: 3fr 2fr;
+    gap: 4rem;
+  }
+}
+
+.hero-content-only {
+  /* Single-column hero: max-width for readability */
+}
+
+.hero-cta-work:hover {
+  opacity: 0.75;
+}
+
+/* ─────────────────────────────────────────
+   SELECTED WORK — 3-col project grid
+───────────────────────────────────────── */
 .projects-grid {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2.5rem;
+  gap: 2rem;
 }
 
 @media (min-width: 600px) {
   .projects-grid {
     grid-template-columns: repeat(2, 1fr);
-    gap: 3rem 2.5rem;
+    gap: 2.5rem;
+  }
+}
+
+@media (min-width: 900px) {
+  .projects-grid {
+    grid-template-columns: repeat(3, 1fr);
   }
 }
 
@@ -234,8 +267,119 @@ body {
 }
 
 .project-card-image {
-  aspect-ratio: 3 / 2;
+  aspect-ratio: 4 / 3;
   overflow: hidden;
   background: var(--color-surface);
   margin-bottom: 1rem;
+}
+
+/* ─────────────────────────────────────────
+   EXPERIENCE — 2-col timeline + education
+───────────────────────────────────────── */
+.home-exp-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 3rem;
+  align-items: start;
+}
+
+@media (min-width: 680px) {
+  .home-exp-grid {
+    grid-template-columns: 3fr 2fr;
+    gap: 0;
+  }
+  .home-exp-edu-col {
+    padding-left: 2.5rem;
+    border-left: var(--border-width) solid var(--color-border);
+  }
+}
+
+/* Green dot timeline indicator */
+.home-timeline-item {
+  position: relative;
+  padding-left: 1.25rem;
+}
+
+.home-timeline-item::before {
+  content: '';
+  position: absolute;
+  left: 0;
+  top: 0.45rem;
+  width: 6px;
+  height: 6px;
+  border-radius: 50%;
+  background-color: var(--color-accent);
+  flex-shrink: 0;
+}
+
+/* ─────────────────────────────────────────
+   WRITING — 3-col card grid
+───────────────────────────────────────── */
+.writing-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1px;
+  background-color: var(--color-border);
+  border: var(--border-width) solid var(--color-border);
+}
+
+@media (min-width: 600px) {
+  .writing-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+@media (min-width: 900px) {
+  .writing-grid {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.writing-card {
+  background: var(--color-bg);
+  padding: 1.375rem 1.5rem 1.75rem;
+  display: flex;
+  flex-direction: column;
+  min-height: 14rem;
+  transition: background var(--transition);
+}
+
+.writing-card:hover {
+  background: var(--color-surface);
+  opacity: 1; /* override card-hover so we use bg instead */
+}
+
+/* ─────────────────────────────────────────
+   FOOTER — 3-col grid
+───────────────────────────────────────── */
+.footer-top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+@media (min-width: 680px) {
+  .footer-top {
+    grid-template-columns: 2fr 1fr 1fr;
+    gap: 2rem;
+  }
+}
+
+/* Social icon circle buttons */
+.footer-social-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  border: var(--border-width) solid var(--color-border);
+  color: var(--color-muted);
+  text-decoration: none;
+  transition: border-color var(--transition), color var(--transition);
+}
+
+.footer-social-icon:hover {
+  border-color: var(--color-accent);
+  color: var(--color-accent);
 }

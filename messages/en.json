@@ -12,13 +12,16 @@
     "hero": {
       "headline": "UI/UX designer and government consultant.",
       "sub": "I work at the intersection of user-centered design and digital public services in Peru.",
-      "cta_work": "See work",
+      "role_label": "UX/UI Designer & systems consultant",
+      "cta_work": "View selected work",
       "cta_cv": "Download CV",
       "cta_blog": "Read blog"
     },
     "competencies_label": "Stuff I'm pretty good at",
-    "projects_label": "Selected projects",
-    "posts_label": "Latest posts"
+    "projects_label": "Selected work",
+    "posts_label": "Latest posts",
+    "more_about": "More about me",
+    "view_experience": "View full experience"
   },
   "work": {
     "title": "Work",

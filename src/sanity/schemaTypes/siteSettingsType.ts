@@ -13,10 +13,12 @@ export const siteSettingsType = defineType({
       title: 'Hero',
       type: 'object',
       fields: [
+        defineField({ name: 'roleLabel', title: 'Etiqueta de rol (sobre el titular)', type: 'localizedString' }),
         defineField({ name: 'headline', title: 'Titular', type: 'localizedString' }),
         defineField({ name: 'sub',      title: 'Subtítulo / párrafo', type: 'localizedText' }),
         defineField({ name: 'ctaWork',  title: 'CTA — Ver trabajo (texto)', type: 'localizedString' }),
         defineField({ name: 'ctaCV',    title: 'CTA — Descargar CV (texto)', type: 'localizedString' }),
+        defineField({ name: 'heroImage', title: 'Imagen del hero (derecha)', type: 'image', options: { hotspot: true } }),
       ],
     }),
 
