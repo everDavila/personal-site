@@ -17,7 +17,7 @@ export const experienceType = defineType({
           icon: StarIcon,
           fields: [
             defineField({ name: 'company',     title: 'Empresa / Organización', type: 'string', validation: r => r.required() }),
-            defineField({ name: 'role',        title: 'Cargo',                 type: 'localizedString', validation: r => r.required() }),
+            defineField({ name: 'role',        title: 'Cargo',                 type: 'localizedString' }),
             defineField({ name: 'period',      title: 'Período (ej: 2021 – presente)', type: 'string', validation: r => r.required() }),
             defineField({ name: 'current',     title: '¿Es el trabajo actual?', type: 'boolean', initialValue: false }),
             defineField({ name: 'description', title: 'Descripción',           type: 'localizedText' }),
@@ -41,7 +41,7 @@ export const experienceType = defineType({
           icon: BookIcon,
           fields: [
             defineField({ name: 'institution', title: 'Institución',           type: 'string', validation: r => r.required() }),
-            defineField({ name: 'degree',      title: 'Título / Programa',     type: 'localizedString', validation: r => r.required() }),
+            defineField({ name: 'degree',      title: 'Título / Programa',     type: 'localizedString' }),
             defineField({ name: 'period',      title: 'Período (ej: 2015 – 2020)', type: 'string', validation: r => r.required() }),
             defineField({ name: 'description', title: 'Descripción',           type: 'localizedText' }),
           ],
