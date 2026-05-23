@@ -1,15 +1,62 @@
-import type {StructureResolver} from 'sanity/structure'
+import type { StructureResolver } from 'sanity/structure'
+import {
+  DocumentTextIcon,
+  CaseIcon,
+  TagIcon,
+  UserIcon,
+  CogIcon,
+} from '@sanity/icons'
 
-// https://www.sanity.io/docs/structure-builder-cheat-sheet
 export const structure: StructureResolver = (S) =>
   S.list()
-    .title('Blog')
+    .title('ever davila · studio')
     .items([
-      S.documentTypeListItem('post').title('Posts'),
-      S.documentTypeListItem('category').title('Categories'),
-      S.documentTypeListItem('author').title('Authors'),
+
+      // ── Blog ──────────────────────────────
+      S.listItem()
+        .title('Blog')
+        .icon(DocumentTextIcon)
+        .child(
+          S.list()
+            .title('Blog')
+            .items([
+              S.documentTypeListItem('post')
+                .title('Posts')
+                .icon(DocumentTextIcon),
+              S.documentTypeListItem('category')
+                .title('Categorías')
+                .icon(TagIcon),
+            ])
+        ),
+
+      // ── Trabajo ───────────────────────────
+      S.listItem()
+        .title('Proyectos')
+        .icon(CaseIcon)
+        .child(
+          S.documentTypeList('project').title('Proyectos')
+        ),
+
       S.divider(),
-      ...S.documentTypeListItems().filter(
-        (item) => item.getId() && !['post', 'category', 'author'].includes(item.getId()!),
-      ),
+
+      // ── Configuración ─────────────────────
+      S.listItem()
+        .title('Configuración del sitio')
+        .icon(CogIcon)
+        .child(
+          S.document()
+            .schemaType('siteSettings')
+            .documentId('siteSettings')
+            .title('Configuración del sitio')
+        ),
+
+      S.listItem()
+        .title('Autor')
+        .icon(UserIcon)
+        .child(
+          S.document()
+            .schemaType('author')
+            .documentId('author')
+            .title('Autor')
+        ),
     ])
