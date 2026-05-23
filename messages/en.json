@@ -16,5 +16,12 @@
     "competencies_label": "Stuff I'm pretty good at",
     "projects_label": "Selected projects",
     "posts_label": "Latest posts"
+  },
+  "blog": {
+    "title": "Blog",
+    "count": "{count, plural, one {# post} other {# posts}}",
+    "empty": "No posts published yet.",
+    "back": "Back to blog",
+    "no_content": "Content not available in this language."
   }
 }

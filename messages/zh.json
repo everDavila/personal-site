@@ -16,5 +16,12 @@
     "competencies_label": "我擅长的事",
     "projects_label": "精选项目",
     "posts_label": "最新文章"
+  },
+  "blog": {
+    "title": "博客",
+    "count": "{count} 篇文章",
+    "empty": "暂无文章。",
+    "back": "返回博客",
+    "no_content": "此语言暂无内容。"
   }
 }

@@ -16,5 +16,12 @@
     "competencies_label": "No que sou bom",
     "projects_label": "Projetos selecionados",
     "posts_label": "Últimas publicações"
+  },
+  "blog": {
+    "title": "Blog",
+    "count": "{count, plural, one {# publicação} other {# publicações}}",
+    "empty": "Ainda não há publicações.",
+    "back": "Voltar ao blog",
+    "no_content": "Conteúdo não disponível neste idioma."
   }
 }

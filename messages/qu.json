@@ -16,5 +16,12 @@
     "competencies_label": "Allinmi ruwani",
     "projects_label": "Akllarusqa proyectokuna",
     "posts_label": "Qhipa qillqaykuna"
+  },
+  "blog": {
+    "title": "Blog",
+    "count": "{count} qillqay",
+    "empty": "Manaraq qillqasqachu.",
+    "back": "Kutiy blogman",
+    "no_content": "Kay simipim mana kanchu."
   }
 }

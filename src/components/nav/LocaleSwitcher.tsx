@@ -18,7 +18,8 @@ export function LocaleSwitcher() {
   const router = useRouter()
 
   function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
-    router.replace(pathname, { locale: e.target.value })
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    router.replace(pathname as any, { locale: e.target.value })
   }
 
   return (
