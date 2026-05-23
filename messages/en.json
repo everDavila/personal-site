@@ -19,6 +19,19 @@
     "projects_label": "Selected projects",
     "posts_label": "Latest posts"
   },
+  "work": {
+    "title": "Work",
+    "empty": "Projects coming soon.",
+    "back": "Back to work",
+    "client_label": "Client",
+    "role_label": "Role",
+    "year_label": "Year",
+    "no_content": "Description not available."
+  },
+  "playground": {
+    "title": "Playground",
+    "subtitle": "A space to explore ideas, interfaces and concepts outside of formal projects."
+  },
   "about": {
     "title": "About",
     "connect": "Get in touch",

@@ -19,6 +19,19 @@
     "projects_label": "精选项目",
     "posts_label": "最新文章"
   },
+  "work": {
+    "title": "作品",
+    "empty": "项目即将上线。",
+    "back": "返回作品集",
+    "client_label": "客户",
+    "role_label": "角色",
+    "year_label": "年份",
+    "no_content": "暂无描述。"
+  },
+  "playground": {
+    "title": "实验室",
+    "subtitle": "一个在正式项目之外探索想法、界面与概念的空间。"
+  },
   "about": {
     "title": "关于我",
     "connect": "联系我",

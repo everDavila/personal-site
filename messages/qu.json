@@ -19,6 +19,19 @@
     "projects_label": "Akllarusqa proyectokuna",
     "posts_label": "Qhipa qillqaykuna"
   },
+  "work": {
+    "title": "Llank'ay",
+    "empty": "Proyectokuna qhipaman hamunqa.",
+    "back": "Kutiy proyectokunaman",
+    "client_label": "Cliente",
+    "role_label": "Cargo",
+    "year_label": "Wata",
+    "no_content": "Mana descripción kanchu."
+  },
+  "playground": {
+    "title": "Pukllay",
+    "subtitle": "Ideaswan, interfaceswan, conceptoswanmi pukllay."
+  },
   "about": {
     "title": "Noqamanta",
     "connect": "Qhariy noqawan",

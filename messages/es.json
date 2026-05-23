@@ -19,6 +19,19 @@
     "projects_label": "Proyectos seleccionados",
     "posts_label": "Últimos posts"
   },
+  "work": {
+    "title": "Trabajo",
+    "empty": "Proyectos próximamente.",
+    "back": "Volver a proyectos",
+    "client_label": "Cliente",
+    "role_label": "Rol",
+    "year_label": "Año",
+    "no_content": "Descripción no disponible."
+  },
+  "playground": {
+    "title": "Experimentos",
+    "subtitle": "Un espacio para explorar ideas, interfaces y conceptos fuera de los proyectos formales."
+  },
   "about": {
     "title": "Sobre mí",
     "connect": "Conecta conmigo",
