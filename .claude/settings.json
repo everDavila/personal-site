@@ -1,10 +1,12 @@
 {
   "permissions": {
+    "allow": [
+      "Read(//c/Users/ever/OneDrive/personalFiles/Postulaciones/ProCiencia/**)",
+      "PowerShell($env:SANITY_TOKEN = \"skDaY4ylYfVzYlmykOs0Q8SCMrqSKMUp39e07vhqNpboBh7nTlPaiHCWDDXjKVKzhLXKA2hSQoQXiSSKpIwVOKCtSMMl5h2V0yRuqvH14cV2TpRtb3EengahePO2YLfK5BuL5vaubXxshtIrtCztlwEcHg5He4SnNSNAYst5tRhmh6sdehWq\"; cd \"d:\\\\reposGIT\\\\personalPage\"; node scripts/seed-experience.mjs)",
+      "PowerShell(Remove-Item \"d:\\\\reposGIT\\\\personalPage\\\\scripts\\\\seed-experience.mjs\"; if \\(-not \\(Get-ChildItem \"d:\\\\reposGIT\\\\personalPage\\\\scripts\" -ErrorAction SilentlyContinue\\)\\) { Remove-Item \"d:\\\\reposGIT\\\\personalPage\\\\scripts\" })"
+    ],
     "additionalDirectories": [
       "d:\\reposGIT\\personalPage\\src\\app\\[locale]\\work"
-    ],
-    "allow": [
-      "Read(//c/Users/ever/OneDrive/personalFiles/Postulaciones/ProCiencia/**)"
     ]
   }
 }

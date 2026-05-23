@@ -4,25 +4,32 @@ import { localized } from '@/lib/i18n'
 import type { Locale } from '@/lib/i18n'
 import type { WorkEntry, EducationEntry } from '@/sanity/queries/experience'
 
-function Tags({ tags }: { tags: string[] | null }) {
+function ColLabel({ children }: { children: React.ReactNode }) {
+  return (
+    <p style={{
+      fontSize: '0.7rem',
+      fontWeight: 600,
+      letterSpacing: '0.1em',
+      textTransform: 'uppercase',
+      color: 'var(--color-accent)',
+      marginBottom: '2rem',
+    }}>
+      {children}
+    </p>
+  )
+}
+
+function TagsMeta({ tags }: { tags: string[] | null }) {
   if (!tags?.length) return null
   return (
-    <div style={{ display: 'flex', gap: '0.35rem', flexWrap: 'wrap', marginTop: '0.6rem' }}>
-      {tags.map(tag => (
-        <span key={tag} style={{
-          fontSize: '0.65rem',
-          fontWeight: 500,
-          color: 'var(--color-muted)',
-          border: 'var(--border-width) solid var(--color-border)',
-          borderRadius: 'var(--radius)',
-          padding: '0.1rem 0.45rem',
-          letterSpacing: '0.04em',
-          textTransform: 'uppercase',
-        }}>
-          {tag}
-        </span>
-      ))}
-    </div>
+    <p style={{
+      fontSize: '0.7rem',
+      color: 'var(--color-border)',
+      marginTop: '0.75rem',
+      letterSpacing: '0.02em',
+    }}>
+      {tags.join(' · ')}
+    </p>
   )
 }
 
@@ -32,14 +39,16 @@ function Logo({ url, name }: { url: string | undefined; name: string }) {
     <img
       src={url}
       alt={name}
-      width={28}
-      height={28}
+      width={20}
+      height={20}
       style={{
-        width: '1.75rem',
-        height: '1.75rem',
+        width: '1.25rem',
+        height: '1.25rem',
         objectFit: 'contain',
-        borderRadius: 'var(--radius)',
-        flexShrink: 0,
+        borderRadius: '2px',
+        opacity: 0.7,
+        marginBottom: '0.5rem',
+        display: 'block',
       }}
     />
   )
@@ -51,51 +60,69 @@ function WorkCard({ entry, locale }: { entry: WorkEntry; locale: Locale }) {
 
   return (
     <div style={{
-      paddingBlock: '1.25rem',
+      paddingBlock: '1.75rem',
       borderTop: 'var(--border-width) solid var(--color-border)',
     }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', marginBottom: '0.3rem' }}>
-        <Logo url={entry.logo?.asset.url} name={entry.company} />
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <span style={{ fontWeight: 600, fontSize: 'var(--text-body)', color: 'var(--color-text)' }}>
-              {entry.company}
-            </span>
-            <time style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', whiteSpace: 'nowrap', flexShrink: 0 }}>
-              {entry.period}
-            </time>
-          </div>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.4rem', marginTop: '0.1rem' }}>
-            {role.value && (
-              <span style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)' }}>
-                {role.value}
-              </span>
-            )}
-            {entry.current && (
-              <span style={{
-                fontSize: '0.6rem',
-                fontWeight: 600,
-                color: 'var(--color-accent)',
-                textTransform: 'uppercase',
-                letterSpacing: '0.06em',
-              }}>
-                · actual
-              </span>
-            )}
-          </div>
-        </div>
+      <Logo url={entry.logo?.asset.url} name={entry.company} />
+
+      {/* Cargo — primer nivel */}
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.5rem', flexWrap: 'wrap' }}>
+        <span style={{
+          fontSize: 'var(--text-body)',
+          fontWeight: 600,
+          color: 'var(--color-text)',
+          lineHeight: 1.3,
+        }}>
+          {role.value || entry.company}
+        </span>
+        {entry.current && (
+          <span style={{
+            fontSize: '0.6rem',
+            fontWeight: 600,
+            color: 'var(--color-accent)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.06em',
+          }}>
+            actual
+          </span>
+        )}
       </div>
+
+      {/* Empresa — segundo nivel */}
+      <p style={{
+        fontSize: 'var(--text-small)',
+        color: 'var(--color-muted)',
+        margin: '0.2rem 0 0',
+      }}>
+        {entry.company}
+      </p>
+
+      {/* Período — tercer nivel */}
+      <time style={{
+        display: 'block',
+        fontSize: 'var(--text-small)',
+        color: 'var(--color-muted)',
+        opacity: 0.7,
+        marginTop: '0.1rem',
+      }}>
+        {entry.period}
+      </time>
+
+      {/* Descripción */}
       {desc.value && (
         <p style={{
           fontSize: 'var(--text-small)',
           color: 'var(--color-muted)',
-          lineHeight: 1.6,
-          margin: '0.5rem 0 0',
+          lineHeight: 1.65,
+          marginTop: '0.75rem',
+          opacity: 0.85,
         }}>
           {desc.value}
         </p>
       )}
-      <Tags tags={entry.tags} />
+
+      {/* Tags — metadata secundaria */}
+      <TagsMeta tags={entry.tags} />
     </div>
   )
 }
@@ -106,54 +133,60 @@ function EduCard({ entry, locale }: { entry: EducationEntry; locale: Locale }) {
 
   return (
     <div style={{
-      paddingBlock: '1.25rem',
+      paddingBlock: '1.75rem',
       borderTop: 'var(--border-width) solid var(--color-border)',
     }}>
-      <div style={{ display: 'flex', alignItems: 'flex-start', gap: '0.6rem', marginBottom: '0.3rem' }}>
-        <Logo url={entry.logo?.asset.url} name={entry.institution} />
-        <div style={{ flex: 1, minWidth: 0 }}>
-          <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', gap: '0.5rem', flexWrap: 'wrap' }}>
-            <span style={{ fontWeight: 600, fontSize: 'var(--text-body)', color: 'var(--color-text)' }}>
-              {entry.institution}
-            </span>
-            <time style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', whiteSpace: 'nowrap', flexShrink: 0 }}>
-              {entry.period}
-            </time>
-          </div>
-          {degree.value && (
-            <span style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', marginTop: '0.1rem', display: 'block' }}>
-              {degree.value}
-            </span>
-          )}
-        </div>
-      </div>
+      <Logo url={entry.logo?.asset.url} name={entry.institution} />
+
+      {/* Carrera / Programa — primer nivel */}
+      {degree.value && (
+        <p style={{
+          fontSize: 'var(--text-body)',
+          fontWeight: 600,
+          color: 'var(--color-text)',
+          lineHeight: 1.3,
+          margin: 0,
+        }}>
+          {degree.value}
+        </p>
+      )}
+
+      {/* Institución — segundo nivel */}
+      <p style={{
+        fontSize: 'var(--text-small)',
+        color: 'var(--color-muted)',
+        margin: '0.2rem 0 0',
+      }}>
+        {entry.institution}
+      </p>
+
+      {/* Período — tercer nivel */}
+      <time style={{
+        display: 'block',
+        fontSize: 'var(--text-small)',
+        color: 'var(--color-muted)',
+        opacity: 0.7,
+        marginTop: '0.1rem',
+      }}>
+        {entry.period}
+      </time>
+
+      {/* Descripción */}
       {desc.value && (
         <p style={{
           fontSize: 'var(--text-small)',
           color: 'var(--color-muted)',
-          lineHeight: 1.6,
-          margin: '0.5rem 0 0',
+          lineHeight: 1.65,
+          marginTop: '0.75rem',
+          opacity: 0.85,
         }}>
           {desc.value}
         </p>
       )}
-      <Tags tags={entry.tags} />
-    </div>
-  )
-}
 
-function SectionLabel({ children }: { children: React.ReactNode }) {
-  return (
-    <p style={{
-      fontSize: '0.7rem',
-      fontWeight: 600,
-      letterSpacing: '0.08em',
-      textTransform: 'uppercase',
-      color: 'var(--color-accent)',
-      marginBottom: '0.25rem',
-    }}>
-      {children}
-    </p>
+      {/* Tags — metadata secundaria */}
+      <TagsMeta tags={entry.tags} />
+    </div>
   )
 }
 
@@ -174,7 +207,7 @@ export default async function ExperiencePage() {
         fontSize: 'var(--text-section)',
         fontWeight: 600,
         color: 'var(--color-text)',
-        marginBottom: '3rem',
+        marginBottom: '3.5rem',
       }}>
         {t('title')}
       </h1>
@@ -182,23 +215,16 @@ export default async function ExperiencePage() {
       {work.length === 0 && edu.length === 0 ? (
         <p style={{ color: 'var(--color-muted)' }}>{t('empty')}</p>
       ) : (
-        <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'repeat(auto-fit, minmax(min(22rem, 100%), 1fr))',
-          gap: '0 4rem',
-          alignItems: 'start',
-        }}>
-          {/* Columna izquierda — Experiencia */}
-          <section>
-            <SectionLabel>{t('work_label')}</SectionLabel>
+        <div className="exp-grid">
+          <section className="exp-col">
+            <ColLabel>{t('work_label')}</ColLabel>
             {work.map(entry => (
               <WorkCard key={entry._key} entry={entry} locale={currentLocale} />
             ))}
           </section>
 
-          {/* Columna derecha — Estudios */}
-          <section>
-            <SectionLabel>{t('edu_label')}</SectionLabel>
+          <section className="exp-col">
+            <ColLabel>{t('edu_label')}</ColLabel>
             {edu.map(entry => (
               <EduCard key={entry._key} entry={entry} locale={currentLocale} />
             ))}
