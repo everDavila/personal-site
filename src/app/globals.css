@@ -213,6 +213,54 @@ body {
   opacity: 1;
 }
 
+/* ─── Experience page — featured entry ─── */
+.exp-feat-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1rem;
+  padding-block: 2.5rem;
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+@media (min-width: 640px) {
+  .exp-feat-row {
+    grid-template-columns: 7rem 1fr;
+    gap: 2.5rem;
+    align-items: start;
+  }
+}
+
+/* ─── Experience page — previous entry (compact row) ─── */
+.exp-prev-row {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 0.25rem;
+  padding-block: 1rem;
+  border-top: var(--border-width) solid var(--color-border);
+}
+
+@media (min-width: 640px) {
+  .exp-prev-row {
+    grid-template-columns: 1fr 1fr auto;
+    gap: 1.5rem;
+    align-items: baseline;
+  }
+}
+
+/* ─── Education/Formación — 3-col grid ─── */
+.exp-edu-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2rem;
+}
+
+@media (min-width: 600px) {
+  .exp-edu-grid {
+    grid-template-columns: repeat(auto-fit, minmax(min(14rem, 100%), 1fr));
+    gap: 2.5rem;
+  }
+}
+
 /* ─────────────────────────────────────────
    HERO — 2-col layout with optional image
 ───────────────────────────────────────── */

@@ -47,7 +47,9 @@
     "edu_label": "Education",
     "current": "Current",
     "empty": "Content coming soon.",
-    "download_cv": "Download CV"
+    "download_cv": "Download full CV",
+    "featured_label": "Featured experience",
+    "previous_label": "Previous experience"
   },
   "contact": {
     "title": "Contact",

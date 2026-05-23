@@ -47,7 +47,9 @@
     "edu_label": "教育背景",
     "current": "在职",
     "empty": "内容即将上线。",
-    "download_cv": "下载简历"
+    "download_cv": "下载完整简历",
+    "featured_label": "精选经历",
+    "previous_label": "其他经历"
   },
   "contact": {
     "title": "联系",

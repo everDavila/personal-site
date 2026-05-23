@@ -47,7 +47,9 @@
     "edu_label": "Formación académica",
     "current": "Actual",
     "empty": "Contenido próximamente.",
-    "download_cv": "Descargar CV"
+    "download_cv": "Descargar CV completo",
+    "featured_label": "Experiencia destacada",
+    "previous_label": "Experiencia anterior"
   },
   "contact": {
     "title": "Contacto",

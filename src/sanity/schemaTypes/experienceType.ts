@@ -14,6 +14,12 @@ export const experienceType = defineType({
       description: 'URL directa al PDF — puede ser Google Drive, Dropbox, etc. con acceso público.',
     }),
     defineField({
+      name: 'intro',
+      title: 'Introducción (párrafo en la página de experiencia)',
+      type: 'localizedText',
+      description: 'Texto breve visible bajo el título "Experiencia".',
+    }),
+    defineField({
       name: 'workExperience',
       title: 'Experiencia laboral',
       type: 'array',
@@ -27,7 +33,14 @@ export const experienceType = defineType({
             defineField({ name: 'role',        title: 'Cargo',                  type: 'localizedString' }),
             defineField({ name: 'period',      title: 'Período (ej: 2021 – presente)', type: 'string',  validation: r => r.required() }),
             defineField({ name: 'current',     title: '¿Es el trabajo actual?', type: 'boolean',        initialValue: false }),
-            defineField({ name: 'show',        title: 'Mostrar en el sitio',    type: 'boolean',        initialValue: true }),
+            defineField({ name: 'show',        title: 'Mostrar en el sitio',      type: 'boolean', initialValue: true }),
+            defineField({
+              name: 'featured',
+              title: 'Experiencia destacada',
+              type: 'boolean',
+              initialValue: false,
+              description: 'Activo → aparece con descripción completa en la sección principal. Inactivo → aparece en "Experiencia anterior".',
+            }),
             defineField({ name: 'description', title: 'Descripción',            type: 'localizedText'  }),
             defineField({
               name: 'tags',
