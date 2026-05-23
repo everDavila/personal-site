@@ -212,3 +212,30 @@ body {
 .exp-item:hover .exp-tags {
   opacity: 1;
 }
+
+/* Selected work — project grid */
+.projects-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 2.5rem;
+}
+
+@media (min-width: 600px) {
+  .projects-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: 3rem 2.5rem;
+  }
+}
+
+.project-card {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+}
+
+.project-card-image {
+  aspect-ratio: 3 / 2;
+  overflow: hidden;
+  background: var(--color-surface);
+  margin-bottom: 1rem;
+}

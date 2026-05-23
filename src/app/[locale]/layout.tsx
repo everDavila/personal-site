@@ -3,6 +3,7 @@ import { getMessages } from 'next-intl/server'
 import { routing } from '@/i18n/routing'
 import { notFound } from 'next/navigation'
 import { Nav } from '@/components/nav/Nav'
+import { Footer } from '@/components/layout/Footer'
 
 export default async function LocaleLayout({
   children,
@@ -25,6 +26,7 @@ export default async function LocaleLayout({
       <main style={{ flex: 1 }}>
         {children}
       </main>
+      <Footer />
     </NextIntlClientProvider>
   )
 }

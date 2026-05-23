@@ -21,6 +21,19 @@ export type ProjectFull = ProjectSummary & {
   gallery: { asset: { url: string }; alt: LocalizedString; caption: LocalizedString }[]
 }
 
+export async function getFeaturedProjects(): Promise<ProjectSummary[]> {
+  return client.fetch(
+    `*[_type == "project" && featured == true] | order(year desc) [0...4] {
+      _id,
+      "slug": slug.current,
+      title, client, role, year, summary, tags, featured,
+      mainImage { asset->{ url }, alt }
+    }`,
+    {},
+    { next: { tags: ['project'] } }
+  )
+}
+
 export async function getAllProjects(): Promise<ProjectSummary[]> {
   return client.fetch(
     `*[_type == "project"] | order(year desc, _createdAt desc) {

@@ -1,11 +1,7 @@
 import { client } from '../lib/client'
 
 export type LocalizedString = {
-  es?: string
-  en?: string
-  pt?: string
-  qu?: string
-  zh?: string
+  es?: string; en?: string; pt?: string; qu?: string; zh?: string
 }
 
 export type Competency = {
@@ -22,7 +18,12 @@ export type SiteSettings = {
   hero: {
     headline: LocalizedString
     sub: LocalizedString
+    ctaWork: LocalizedString
+    ctaCV: LocalizedString
   }
+  cvUrl?: string | null
+  philosophy?: LocalizedString | null
+  footerText?: LocalizedString | null
   competencies: Competency[]
   funFacts: FunFact[]
   about: LocalizedString
@@ -37,7 +38,10 @@ export type SiteSettings = {
 export async function getSiteSettings(): Promise<SiteSettings | null> {
   return client.fetch(
     `*[_type == "siteSettings"][0]{
-      hero { headline, sub },
+      hero { headline, sub, ctaWork, ctaCV },
+      cvUrl,
+      philosophy,
+      footerText,
       competencies[] { title, description },
       funFacts[] { value, label },
       about,

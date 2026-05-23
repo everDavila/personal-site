@@ -2,62 +2,89 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { SiteSettings } from '@/sanity/queries/siteSettings'
 
-type Props = { settings: SiteSettings | null }
+type Props = { settings: SiteSettings | null; cvUrl?: string | null }
 
-export async function Hero({ settings }: Props) {
+export async function Hero({ settings, cvUrl }: Props) {
   const locale = await getLocale() as 'es' | 'en' | 'pt' | 'qu' | 'zh'
   const t = await getTranslations('home.hero')
 
   const headline = settings?.hero?.headline?.[locale] || t('headline')
-  const sub = settings?.hero?.sub?.[locale] || t('sub')
+  const sub      = settings?.hero?.sub?.[locale]      || t('sub')
+  const ctaWork  = settings?.hero?.ctaWork?.[locale]  || t('cta_work')
+  const ctaCV    = settings?.hero?.ctaCV?.[locale]    || t('cta_cv')
 
   return (
     <section
-      className="container section"
+      className="container"
       style={{
         minHeight: 'calc(100svh - 57px)',
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'center',
+        paddingBlock: 'clamp(4rem, 10vw, 8rem)',
         gap: '2rem',
       }}
     >
-      <h1 className="text-hero" style={{ maxWidth: '14ch', color: 'var(--color-text)' }}>
+      <h1
+        style={{
+          fontSize: 'var(--text-hero)',
+          fontWeight: 600,
+          lineHeight: 1.1,
+          letterSpacing: '-0.02em',
+          color: 'var(--color-text)',
+          maxWidth: '16ch',
+          margin: 0,
+        }}
+      >
         {headline}
       </h1>
 
-      <p style={{
-        maxWidth: '44ch',
-        color: 'var(--color-muted)',
-        fontSize: 'var(--text-body)',
-        lineHeight: 'var(--leading-body)',
-      }}>
+      <p
+        style={{
+          maxWidth: '42ch',
+          color: 'var(--color-muted)',
+          fontSize: 'var(--text-body)',
+          lineHeight: 1.7,
+          margin: 0,
+        }}
+      >
         {sub}
       </p>
 
-      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem' }}>
+      <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
         <Link
-          href="/work"
+          href={{ pathname: '/work' }}
           style={{
             color: 'var(--color-text)',
             fontWeight: 500,
             fontSize: 'var(--text-small)',
             textDecoration: 'none',
-            borderBottom: '1px solid var(--color-accent)',
+            borderBottom: '1px solid currentColor',
             paddingBottom: '2px',
             transition: 'color var(--transition)',
           }}
+          className="link-accent"
         >
-          {t('cta_work')} →
+          {ctaWork} →
         </Link>
 
-        <Link
-          href="/blog"
-          className="link-accent"
-          style={{ fontWeight: 500, fontSize: 'var(--text-small)' }}
-        >
-          {t('cta_blog')} →
-        </Link>
+        {cvUrl && (
+          <a
+            href={cvUrl}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              color: 'var(--color-muted)',
+              fontWeight: 400,
+              fontSize: 'var(--text-small)',
+              textDecoration: 'none',
+              transition: 'color var(--transition)',
+            }}
+            className="link-accent"
+          >
+            {ctaCV} ↗
+          </a>
+        )}
       </div>
     </section>
   )

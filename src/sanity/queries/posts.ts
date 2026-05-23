@@ -51,6 +51,23 @@ export async function getPostBySlug(slug: string): Promise<PostFull | null> {
   )
 }
 
+export async function getLatestPosts(): Promise<PostSummary[]> {
+  return client.fetch(
+    `*[_type == "post"] | order(publishedAt desc) [0...3] {
+      _id,
+      "slug": slug.current,
+      originalLanguage,
+      publishedAt,
+      title,
+      excerpt,
+      mainImage { asset->{ url }, alt },
+      categories[]->{ title, "slug": slug.current }
+    }`,
+    {},
+    { next: { tags: ['post'] } }
+  )
+}
+
 export async function getAllPostSlugs(): Promise<string[]> {
   const posts = await client.fetch(`*[_type == "post"]{ "slug": slug.current }`)
   return posts.map((p: { slug: string }) => p.slug)
