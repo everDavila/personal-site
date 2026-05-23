@@ -2,6 +2,7 @@ import { useTranslations } from 'next-intl'
 import { Link } from '@/i18n/navigation'
 import { ThemeToggle } from './ThemeToggle'
 import { LocaleSwitcher } from './LocaleSwitcher'
+import { MobileMenu } from './MobileMenu'
 
 const NAV_LINKS = [
   { href: '/work',       key: 'work' },
@@ -12,6 +13,11 @@ const NAV_LINKS = [
 
 export function Nav() {
   const t = useTranslations('nav')
+
+  const links = NAV_LINKS.map(({ href, key }) => ({
+    href,
+    label: t(key),
+  }))
 
   return (
     <header
@@ -48,32 +54,33 @@ export function Nav() {
           ever davila
         </Link>
 
-        {/* Links + controles */}
-        <div style={{ display: 'flex', alignItems: 'center', gap: '1.5rem' }}>
-          {NAV_LINKS.map(({ href, key }) => (
+        {/* Desktop: links + controles */}
+        <div className="nav-desktop" style={{ alignItems: 'center', gap: '1.5rem' }}>
+          {links.map(({ href, label }) => (
             <Link
-              key={key}
+              key={href}
               href={href}
               className="link-accent"
-              style={{
-                fontSize: 'var(--text-small)',
-                fontWeight: 500,
-              }}
+              style={{ fontSize: 'var(--text-small)', fontWeight: 500 }}
             >
-              {t(key)}
+              {label}
             </Link>
           ))}
 
-          <div
-            style={{
-              width: 'var(--border-width)',
-              height: '1rem',
-              backgroundColor: 'var(--color-border)',
-            }}
-          />
+          <div style={{
+            width: 'var(--border-width)',
+            height: '1rem',
+            backgroundColor: 'var(--color-border)',
+          }} />
 
           <LocaleSwitcher />
           <ThemeToggle />
+        </div>
+
+        {/* Mobile: hamburguesa */}
+        <div className="nav-mobile" style={{ alignItems: 'center', gap: '0.75rem' }}>
+          <ThemeToggle />
+          <MobileMenu links={links} />
         </div>
       </nav>
     </header>
