@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "home": "首页",
+    "work": "作品",
+    "blog": "博客",
+    "about": "关于我",
+    "playground": "实验室"
+  },
+  "home": {
+    "greeting": "你好，我是 Ever",
+    "tagline": "开发者，构建有用的东西。"
+  }
+}

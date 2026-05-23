@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "home": "Início",
+    "work": "Trabalho",
+    "blog": "Blog",
+    "about": "Sobre mim",
+    "playground": "Playground"
+  },
+  "home": {
+    "greeting": "Olá, sou Ever",
+    "tagline": "Desenvolvedor e criador de coisas úteis."
+  }
+}

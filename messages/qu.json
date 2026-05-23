@@ -1,0 +1,13 @@
+{
+  "nav": {
+    "home": "Qallariy",
+    "work": "Llank'ay",
+    "blog": "Blog",
+    "about": "Noqamanta",
+    "playground": "Playground"
+  },
+  "home": {
+    "greeting": "Napaykullayki, noqa Ever kani",
+    "tagline": "Desarrollador, allin imakunata ruwaq."
+  }
+}

@@ -1,26 +1,155 @@
 @import "tailwindcss";
 
+/* ─────────────────────────────────────────
+   TOKENS: MODO CLARO (default)
+───────────────────────────────────────── */
 :root {
-  --background: #ffffff;
-  --foreground: #171717;
+  /* Colores de superficie */
+  --color-bg:       #FFFFFF;
+  --color-surface:  #F5F5F5;
+  --color-border:   #E5E5E5;
+
+  /* Colores de texto */
+  --color-text:     #171717;
+  --color-muted:    #737373;
+
+  /* Acento */
+  --color-accent:       #10B981;
+  --color-accent-hover: #059669;
+
+  /* Tipografía */
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+
+  --text-hero:    clamp(2.5rem, 5vw, 3.5rem);
+  --text-section: clamp(1.5rem, 3vw, 2rem);
+  --text-label:   0.75rem;
+  --text-body:    1rem;
+  --text-small:   0.875rem;
+
+  --leading-body:  1.75;
+  --tracking-label: 0.1em;
+
+  /* Espaciado */
+  --spacing-section:   5rem;
+  --spacing-container: 1.5rem;
+  --max-width:         42rem;
+
+  /* UI */
+  --radius:     0.25rem;
+  --transition: 150ms ease;
+  --border-width: 1px;
 }
 
-@theme inline {
-  --color-background: var(--background);
-  --color-foreground: var(--foreground);
-  --font-sans: var(--font-geist-sans);
-  --font-mono: var(--font-geist-mono);
-}
-
+/* ─────────────────────────────────────────
+   TOKENS: MODO OSCURO — detección automática
+───────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root {
-    --background: #0a0a0a;
-    --foreground: #ededed;
+    --color-bg:       #0A0A0A;
+    --color-surface:  #141414;
+    --color-border:   #262626;
+    --color-text:     #FAFAFA;
+    --color-muted:    #525252;
   }
 }
 
+/* ─────────────────────────────────────────
+   TOKENS: MODO OSCURO — toggle manual
+   Uso: <html data-theme="dark">
+───────────────────────────────────────── */
+[data-theme="dark"] {
+  --color-bg:       #0A0A0A;
+  --color-surface:  #141414;
+  --color-border:   #262626;
+  --color-text:     #FAFAFA;
+  --color-muted:    #525252;
+}
+
+[data-theme="light"] {
+  --color-bg:       #FFFFFF;
+  --color-surface:  #F5F5F5;
+  --color-border:   #E5E5E5;
+  --color-text:     #171717;
+  --color-muted:    #737373;
+}
+
+/* ─────────────────────────────────────────
+   TAILWIND v4: FUENTES
+───────────────────────────────────────── */
+@theme inline {
+  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
+  --font-mono: var(--font-geist-mono), monospace;
+}
+
+/* ─────────────────────────────────────────
+   BASE
+───────────────────────────────────────── */
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+html {
+  font-family: var(--font-sans);
+  font-size: var(--text-body);
+  line-height: var(--leading-body);
+  -webkit-font-smoothing: antialiased;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+}
+
 body {
-  background: var(--background);
-  color: var(--foreground);
-  font-family: Arial, Helvetica, sans-serif;
+  background-color: var(--color-bg);
+  color: var(--color-text);
+  transition: background-color var(--transition), color var(--transition);
+  min-height: 100svh;
+  display: flex;
+  flex-direction: column;
+}
+
+/* ─────────────────────────────────────────
+   UTILIDADES TIPOGRÁFICAS
+───────────────────────────────────────── */
+.text-hero    { font-size: var(--text-hero);    font-weight: 700; line-height: 1.1; }
+.text-section { font-size: var(--text-section); font-weight: 600; line-height: 1.2; }
+.text-label   {
+  font-size: var(--text-label);
+  font-weight: 500;
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+  color: var(--color-muted);
+}
+.text-muted   { color: var(--color-muted); font-size: var(--text-small); }
+
+/* ─────────────────────────────────────────
+   UTILIDADES DE LAYOUT
+───────────────────────────────────────── */
+.container {
+  width: 100%;
+  max-width: var(--max-width);
+  margin-inline: auto;
+  padding-inline: var(--spacing-container);
+}
+
+.section {
+  padding-block: var(--spacing-section);
+}
+
+/* ─────────────────────────────────────────
+   UTILIDADES DE INTERACCIÓN
+───────────────────────────────────────── */
+.link-accent {
+  color: var(--color-text);
+  text-decoration: none;
+  transition: color var(--transition);
+}
+.link-accent:hover {
+  color: var(--color-accent);
+}
+
+.divider {
+  border: none;
+  border-top: var(--border-width) solid var(--color-border);
 }
