@@ -31,7 +31,7 @@ export default async function Home() {
       <ExperienceSnapshot
         workEntries={experience?.workExperience ?? []}
         eduEntries={experience?.education ?? []}
-        cvUrl={experience?.cvUrl}
+        cvUrl={experience?.cvUrl ?? settings?.cvUrl}
       />
       <Writing posts={posts} />
     </>

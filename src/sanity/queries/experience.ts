@@ -5,6 +5,7 @@ type LocalizedString = Partial<Record<Locale, string>>
 
 export type WorkEntry = {
   _key: string
+  show?: boolean
   company: string
   logo: { asset: { url: string } } | null
   role: LocalizedString
@@ -16,6 +17,7 @@ export type WorkEntry = {
 
 export type EducationEntry = {
   _key: string
+  show?: boolean
   institution: string
   logo: { asset: { url: string } } | null
   degree: LocalizedString
@@ -34,8 +36,8 @@ export async function getExperience(): Promise<ExperienceData | null> {
   return client.fetch(
     `*[_type == "experience" && _id == "experience"][0]{
       cvUrl,
-      workExperience[] { _key, company, logo { asset->{ url } }, role, period, current, description, tags },
-      education[]      { _key, institution, logo { asset->{ url } }, degree, period, description, tags }
+      workExperience[show != false] { _key, show, company, logo { asset->{ url } }, role, period, current, description, tags },
+      education[show != false]      { _key, show, institution, logo { asset->{ url } }, degree, period, description, tags }
     }`,
     {},
     { next: { tags: ['experience'] } }
