@@ -43,7 +43,7 @@ export default async function PostPage({ params }: Props) {
   )
 
   return (
-    <main className="container section">
+    <main className="container section prose">
       <Link
         href={{ pathname: '/blog' }}
         style={{

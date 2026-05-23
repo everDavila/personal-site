@@ -31,9 +31,10 @@
   --tracking-label: 0.1em;
 
   /* Espaciado */
-  --spacing-section:   5rem;
-  --spacing-container: 1.5rem;
-  --max-width:         42rem;
+  --spacing-section:   clamp(3rem, 8vw, 6rem);
+  --spacing-container: clamp(1.5rem, 5vw, 3rem);
+  --max-width:         64rem;
+  --max-width-prose:   42rem;
 
   /* UI */
   --radius:     0.25rem;
@@ -166,7 +167,12 @@ body {
 .nav-desktop { display: flex; }
 .nav-mobile  { display: none; }
 
-@media (max-width: 640px) {
+@media (max-width: 900px) {
   .nav-desktop { display: none; }
   .nav-mobile  { display: flex; }
+}
+
+/* Prosa — contenido de lectura con ancho óptimo */
+.prose {
+  max-width: var(--max-width-prose);
 }
