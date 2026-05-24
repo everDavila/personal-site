@@ -448,17 +448,17 @@ body {
 }
 
 /* ─────────────────────────────────────────
-   FOOTER — 3-col grid
+   FOOTER — 4-col grid
 ───────────────────────────────────────── */
 .footer-top {
   display: grid;
   grid-template-columns: 1fr;
-  gap: 2.5rem;
+  gap: 2rem;
 }
 
 @media (min-width: 680px) {
   .footer-top {
-    grid-template-columns: 2fr 1fr 1fr;
+    grid-template-columns: 2fr 1fr 1fr 1fr;
     gap: 2rem;
   }
 }
