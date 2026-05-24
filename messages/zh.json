@@ -2,7 +2,7 @@
   "nav": {
     "home": "首页",
     "about": "关于我",
-    "work": "作品",
+    "work": "案例研究",
     "experience": "经历",
     "blog": "博客",
     "contact": "联系",
@@ -25,7 +25,7 @@
     "view_experience": "查看完整经历"
   },
   "work": {
-    "title": "作品",
+    "title": "案例研究",
     "empty": "项目即将上线。",
     "back": "返回作品集",
     "client_label": "客户",

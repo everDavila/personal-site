@@ -2,7 +2,7 @@
   "nav": {
     "home": "Home",
     "about": "About",
-    "work": "Work",
+    "work": "Case Studies",
     "experience": "Experience",
     "blog": "Blog",
     "contact": "Contact",
@@ -25,7 +25,7 @@
     "view_experience": "View full experience"
   },
   "work": {
-    "title": "Work",
+    "title": "Case Studies",
     "empty": "Projects coming soon.",
     "back": "Back to work",
     "client_label": "Client",

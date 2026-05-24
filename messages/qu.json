@@ -2,7 +2,7 @@
   "nav": {
     "home": "Qallariy",
     "about": "Noqamanta",
-    "work": "Llank'ay",
+    "work": "Ruwasqakuna",
     "experience": "Llankayhistorial",
     "blog": "Blog",
     "contact": "Qhariy",
@@ -25,7 +25,7 @@
     "view_experience": "Llankayhistorialta qhaway"
   },
   "work": {
-    "title": "Llank'ay",
+    "title": "Ruwasqakuna",
     "empty": "Proyectokuna qhipaman hamunqa.",
     "back": "Kutiy proyectokunaman",
     "client_label": "Cliente",

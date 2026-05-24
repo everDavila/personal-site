@@ -2,7 +2,7 @@
   "nav": {
     "home": "Inicio",
     "about": "Sobre mí",
-    "work": "Trabajo",
+    "work": "Casos de estudio",
     "experience": "Experiencia",
     "blog": "Blog",
     "contact": "Contacto",
@@ -25,7 +25,7 @@
     "view_experience": "Ver experiencia completa"
   },
   "work": {
-    "title": "Trabajo",
+    "title": "Casos de estudio",
     "empty": "Proyectos próximamente.",
     "back": "Volver a proyectos",
     "client_label": "Cliente",
