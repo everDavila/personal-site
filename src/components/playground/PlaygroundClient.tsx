@@ -2,6 +2,7 @@
 
 import { useState } from 'react'
 import Image from 'next/image'
+import { Link } from '@/i18n/navigation'
 import type { PlaygroundItem } from '@/sanity/queries/playground'
 import type { Locale } from '@/lib/i18n'
 import { localized } from '@/lib/i18n'
@@ -146,12 +147,18 @@ function PlaygroundCard({ item, locale, t }: { item: PlaygroundItem; locale: Loc
   const statusKey = item.status as StatusKey
 
   return (
+    <Link
+      href={{ pathname: '/playground/[slug]', params: { slug: item.slug } }}
+      style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+      className="card-hover"
+    >
     <article style={{
       display: 'flex',
       flexDirection: 'column',
       background: 'var(--color-surface)',
       borderRadius: 'var(--radius)',
       overflow: 'hidden',
+      height: '100%',
     }}>
       {/* Image */}
       {item.image?.asset?.url ? (
@@ -237,6 +244,7 @@ function PlaygroundCard({ item, locale, t }: { item: PlaygroundItem; locale: Loc
                 rel="noopener noreferrer"
                 className="link-accent"
                 style={{ fontSize: 'var(--text-small)' }}
+                onClick={e => e.stopPropagation()}
               >
                 Repo ↗
               </a>
@@ -248,6 +256,7 @@ function PlaygroundCard({ item, locale, t }: { item: PlaygroundItem; locale: Loc
                 rel="noopener noreferrer"
                 className="link-accent"
                 style={{ fontSize: 'var(--text-small)' }}
+                onClick={e => e.stopPropagation()}
               >
                 Demo ↗
               </a>
@@ -256,5 +265,6 @@ function PlaygroundCard({ item, locale, t }: { item: PlaygroundItem; locale: Loc
         )}
       </div>
     </article>
+    </Link>
   )
 }

@@ -5,6 +5,7 @@ type LocalizedString = Partial<Record<Locale, string>>
 
 export type PlaygroundItem = {
   _id: string
+  slug: string
   title: LocalizedString
   category: string
   status: string
@@ -15,20 +16,40 @@ export type PlaygroundItem = {
   demoUrl: string | null
 }
 
+export type PlaygroundItemFull = PlaygroundItem & {
+  body: Partial<Record<Locale, unknown[]>> | null
+}
+
 export async function getAllPlaygroundItems(): Promise<PlaygroundItem[]> {
   return client.fetch(
     `*[_type == "playgroundItem"] | order(year desc, _createdAt desc) {
       _id,
-      title,
-      category,
-      status,
-      year,
-      description,
+      "slug": slug.current,
+      title, category, status, year, description,
       image { asset->{ url }, alt },
-      repoUrl,
-      demoUrl
+      repoUrl, demoUrl
     }`,
     {},
     { next: { tags: ['playgroundItem'] } }
   )
+}
+
+export async function getPlaygroundItemBySlug(slug: string): Promise<PlaygroundItemFull | null> {
+  return client.fetch(
+    `*[_type == "playgroundItem" && slug.current == $slug][0] {
+      _id,
+      "slug": slug.current,
+      title, category, status, year, description,
+      image { asset->{ url }, alt },
+      body,
+      repoUrl, demoUrl
+    }`,
+    { slug },
+    { next: { tags: ['playgroundItem'] } }
+  )
+}
+
+export async function getAllPlaygroundSlugs(): Promise<string[]> {
+  const items = await client.fetch(`*[_type == "playgroundItem" && defined(slug.current)]{ "slug": slug.current }`)
+  return items.map((i: { slug: string }) => i.slug)
 }

@@ -30,6 +30,13 @@ export const playgroundItemType = defineType({
       validation: (rule) => rule.required(),
     }),
     defineField({
+      name: 'slug',
+      title: 'Slug (URL)',
+      type: 'slug',
+      options: { source: 'title.es' },
+      validation: (rule) => rule.required(),
+    }),
+    defineField({
       name: 'category',
       title: 'Categoría',
       type: 'string',
@@ -63,6 +70,11 @@ export const playgroundItemType = defineType({
       fields: [
         defineField({ name: 'alt', title: 'Texto alternativo', type: 'localizedString' }),
       ],
+    }),
+    defineField({
+      name: 'body',
+      title: 'Descripción completa',
+      type: 'localizedBlockContent',
     }),
     defineField({
       name: 'repoUrl',

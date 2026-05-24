@@ -69,5 +69,13 @@ export const routing = defineRouting({
       qu: '/pukllay',
       zh: '/shiyanshi',
     },
+
+    '/playground/[slug]': {
+      es: '/experimentos/[slug]',
+      en: '/playground/[slug]',
+      pt: '/experimentos/[slug]',
+      qu: '/pukllay/[slug]',
+      zh: '/shiyanshi/[slug]',
+    },
   },
 })
