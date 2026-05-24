@@ -8,6 +8,7 @@ type Props = { value: PortableTextBlock[] }
 export function PostBody({ value }: Props) {
   return (
     <div style={{
+      fontFamily: 'var(--font-serif)',
       fontSize: 'var(--text-body)',
       lineHeight: 1.8,
       color: 'var(--color-text)',
@@ -22,6 +23,7 @@ export function PostBody({ value }: Props) {
             h2: ({ children }) => (
               <h2 style={{
                 fontSize: 'var(--text-section)',
+                fontFamily: 'var(--font-display)',
                 fontWeight: 600,
                 margin: '2.5rem 0 0.75rem',
                 color: 'var(--color-text)',

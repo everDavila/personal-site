@@ -192,6 +192,7 @@ export default async function ExperiencePage() {
       >
         <h1 style={{
           fontSize: 'var(--text-hero)',
+          fontFamily: 'var(--font-display)',
           fontWeight: 700,
           letterSpacing: '-0.02em',
           lineHeight: 1.1,

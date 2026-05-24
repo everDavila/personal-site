@@ -70,6 +70,7 @@ export default async function PostPage({ params }: Props) {
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.5rem', flexWrap: 'wrap', marginBottom: '0.5rem' }}>
             <h1 style={{
               fontSize: 'var(--text-section)',
+              fontFamily: 'var(--font-display)',
               fontWeight: 600,
               color: 'var(--color-text)',
               margin: 0,

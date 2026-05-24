@@ -19,6 +19,7 @@ export default async function AboutPage() {
     <main className="container section">
       <h1 style={{
         fontSize: 'var(--text-section)',
+        fontFamily: 'var(--font-display)',
         fontWeight: 600,
         color: 'var(--color-text)',
         marginBottom: '2rem',

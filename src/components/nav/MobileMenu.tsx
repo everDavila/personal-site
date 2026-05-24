@@ -89,6 +89,7 @@ export function MobileMenu({ links }: Props) {
                 onClick={() => setOpen(false)}
                 style={{
                   fontSize: 'var(--text-section)',
+                  fontFamily: 'var(--font-display)',
                   fontWeight: 600,
                   color: 'var(--color-text)',
                   textDecoration: 'none',

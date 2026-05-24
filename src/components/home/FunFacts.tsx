@@ -20,6 +20,7 @@ export async function FunFacts({ funFacts }: Props) {
             <span style={{
               display: 'block',
               fontSize: 'var(--text-section)',
+              fontFamily: 'var(--font-display)',
               fontWeight: 700,
               color: 'var(--color-accent)',
               lineHeight: 1,

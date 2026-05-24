@@ -57,6 +57,7 @@ export default async function ProjectPage({ params }: Props) {
         <header style={{ marginBottom: '2.5rem' }}>
           <h1 style={{
             fontSize: 'var(--text-section)',
+            fontFamily: 'var(--font-display)',
             fontWeight: 600,
             color: 'var(--color-text)',
             margin: '0 0 0.5rem',

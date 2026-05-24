@@ -39,6 +39,7 @@ export async function Hero({ settings, cvUrl }: Props) {
           <h1
             style={{
               fontSize: 'var(--text-hero)',
+              fontFamily: 'var(--font-display)',
               fontWeight: 700,
               lineHeight: 1.1,
               letterSpacing: '-0.02em',

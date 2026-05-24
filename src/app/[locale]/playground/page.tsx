@@ -7,6 +7,7 @@ export default async function PlaygroundPage() {
     <main className="container section">
       <h1 style={{
         fontSize: 'var(--text-section)',
+        fontFamily: 'var(--font-display)',
         fontWeight: 600,
         color: 'var(--color-text)',
         marginBottom: '0.75rem',
