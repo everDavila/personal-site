@@ -34,7 +34,25 @@
   },
   "playground": {
     "title": "实验室",
-    "subtitle": "一个在正式项目之外探索想法、界面与概念的空间。"
+    "subtitle": "一个在正式项目之外探索想法、界面与概念的空间。",
+    "stats_label": "当前状态",
+    "filter_label": "筛选",
+    "filter_all": "全部",
+    "empty": "暂无实验项目。",
+    "status": {
+      "en_proceso": "进行中",
+      "prototipo": "原型",
+      "archivado": "已归档",
+      "fallido": "已失败"
+    },
+    "category": {
+      "interfaces": "界面",
+      "motion": "动效",
+      "systems": "系统",
+      "ai": "AI",
+      "experiments": "实验",
+      "tools": "工具"
+    }
   },
   "about": {
     "title": "关于我",

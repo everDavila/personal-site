@@ -34,7 +34,25 @@
   },
   "playground": {
     "title": "Experimentos",
-    "subtitle": "Un espacio para explorar ideas, interfaces y conceptos fuera de los proyectos formales."
+    "subtitle": "Un espacio para explorar ideas, interfaces y conceptos fuera de los proyectos formales.",
+    "stats_label": "Estado actual",
+    "filter_label": "Filtrar por",
+    "filter_all": "Todos",
+    "empty": "Aún no hay experimentos aquí.",
+    "status": {
+      "en_proceso": "En proceso",
+      "prototipo": "Prototipo",
+      "archivado": "Archivado",
+      "fallido": "Fallido"
+    },
+    "category": {
+      "interfaces": "Interfaces",
+      "motion": "Motion",
+      "systems": "Systems",
+      "ai": "AI",
+      "experiments": "Experiments",
+      "tools": "Tools"
+    }
   },
   "about": {
     "title": "Sobre mí",

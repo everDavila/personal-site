@@ -6,6 +6,7 @@ import {
   UserIcon,
   CogIcon,
   StarIcon,
+  RocketIcon,
 } from '@sanity/icons'
 
 export const structure: StructureResolver = (S) =>
@@ -36,6 +37,14 @@ export const structure: StructureResolver = (S) =>
         .icon(CaseIcon)
         .child(
           S.documentTypeList('project').title('Proyectos')
+        ),
+
+      // ── Playground ────────────────────────
+      S.listItem()
+        .title('Playground')
+        .icon(RocketIcon)
+        .child(
+          S.documentTypeList('playgroundItem').title('Experimentos')
         ),
 
       // ── Experiencia ───────────────────────

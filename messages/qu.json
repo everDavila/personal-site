@@ -34,7 +34,25 @@
   },
   "playground": {
     "title": "Pukllay",
-    "subtitle": "Ideaswan, interfaceswan, conceptoswanmi pukllay."
+    "subtitle": "Ideaswan, interfaceswan, conceptoswanmi pukllay.",
+    "stats_label": "Kunan kaqnin",
+    "filter_label": "Akllakuy",
+    "filter_all": "Tukuy",
+    "empty": "Manaraq experimentochu.",
+    "status": {
+      "en_proceso": "Ruwaykusan",
+      "prototipo": "Prototipo",
+      "archivado": "Waqaychasqa",
+      "fallido": "Mana ruwasqachu"
+    },
+    "category": {
+      "interfaces": "Interfaces",
+      "motion": "Motion",
+      "systems": "Systems",
+      "ai": "AI",
+      "experiments": "Experiments",
+      "tools": "Tools"
+    }
   },
   "about": {
     "title": "Noqamanta",
