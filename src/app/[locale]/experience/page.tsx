@@ -234,6 +234,7 @@ export default async function ExperiencePage() {
       {featured.length > 0 && (
         <section
           className="container section"
+          style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
         >
           <SectionLabel accent>{t('featured_label')}</SectionLabel>
 

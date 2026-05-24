@@ -215,11 +215,27 @@ body {
 
 /* ─── Experience page — featured entry ─── */
 .exp-feat-row {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr;
   gap: 1rem;
   padding-block: 2.5rem;
-  border-top: var(--border-width) solid var(--color-border);
+}
+
+/* Full-width separator — same as section-level borders */
+.exp-feat-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc(-1 * var(--spacing-container));
+  right: calc(-1 * var(--spacing-container));
+  height: var(--border-width);
+  background-color: var(--color-border);
+}
+
+/* First entry has no top separator — the section border above the label acts as one */
+.exp-feat-row:first-child::before {
+  display: none;
 }
 
 @media (min-width: 640px) {
@@ -232,11 +248,22 @@ body {
 
 /* ─── Experience page — previous entry (compact row) ─── */
 .exp-prev-row {
+  position: relative;
   display: grid;
   grid-template-columns: 1fr;
   gap: 0.25rem;
   padding-block: 1rem;
-  border-top: var(--border-width) solid var(--color-border);
+}
+
+/* Full-width separator — same technique */
+.exp-prev-row::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: calc(-1 * var(--spacing-container));
+  right: calc(-1 * var(--spacing-container));
+  height: var(--border-width);
+  background-color: var(--color-border);
 }
 
 @media (min-width: 640px) {
