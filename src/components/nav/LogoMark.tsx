@@ -35,9 +35,9 @@ export function LogoMark() {
 
   return (
     <svg
-      viewBox="0 0 32 46"
+      viewBox="0 0 32 43"
       width="20"
-      height="29"
+      height="27"
       fill="none"
       aria-hidden="true"
       style={{ display: 'block' }}
@@ -50,9 +50,9 @@ export function LogoMark() {
         Arc       : M 14 5 → A → 14 38  (rx=13 ry=16.5)
         Bottom stub: longer (x 3→16), sits 4 px below arc end → visible gap
       */}
-      <path d="M 5 5 H 14"  {...openAttrs} />
+      <path d="M 5 5 H 13"   {...openAttrs} />
       <path d="M 14 5 A 13 16.5 0 0 1 14 38" {...openAttrs} />
-      <path d="M 3 43 H 16" {...openAttrs} />
+      <path d="M 3 38 H 13" {...openAttrs} />
 
       {/* Closed arc D (phase 2) — same curve, closed with left bar */}
       <path
