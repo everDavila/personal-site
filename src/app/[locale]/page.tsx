@@ -11,14 +11,17 @@ import { getLatestPosts } from '@/sanity/queries/posts'
 import type { Locale } from '@/lib/i18n'
 
 export default async function Home() {
+  const locale = await getLocale() as Locale
+
   const [settings, projects, experience, posts] = await Promise.all([
     getSiteSettings(),
     getFeaturedProjects(),
     getExperience(),
-    getLatestPosts(),
+    getLatestPosts(locale),
   ])
 
-  const locale = await getLocale() as Locale
+  // Fall back to English latest posts if current locale has none
+  const displayPosts = posts.length > 0 ? posts : await getLatestPosts('en')
   const philosophy = settings?.philosophy?.[locale]
     || settings?.philosophy?.es
     || null
@@ -33,7 +36,7 @@ export default async function Home() {
         eduEntries={experience?.education ?? []}
         cvUrl={experience?.cvUrl ?? settings?.cvUrl}
       />
-      <Writing posts={posts} />
+      <Writing posts={displayPosts} />
     </>
   )
 }

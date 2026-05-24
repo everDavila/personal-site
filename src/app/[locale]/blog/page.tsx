@@ -4,11 +4,18 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import type { Locale } from '@/lib/i18n'
 
 export default async function BlogPage() {
-  const [posts, t, locale] = await Promise.all([
-    getAllPosts(),
+  const [t, locale] = await Promise.all([
     getTranslations('blog'),
     getLocale(),
   ])
+
+  const currentLocale = locale as Locale
+
+  // Show posts in current locale; fall back to English if none exist
+  let posts = await getAllPosts(currentLocale)
+  if (posts.length === 0 && currentLocale !== 'en') {
+    posts = await getAllPosts('en')
+  }
 
   return (
     <main className="container section">
@@ -25,12 +32,12 @@ export default async function BlogPage() {
         color: 'var(--color-muted)',
         marginBottom: '2rem',
       }}>
-        {posts.length} {t('count', { count: posts.length })}
+        {t('count', { count: posts.length })}
       </p>
 
       <div>
         {posts.map(post => (
-          <PostCard key={post._id} post={post} locale={locale as Locale} />
+          <PostCard key={post._id} post={post} locale={currentLocale} />
         ))}
       </div>
 

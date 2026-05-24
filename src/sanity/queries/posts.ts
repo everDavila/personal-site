@@ -16,54 +16,37 @@ export type PostFull = PostSummary & {
   body: Record<Locale, unknown[]>
 }
 
-export async function getAllPosts(): Promise<PostSummary[]> {
+const SUMMARY_FIELDS = `
+  _id,
+  "slug": slug.current,
+  originalLanguage,
+  publishedAt,
+  title,
+  excerpt,
+  mainImage { asset->{ url }, alt },
+  categories[]->{ title, "slug": slug.current }
+`
+
+export async function getAllPosts(locale: Locale): Promise<PostSummary[]> {
   return client.fetch(
-    `*[_type == "post"] | order(publishedAt desc) {
-      _id,
-      "slug": slug.current,
-      originalLanguage,
-      publishedAt,
-      title,
-      excerpt,
-      mainImage { asset->{ url }, alt },
-      categories[]->{ title, "slug": slug.current }
-    }`,
-    {},
+    `*[_type == "post" && originalLanguage == $locale] | order(publishedAt desc) { ${SUMMARY_FIELDS} }`,
+    { locale },
     { next: { tags: ['post'] } }
   )
 }
 
 export async function getPostBySlug(slug: string): Promise<PostFull | null> {
   return client.fetch(
-    `*[_type == "post" && slug.current == $slug][0] {
-      _id,
-      "slug": slug.current,
-      originalLanguage,
-      publishedAt,
-      title,
-      excerpt,
-      mainImage { asset->{ url }, alt },
-      categories[]->{ title, "slug": slug.current },
-      body
-    }`,
+    `*[_type == "post" && slug.current == $slug][0] { ${SUMMARY_FIELDS}, body }`,
     { slug },
     { next: { tags: ['post'] } }
   )
 }
 
-export async function getLatestPosts(): Promise<PostSummary[]> {
+export async function getLatestPosts(locale: Locale): Promise<PostSummary[]> {
   return client.fetch(
-    `*[_type == "post"] | order(publishedAt desc) [0...3] {
-      _id,
-      "slug": slug.current,
-      originalLanguage,
-      publishedAt,
-      title,
-      excerpt,
-      mainImage { asset->{ url }, alt },
-      categories[]->{ title, "slug": slug.current }
-    }`,
-    {},
+    `*[_type == "post" && originalLanguage == $locale] | order(publishedAt desc) [0...3] { ${SUMMARY_FIELDS} }`,
+    { locale },
     { next: { tags: ['post'] } }
   )
 }
