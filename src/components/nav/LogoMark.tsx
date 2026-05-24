@@ -41,9 +41,9 @@ export function LogoMark() {
           opacity: phase === 2 ? 0 : 1,
         }}
       />
-      {/* Rectangle D — phase 2: dotted */}
+      {/* Closed arc D — phase 2: dotted (same curve, adds left bar) */}
       <path
-        d="M 4 4 L 28 4 L 28 36 L 4 36 L 4 4"
+        d="M 4 4 L 14 4 A 14 16 0 0 1 14 36 L 4 36 Z"
         stroke="currentColor"
         strokeWidth="2"
         strokeLinecap="square"
