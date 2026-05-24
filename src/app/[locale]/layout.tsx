@@ -23,7 +23,7 @@ export default async function LocaleLayout({
   return (
     <NextIntlClientProvider messages={messages}>
       <Nav />
-      <main style={{ flex: 1 }}>
+      <main style={{ flex: 1, paddingTop: '3.5rem' }}>
         {children}
       </main>
       <Footer />

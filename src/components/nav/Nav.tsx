@@ -25,7 +25,8 @@ export function Nav() {
   return (
     <header
       style={{
-        position: 'sticky',
+        position: 'fixed',
+        insetInline: 0,
         top: 0,
         zIndex: 50,
         backgroundColor: 'var(--color-bg)',
