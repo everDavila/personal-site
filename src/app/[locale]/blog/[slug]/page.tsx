@@ -6,6 +6,7 @@ import { localized } from '@/lib/i18n'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
+import { LOCALE_NAMES } from '@/lib/i18n'
 import type { PortableTextBlock } from '@portabletext/types'
 
 type Props = { params: Promise<{ slug: string }> }
@@ -30,6 +31,11 @@ export default async function PostPage({ params }: Props) {
   const excerpt = localized(post.excerpt, currentLocale, post.originalLanguage)
 
   const locales: Locale[] = ['es', 'en', 'pt', 'qu', 'zh']
+
+  // Locales that have actual content in this post (excluding current)
+  const availableLocales = locales.filter(
+    l => l !== currentLocale && post.title?.[l]
+  )
   const bodyBlocks = (post.body as Record<Locale, PortableTextBlock[]>)
   const bodyValue: PortableTextBlock[] | null =
     bodyBlocks[currentLocale] ??
@@ -94,6 +100,7 @@ export default async function PostPage({ params }: Props) {
             marginTop: '1.25rem',
             paddingTop: '1.25rem',
             borderTop: 'var(--border-width) solid var(--color-border)',
+            flexWrap: 'wrap',
           }}>
             <time style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)' }}>
               {date}
@@ -114,6 +121,40 @@ export default async function PostPage({ params }: Props) {
                     </span>
                   )
                 })}
+              </div>
+            )}
+
+            {/* Language switcher — only shows if other locales have content */}
+            {availableLocales.length > 0 && (
+              <div style={{
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.5rem',
+                marginLeft: 'auto',
+                flexWrap: 'wrap',
+              }}>
+                {availableLocales.map(l => (
+                  <Link
+                    key={l}
+                    href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }}
+                    locale={l}
+                    style={{
+                      fontSize: 'var(--text-label)',
+                      fontWeight: 500,
+                      color: 'var(--color-muted)',
+                      textDecoration: 'none',
+                      textTransform: 'uppercase',
+                      letterSpacing: 'var(--tracking-label)',
+                      border: 'var(--border-width) solid var(--color-border)',
+                      borderRadius: 'var(--radius)',
+                      padding: '0.2rem 0.5rem',
+                      transition: 'border-color var(--transition), color var(--transition)',
+                    }}
+                    className="link-accent"
+                  >
+                    {LOCALE_NAMES[l]}
+                  </Link>
+                ))}
               </div>
             )}
           </div>
