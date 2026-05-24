@@ -4,41 +4,47 @@
    TOKENS: MODO CLARO (default)
 ───────────────────────────────────────── */
 :root {
-  /* Colores de superficie */
-  --color-bg:       #FFFFFF;
-  --color-surface:  #F5F5F5;
-  --color-border:   #E5E5E5;
+  /* Surfaces */
+  --color-bg:       #F5F5F2;
+  --color-surface:  #EDECE9;
+  --color-border:   #D8D8D8;
 
-  /* Colores de texto */
-  --color-text:     #171717;
-  --color-muted:    #737373;
+  /* Text */
+  --color-text:     #111111;
+  --color-muted:    #6B6B6B;
 
-  /* Acento */
-  --color-accent:       #10B981;
-  --color-accent-hover: #059669;
+  /* Accent — petroleum blue */
+  --color-accent:       #2F4858;
+  --color-accent-hover: #1E3040;
 
-  /* Tipografía */
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
+  /* Fonts */
+  --font-sans:    var(--font-inter),        system-ui, sans-serif;
+  --font-display: var(--font-manrope),      system-ui, sans-serif;
+  --font-serif:   var(--font-source-serif), Georgia, serif;
+  --font-mono:    ui-monospace, 'Cascadia Code', monospace;
 
+  /* Type scale */
   --text-hero:    clamp(2.5rem, 5vw, 3.5rem);
-  --text-section: clamp(1.5rem, 3vw, 2rem);
-  --text-label:   0.75rem;
-  --text-body:    1rem;
-  --text-small:   0.875rem;
+  --text-section: clamp(1.375rem, 2.5vw, 1.75rem);
+  --text-label:   0.6875rem;
+  --text-body:    1.125rem;
+  --text-small:   0.9375rem;
 
-  --leading-body:  1.75;
+  --leading-body:   1.7;
+  --leading-tight:  1.1;
+  --tracking-body:  -0.01em;
+  --tracking-hero:  -0.04em;
   --tracking-label: 0.1em;
 
-  /* Espaciado */
-  --spacing-section:   clamp(3rem, 8vw, 6rem);
+  /* Layout */
+  --spacing-section:   clamp(4rem, 10vw, 7rem);
   --spacing-container: clamp(1.5rem, 5vw, 3rem);
   --max-width:         64rem;
-  --max-width-prose:   42rem;
+  --max-width-prose:   68ch;
 
   /* UI */
-  --radius:     0.25rem;
-  --transition: 150ms ease;
+  --radius:       0.25rem;
+  --transition:   400ms ease;
   --border-width: 1px;
 }
 
@@ -47,40 +53,47 @@
 ───────────────────────────────────────── */
 @media (prefers-color-scheme: dark) {
   :root {
-    --color-bg:       #0A0A0A;
-    --color-surface:  #141414;
-    --color-border:   #262626;
-    --color-text:     #FAFAFA;
-    --color-muted:    #525252;
+    --color-bg:       #0F0F0D;
+    --color-surface:  #181715;
+    --color-border:   #272522;
+    --color-text:     #F0EFEC;
+    --color-muted:    #7A7975;
+    --color-accent:       #5A8FA3;
+    --color-accent-hover: #79AABF;
   }
 }
 
 /* ─────────────────────────────────────────
    TOKENS: MODO OSCURO — toggle manual
-   Uso: <html data-theme="dark">
 ───────────────────────────────────────── */
 [data-theme="dark"] {
-  --color-bg:       #0A0A0A;
-  --color-surface:  #141414;
-  --color-border:   #262626;
-  --color-text:     #FAFAFA;
-  --color-muted:    #525252;
+  --color-bg:       #0F0F0D;
+  --color-surface:  #181715;
+  --color-border:   #272522;
+  --color-text:     #F0EFEC;
+  --color-muted:    #7A7975;
+  --color-accent:       #5A8FA3;
+  --color-accent-hover: #79AABF;
 }
 
 [data-theme="light"] {
-  --color-bg:       #FFFFFF;
-  --color-surface:  #F5F5F5;
-  --color-border:   #E5E5E5;
-  --color-text:     #171717;
-  --color-muted:    #737373;
+  --color-bg:       #F5F5F2;
+  --color-surface:  #EDECE9;
+  --color-border:   #D8D8D8;
+  --color-text:     #111111;
+  --color-muted:    #6B6B6B;
+  --color-accent:       #2F4858;
+  --color-accent-hover: #1E3040;
 }
 
 /* ─────────────────────────────────────────
    TAILWIND v4: FUENTES
 ───────────────────────────────────────── */
 @theme inline {
-  --font-sans: var(--font-geist-sans), system-ui, sans-serif;
-  --font-mono: var(--font-geist-mono), monospace;
+  --font-sans:    var(--font-inter),        system-ui, sans-serif;
+  --font-display: var(--font-manrope),      system-ui, sans-serif;
+  --font-serif:   var(--font-source-serif), Georgia, serif;
+  --font-mono:    ui-monospace, monospace;
 }
 
 /* ─────────────────────────────────────────
@@ -96,13 +109,10 @@ html {
   font-family: var(--font-sans);
   font-size: var(--text-body);
   line-height: var(--leading-body);
+  letter-spacing: var(--tracking-body);
   -webkit-font-smoothing: antialiased;
   background-color: var(--color-bg);
   color: var(--color-text);
-  overflow-x: hidden;
-}
-
-body {
   overflow-x: hidden;
 }
 
@@ -113,21 +123,37 @@ body {
   min-height: 100svh;
   display: flex;
   flex-direction: column;
+  overflow-x: hidden;
 }
 
 /* ─────────────────────────────────────────
    UTILIDADES TIPOGRÁFICAS
 ───────────────────────────────────────── */
-.text-hero    { font-size: var(--text-hero);    font-weight: 700; line-height: 1.1; }
-.text-section { font-size: var(--text-section); font-weight: 600; line-height: 1.2; }
-.text-label   {
+.text-hero {
+  font-family: var(--font-display);
+  font-size: var(--text-hero);
+  font-weight: 600;
+  line-height: var(--leading-tight);
+  letter-spacing: var(--tracking-hero);
+}
+
+.text-section {
+  font-family: var(--font-display);
+  font-size: var(--text-section);
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.02em;
+}
+
+.text-label {
   font-size: var(--text-label);
   font-weight: 500;
   text-transform: uppercase;
   letter-spacing: var(--tracking-label);
   color: var(--color-muted);
 }
-.text-muted   { color: var(--color-muted); font-size: var(--text-small); }
+
+.text-muted { color: var(--color-muted); font-size: var(--text-small); }
 
 /* ─────────────────────────────────────────
    UTILIDADES DE LAYOUT
@@ -222,7 +248,6 @@ body {
   padding-block: 2.5rem;
 }
 
-/* Full-width separator — same as section-level borders */
 .exp-feat-row::before {
   content: '';
   position: absolute;
@@ -233,7 +258,6 @@ body {
   background-color: var(--color-border);
 }
 
-/* First entry has no top separator — the section border above the label acts as one */
 .exp-feat-row:first-child::before {
   display: none;
 }
@@ -255,7 +279,6 @@ body {
   padding-block: 1rem;
 }
 
-/* Full-width separator — same technique */
 .exp-prev-row::before {
   content: '';
   position: absolute;
@@ -307,10 +330,6 @@ body {
     grid-template-columns: 3fr 2fr;
     gap: 4rem;
   }
-}
-
-.hero-content-only {
-  /* Single-column hero: max-width for readability */
 }
 
 .hero-cta-work:hover {
@@ -373,7 +392,7 @@ body {
   }
 }
 
-/* Green dot timeline indicator */
+/* Accent dot timeline indicator */
 .home-timeline-item {
   position: relative;
   padding-left: 1.25rem;
@@ -425,7 +444,7 @@ body {
 
 .writing-card:hover {
   background: var(--color-surface);
-  opacity: 1; /* override card-hover so we use bg instead */
+  opacity: 1;
 }
 
 /* ─────────────────────────────────────────
