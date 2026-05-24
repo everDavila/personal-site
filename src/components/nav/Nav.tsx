@@ -3,6 +3,7 @@ import { Link } from '@/i18n/navigation'
 import { ThemeToggle } from './ThemeToggle'
 import { LocaleSwitcher } from './LocaleSwitcher'
 import { MobileMenu } from './MobileMenu'
+import { LogoMark } from './LogoMark'
 
 const NAV_LINKS = [
   { href: '/about',      key: 'about' },
@@ -45,15 +46,15 @@ export function Nav() {
         <Link
           href="/"
           style={{
-            fontWeight: 600,
-            fontSize: 'var(--text-body)',
             color: 'var(--color-text)',
             textDecoration: 'none',
-            letterSpacing: '-0.01em',
             transition: 'color var(--transition)',
+            display: 'flex',
+            alignItems: 'center',
           }}
+          aria-label="ever dávila — inicio"
         >
-          ever davila
+          <LogoMark />
         </Link>
 
         {/* Desktop: links + controles */}
