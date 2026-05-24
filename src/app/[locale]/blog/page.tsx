@@ -2,6 +2,7 @@ import { getAllPosts } from '@/sanity/queries/posts'
 import { PostCard } from '@/components/blog/PostCard'
 import { getTranslations, getLocale } from 'next-intl/server'
 import type { Locale } from '@/lib/i18n'
+import { BLOG_FALLBACK } from '@/lib/i18n'
 
 export default async function BlogPage() {
   const [t, locale] = await Promise.all([
@@ -11,10 +12,11 @@ export default async function BlogPage() {
 
   const currentLocale = locale as Locale
 
-  // Show posts in current locale; fall back to English if none exist
+  // Show posts in current locale; fall back per BLOG_FALLBACK map if none exist
   let posts = await getAllPosts(currentLocale)
-  if (posts.length === 0 && currentLocale !== 'en') {
-    posts = await getAllPosts('en')
+  if (posts.length === 0) {
+    const fallback = BLOG_FALLBACK[currentLocale]
+    if (fallback !== currentLocale) posts = await getAllPosts(fallback)
   }
 
   return (

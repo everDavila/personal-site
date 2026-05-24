@@ -30,6 +30,15 @@ export function localized(
   return { value: '', isFallback: false, fallbackLocale: null }
 }
 
+/** Locale to use when the current locale has no posts. Quechua falls back to Spanish. */
+export const BLOG_FALLBACK: Record<Locale, Locale> = {
+  es: 'es',
+  en: 'en',
+  pt: 'pt',
+  qu: 'es',
+  zh: 'en',
+}
+
 export const LOCALE_NAMES: Record<Locale, string> = {
   es: 'Español',
   en: 'English',

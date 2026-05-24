@@ -9,6 +9,7 @@ import { getFeaturedProjects } from '@/sanity/queries/projects'
 import { getExperience } from '@/sanity/queries/experience'
 import { getLatestPosts } from '@/sanity/queries/posts'
 import type { Locale } from '@/lib/i18n'
+import { BLOG_FALLBACK } from '@/lib/i18n'
 
 export default async function Home() {
   const locale = await getLocale() as Locale
@@ -20,8 +21,9 @@ export default async function Home() {
     getLatestPosts(locale),
   ])
 
-  // Fall back to English latest posts if current locale has none
-  const displayPosts = posts.length > 0 ? posts : await getLatestPosts('en')
+  // Fall back per BLOG_FALLBACK (qu → es, zh → en) if current locale has no posts
+  const fallback = BLOG_FALLBACK[locale]
+  const displayPosts = posts.length > 0 ? posts : await getLatestPosts(fallback)
   const philosophy = settings?.philosophy?.[locale]
     || settings?.philosophy?.es
     || null
