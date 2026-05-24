@@ -58,7 +58,11 @@ export async function SelectedWork({ projects }: Props) {
                   />
                 </div>
               ) : (
-                <div className="project-card-image" style={{ background: 'var(--color-surface)' }} />
+                <div className="project-card-image" style={{
+                  background: 'var(--color-surface)',
+                  backgroundImage: 'radial-gradient(var(--color-border) 1px, transparent 1px)',
+                  backgroundSize: '16px 16px',
+                }} />
               )}
 
               {/* Meta row: year + arrow */}

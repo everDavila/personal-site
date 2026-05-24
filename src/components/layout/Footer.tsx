@@ -70,7 +70,6 @@ export async function Footer() {
               { label: tn('experience'), pathname: '/experience' },
               { label: tn('blog'),       pathname: '/blog'       },
               { label: tn('about'),      pathname: '/about'      },
-              { label: tn('playground'), pathname: '/playground' },
             ] as { label: string; pathname: string }[]).map(({ label, pathname }) => (
               <Link
                 key={pathname}
@@ -88,6 +87,9 @@ export async function Footer() {
         <div>
           <p className="text-label" style={{ marginBottom: '0.75rem' }}>{lbl.resources}</p>
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            <Link href={{ pathname: '/playground' }} className="link-accent" style={LINK_STYLE}>
+              {tn('playground')}
+            </Link>
             <Link href={{ pathname: '/contact' }} className="link-accent" style={LINK_STYLE}>
               {tn('contact')}
             </Link>

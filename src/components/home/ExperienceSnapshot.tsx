@@ -48,7 +48,7 @@ export async function ExperienceSnapshot({ workEntries, eduEntries, cvUrl }: Pro
                   </p>
                   <h3 style={{
                     fontSize: 'var(--text-body)',
-                    fontWeight: 700,
+                    fontWeight: 600,
                     color: 'var(--color-text)',
                     margin: '0 0 0.2rem',
                   }}>

@@ -64,17 +64,21 @@ export async function Hero({ settings, cvUrl }: Props) {
             {sub}
           </p>
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '2rem', flexWrap: 'wrap' }}>
+          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
             <Link
               href={{ pathname: '/work' }}
               style={{
-                color: 'var(--color-accent)',
+                display: 'inline-flex',
+                alignItems: 'center',
+                gap: '0.375rem',
+                color: 'var(--color-bg)',
+                background: 'var(--color-accent)',
                 fontWeight: 500,
                 fontSize: 'var(--text-small)',
                 textDecoration: 'none',
-                borderBottom: '1px solid currentColor',
-                paddingBottom: '2px',
-                transition: 'opacity var(--transition)',
+                padding: '0.5rem 1.125rem',
+                borderRadius: 'var(--radius)',
+                transition: 'background var(--transition)',
               }}
               className="hero-cta-work"
             >

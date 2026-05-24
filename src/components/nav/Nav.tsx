@@ -4,14 +4,13 @@ import { ThemeToggle } from './ThemeToggle'
 import { LocaleSwitcher } from './LocaleSwitcher'
 import { MobileMenu } from './MobileMenu'
 import { LogoMark } from './LogoMark'
+import { NavLink } from './NavLink'
 
 const NAV_LINKS = [
-  { href: '/about',      key: 'about' },
   { href: '/work',       key: 'work' },
   { href: '/experience', key: 'experience' },
   { href: '/blog',       key: 'blog' },
   { href: '/contact',    key: 'contact' },
-  { href: '/playground', key: 'playground' },
 ] as const
 
 export function Nav() {
@@ -61,14 +60,7 @@ export function Nav() {
         {/* Desktop: links + controles */}
         <div className="nav-desktop" style={{ alignItems: 'center', gap: '1.5rem' }}>
           {links.map(({ href, label }) => (
-            <Link
-              key={href}
-              href={href}
-              className="link-accent"
-              style={{ fontSize: 'var(--text-small)', fontWeight: 500 }}
-            >
-              {label}
-            </Link>
+            <NavLink key={href} href={{ pathname: href }} label={label} />
           ))}
 
           <div style={{
