@@ -21,9 +21,11 @@ export default async function Home() {
     getLatestPosts(locale),
   ])
 
-  // Fall back per BLOG_FALLBACK (qu → es, zh → en) if current locale has no posts
-  const fallback = BLOG_FALLBACK[locale]
-  const displayPosts = posts.length > 0 ? posts : await getLatestPosts(fallback)
+  // Fall back per BLOG_FALLBACK (qu → es, zh → en) if current locale has no posts.
+  // Also track which locale to render the post content in.
+  const fallbackLocale = BLOG_FALLBACK[locale]
+  const displayPosts      = posts.length > 0 ? posts : await getLatestPosts(fallbackLocale)
+  const postsDisplayLocale: Locale = posts.length > 0 ? locale : fallbackLocale
   const philosophy = settings?.philosophy?.[locale]
     || settings?.philosophy?.es
     || null
@@ -38,7 +40,7 @@ export default async function Home() {
         eduEntries={experience?.education ?? []}
         cvUrl={experience?.cvUrl ?? settings?.cvUrl}
       />
-      <Writing posts={displayPosts} />
+      <Writing posts={displayPosts} displayLocale={postsDisplayLocale} />
     </>
   )
 }

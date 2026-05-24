@@ -12,11 +12,16 @@ export default async function BlogPage() {
 
   const currentLocale = locale as Locale
 
-  // Show posts in current locale; fall back per BLOG_FALLBACK map if none exist
+  // Show posts in current locale; fall back per BLOG_FALLBACK map if none exist.
+  // displayLocale tracks which locale to render content in (may differ from currentLocale).
   let posts = await getAllPosts(currentLocale)
+  let displayLocale = currentLocale
   if (posts.length === 0) {
     const fallback = BLOG_FALLBACK[currentLocale]
-    if (fallback !== currentLocale) posts = await getAllPosts(fallback)
+    if (fallback !== currentLocale) {
+      posts = await getAllPosts(fallback)
+      displayLocale = fallback
+    }
   }
 
   return (
@@ -39,7 +44,7 @@ export default async function BlogPage() {
 
       <div>
         {posts.map(post => (
-          <PostCard key={post._id} post={post} locale={currentLocale} />
+          <PostCard key={post._id} post={post} locale={displayLocale} />
         ))}
       </div>
 

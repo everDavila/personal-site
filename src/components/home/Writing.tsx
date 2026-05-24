@@ -4,12 +4,12 @@ import { localized } from '@/lib/i18n'
 import type { PostSummary } from '@/sanity/queries/posts'
 import type { Locale } from '@/lib/i18n'
 
-type Props = { posts: PostSummary[] }
+type Props = { posts: PostSummary[]; displayLocale?: Locale }
 
-export async function Writing({ posts }: Props) {
+export async function Writing({ posts, displayLocale }: Props) {
   if (!posts.length) return null
 
-  const locale = await getLocale() as Locale
+  const locale = (displayLocale ?? await getLocale()) as Locale
   const tn = await getTranslations('nav')
   const tb = await getTranslations('blog')
 
