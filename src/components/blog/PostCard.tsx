@@ -64,10 +64,10 @@ export function PostCard({ post, locale }: Props) {
 
           {post.categories?.length > 0 && (
             <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.25rem' }}>
-              {post.categories.map(cat => {
+              {post.categories.map((cat, i) => {
                 const catTitle = localized(cat.title, locale, post.originalLanguage)
                 return (
-                  <span key={cat.slug} style={{
+                  <span key={`${post._id}-${cat.slug ?? i}`} style={{
                     fontSize: '0.7rem',
                     fontWeight: 500,
                     color: 'var(--color-accent)',
