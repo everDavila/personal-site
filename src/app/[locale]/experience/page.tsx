@@ -1,6 +1,5 @@
 import { getExperience } from '@/sanity/queries/experience'
 import { getLocale, getTranslations } from 'next-intl/server'
-import { Link } from '@/i18n/navigation'
 import { localized } from '@/lib/i18n'
 import type { Locale } from '@/lib/i18n'
 import type { WorkEntry, EducationEntry } from '@/sanity/queries/experience'
@@ -169,7 +168,6 @@ export default async function ExperiencePage() {
     getLocale(),
     getTranslations('experience'),
   ])
-  const tn = await getTranslations('nav')
 
   const currentLocale = locale as Locale
   const work     = data?.workExperience ?? []
@@ -182,53 +180,36 @@ export default async function ExperiencePage() {
 
   return (
     <>
-      {/* ── Hero ── */}
+      {/* ── Header ── */}
       <section
         className="container"
         style={{
-          paddingBlock: 'clamp(4rem, 10vw, 7rem)',
+          paddingTop: 'var(--spacing-section)',
+          paddingBottom: '2.5rem',
           borderBottom: 'var(--border-width) solid var(--color-border)',
         }}
       >
         <h1 style={{
-          fontSize: 'var(--text-hero)',
+          fontSize: 'var(--text-section)',
           fontFamily: 'var(--font-display)',
-          fontWeight: 700,
-          letterSpacing: '-0.02em',
-          lineHeight: 1.1,
+          fontWeight: 600,
           color: 'var(--color-text)',
-          margin: '0 0 1.5rem',
-          maxWidth: '16ch',
+          marginBottom: '0.25rem',
         }}>
           {t('title')}
         </h1>
 
         {intro && (
           <p style={{
-            fontSize: 'var(--text-body)',
+            fontSize: 'var(--text-small)',
             color: 'var(--color-muted)',
-            lineHeight: 1.7,
-            margin: '0 0 2rem',
-            maxWidth: '44ch',
+            lineHeight: 1.6,
+            margin: 0,
+            maxWidth: '52ch',
           }}>
             {intro}
           </p>
         )}
-
-        <Link
-          href={{ pathname: '/work' }}
-          style={{
-            color: 'var(--color-accent)',
-            fontWeight: 500,
-            fontSize: 'var(--text-small)',
-            textDecoration: 'none',
-            borderBottom: '1px solid currentColor',
-            paddingBottom: '2px',
-          }}
-          className="hero-cta-work"
-        >
-          {tn('work')} →
-        </Link>
       </section>
 
       {/* ── Featured experience ── */}
