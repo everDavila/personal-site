@@ -29,7 +29,7 @@ const SUMMARY_FIELDS = `
 
 export async function getAllPosts(locale: Locale): Promise<PostSummary[]> {
   return client.fetch(
-    `*[_type == "post" && originalLanguage == $locale] | order(publishedAt desc) { ${SUMMARY_FIELDS} }`,
+    `*[_type == "post" && (defined(title[$locale]) || originalLanguage == $locale)] | order(publishedAt desc) { ${SUMMARY_FIELDS} }`,
     { locale },
     { next: { tags: ['post'] } }
   )
@@ -45,7 +45,7 @@ export async function getPostBySlug(slug: string): Promise<PostFull | null> {
 
 export async function getLatestPosts(locale: Locale): Promise<PostSummary[]> {
   return client.fetch(
-    `*[_type == "post" && originalLanguage == $locale] | order(publishedAt desc) [0...3] { ${SUMMARY_FIELDS} }`,
+    `*[_type == "post" && (defined(title[$locale]) || originalLanguage == $locale)] | order(publishedAt desc) [0...3] { ${SUMMARY_FIELDS} }`,
     { locale },
     { next: { tags: ['post'] } }
   )
