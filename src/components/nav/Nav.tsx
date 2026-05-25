@@ -1,5 +1,6 @@
 import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
+import type { ComponentProps } from 'react'
 import { ThemeToggle } from './ThemeToggle'
 import { LocaleSwitcher } from './LocaleSwitcher'
 import { MobileMenu } from './MobileMenu'
@@ -21,7 +22,7 @@ export async function Nav() {
     { href: '/experience', label: lbl(nav?.experience, locale, t('experience')) },
     { href: '/blog',       label: lbl(nav?.blog,       locale, t('blog'))       },
     { href: '/contact',    label: lbl(nav?.contact,    locale, t('contact'))    },
-  ] as const
+  ]
 
   return (
     <header
@@ -62,7 +63,7 @@ export async function Nav() {
         {/* Desktop: links + controles */}
         <div className="nav-desktop" style={{ alignItems: 'center', gap: '1.5rem' }}>
           {links.map(({ href, label }) => (
-            <NavLink key={href} href={{ pathname: href }} label={label} />
+            <NavLink key={href} href={{ pathname: href } as ComponentProps<typeof Link>['href']} label={label} />
           ))}
 
           <div style={{
