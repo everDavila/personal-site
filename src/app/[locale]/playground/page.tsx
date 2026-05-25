@@ -3,6 +3,7 @@ import { getAllPlaygroundItems } from '@/sanity/queries/playground'
 import { PlaygroundClient } from '@/components/playground/PlaygroundClient'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 
 export const dynamic = 'force-dynamic'
 
@@ -10,19 +11,21 @@ const CATEGORIES = ['interfaces', 'motion', 'systems', 'ai', 'experiments', 'too
 
 export default async function PlaygroundPage() {
   const locale = await getLocale() as Locale
-  const [t, items, subtitle] = await Promise.all([
+  const [t, items, subtitle, settings] = await Promise.all([
     getTranslations('playground'),
     getAllPlaygroundItems(),
     getPageSubtitle('playground', locale),
+    getSiteSettings(),
   ])
 
-  const currentLocale = locale
+  const pg = settings?.labels?.playground
+  const title = lbl(pg?.title, locale, t('title'))
 
   const translations = {
-    filter_all:  t('filter_all'),
-    filter_label: t('filter_label'),
-    stats_label: t('stats_label'),
-    empty:       t('empty'),
+    filter_all:   lbl(pg?.filterAll,   locale, t('filter_all')),
+    filter_label: lbl(pg?.filterLabel, locale, t('filter_label')),
+    stats_label:  lbl(pg?.statsLabel,  locale, t('stats_label')),
+    empty:        lbl(pg?.empty,       locale, t('empty')),
     status: {
       en_proceso: t('status.en_proceso'),
       prototipo:  t('status.prototipo'),
@@ -34,7 +37,6 @@ export default async function PlaygroundPage() {
     ),
   }
 
-  // Only show categories that have at least one item
   const activeCategories = CATEGORIES.filter(c => items.some(i => i.category === c))
 
   return (
@@ -46,7 +48,7 @@ export default async function PlaygroundPage() {
         color: 'var(--color-text)',
         marginBottom: '0.25rem',
       }}>
-        {t('title')}
+        {title}
       </h1>
       {subtitle && (
         <p style={{
@@ -62,7 +64,7 @@ export default async function PlaygroundPage() {
 
       <PlaygroundClient
         items={items}
-        locale={currentLocale}
+        locale={locale}
         t={translations}
         categories={activeCategories}
       />

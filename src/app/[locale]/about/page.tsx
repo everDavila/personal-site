@@ -1,4 +1,4 @@
-import { getSiteSettings } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { localized } from '@/lib/i18n'
 import { Link } from '@/i18n/navigation'
@@ -15,8 +15,12 @@ export default async function AboutPage() {
     getPageSubtitle('about', locale),
   ])
 
-  const currentLocale = locale
-  const bio = settings?.about ? localized(settings.about, currentLocale) : null
+  const a = settings?.labels?.about
+  const title         = lbl(a?.title,         locale, t('title'))
+  const connect       = lbl(a?.connect,       locale, t('connect'))
+  const seeExperience = lbl(a?.seeExperience, locale, t('see_experience'))
+
+  const bio    = settings?.about ? localized(settings.about, locale) : null
   const social = settings?.social
 
   return (
@@ -28,7 +32,7 @@ export default async function AboutPage() {
         color: 'var(--color-text)',
         marginBottom: '0.25rem',
       }}>
-        {t('title')}
+        {title}
       </h1>
       {subtitle && (
         <p style={{
@@ -57,7 +61,7 @@ export default async function AboutPage() {
       {social && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
           <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', marginBottom: '0.25rem' }}>
-            {t('connect')}
+            {connect}
           </p>
           {social.email && (
             <a href={`mailto:${social.email}`} className="link-accent" style={{ fontSize: 'var(--text-body)' }}>
@@ -74,17 +78,12 @@ export default async function AboutPage() {
               GitHub
             </a>
           )}
-          {social.twitter && (
-            <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="link-accent" style={{ fontSize: 'var(--text-body)' }}>
-              X / Twitter
-            </a>
-          )}
         </div>
       )}
 
       <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: 'var(--border-width) solid var(--color-border)' }}>
         <Link href={{ pathname: '/experience' }} className="link-accent" style={{ fontSize: 'var(--text-small)' }}>
-          {t('see_experience')} →
+          {seeExperience} →
         </Link>
       </div>
     </main>

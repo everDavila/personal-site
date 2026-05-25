@@ -1,4 +1,4 @@
-import { getSiteSettings } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
 import type { Locale } from '@/lib/i18n'
@@ -13,6 +13,10 @@ export default async function ContactPage() {
     getPageSubtitle('contact', locale),
   ])
 
+  const c = settings?.labels?.contact
+  const title      = lbl(c?.title,      locale, t('title'))
+  const emailLabel = lbl(c?.emailLabel, locale, t('email_label'))
+
   const social = settings?.social
 
   return (
@@ -24,7 +28,7 @@ export default async function ContactPage() {
         color: 'var(--color-text)',
         marginBottom: '0.75rem',
       }}>
-        {t('title')}
+        {title}
       </h1>
       {subtitle && (
         <p style={{
@@ -40,7 +44,7 @@ export default async function ContactPage() {
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         {social?.email && (
-          <ContactRow label={t('email_label')}>
+          <ContactRow label={emailLabel}>
             <a href={`mailto:${social.email}`} className="link-accent" style={{ fontSize: 'var(--text-body)' }}>
               {social.email}
             </a>
@@ -57,13 +61,6 @@ export default async function ContactPage() {
           <ContactRow label="GitHub">
             <a href={social.github} target="_blank" rel="noopener noreferrer" className="link-accent" style={{ fontSize: 'var(--text-body)' }}>
               {social.github.replace('https://', '')}
-            </a>
-          </ContactRow>
-        )}
-        {social?.twitter && (
-          <ContactRow label="X / Twitter">
-            <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="link-accent" style={{ fontSize: 'var(--text-body)' }}>
-              {social.twitter.replace('https://', '')}
             </a>
           </ContactRow>
         )}

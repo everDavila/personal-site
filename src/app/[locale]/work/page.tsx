@@ -4,18 +4,22 @@ import { localized } from '@/lib/i18n'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 
 export const dynamic = 'force-dynamic'
 
 export default async function WorkPage() {
   const locale = await getLocale() as Locale
-  const [projects, t, subtitle] = await Promise.all([
+  const [projects, t, subtitle, settings] = await Promise.all([
     getAllProjects(),
     getTranslations('work'),
     getPageSubtitle('work', locale),
+    getSiteSettings(),
   ])
 
-  const currentLocale = locale
+  const w = settings?.labels?.work
+  const title = lbl(w?.title, locale, t('title'))
+  const empty = lbl(w?.empty, locale, t('empty'))
 
   return (
     <main className="container section">
@@ -26,7 +30,7 @@ export default async function WorkPage() {
         color: 'var(--color-text)',
         marginBottom: '0.25rem',
       }}>
-        {t('title')}
+        {title}
       </h1>
       {subtitle && (
         <p style={{
@@ -41,12 +45,12 @@ export default async function WorkPage() {
       )}
 
       {projects.length === 0 ? (
-        <p style={{ color: 'var(--color-muted)' }}>{t('empty')}</p>
+        <p style={{ color: 'var(--color-muted)' }}>{empty}</p>
       ) : (
         <div style={{ display: 'flex', flexDirection: 'column' }}>
           {projects.map((project, i) => {
-            const title = localized(project.title, currentLocale)
-            const summary = localized(project.summary, currentLocale)
+            const projectTitle = localized(project.title, locale)
+            const summary = localized(project.summary, locale)
             return (
               <Link
                 key={project._id}
@@ -72,7 +76,7 @@ export default async function WorkPage() {
                       color: 'var(--color-text)',
                       margin: 0,
                     }}>
-                      {title.value || project.client}
+                      {projectTitle.value || project.client}
                     </h2>
                     <span style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)' }}>
                       {project.client}

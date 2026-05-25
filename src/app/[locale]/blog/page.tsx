@@ -4,25 +4,27 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import type { Locale } from '@/lib/i18n'
 import { BLOG_FALLBACK } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 
 export const dynamic = 'force-dynamic'
 
 export default async function BlogPage() {
   const locale = await getLocale() as Locale
-  const [t, subtitle] = await Promise.all([
+  const [t, subtitle, settings] = await Promise.all([
     getTranslations('blog'),
     getPageSubtitle('blog', locale),
+    getSiteSettings(),
   ])
 
-  const currentLocale = locale
+  const b = settings?.labels?.blog
+  const title    = lbl(b?.title,  locale, t('title'))
+  const emptyMsg = lbl(b?.empty,  locale, t('empty'))
 
-  // Show posts in current locale; fall back per BLOG_FALLBACK map if none exist.
-  // displayLocale tracks which locale to render content in (may differ from currentLocale).
-  let posts = await getAllPosts(currentLocale)
-  let displayLocale = currentLocale
+  let posts = await getAllPosts(locale)
+  let displayLocale = locale
   if (posts.length === 0) {
-    const fallback = BLOG_FALLBACK[currentLocale]
-    if (fallback !== currentLocale) {
+    const fallback = BLOG_FALLBACK[locale]
+    if (fallback !== locale) {
       posts = await getAllPosts(fallback)
       displayLocale = fallback
     }
@@ -37,7 +39,7 @@ export default async function BlogPage() {
         color: 'var(--color-text)',
         marginBottom: '0.25rem',
       }}>
-        {t('title')}
+        {title}
       </h1>
       {subtitle && (
         <p style={{
@@ -66,7 +68,7 @@ export default async function BlogPage() {
 
       {posts.length === 0 && (
         <p style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)' }}>
-          {t('empty')}
+          {emptyMsg}
         </p>
       )}
     </main>

@@ -1,6 +1,6 @@
 import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
-import { getSiteSettings } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 import type { Locale } from '@/lib/i18n'
 
 function LogoStatic() {
@@ -35,15 +35,25 @@ const LABELS: Record<Locale, { nav: string; resources: string; follow: string }>
 }
 
 export async function Footer() {
-  const settings = await getSiteSettings()
-  const locale   = await getLocale() as Locale
-  const tn       = await getTranslations('nav')
+  const [settings, t, locale] = await Promise.all([
+    getSiteSettings(),
+    getTranslations('nav'),
+    getLocale() as Promise<Locale>,
+  ])
 
+  const nav  = settings?.labels?.nav
   const text   = settings?.footerText?.[locale] || settings?.footerText?.es || null
   const social = settings?.social
   const cvUrl  = settings?.cvUrl
   const year   = new Date().getFullYear()
-  const lbl    = LABELS[locale]
+  const lbl2   = LABELS[locale]
+
+  const navLinks = [
+    { label: lbl(nav?.work,       locale, t('work')),       pathname: '/work'       },
+    { label: lbl(nav?.experience, locale, t('experience')), pathname: '/experience' },
+    { label: lbl(nav?.blog,       locale, t('blog')),       pathname: '/blog'       },
+    { label: lbl(nav?.about,      locale, t('about')),      pathname: '/about'      },
+  ]
 
   return (
     <footer style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}>
@@ -63,14 +73,9 @@ export async function Footer() {
 
         {/* Col 2 — Navigation */}
         <div>
-          <p className="text-label" style={{ marginBottom: '0.75rem' }}>{lbl.nav}</p>
+          <p className="text-label" style={{ marginBottom: '0.75rem' }}>{lbl2.nav}</p>
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-            {([
-              { label: tn('work'),       pathname: '/work'       },
-              { label: tn('experience'), pathname: '/experience' },
-              { label: tn('blog'),       pathname: '/blog'       },
-              { label: tn('about'),      pathname: '/about'      },
-            ] as { label: string; pathname: string }[]).map(({ label, pathname }) => (
+            {navLinks.map(({ label, pathname }) => (
               <Link
                 key={pathname}
                 href={{ pathname } as Parameters<typeof Link>[0]['href']}
@@ -85,13 +90,13 @@ export async function Footer() {
 
         {/* Col 3 — Resources */}
         <div>
-          <p className="text-label" style={{ marginBottom: '0.75rem' }}>{lbl.resources}</p>
+          <p className="text-label" style={{ marginBottom: '0.75rem' }}>{lbl2.resources}</p>
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             <Link href={{ pathname: '/playground' }} className="link-accent" style={LINK_STYLE}>
-              {tn('playground')}
+              {lbl(nav?.playground, locale, t('playground'))}
             </Link>
             <Link href={{ pathname: '/contact' }} className="link-accent" style={LINK_STYLE}>
-              {tn('contact')}
+              {lbl(nav?.contact, locale, t('contact'))}
             </Link>
             {cvUrl && (
               <a href={cvUrl} target="_blank" rel="noopener noreferrer" className="link-accent" style={LINK_STYLE}>
@@ -104,7 +109,7 @@ export async function Footer() {
         {/* Col 4 — Social */}
         {social && (
           <div>
-            <p className="text-label" style={{ marginBottom: '0.75rem' }}>{lbl.follow}</p>
+            <p className="text-label" style={{ marginBottom: '0.75rem' }}>{lbl2.follow}</p>
             <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
               {social.email && (
                 <a href={`mailto:${social.email}`} className="footer-social-icon" aria-label="Email">
@@ -128,13 +133,6 @@ export async function Footer() {
                 <a href={social.github} target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="GitHub">
                   <svg width="12" height="12" viewBox="0 0 13 13" fill="currentColor">
                     <path d="M6.5 1A5.5 5.5 0 001 6.5c0 2.43 1.57 4.49 3.76 5.22.27.05.37-.12.37-.26v-.95c-1.52.33-1.84-.74-1.84-.74-.25-.63-.61-.8-.61-.8-.5-.34.04-.33.04-.33.55.04.84.57.84.57.49.84 1.28.6 1.59.46.05-.36.19-.6.35-.74-1.22-.14-2.5-.61-2.5-2.72 0-.6.21-1.09.57-1.48-.06-.14-.25-.7.05-1.46 0 0 .47-.15 1.53.57.44-.12.92-.18 1.39-.18.47 0 .95.06 1.39.18 1.06-.72 1.53-.57 1.53-.57.3.76.11 1.32.05 1.46.36.39.57.88.57 1.48 0 2.12-1.29 2.58-2.52 2.72.2.17.37.51.37 1.03v1.53c0 .14.1.31.38.26A5.5 5.5 0 0012 6.5 5.5 5.5 0 006.5 1z"/>
-                  </svg>
-                </a>
-              )}
-              {social.twitter && (
-                <a href={social.twitter} target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="Twitter / X">
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="currentColor">
-                    <path d="M10.12 1.5h1.84L8.02 5.86 12.5 11.5H9.06L6.3 7.96 3.13 11.5H1.28l4.18-4.62L.5 1.5h3.54l2.5 3.25L10.12 1.5zm-.65 9h1.02L3.58 2.54H2.47l7 7.96z"/>
                   </svg>
                 </a>
               )}

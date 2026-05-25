@@ -1,25 +1,27 @@
-import { useTranslations } from 'next-intl'
+import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import { ThemeToggle } from './ThemeToggle'
 import { LocaleSwitcher } from './LocaleSwitcher'
 import { MobileMenu } from './MobileMenu'
 import { LogoMark } from './LogoMark'
 import { NavLink } from './NavLink'
+import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
+import type { Locale } from '@/lib/i18n'
 
-const NAV_LINKS = [
-  { href: '/work',       key: 'work' },
-  { href: '/experience', key: 'experience' },
-  { href: '/blog',       key: 'blog' },
-  { href: '/contact',    key: 'contact' },
-] as const
+export async function Nav() {
+  const locale = await getLocale() as Locale
+  const [t, settings] = await Promise.all([
+    getTranslations('nav'),
+    getSiteSettings(),
+  ])
 
-export function Nav() {
-  const t = useTranslations('nav')
-
-  const links = NAV_LINKS.map(({ href, key }) => ({
-    href,
-    label: t(key),
-  }))
+  const nav = settings?.labels?.nav
+  const links = [
+    { href: '/work',       label: lbl(nav?.work,       locale, t('work'))       },
+    { href: '/experience', label: lbl(nav?.experience, locale, t('experience')) },
+    { href: '/blog',       label: lbl(nav?.blog,       locale, t('blog'))       },
+    { href: '/contact',    label: lbl(nav?.contact,    locale, t('contact'))    },
+  ] as const
 
   return (
     <header

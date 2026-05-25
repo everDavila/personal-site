@@ -1,42 +1,37 @@
-import { getTranslations, getLocale } from 'next-intl/server'
+import { getLocale } from 'next-intl/server'
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { ProjectSummary } from '@/sanity/queries/projects'
 import type { Locale } from '@/lib/i18n'
+import type { SiteSettings } from '@/sanity/queries/siteSettings'
+import { lbl } from '@/sanity/queries/siteSettings'
 
-type Props = { projects: ProjectSummary[] }
+type Props = { projects: ProjectSummary[]; settings?: SiteSettings | null }
 
-export async function SelectedWork({ projects }: Props) {
+export async function SelectedWork({ projects, settings }: Props) {
   if (!projects.length) return null
 
   const locale = await getLocale() as Locale
-  const t = await getTranslations('home')
+  const t  = await getTranslations('home')
   const tw = await getTranslations('work')
+
+  const h  = settings?.labels?.home
+  const w  = settings?.labels?.work
+  const sectionLabel = lbl(h?.projectsLabel, locale, t('projects_label'))
+  const workTitle    = lbl(w?.title,         locale, tw('title'))
 
   return (
     <section
       className="container section"
       style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
     >
-      {/* Section header */}
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'baseline',
-        marginBottom: '2.5rem',
-        gap: '1rem',
-        flexWrap: 'wrap',
-      }}>
-        <p className="text-label" style={{ margin: 0 }}>{t('projects_label')}</p>
-        <Link
-          href={{ pathname: '/work' }}
-          className="link-accent"
-          style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', textDecoration: 'none' }}
-        >
-          {tw('title')} →
+      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '2.5rem', gap: '1rem', flexWrap: 'wrap' }}>
+        <p className="text-label" style={{ margin: 0 }}>{sectionLabel}</p>
+        <Link href={{ pathname: '/work' }} className="link-accent" style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', textDecoration: 'none' }}>
+          {workTitle} →
         </Link>
       </div>
 
-      {/* 3-col project grid */}
       <div className="projects-grid">
         {projects.map(project => {
           const title   = project.title?.[locale]   || project.title?.es   || project.title?.en   || ''
@@ -48,79 +43,35 @@ export async function SelectedWork({ projects }: Props) {
               href={{ pathname: '/work/[slug]', params: { slug: project.slug } }}
               className="project-card card-hover"
             >
-              {/* Image */}
               {project.mainImage?.asset?.url ? (
                 <div className="project-card-image">
-                  <img
-                    src={project.mainImage.asset.url}
-                    alt={project.mainImage.alt?.[locale] || title}
-                    style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-                  />
+                  <img src={project.mainImage.asset.url} alt={project.mainImage.alt?.[locale] || title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
                 </div>
               ) : (
-                <div className="project-card-image" style={{
-                  background: 'var(--color-surface)',
-                  backgroundImage: 'radial-gradient(var(--color-border) 1px, transparent 1px)',
-                  backgroundSize: '16px 16px',
-                }} />
+                <div className="project-card-image" style={{ background: 'var(--color-surface)', backgroundImage: 'radial-gradient(var(--color-border) 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
               )}
 
-              {/* Meta row: year + arrow */}
-              <div style={{
-                display: 'flex',
-                justifyContent: 'space-between',
-                alignItems: 'baseline',
-                marginBottom: '0.5rem',
-              }}>
-                <span style={{
-                  fontSize: 'var(--text-label)',
-                  fontWeight: 500,
-                  color: 'var(--color-muted)',
-                  textTransform: 'uppercase',
-                  letterSpacing: 'var(--tracking-label)',
-                }}>
+              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.5rem' }}>
+                <span style={{ fontSize: 'var(--text-label)', fontWeight: 500, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-label)' }}>
                   {project.year || ''}
                 </span>
                 <span style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)' }}>↗</span>
               </div>
 
-              {/* Title */}
-              <h3 style={{
-                fontSize: 'var(--text-body)',
-                fontWeight: 600,
-                color: 'var(--color-text)',
-                margin: '0 0 0.375rem',
-                lineHeight: 1.3,
-              }}>
+              <h3 style={{ fontSize: 'var(--text-body)', fontWeight: 600, color: 'var(--color-text)', margin: '0 0 0.375rem', lineHeight: 1.3 }}>
                 {title}
               </h3>
 
-              {/* Description */}
               {summary && (
-                <p style={{
-                  fontSize: 'var(--text-small)',
-                  color: 'var(--color-muted)',
-                  lineHeight: 1.6,
-                  margin: '0 0 0.75rem',
-                  display: '-webkit-box',
-                  WebkitLineClamp: 2,
-                  WebkitBoxOrient: 'vertical',
-                  overflow: 'hidden',
-                }}>
+                <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', lineHeight: 1.6, margin: '0 0 0.75rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
                   {summary}
                 </p>
               )}
 
-              {/* Tags */}
               {project.tags?.length > 0 && (
                 <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
                   {project.tags.slice(0, 3).map(tag => (
-                    <span key={tag} style={{
-                      fontSize: 'var(--text-label)',
-                      color: 'var(--color-muted)',
-                      textTransform: 'uppercase',
-                      letterSpacing: 'var(--tracking-label)',
-                    }}>
+                    <span key={tag} style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-label)' }}>
                       {tag}
                     </span>
                   ))}

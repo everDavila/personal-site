@@ -25,10 +25,8 @@ export default async function Home() {
     getPageSubtitleData('home', locale),
   ])
 
-  // Fall back per BLOG_FALLBACK (qu → es, zh → en) if current locale has no posts.
-  // Also track which locale to render the post content in.
   const fallbackLocale = BLOG_FALLBACK[locale]
-  const displayPosts      = posts.length > 0 ? posts : await getLatestPosts(fallbackLocale)
+  const displayPosts       = posts.length > 0 ? posts : await getLatestPosts(fallbackLocale)
   const postsDisplayLocale: Locale = posts.length > 0 ? locale : fallbackLocale
   const philosophy = settings?.philosophy?.[locale]
     || settings?.philosophy?.es
@@ -37,14 +35,15 @@ export default async function Home() {
   return (
     <>
       <Hero settings={settings} cvUrl={settings?.cvUrl} initialSub={homeSubtitleData.initial} subtitlePool={homeSubtitleData.pool} />
-      <SelectedWork projects={projects} />
+      <SelectedWork projects={projects} settings={settings} />
       {philosophy && <Philosophy text={philosophy} />}
       <ExperienceSnapshot
         workEntries={experience?.workExperience ?? []}
         eduEntries={experience?.education ?? []}
         cvUrl={experience?.cvUrl ?? settings?.cvUrl}
+        settings={settings}
       />
-      <Writing posts={displayPosts} displayLocale={postsDisplayLocale} />
+      <Writing posts={displayPosts} displayLocale={postsDisplayLocale} settings={settings} />
     </>
   )
 }
