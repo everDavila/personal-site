@@ -56,12 +56,13 @@ export default async function ProjectPage({ params }: Props) {
       <article>
         <header style={{ marginBottom: '2.5rem' }}>
           <h1 style={{
-            fontSize: 'var(--text-section)',
-            fontFamily: 'var(--font-display)',
-            fontWeight: 600,
+            fontFamily: 'var(--font-serif)',
+            fontSize: 'clamp(1.875rem, 4vw, 2.75rem)',
+            fontWeight: 400,
+            letterSpacing: '-0.025em',
+            lineHeight: 1.2,
             color: 'var(--color-text)',
             margin: '0 0 0.5rem',
-            lineHeight: 1.3,
           }}>
             {title.value || project.client}
           </h1>

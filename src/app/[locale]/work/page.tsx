@@ -23,13 +23,7 @@ export default async function WorkPage() {
 
   return (
     <main className="container section">
-      <h1 style={{
-        fontSize: 'var(--text-section)',
-        fontFamily: 'var(--font-display)',
-        fontWeight: 600,
-        color: 'var(--color-text)',
-        marginBottom: '0.25rem',
-      }}>
+      <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
         {title}
       </h1>
       {subtitle && (
@@ -58,7 +52,7 @@ export default async function WorkPage() {
                 style={{ textDecoration: 'none', display: 'block' }}
               >
                 <article
-                  className="card-hover"
+                  className="card-hover exp-item"
                   style={{
                     display: 'grid',
                     gridTemplateColumns: '1fr auto',
@@ -96,14 +90,13 @@ export default async function WorkPage() {
                       </p>
                     )}
                     {project.tags?.length > 0 && (
-                      <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap', marginTop: '0.25rem' }}>
+                      <div className="exp-tags" style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '0.25rem' }}>
                         {project.tags.map(tag => (
                           <span key={tag} style={{
-                            fontSize: '0.7rem',
-                            fontWeight: 500,
-                            color: 'var(--color-accent)',
+                            fontSize: 'var(--text-label)',
+                            color: 'var(--color-muted)',
                             textTransform: 'uppercase',
-                            letterSpacing: '0.05em',
+                            letterSpacing: '0.08em',
                           }}>
                             {tag}
                           </span>

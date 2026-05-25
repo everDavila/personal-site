@@ -105,7 +105,7 @@ export default async function ExperiencePage() {
   return (
     <>
       <section className="container" style={{ paddingTop: 'var(--spacing-section)', paddingBottom: '2.5rem', borderBottom: 'var(--border-width) solid var(--color-border)' }}>
-        <h1 style={{ fontSize: 'var(--text-section)', fontFamily: 'var(--font-display)', fontWeight: 600, color: 'var(--color-text)', marginBottom: '0.25rem' }}>
+        <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
           {title}
         </h1>
         {subtitle && (

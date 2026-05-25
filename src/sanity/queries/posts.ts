@@ -6,6 +6,7 @@ export type PostSummary = {
   slug: string
   originalLanguage: Locale
   publishedAt: string
+  _updatedAt: string
   title: Record<Locale, string>
   excerpt: Record<Locale, string>
   mainImage: { asset: { url: string }; alt: Record<Locale, string> } | null
@@ -21,6 +22,7 @@ const SUMMARY_FIELDS = `
   "slug": slug.current,
   originalLanguage,
   publishedAt,
+  _updatedAt,
   title,
   excerpt,
   mainImage { asset->{ url }, alt },
