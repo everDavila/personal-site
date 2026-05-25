@@ -8,6 +8,14 @@ import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 
 export const dynamic = 'force-dynamic'
 
+const COUNT_LABEL: Record<Locale, (n: number) => string> = {
+  es: (n) => `${n} nota${n !== 1 ? 's' : ''}`,
+  en: (n) => `${n} note${n !== 1 ? 's' : ''}`,
+  pt: (n) => `${n} nota${n !== 1 ? 's' : ''}`,
+  qu: (n) => `${n} willakuy`,
+  zh: (n) => `${n} 篇`,
+}
+
 export default async function BlogPage() {
   const locale = await getLocale() as Locale
   const [t, subtitle, settings] = await Promise.all([
@@ -17,8 +25,8 @@ export default async function BlogPage() {
   ])
 
   const b = settings?.labels?.blog
-  const title    = lbl(b?.title,  locale, t('title'))
-  const emptyMsg = lbl(b?.empty,  locale, t('empty'))
+  const title    = lbl(b?.title, locale, t('title'))
+  const emptyMsg = lbl(b?.empty, locale, t('empty'))
 
   let posts = await getAllPosts(locale)
   let displayLocale = locale
@@ -30,47 +38,76 @@ export default async function BlogPage() {
     }
   }
 
+  const [featured, ...rest] = posts
+  const countLabel = (COUNT_LABEL[locale] ?? COUNT_LABEL.en)(posts.length)
+
   return (
     <main className="container section">
-      <h1 style={{
-        fontSize: 'var(--text-section)',
-        fontFamily: 'var(--font-display)',
-        fontWeight: 600,
-        color: 'var(--color-text)',
-        marginBottom: '0.25rem',
+
+      {/* ── Editorial header ── */}
+      <div style={{
+        display: 'flex',
+        alignItems: 'baseline',
+        justifyContent: 'space-between',
+        gap: '1rem',
+        marginBottom: '0.5rem',
       }}>
-        {title}
-      </h1>
+        <h1 style={{
+          fontFamily: 'var(--font-serif)',
+          fontSize: 'clamp(2rem, 5vw, 3rem)',
+          fontWeight: 400,
+          letterSpacing: '-0.03em',
+          lineHeight: 1.1,
+          color: 'var(--color-text)',
+          margin: 0,
+        }}>
+          {title}
+        </h1>
+        {posts.length > 0 && (
+          <span style={{
+            fontSize: 'var(--text-label)',
+            color: 'var(--color-muted)',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            whiteSpace: 'nowrap',
+          }}>
+            {countLabel}
+          </span>
+        )}
+      </div>
+
       {subtitle && (
         <p style={{
           fontSize: 'var(--text-small)',
           color: 'var(--color-muted)',
-          marginBottom: '0.5rem',
           maxWidth: '52ch',
           lineHeight: 1.6,
+          marginBottom: '0',
         }}>
           {subtitle}
         </p>
       )}
-      <p style={{
-        fontSize: 'var(--text-small)',
-        color: 'var(--color-muted)',
-        marginBottom: '2.5rem',
-      }}>
-        {t('count', { count: posts.length })}
-      </p>
-
-      <div>
-        {posts.map(post => (
-          <PostCard key={post._id} post={post} locale={displayLocale} />
-        ))}
-      </div>
 
       {posts.length === 0 && (
-        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)' }}>
+        <p style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', marginTop: '3rem' }}>
           {emptyMsg}
         </p>
       )}
+
+      {/* ── Featured post ── */}
+      {featured && (
+        <PostCard post={featured} locale={displayLocale} featured />
+      )}
+
+      {/* ── Compact list ── */}
+      {rest.length > 0 && (
+        <div style={{ marginTop: featured ? '0' : '3rem' }}>
+          {rest.map(post => (
+            <PostCard key={post._id} post={post} locale={displayLocale} />
+          ))}
+        </div>
+      )}
+
     </main>
   )
 }

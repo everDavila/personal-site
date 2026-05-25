@@ -7,55 +7,64 @@ type Props = { value: PortableTextBlock[] }
 
 export function PostBody({ value }: Props) {
   return (
-    <div style={{
-      fontSize: 'var(--text-body)',
-      lineHeight: 1.8,
-      color: 'var(--color-text)',
-    }}>
+    <div className="post-body">
       <PortableText
         value={value}
         components={{
           block: {
             normal: ({ children }) => (
-              <p style={{ margin: '0 0 1.25rem' }}>{children}</p>
+              <p style={{ margin: '0 0 1.5rem', lineHeight: 1.8 }}>{children}</p>
             ),
             h2: ({ children }) => (
               <h2 style={{
-                fontSize: 'var(--text-section)',
-                fontFamily: 'var(--font-display)',
-                fontWeight: 600,
-                margin: '2.5rem 0 0.75rem',
+                fontFamily: 'var(--font-serif)',
+                fontSize: 'clamp(1.25rem, 2.5vw, 1.5rem)',
+                fontWeight: 400,
+                letterSpacing: '-0.02em',
+                lineHeight: 1.25,
+                margin: '3rem 0 1rem',
                 color: 'var(--color-text)',
               }}>{children}</h2>
             ),
             h3: ({ children }) => (
               <h3 style={{
-                fontSize: 'var(--text-body)',
+                fontFamily: 'var(--font-sans)',
+                fontSize: 'var(--text-small)',
                 fontWeight: 600,
-                margin: '2rem 0 0.5rem',
-                color: 'var(--color-text)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.08em',
+                margin: '2.5rem 0 0.75rem',
+                color: 'var(--color-muted)',
               }}>{children}</h3>
             ),
             blockquote: ({ children }) => (
               <blockquote style={{
-                borderLeft: '3px solid var(--color-accent)',
-                paddingLeft: '1.25rem',
-                margin: '1.5rem 0',
+                borderLeft: '2px solid var(--color-accent)',
+                paddingLeft: '1.5rem',
+                margin: '2rem 0',
                 color: 'var(--color-muted)',
                 fontStyle: 'italic',
+                fontFamily: 'var(--font-serif)',
+                fontSize: '1.125rem',
+                lineHeight: 1.7,
               }}>{children}</blockquote>
             ),
           },
           marks: {
-            strong: ({ children }) => <strong style={{ fontWeight: 600 }}>{children}</strong>,
-            em: ({ children }) => <em>{children}</em>,
+            strong: ({ children }) => (
+              <strong style={{ fontWeight: 600, color: 'var(--color-text)' }}>{children}</strong>
+            ),
+            em: ({ children }) => (
+              <em style={{ fontStyle: 'italic' }}>{children}</em>
+            ),
             code: ({ children }) => (
               <code style={{
-                fontFamily: 'monospace',
-                fontSize: '0.875em',
+                fontFamily: 'var(--font-mono)',
+                fontSize: '0.85em',
                 background: 'var(--color-surface)',
-                padding: '0.1em 0.35em',
+                padding: '0.15em 0.4em',
                 borderRadius: 'var(--radius)',
+                letterSpacing: '0',
               }}>{children}</code>
             ),
             link: ({ value, children }) => (
@@ -64,6 +73,7 @@ export function PostBody({ value }: Props) {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="link-accent"
+                style={{ textDecoration: 'underline', textDecorationColor: 'var(--color-border)' }}
               >
                 {children}
               </a>
@@ -71,15 +81,19 @@ export function PostBody({ value }: Props) {
           },
           list: {
             bullet: ({ children }) => (
-              <ul style={{ paddingLeft: '1.5rem', margin: '0 0 1.25rem' }}>{children}</ul>
+              <ul style={{ paddingLeft: '1.25rem', margin: '0 0 1.5rem', listStyleType: 'disc' }}>{children}</ul>
             ),
             number: ({ children }) => (
-              <ol style={{ paddingLeft: '1.5rem', margin: '0 0 1.25rem' }}>{children}</ol>
+              <ol style={{ paddingLeft: '1.25rem', margin: '0 0 1.5rem' }}>{children}</ol>
             ),
           },
           listItem: {
-            bullet: ({ children }) => <li style={{ marginBottom: '0.4rem' }}>{children}</li>,
-            number: ({ children }) => <li style={{ marginBottom: '0.4rem' }}>{children}</li>,
+            bullet: ({ children }) => (
+              <li style={{ marginBottom: '0.5rem', lineHeight: 1.7 }}>{children}</li>
+            ),
+            number: ({ children }) => (
+              <li style={{ marginBottom: '0.5rem', lineHeight: 1.7 }}>{children}</li>
+            ),
           },
         }}
       />
