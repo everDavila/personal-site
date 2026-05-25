@@ -34,15 +34,19 @@ const DEFAULTS: Page404Data = {
 }
 
 export async function getPage404(): Promise<Page404Data> {
-  const data = await client.fetch<Page404Data | null>(
-    `*[_type == "page404" && _id == "page404"][0]{ title, body, notes }`,
-    {},
-    { next: { revalidate: 3600 } }
-  )
-  if (!data) return DEFAULTS
-  return {
-    title: { ...DEFAULTS.title, ...data.title },
-    body:  { ...DEFAULTS.body,  ...data.body  },
-    notes: data.notes?.length ? data.notes : DEFAULTS.notes,
+  try {
+    const data = await client.fetch<Page404Data | null>(
+      `*[_type == "page404" && _id == "page404"][0]{ title, body, notes }`,
+      {},
+      { next: { revalidate: 3600 } }
+    )
+    if (!data) return DEFAULTS
+    return {
+      title: { ...DEFAULTS.title, ...data.title },
+      body:  { ...DEFAULTS.body,  ...data.body  },
+      notes: data.notes?.length ? data.notes : DEFAULTS.notes,
+    }
+  } catch {
+    return DEFAULTS
   }
 }
