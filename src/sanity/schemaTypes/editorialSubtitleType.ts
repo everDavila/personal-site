@@ -10,14 +10,6 @@ const PAGE_OPTIONS = [
   { title: 'About', value: 'about' },
 ]
 
-const LANGUAGE_OPTIONS = [
-  { title: 'Spanish (es)', value: 'es' },
-  { title: 'English (en)', value: 'en' },
-  { title: 'Portuguese (pt)', value: 'pt' },
-  { title: 'Quechua (qu)', value: 'qu' },
-  { title: 'Chinese (zh)', value: 'zh' },
-]
-
 const TIME_OPTIONS = [
   { title: 'Morning (5–12)', value: 'morning' },
   { title: 'Afternoon (12–18)', value: 'afternoon' },
@@ -59,21 +51,11 @@ export const editorialSubtitleType = defineType({
       options: { list: PAGE_OPTIONS },
     }),
     defineField({
-      name: 'language',
-      title: 'Language',
-      type: 'string',
-      group: 'content',
-      validation: Rule => Rule.required(),
-      description: 'Each language has its own editorial voice. This is not a translation.',
-      options: { list: LANGUAGE_OPTIONS },
-    }),
-    defineField({
       name: 'text',
       title: 'Subtitle text',
-      type: 'text',
-      rows: 2,
+      type: 'localizedString',
       group: 'content',
-      description: 'Leave empty to create an intentional silent state — no subtitle shows on this selection.',
+      description: 'One entry per language. Leave a language empty to fall back to the next available. Leave all empty for an intentional silent state.',
     }),
     defineField({
       name: 'tone',
@@ -82,7 +64,7 @@ export const editorialSubtitleType = defineType({
       of: [{ type: 'string' }],
       group: 'content',
       options: { layout: 'tags' },
-      description: 'Editorial reference only. Has no effect on selection.',
+      description: 'Editorial reference only.',
     }),
     defineField({
       name: 'tags',
@@ -129,7 +111,7 @@ export const editorialSubtitleType = defineType({
       type: 'number',
       group: 'behavior',
       initialValue: 1,
-      description: 'Used when rotation is "Weighted". Higher = more likely. Set to 0 for a rare silent state.',
+      description: 'Higher = more likely to be selected. 0 = silent state entry.',
       validation: Rule => Rule.min(0),
     }),
     defineField({
@@ -153,7 +135,7 @@ export const editorialSubtitleType = defineType({
       type: 'array',
       of: [{ type: 'string' }],
       group: 'context',
-      description: 'Empty = any time. Select to restrict to specific time slots.',
+      description: 'Empty = any time.',
       options: { list: TIME_OPTIONS },
     }),
     defineField({
@@ -162,7 +144,7 @@ export const editorialSubtitleType = defineType({
       type: 'array',
       of: [{ type: 'string' }],
       group: 'context',
-      description: 'Empty = any season. Based on Southern hemisphere calendar (Lima, Peru).',
+      description: 'Empty = any season. Southern hemisphere calendar (Lima, Peru).',
       options: { list: SEASON_OPTIONS },
     }),
     defineField({
@@ -171,7 +153,7 @@ export const editorialSubtitleType = defineType({
       type: 'array',
       of: [{ type: 'string' }],
       group: 'context',
-      description: 'Empty = any weather. Stored for future integration — not active yet.',
+      description: 'Empty = any weather. Future integration — not active yet.',
       options: { list: WEATHER_OPTIONS },
     }),
     defineField({
@@ -181,31 +163,31 @@ export const editorialSubtitleType = defineType({
       of: [{ type: 'string' }],
       group: 'context',
       options: { layout: 'tags' },
-      description: 'Editorial mood label. Stored for future use — not active yet.',
+      description: 'Editorial reference. Not active yet.',
     }),
   ],
   orderings: [
     {
-      title: 'Page, then language',
-      name: 'pageLanguage',
-      by: [{ field: 'page', direction: 'asc' }, { field: 'language', direction: 'asc' }],
+      title: 'By page',
+      name: 'byPage',
+      by: [{ field: 'page', direction: 'asc' }],
     },
   ],
   preview: {
     select: {
       text: 'text',
       page: 'page',
-      language: 'language',
       active: 'active',
       archived: 'archived',
       rotation: 'rotation',
     },
-    prepare({ text, page, language, active, archived, rotation }) {
-      const flag = archived ? '[archived]' : !active ? '[inactive]' : ''
-      const mode = rotation ? ` · ${rotation}` : ''
+    prepare({ text, page, active, archived, rotation }) {
+      const title = text?.es || text?.en || text?.pt || '(silent state)'
+      const flag = archived ? '· archived' : !active ? '· inactive' : ''
+      const mode = rotation && rotation !== 'random' ? ` · ${rotation}` : ''
       return {
-        title: text || '(silent state)',
-        subtitle: `${flag} ${page} · ${language}${mode}`.trim(),
+        title,
+        subtitle: `${page}${mode} ${flag}`.trim(),
       }
     },
   },

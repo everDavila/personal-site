@@ -1,9 +1,17 @@
 import { groq } from 'next-sanity'
 import { client } from '@/sanity/lib/client'
 
+type LocalizedText = {
+  es?: string
+  en?: string
+  pt?: string
+  qu?: string
+  zh?: string
+}
+
 export type EditorialSubtitle = {
   _id: string
-  text: string | null
+  text: LocalizedText
   weight: number
   rotation: 'random' | 'weighted' | 'daily' | 'manual'
   time: string[]
@@ -16,7 +24,6 @@ const subtitlePoolQuery = groq`
   *[
     _type == "editorialSubtitle" &&
     page == $page &&
-    language == $language &&
     active == true &&
     archived != true
   ] {
@@ -30,6 +37,26 @@ const subtitlePoolQuery = groq`
     endDate,
   }
 `
+
+// ── Locale fallback chain ──────────────────────────────────────────────────
+// qu → es → en, zh → en → es, pt → es → en, es → en, en → es
+
+const FALLBACK: Record<string, string[]> = {
+  qu: ['es', 'en', 'pt'],
+  zh: ['en', 'es', 'pt'],
+  pt: ['es', 'en'],
+  es: ['en', 'pt'],
+  en: ['es', 'pt'],
+}
+
+function resolveText(text: LocalizedText, locale: string): string | null {
+  const locales = [locale, ...(FALLBACK[locale] ?? [])]
+  for (const l of locales) {
+    const v = text[l as keyof LocalizedText]?.trim()
+    if (v) return v
+  }
+  return null
+}
 
 // ── Context helpers ────────────────────────────────────────────────────────
 
@@ -60,7 +87,6 @@ function inDateRange(sub: EditorialSubtitle): boolean {
 function applyContext(pool: EditorialSubtitle[]): EditorialSubtitle[] {
   const timeSlot = getTimeSlot()
   const season = getSeason()
-
   return pool.filter(sub => {
     if (!inDateRange(sub)) return false
     if (sub.time.length > 0 && !sub.time.includes(timeSlot)) return false
@@ -71,20 +97,19 @@ function applyContext(pool: EditorialSubtitle[]): EditorialSubtitle[] {
 
 // ── Selection algorithm ────────────────────────────────────────────────────
 
-function selectFromPool(pool: EditorialSubtitle[]): string | null {
+function selectSubtitle(pool: EditorialSubtitle[]): EditorialSubtitle | null {
   if (pool.length === 0) return null
 
   // 1. Manual (pinned): first active manual entry wins
   const manual = pool.find(s => s.rotation === 'manual')
-  if (manual) return manual.text ?? null
+  if (manual) return manual
 
-  // 2. Daily: deterministic selection seeded by day-of-year (same all day)
+  // 2. Daily: deterministic selection seeded by day-of-year
   const dailyPool = pool.filter(s => s.rotation === 'daily')
   if (dailyPool.length > 0) {
     const start = new Date(new Date().getFullYear(), 0, 0).getTime()
     const dayOfYear = Math.floor((Date.now() - start) / 86_400_000)
-    const pick = dailyPool[dayOfYear % dailyPool.length]
-    return pick.text ?? null
+    return dailyPool[dayOfYear % dailyPool.length]
   }
 
   // 3. Weighted random from random + weighted pool
@@ -97,37 +122,40 @@ function selectFromPool(pool: EditorialSubtitle[]): string | null {
   let rand = Math.random() * totalWeight
   for (const sub of randomPool) {
     rand -= sub.weight
-    if (rand <= 0) return sub.text ?? null
+    if (rand <= 0) return sub
   }
-
-  return randomPool[randomPool.length - 1].text ?? null
+  return randomPool[randomPool.length - 1]
 }
 
 // ── Public API ─────────────────────────────────────────────────────────────
 
-export async function getPageSubtitle(page: string, language: string): Promise<string | null> {
+export async function getPageSubtitle(page: string, locale: string): Promise<string | null> {
   const pool: EditorialSubtitle[] = await client.fetch(
     subtitlePoolQuery,
-    { page, language },
+    { page },
     { next: { revalidate: 0 } },
   )
   const eligible = applyContext(pool)
-  const text = selectFromPool(eligible)
-  // Empty string = intentional silent state
-  return text && text.trim().length > 0 ? text.trim() : null
+  const selected = selectSubtitle(eligible)
+  if (!selected) return null
+  return resolveText(selected.text, locale)
 }
 
 export async function getPageSubtitleData(
   page: string,
-  language: string,
+  locale: string,
 ): Promise<{ initial: string | null; pool: string[] }> {
   const raw: EditorialSubtitle[] = await client.fetch(
     subtitlePoolQuery,
-    { page, language },
+    { page },
     { next: { revalidate: 0 } },
   )
   const eligible = applyContext(raw)
-  const pool = eligible.map(s => s.text?.trim() ?? '').filter(s => s.length > 0)
-  const initial = selectFromPool(eligible)
-  return { initial: initial?.trim() || null, pool }
+  // Resolve all subtitles to current locale (for client-side rotation pool)
+  const pool = eligible
+    .map(s => resolveText(s.text, locale))
+    .filter((t): t is string => !!t)
+  const selected = selectSubtitle(eligible)
+  const initial = selected ? resolveText(selected.text, locale) : null
+  return { initial, pool }
 }
