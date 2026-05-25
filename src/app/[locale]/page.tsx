@@ -8,7 +8,7 @@ import { getSiteSettings } from '@/sanity/queries/siteSettings'
 import { getFeaturedProjects } from '@/sanity/queries/projects'
 import { getExperience } from '@/sanity/queries/experience'
 import { getLatestPosts } from '@/sanity/queries/posts'
-import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import { getPageSubtitleData } from '@/sanity/queries/editorialSubtitle'
 import type { Locale } from '@/lib/i18n'
 import { BLOG_FALLBACK } from '@/lib/i18n'
 
@@ -17,12 +17,12 @@ export const dynamic = 'force-dynamic'
 export default async function Home() {
   const locale = await getLocale() as Locale
 
-  const [settings, projects, experience, posts, homeSubtitle] = await Promise.all([
+  const [settings, projects, experience, posts, homeSubtitleData] = await Promise.all([
     getSiteSettings(),
     getFeaturedProjects(),
     getExperience(),
     getLatestPosts(locale),
-    getPageSubtitle('home', locale),
+    getPageSubtitleData('home', locale),
   ])
 
   // Fall back per BLOG_FALLBACK (qu → es, zh → en) if current locale has no posts.
@@ -36,7 +36,7 @@ export default async function Home() {
 
   return (
     <>
-      <Hero settings={settings} cvUrl={settings?.cvUrl} editorialSub={homeSubtitle} />
+      <Hero settings={settings} cvUrl={settings?.cvUrl} initialSub={homeSubtitleData.initial} subtitlePool={homeSubtitleData.pool} />
       <SelectedWork projects={projects} />
       {philosophy && <Philosophy text={philosophy} />}
       <ExperienceSnapshot

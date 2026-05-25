@@ -116,3 +116,18 @@ export async function getPageSubtitle(page: string, language: string): Promise<s
   // Empty string = intentional silent state
   return text && text.trim().length > 0 ? text.trim() : null
 }
+
+export async function getPageSubtitleData(
+  page: string,
+  language: string,
+): Promise<{ initial: string | null; pool: string[] }> {
+  const raw: EditorialSubtitle[] = await client.fetch(
+    subtitlePoolQuery,
+    { page, language },
+    { next: { revalidate: 0 } },
+  )
+  const eligible = applyContext(raw)
+  const pool = eligible.map(s => s.text?.trim() ?? '').filter(s => s.length > 0)
+  const initial = selectFromPool(eligible)
+  return { initial: initial?.trim() || null, pool }
+}

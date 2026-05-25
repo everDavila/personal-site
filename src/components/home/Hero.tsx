@@ -1,16 +1,23 @@
 import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { SiteSettings } from '@/sanity/queries/siteSettings'
+import { HeroSubtitle } from './HeroSubtitle'
 
-type Props = { settings: SiteSettings | null; cvUrl?: string | null; editorialSub?: string | null }
+type Props = {
+  settings: SiteSettings | null
+  cvUrl?: string | null
+  initialSub?: string | null
+  subtitlePool?: string[]
+}
 
-export async function Hero({ settings, cvUrl, editorialSub }: Props) {
+export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: Props) {
   const locale = await getLocale() as 'es' | 'en' | 'pt' | 'qu' | 'zh'
   const t = await getTranslations('home.hero')
 
   const roleLabel  = settings?.hero?.roleLabel?.[locale]  || t('role_label')
   const headline   = settings?.hero?.headline?.[locale]   || t('headline')
-  const sub        = editorialSub ?? settings?.hero?.sub?.[locale] ?? t('sub')
+  const fallbackSub = settings?.hero?.sub?.[locale] ?? t('sub')
+  const sub        = initialSub ?? fallbackSub
   const ctaWork    = settings?.hero?.ctaWork?.[locale]    || t('cta_work')
   const ctaCV      = settings?.hero?.ctaCV?.[locale]      || t('cta_cv')
   const heroImgUrl = settings?.hero?.heroImage?.asset?.url || null
@@ -52,7 +59,9 @@ export async function Hero({ settings, cvUrl, editorialSub }: Props) {
             <span style={{ color: 'var(--color-accent)' }}>.</span>
           </h1>
 
-          <p
+          <HeroSubtitle
+            initial={sub}
+            pool={subtitlePool}
             style={{
               maxWidth: '42ch',
               color: 'var(--color-muted)',
@@ -60,9 +69,7 @@ export async function Hero({ settings, cvUrl, editorialSub }: Props) {
               lineHeight: 1.7,
               margin: 0,
             }}
-          >
-            {sub}
-          </p>
+          />
 
           <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
             <Link
