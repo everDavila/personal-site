@@ -10,6 +10,7 @@ import { siteSettingsType } from './siteSettingsType'
 import { experienceType } from './experienceType'
 import { playgroundItemType } from './playgroundItemType'
 import { editorialSubtitleType } from './editorialSubtitleType'
+import { page404Type } from './page404Type'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -25,5 +26,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     authorType,
     playgroundItemType,
     editorialSubtitleType,
+    page404Type,
   ],
 }
