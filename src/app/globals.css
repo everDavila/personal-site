@@ -13,9 +13,9 @@
   --color-text:     #111111;
   --color-muted:    #6B6B6B;
 
-  /* Accent — petroleum blue */
-  --color-accent:       #2F4858;
-  --color-accent-hover: #1E3040;
+  /* Accent — editorial technical blue */
+  --color-accent:       #2E4052;
+  --color-accent-hover: #1A2530;
 
   /* Fonts */
   --font-sans:    var(--font-inter),        system-ui, sans-serif;
@@ -58,8 +58,8 @@
     --color-border:   #272522;
     --color-text:     #F0EFEC;
     --color-muted:    #7A7975;
-    --color-accent:       #5A8FA3;
-    --color-accent-hover: #79AABF;
+    --color-accent:       #5A7C94;
+    --color-accent-hover: #8FD3FF;
   }
 }
 
@@ -72,8 +72,8 @@
   --color-border:   #272522;
   --color-text:     #F0EFEC;
   --color-muted:    #7A7975;
-  --color-accent:       #5A8FA3;
-  --color-accent-hover: #79AABF;
+  --color-accent:       #5A7C94;
+  --color-accent-hover: #8FD3FF;
 }
 
 [data-theme="light"] {
@@ -82,8 +82,8 @@
   --color-border:   #D8D8D8;
   --color-text:     #111111;
   --color-muted:    #6B6B6B;
-  --color-accent:       #2F4858;
-  --color-accent-hover: #1E3040;
+  --color-accent:       #2E4052;
+  --color-accent-hover: #1A2530;
 }
 
 /* ─────────────────────────────────────────
