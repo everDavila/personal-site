@@ -76,7 +76,7 @@ export const structure: StructureResolver = (S) =>
                       .title(`Subtítulos · ${page}`)
                       .filter('_type == "editorialSubtitle" && page == $page')
                       .params({ page })
-                      .defaultOrdering([{ field: 'language', direction: 'asc' }])
+                      .defaultOrdering([{ field: 'weight', direction: 'desc' }])
                   )
               )
             )
