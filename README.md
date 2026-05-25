@@ -1,36 +1,94 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# davila.uno — Personal portfolio
 
-## Getting Started
+Personal portfolio and blog for [Ever Dávila](https://davila.uno).  
+Stack: Next.js 16 · TypeScript · Tailwind CSS v4 · Sanity CMS · Vercel · next-intl (5 locales).
 
-First, run the development server:
+---
+
+## Quick start after cloning
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+git clone https://github.com/everDavila/personal-site.git
+cd personal-site
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Copy `.env.local` from your other machine into the project root, then:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+node setup.mjs
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+That's it. The script checks the env file, installs dependencies and tells you what to run.
 
-## Learn More
+---
 
-To learn more about Next.js, take a look at the following resources:
+## Environment variables
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+The project needs a single `.env.local` file at the root. It is **never committed**.
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```env
+NEXT_PUBLIC_SANITY_PROJECT_ID=your_project_id
+NEXT_PUBLIC_SANITY_DATASET=production
+SANITY_TOKEN=your_write_token
+```
 
-## Deploy on Vercel
+| Variable | Where to get it |
+|---|---|
+| `NEXT_PUBLIC_SANITY_PROJECT_ID` | [sanity.io/manage](https://sanity.io/manage) → project settings |
+| `NEXT_PUBLIC_SANITY_DATASET` | Same page, usually `production` |
+| `SANITY_TOKEN` | sanity.io/manage → API → Tokens → create one with **Editor** permissions |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+---
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+## Dev commands
+
+```bash
+npm run dev       # Next.js at http://localhost:3000
+npm run build     # Production build
+npm run lint      # ESLint
+```
+
+Sanity Studio runs embedded at [http://localhost:3000/studio](http://localhost:3000/studio).
+
+---
+
+## Project structure
+
+```
+src/
+  app/[locale]/          # Pages (one per route, server components)
+  components/            # UI components
+  sanity/
+    schemaTypes/         # Sanity document types
+    queries/             # GROQ queries + TypeScript types
+    structure.ts         # Studio sidebar structure
+  i18n/                  # next-intl routing config
+  lib/                   # Shared utilities (localized(), BLOG_FALLBACK)
+messages/                # i18n strings (es, en, pt, qu, zh)
+```
+
+## Key Sanity document types
+
+| Type | Purpose |
+|---|---|
+| `siteSettings` | Singleton — hero, bio, social links, CV URL |
+| `experience` | Singleton — work history + education |
+| `post` | Blog posts (localizedBlockContent) |
+| `project` | Portfolio case studies |
+| `playgroundItem` | Experiments / side projects |
+| `editorialSubtitle` | Rotating page subtitles — grouped by page in Studio |
+
+---
+
+## i18n
+
+5 locales: `es` (default) · `en` · `pt` · `qu` · `zh`.  
+Subtitles and most copy come from Sanity. Static labels (nav, buttons, fallbacks) are in `messages/*.json`.  
+Quechua and Chinese fall back to Spanish and English respectively for blog content.
+
+---
+
+## Deployment
+
+Deployed on Vercel. Push to `main` triggers a production deploy automatically.  
+Add the same env variables in the Vercel project settings (Settings → Environment Variables).
