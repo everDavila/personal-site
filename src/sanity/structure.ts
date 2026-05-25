@@ -8,6 +8,7 @@ import {
   StarIcon,
   RocketIcon,
   SparklesIcon,
+  ErrorOutlineIcon,
 } from '@sanity/icons'
 
 export const structure: StructureResolver = (S) =>
@@ -93,6 +94,17 @@ export const structure: StructureResolver = (S) =>
             .schemaType('siteSettings')
             .documentId('siteSettings')
             .title('Configuración del sitio')
+        ),
+
+      // ── Página 404 ────────────────────────
+      S.listItem()
+        .title('Página 404')
+        .icon(ErrorOutlineIcon)
+        .child(
+          S.document()
+            .schemaType('page404')
+            .documentId('page404')
+            .title('Página 404')
         ),
 
       S.listItem()
