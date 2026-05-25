@@ -1,11 +1,11 @@
 {
   "nav": {
     "home": "Inicio",
-    "about": "Sobre mí",
-    "work": "Casos de estudio",
+    "about": "Enfoque",
+    "work": "Proyectos",
     "experience": "Experiencia",
-    "blog": "Blog",
-    "contact": "Contacto",
+    "blog": "Apuntes",
+    "contact": "Hablemos",
     "playground": "Experimentos"
   },
   "home": {
@@ -35,7 +35,6 @@
   },
   "playground": {
     "title": "Experimentos",
-    "subtitle": "Un espacio para explorar ideas, interfaces y conceptos fuera de los proyectos formales.",
     "stats_label": "Estado actual",
     "filter_label": "Filtrar por",
     "filter_all": "Todos",
@@ -72,7 +71,6 @@
   },
   "contact": {
     "title": "Contacto",
-    "subtitle": "¿Tienes un proyecto en mente o simplemente quieres conversar? Escríbeme.",
     "email_label": "Email"
   },
   "blog": {

@@ -35,7 +35,6 @@
   },
   "playground": {
     "title": "实验室",
-    "subtitle": "一个在正式项目之外探索想法、界面与概念的空间。",
     "stats_label": "当前状态",
     "filter_label": "筛选",
     "filter_all": "全部",
@@ -72,7 +71,6 @@
   },
   "contact": {
     "title": "联系",
-    "subtitle": "有项目想法或只是想聊聊？给我写信吧。",
     "email_label": "邮箱"
   },
   "blog": {

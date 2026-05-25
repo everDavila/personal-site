@@ -3,6 +3,9 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { localized } from '@/lib/i18n'
 import type { Locale } from '@/lib/i18n'
 import type { WorkEntry, EducationEntry } from '@/sanity/queries/experience'
+import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+
+export const dynamic = 'force-dynamic'
 
 /* ─── Featured work entry: period | title + company + desc + tags ── */
 function FeaturedEntry({ entry, locale, currentLabel }: {
@@ -163,17 +166,17 @@ function SectionLabel({ children, accent }: { children: React.ReactNode; accent?
 
 /* ─── Page ── */
 export default async function ExperiencePage() {
-  const [data, locale, t] = await Promise.all([
+  const locale = await getLocale() as Locale
+  const [data, t, subtitle] = await Promise.all([
     getExperience(),
-    getLocale(),
     getTranslations('experience'),
+    getPageSubtitle('experience', locale),
   ])
 
-  const currentLocale = locale as Locale
-  const work     = data?.workExperience ?? []
-  const edu      = data?.education ?? []
-  const cvUrl    = data?.cvUrl
-  const intro    = data?.intro?.[currentLocale] || data?.intro?.es || null
+  const currentLocale = locale
+  const work  = data?.workExperience ?? []
+  const edu   = data?.education ?? []
+  const cvUrl = data?.cvUrl
 
   const featured = work.filter(e => e.featured)
   const previous = work.filter(e => !e.featured)
@@ -198,8 +201,7 @@ export default async function ExperiencePage() {
         }}>
           {t('title')}
         </h1>
-
-        {intro && (
+        {subtitle && (
           <p style={{
             fontSize: 'var(--text-small)',
             color: 'var(--color-muted)',
@@ -207,7 +209,7 @@ export default async function ExperiencePage() {
             margin: 0,
             maxWidth: '52ch',
           }}>
-            {intro}
+            {subtitle}
           </p>
         )}
       </section>

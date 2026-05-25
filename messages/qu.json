@@ -35,7 +35,6 @@
   },
   "playground": {
     "title": "Pukllay",
-    "subtitle": "Ideaswan, interfaceswan, conceptoswanmi pukllay.",
     "stats_label": "Kunan kaqnin",
     "filter_label": "Akllakuy",
     "filter_all": "Tukuy",
@@ -72,7 +71,6 @@
   },
   "contact": {
     "title": "Qhariy",
-    "subtitle": "Imatapim munanki ruway? Qharimullaway.",
     "email_label": "Email"
   },
   "blog": {

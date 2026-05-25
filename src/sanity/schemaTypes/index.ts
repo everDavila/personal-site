@@ -9,6 +9,7 @@ import { authorType } from './authorType'
 import { siteSettingsType } from './siteSettingsType'
 import { experienceType } from './experienceType'
 import { playgroundItemType } from './playgroundItemType'
+import { editorialSubtitleType } from './editorialSubtitleType'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -23,5 +24,6 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     projectType,
     authorType,
     playgroundItemType,
+    editorialSubtitleType,
   ],
 }

@@ -2,15 +2,15 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { SiteSettings } from '@/sanity/queries/siteSettings'
 
-type Props = { settings: SiteSettings | null; cvUrl?: string | null }
+type Props = { settings: SiteSettings | null; cvUrl?: string | null; editorialSub?: string | null }
 
-export async function Hero({ settings, cvUrl }: Props) {
+export async function Hero({ settings, cvUrl, editorialSub }: Props) {
   const locale = await getLocale() as 'es' | 'en' | 'pt' | 'qu' | 'zh'
   const t = await getTranslations('home.hero')
 
   const roleLabel  = settings?.hero?.roleLabel?.[locale]  || t('role_label')
   const headline   = settings?.hero?.headline?.[locale]   || t('headline')
-  const sub        = settings?.hero?.sub?.[locale]        || t('sub')
+  const sub        = editorialSub ?? settings?.hero?.sub?.[locale] ?? t('sub')
   const ctaWork    = settings?.hero?.ctaWork?.[locale]    || t('cta_work')
   const ctaCV      = settings?.hero?.ctaCV?.[locale]      || t('cta_cv')
   const heroImgUrl = settings?.hero?.heroImage?.asset?.url || null

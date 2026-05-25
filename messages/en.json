@@ -1,31 +1,31 @@
 {
   "nav": {
     "home": "Home",
-    "about": "About",
-    "work": "Case Studies",
+    "about": "Approach",
+    "work": "Work",
     "experience": "Experience",
-    "blog": "Blog",
-    "contact": "Contact",
+    "blog": "Notes",
+    "contact": "Elsewhere",
     "playground": "Playground"
   },
   "home": {
     "hero": {
-      "headline": "UI/UX designer and government consultant.",
-      "sub": "I work at the intersection of user-centered design and digital public services in Peru.",
-      "role_label": "UX/UI Designer & systems consultant",
+      "headline": "Designing digital systems that real people actually have to use.",
+      "sub": "Designing interfaces for real-world systems, not idealized user flows.",
+      "role_label": "UX/UI Designer · Public systems · Digital products",
       "cta_work": "View selected work",
-      "cta_cv": "Download CV",
-      "cta_blog": "Read blog"
+      "cta_cv": "Download Resume",
+      "cta_blog": "Read Notes"
     },
-    "philosophy_label": "Philosophy",
-    "competencies_label": "Stuff I'm pretty good at",
+    "philosophy_label": "Approach",
+    "competencies_label": "Areas of focus",
     "projects_label": "Selected work",
-    "posts_label": "Latest posts",
-    "more_about": "More about me",
+    "posts_label": "Latest notes",
+    "more_about": "More context",
     "view_experience": "View full experience"
   },
   "work": {
-    "title": "Case Studies",
+    "title": "Work",
     "empty": "Projects coming soon.",
     "back": "Back to work",
     "client_label": "Client",
@@ -35,7 +35,6 @@
   },
   "playground": {
     "title": "Playground",
-    "subtitle": "A space to explore ideas, interfaces and concepts outside of formal projects.",
     "stats_label": "Current status",
     "filter_label": "Filter by",
     "filter_all": "All",
@@ -56,7 +55,7 @@
     }
   },
   "about": {
-    "title": "About",
+    "title": "Approach",
     "connect": "Get in touch",
     "see_experience": "See experience"
   },
@@ -66,19 +65,18 @@
     "edu_label": "Education",
     "current": "Current",
     "empty": "Content coming soon.",
-    "download_cv": "Download full CV",
+    "download_cv": "Download REsume",
     "featured_label": "Featured experience",
     "previous_label": "Previous experience"
   },
   "contact": {
     "title": "Contact",
-    "subtitle": "Have a project in mind or just want to chat? Reach out.",
     "email_label": "Email"
   },
   "blog": {
-    "title": "Blog",
+    "title": "Notes",
     "count": "{count, plural, one {# post} other {# posts}}",
-    "empty": "No posts published yet.",
+    "empty": "No notes published yet.",
     "back": "Back to blog",
     "no_content": "Content not available in this language."
   }

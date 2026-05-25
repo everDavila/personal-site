@@ -2,17 +2,21 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import { getAllPlaygroundItems } from '@/sanity/queries/playground'
 import { PlaygroundClient } from '@/components/playground/PlaygroundClient'
 import type { Locale } from '@/lib/i18n'
+import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+
+export const dynamic = 'force-dynamic'
 
 const CATEGORIES = ['interfaces', 'motion', 'systems', 'ai', 'experiments', 'tools']
 
 export default async function PlaygroundPage() {
-  const [t, locale, items] = await Promise.all([
+  const locale = await getLocale() as Locale
+  const [t, items, subtitle] = await Promise.all([
     getTranslations('playground'),
-    getLocale(),
     getAllPlaygroundItems(),
+    getPageSubtitle('playground', locale),
   ])
 
-  const currentLocale = locale as Locale
+  const currentLocale = locale
 
   const translations = {
     filter_all:  t('filter_all'),
@@ -44,15 +48,17 @@ export default async function PlaygroundPage() {
       }}>
         {t('title')}
       </h1>
-      <p style={{
-        fontSize: 'var(--text-small)',
-        color: 'var(--color-muted)',
-        marginBottom: '3rem',
-        maxWidth: '42rem',
-        lineHeight: 1.6,
-      }}>
-        {t('subtitle')}
-      </p>
+      {subtitle && (
+        <p style={{
+          fontSize: 'var(--text-small)',
+          color: 'var(--color-muted)',
+          marginBottom: '3rem',
+          maxWidth: '52ch',
+          lineHeight: 1.6,
+        }}>
+          {subtitle}
+        </p>
+      )}
 
       <PlaygroundClient
         items={items}

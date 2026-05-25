@@ -1,10 +1,16 @@
 import { getSiteSettings } from '@/sanity/queries/siteSettings'
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
+import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import type { Locale } from '@/lib/i18n'
+
+export const dynamic = 'force-dynamic'
 
 export default async function ContactPage() {
-  const [settings, t] = await Promise.all([
+  const locale = await getLocale() as Locale
+  const [settings, t, subtitle] = await Promise.all([
     getSiteSettings(),
     getTranslations('contact'),
+    getPageSubtitle('contact', locale),
   ])
 
   const social = settings?.social
@@ -20,15 +26,17 @@ export default async function ContactPage() {
       }}>
         {t('title')}
       </h1>
-      <p style={{
-        fontSize: 'var(--text-body)',
-        color: 'var(--color-muted)',
-        lineHeight: 1.7,
-        marginBottom: '3rem',
-        maxWidth: '32rem',
-      }}>
-        {t('subtitle')}
-      </p>
+      {subtitle && (
+        <p style={{
+          fontSize: 'var(--text-small)',
+          color: 'var(--color-muted)',
+          lineHeight: 1.6,
+          marginBottom: '3rem',
+          maxWidth: '52ch',
+        }}>
+          {subtitle}
+        </p>
+      )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         {social?.email && (

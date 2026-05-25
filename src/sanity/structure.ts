@@ -7,6 +7,7 @@ import {
   CogIcon,
   StarIcon,
   RocketIcon,
+  SparklesIcon,
 } from '@sanity/icons'
 
 export const structure: StructureResolver = (S) =>
@@ -56,6 +57,29 @@ export const structure: StructureResolver = (S) =>
             .schemaType('experience')
             .documentId('experience')
             .title('Experiencia & Estudios')
+        ),
+
+      // ── Subtítulos editoriales ────────────
+      S.listItem()
+        .title('Subtítulos')
+        .icon(SparklesIcon)
+        .child(
+          S.list()
+            .title('Subtítulos por página')
+            .items(
+              ['home', 'work', 'experience', 'blog', 'playground', 'contact', 'about'].map(page =>
+                S.listItem()
+                  .title(page.charAt(0).toUpperCase() + page.slice(1))
+                  .id(page)
+                  .child(
+                    S.documentList()
+                      .title(`Subtítulos · ${page}`)
+                      .filter('_type == "editorialSubtitle" && page == $page')
+                      .params({ page })
+                      .defaultOrdering([{ field: 'language', direction: 'asc' }])
+                  )
+              )
+            )
         ),
 
       S.divider(),

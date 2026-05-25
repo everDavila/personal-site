@@ -3,15 +3,19 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { localized } from '@/lib/i18n'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
+import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+
+export const dynamic = 'force-dynamic'
 
 export default async function AboutPage() {
-  const [settings, locale, t] = await Promise.all([
+  const locale = await getLocale() as Locale
+  const [settings, t, subtitle] = await Promise.all([
     getSiteSettings(),
-    getLocale(),
     getTranslations('about'),
+    getPageSubtitle('about', locale),
   ])
 
-  const currentLocale = locale as Locale
+  const currentLocale = locale
   const bio = settings?.about ? localized(settings.about, currentLocale) : null
   const social = settings?.social
 
@@ -22,10 +26,21 @@ export default async function AboutPage() {
         fontFamily: 'var(--font-display)',
         fontWeight: 600,
         color: 'var(--color-text)',
-        marginBottom: '2rem',
+        marginBottom: '0.25rem',
       }}>
         {t('title')}
       </h1>
+      {subtitle && (
+        <p style={{
+          fontSize: 'var(--text-small)',
+          color: 'var(--color-muted)',
+          marginBottom: '2rem',
+          maxWidth: '52ch',
+          lineHeight: 1.6,
+        }}>
+          {subtitle}
+        </p>
+      )}
 
       {bio?.value ? (
         <p style={{

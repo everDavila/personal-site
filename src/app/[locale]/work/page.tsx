@@ -3,15 +3,19 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { localized } from '@/lib/i18n'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
+import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+
+export const dynamic = 'force-dynamic'
 
 export default async function WorkPage() {
-  const [projects, locale, t] = await Promise.all([
+  const locale = await getLocale() as Locale
+  const [projects, t, subtitle] = await Promise.all([
     getAllProjects(),
-    getLocale(),
     getTranslations('work'),
+    getPageSubtitle('work', locale),
   ])
 
-  const currentLocale = locale as Locale
+  const currentLocale = locale
 
   return (
     <main className="container section">
@@ -20,10 +24,21 @@ export default async function WorkPage() {
         fontFamily: 'var(--font-display)',
         fontWeight: 600,
         color: 'var(--color-text)',
-        marginBottom: '3rem',
+        marginBottom: '0.25rem',
       }}>
         {t('title')}
       </h1>
+      {subtitle && (
+        <p style={{
+          fontSize: 'var(--text-small)',
+          color: 'var(--color-muted)',
+          marginBottom: '3rem',
+          maxWidth: '52ch',
+          lineHeight: 1.6,
+        }}>
+          {subtitle}
+        </p>
+      )}
 
       {projects.length === 0 ? (
         <p style={{ color: 'var(--color-muted)' }}>{t('empty')}</p>
