@@ -50,9 +50,10 @@ export async function SelectedWork({ projects, settings }: Props) {
       </div>
 
       <div className="projects-list">
-        {projects.map((project, i) => {
-          const title   = project.title?.[locale]   || project.title?.es   || project.title?.en   || ''
-          const summary = project.summary?.[locale]  || project.summary?.es  || project.summary?.en  || ''
+        {projects.map((project) => {
+          const summary = project.summary?.[locale] || project.summary?.es || project.summary?.en || ''
+          const role    = project.role?.[locale]    || project.role?.es    || project.role?.en    || ''
+          const detail  = [role, project.year].filter(Boolean).join(' · ')
 
           return (
             <Link
@@ -60,20 +61,16 @@ export async function SelectedWork({ projects, settings }: Props) {
               href={{ pathname: '/work/[slug]', params: { slug: project.slug } }}
               className="project-row"
             >
-              <span className="project-row-num">
-                {String(i + 1).padStart(2, '0')}
-              </span>
+              <p className="project-row-headline">
+                {summary}
+              </p>
 
-              <div>
-                <h3 className="project-row-title">{title}</h3>
-                {summary && (
-                  <p className="project-row-summary">{summary}</p>
-                )}
-              </div>
-
-              <div className="project-row-meta">
-                {project.year && <span>{project.year}</span>}
-                <span>↗</span>
+              <div className="project-row-footer">
+                <div className="project-row-meta-left">
+                  <p className="project-row-client">{project.client}</p>
+                  {detail && <p className="project-row-detail">{detail}</p>}
+                </div>
+                <span className="project-row-arrow">↗</span>
               </div>
             </Link>
           )

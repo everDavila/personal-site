@@ -42,32 +42,27 @@ export default async function WorkPage() {
         <p style={{ color: 'var(--color-muted)' }}>{empty}</p>
       ) : (
         <div className="projects-list">
-          {projects.map((project, i) => {
-            const projectTitle = localized(project.title, locale)
+          {projects.map((project) => {
             const summary = localized(project.summary, locale)
+            const role    = localized(project.role,    locale)
+            const detail  = [role.value, project.year].filter(Boolean).join(' · ')
+
             return (
               <Link
                 key={project._id}
                 href={{ pathname: '/work/[slug]', params: { slug: project.slug } }}
                 className="project-row"
               >
-                <span className="project-row-num">{String(i + 1).padStart(2, '0')}</span>
-                <div>
-                  <h2 className="project-row-title">
-                    {projectTitle.value || project.client}
-                  </h2>
-                  {project.client && (
-                    <span className="project-row-summary">{project.client}</span>
-                  )}
-                  {summary.value && (
-                    <p className="project-row-summary" style={{ marginTop: '0.2rem' }}>
-                      {summary.value}
-                    </p>
-                  )}
-                </div>
-                <div className="project-row-meta">
-                  {project.year && <span>{project.year}</span>}
-                  <span>↗</span>
+                <p className="project-row-headline">
+                  {summary.value}
+                </p>
+
+                <div className="project-row-footer">
+                  <div className="project-row-meta-left">
+                    <p className="project-row-client">{project.client}</p>
+                    {detail && <p className="project-row-detail">{detail}</p>}
+                  </div>
+                  <span className="project-row-arrow">↗</span>
                 </div>
               </Link>
             )
