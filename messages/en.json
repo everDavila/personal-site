@@ -65,7 +65,7 @@
     "edu_label": "Education",
     "current": "Current",
     "empty": "Content coming soon.",
-    "download_cv": "Download REsume",
+    "download_cv": "Download Resume",
     "featured_label": "Featured experience",
     "previous_label": "Previous experience"
   },
@@ -75,9 +75,9 @@
   },
   "blog": {
     "title": "Notes",
-    "count": "{count, plural, one {# post} other {# posts}}",
+    "count": "{count, plural, one {# note} other {# notes}}",
     "empty": "No notes published yet.",
-    "back": "Back to blog",
+    "back": "Back to notes",
     "no_content": "Content not available in this language."
   }
 }

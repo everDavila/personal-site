@@ -4,7 +4,7 @@
     "about": "Noqamanta",
     "work": "Ruwasqakuna",
     "experience": "Llankayhistorial",
-    "blog": "Blog",
+    "blog": "Qillqay",
     "contact": "Qhariy",
     "playground": "Pukllay"
   },
@@ -15,7 +15,7 @@
       "role_label": "UX/UI diseñador, suyupi llank'aq",
       "cta_work": "Llank'aykunata qhaway",
       "cta_cv": "CV descargay",
-      "cta_blog": "Qillqaykunata leer"
+      "cta_blog": "Qillqaykunata qhaway"
     },
     "philosophy_label": "Yuyayninmi",
     "competencies_label": "Allinmi ruwani",
@@ -74,10 +74,10 @@
     "email_label": "Email"
   },
   "blog": {
-    "title": "Blog",
+    "title": "Qillqay",
     "count": "{count} qillqay",
     "empty": "Manaraq qillqasqachu.",
-    "back": "Kutiy blogman",
+    "back": "Qillqaykunaman kutiy",
     "no_content": "Kay simipim mana kanchu."
   }
 }

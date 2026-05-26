@@ -4,7 +4,7 @@
     "about": "关于我",
     "work": "案例研究",
     "experience": "经历",
-    "blog": "博客",
+    "blog": "手记",
     "contact": "联系",
     "playground": "实验室"
   },
@@ -15,12 +15,12 @@
       "role_label": "UX/UI 设计师 & 系统顾问",
       "cta_work": "查看精选作品",
       "cta_cv": "下载简历",
-      "cta_blog": "阅读博客"
+      "cta_blog": "阅读手记"
     },
     "philosophy_label": "理念",
     "competencies_label": "我擅长的事",
     "projects_label": "精选作品",
-    "posts_label": "最新文章",
+    "posts_label": "最新手记",
     "more_about": "关于我",
     "view_experience": "查看完整经历"
   },
@@ -74,10 +74,10 @@
     "email_label": "邮箱"
   },
   "blog": {
-    "title": "博客",
-    "count": "{count} 篇文章",
-    "empty": "暂无文章。",
-    "back": "返回博客",
+    "title": "手记",
+    "count": "{count} 篇手记",
+    "empty": "暂无手记。",
+    "back": "返回手记",
     "no_content": "此语言暂无内容。"
   }
 }

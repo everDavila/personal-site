@@ -15,12 +15,12 @@
       "role_label": "Diseñador UX/UI & consultor de sistemas",
       "cta_work": "Ver trabajo seleccionado",
       "cta_cv": "Descargar CV",
-      "cta_blog": "Leer blog"
+      "cta_blog": "Leer apuntes"
     },
     "philosophy_label": "Filosofía",
     "competencies_label": "En lo que soy bueno",
     "projects_label": "Trabajo seleccionado",
-    "posts_label": "Últimos posts",
+    "posts_label": "Últimos apuntes",
     "more_about": "Más sobre mí",
     "view_experience": "Ver experiencia completa"
   },
@@ -74,10 +74,10 @@
     "email_label": "Email"
   },
   "blog": {
-    "title": "Blog",
-    "count": "{count, plural, one {# entrada} other {# entradas}}",
-    "empty": "Aún no hay entradas publicadas.",
-    "back": "Volver al blog",
+    "title": "Apuntes",
+    "count": "{count, plural, one {# apunte} other {# apuntes}}",
+    "empty": "Aún no hay apuntes publicados.",
+    "back": "Volver a apuntes",
     "no_content": "Contenido no disponible en este idioma."
   }
 }
