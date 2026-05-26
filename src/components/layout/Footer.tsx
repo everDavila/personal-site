@@ -27,11 +27,11 @@ const LINK_STYLE = {
 } as const
 
 const LABELS: Record<Locale, { nav: string; resources: string; follow: string }> = {
-  es: { nav: 'Navegación', resources: 'Recursos',  follow: 'Sígueme'  },
-  en: { nav: 'Navigation', resources: 'Resources', follow: 'Follow'   },
-  pt: { nav: 'Navegação',  resources: 'Recursos',  follow: 'Siga-me'  },
-  qu: { nav: 'Puriyway',   resources: 'Imaykuna',  follow: 'Qhatiway' },
-  zh: { nav: '导航',        resources: '资源',       follow: '关注'     },
+  es: { nav: 'Navegación', resources: 'Recursos',  follow: 'Canales'   },
+  en: { nav: 'Navigation', resources: 'Resources', follow: 'Elsewhere' },
+  pt: { nav: 'Navegação',  resources: 'Recursos',  follow: 'Canales'   },
+  qu: { nav: 'Puriyway',   resources: 'Imaykuna',  follow: 'Canales'   },
+  zh: { nav: '导航',        resources: '资源',       follow: 'Elsewhere' },
 }
 
 export async function Footer() {
