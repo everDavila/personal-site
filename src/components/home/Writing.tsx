@@ -39,7 +39,7 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
           className="link-accent"
           style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textDecoration: 'none', letterSpacing: '0.08em', textTransform: 'uppercase' }}
         >
-          {blogTitle} →
+          {sectionLabel} →
         </Link>
       </div>
 
