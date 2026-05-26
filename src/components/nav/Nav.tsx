@@ -32,8 +32,7 @@ export async function Nav() {
         top: 0,
         zIndex: 50,
         backgroundColor: 'var(--color-bg)',
-        borderBottom: 'var(--border-width) solid var(--color-border)',
-        transition: 'background-color var(--transition), border-color var(--transition)',
+        transition: 'background-color var(--transition)',
       }}
     >
       <nav

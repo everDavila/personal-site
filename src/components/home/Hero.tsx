@@ -14,15 +14,12 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
   const locale = await getLocale() as 'es' | 'en' | 'pt' | 'qu' | 'zh'
   const t = await getTranslations('home.hero')
 
-  const roleLabel  = settings?.hero?.roleLabel?.[locale]  || t('role_label')
-  const headline   = settings?.hero?.headline?.[locale]   || t('headline')
+  const headline    = settings?.hero?.headline?.[locale]   || t('headline')
   const fallbackSub = settings?.hero?.sub?.[locale] ?? t('sub')
-  const sub        = initialSub ?? fallbackSub
-  const ctaWork    = settings?.hero?.ctaWork?.[locale]    || t('cta_work')
-  const ctaCV      = settings?.hero?.ctaCV?.[locale]      || t('cta_cv')
-  const heroImgUrl = settings?.hero?.heroImage?.asset?.url || null
+  const sub         = initialSub ?? fallbackSub
+  const ctaWork     = settings?.hero?.ctaWork?.[locale]    || t('cta_work')
+  const ctaCV       = settings?.hero?.ctaCV?.[locale]      || t('cta_cv')
 
-  // Strip trailing period so we can append a colored one
   const cleanHeadline = headline.replace(/\.\s*$/, '')
 
   return (
@@ -31,63 +28,66 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
       style={{
         minHeight: 'calc(100svh - 57px)',
         display: 'flex',
-        alignItems: 'center',
-        paddingBlock: 'clamp(4rem, 10vw, 8rem)',
+        flexDirection: 'column',
+        justifyContent: 'flex-end',
+        paddingBottom: 'clamp(3.5rem, 8vw, 6rem)',
+        paddingTop: 'clamp(6rem, 15vw, 10rem)',
       }}
     >
-      <div className={heroImgUrl ? 'hero-grid' : 'hero-content-only'} style={{ width: '100%' }}>
+      <div style={{ maxWidth: '72rem', width: '100%' }}>
 
-        {/* ── Text ── */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.5rem' }}>
-          {roleLabel && (
-            <p className="text-label" style={{ margin: 0 }}>{roleLabel}</p>
-          )}
+        <h1
+          style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: 'var(--text-hero)',
+            fontWeight: 400,
+            lineHeight: 1.05,
+            letterSpacing: '-0.03em',
+            color: 'var(--color-text)',
+            margin: '0 0 clamp(2rem, 5vw, 3.5rem)',
+            maxWidth: '14ch',
+          }}
+        >
+          {cleanHeadline}
+          <span style={{ color: 'var(--color-accent)' }}>.</span>
+        </h1>
 
-          <h1
-            style={{
-              fontSize: 'var(--text-hero)',
-              fontFamily: 'var(--font-display)',
-              fontWeight: 700,
-              lineHeight: 1.1,
-              letterSpacing: '-0.02em',
-              color: 'var(--color-text)',
-              maxWidth: '16ch',
-              margin: 0,
-            }}
-          >
-            {cleanHeadline}
-            <span style={{ color: 'var(--color-accent)' }}>.</span>
-          </h1>
-
+        <div style={{
+          display: 'grid',
+          gridTemplateColumns: 'minmax(0, 26rem) 1fr',
+          gap: 'clamp(2rem, 5vw, 4rem)',
+          alignItems: 'end',
+        }}>
           <HeroSubtitle
             initial={sub}
             pool={subtitlePool}
             style={{
-              maxWidth: '42ch',
               color: 'var(--color-muted)',
               fontSize: 'var(--text-body)',
-              lineHeight: 1.7,
+              lineHeight: 1.75,
               margin: 0,
             }}
           />
 
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1.25rem', flexWrap: 'wrap' }}>
+          <div style={{
+            display: 'flex',
+            alignItems: 'center',
+            gap: '2rem',
+            justifyContent: 'flex-end',
+            flexWrap: 'wrap',
+            paddingBottom: '0.25rem',
+          }}>
             <Link
               href={{ pathname: '/work' }}
               style={{
-                display: 'inline-flex',
-                alignItems: 'center',
-                gap: '0.375rem',
-                color: 'var(--color-bg)',
-                background: 'var(--color-accent)',
-                fontWeight: 500,
-                fontSize: 'var(--text-small)',
+                fontSize: 'var(--text-label)',
+                color: 'var(--color-text)',
                 textDecoration: 'none',
-                padding: '0.5rem 1.125rem',
-                borderRadius: 'var(--radius)',
-                transition: 'background var(--transition)',
+                textTransform: 'uppercase',
+                letterSpacing: '0.1em',
+                transition: 'color var(--transition)',
               }}
-              className="hero-cta-work"
+              className="link-accent"
             >
               {ctaWork} →
             </Link>
@@ -98,10 +98,11 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
                 target="_blank"
                 rel="noopener noreferrer"
                 style={{
+                  fontSize: 'var(--text-label)',
                   color: 'var(--color-muted)',
-                  fontWeight: 400,
-                  fontSize: 'var(--text-small)',
                   textDecoration: 'none',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.1em',
                   transition: 'color var(--transition)',
                 }}
                 className="link-accent"
@@ -112,22 +113,6 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
           </div>
         </div>
 
-        {/* ── Hero image ── */}
-        {heroImgUrl && (
-          <div
-            style={{
-              overflow: 'hidden',
-              background: 'var(--color-surface)',
-              aspectRatio: '3/4',
-            }}
-          >
-            <img
-              src={heroImgUrl}
-              alt=""
-              style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }}
-            />
-          </div>
-        )}
       </div>
     </section>
   )

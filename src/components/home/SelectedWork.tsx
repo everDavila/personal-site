@@ -25,15 +25,32 @@ export async function SelectedWork({ projects, settings }: Props) {
       className="container section"
       style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
     >
-      <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '2.5rem', gap: '1rem', flexWrap: 'wrap' }}>
+      <div style={{
+        display: 'flex',
+        justifyContent: 'space-between',
+        alignItems: 'baseline',
+        marginBottom: '3rem',
+        gap: '1rem',
+        flexWrap: 'wrap',
+      }}>
         <p className="text-label" style={{ margin: 0 }}>{sectionLabel}</p>
-        <Link href={{ pathname: '/work' }} className="link-accent" style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', textDecoration: 'none' }}>
+        <Link
+          href={{ pathname: '/work' }}
+          className="link-accent"
+          style={{
+            fontSize: 'var(--text-label)',
+            color: 'var(--color-muted)',
+            textDecoration: 'none',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+          }}
+        >
           {workTitle} →
         </Link>
       </div>
 
-      <div className="projects-grid">
-        {projects.map(project => {
+      <div className="projects-list">
+        {projects.map((project, i) => {
           const title   = project.title?.[locale]   || project.title?.es   || project.title?.en   || ''
           const summary = project.summary?.[locale]  || project.summary?.es  || project.summary?.en  || ''
 
@@ -41,42 +58,23 @@ export async function SelectedWork({ projects, settings }: Props) {
             <Link
               key={project._id}
               href={{ pathname: '/work/[slug]', params: { slug: project.slug } }}
-              className="project-card card-hover"
+              className="project-row"
             >
-              {project.mainImage?.asset?.url ? (
-                <div className="project-card-image">
-                  <img src={project.mainImage.asset.url} alt={project.mainImage.alt?.[locale] || title} style={{ width: '100%', height: '100%', objectFit: 'cover', display: 'block' }} />
-                </div>
-              ) : (
-                <div className="project-card-image" style={{ background: 'var(--color-surface)', backgroundImage: 'radial-gradient(var(--color-border) 1px, transparent 1px)', backgroundSize: '16px 16px' }} />
-              )}
+              <span className="project-row-num">
+                {String(i + 1).padStart(2, '0')}
+              </span>
 
-              <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.5rem' }}>
-                <span style={{ fontSize: 'var(--text-label)', fontWeight: 500, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-label)' }}>
-                  {project.year || ''}
-                </span>
-                <span style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)' }}>↗</span>
+              <div>
+                <h3 className="project-row-title">{title}</h3>
+                {summary && (
+                  <p className="project-row-summary">{summary}</p>
+                )}
               </div>
 
-              <h3 style={{ fontSize: 'var(--text-body)', fontWeight: 600, color: 'var(--color-text)', margin: '0 0 0.375rem', lineHeight: 1.3 }}>
-                {title}
-              </h3>
-
-              {summary && (
-                <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', lineHeight: 1.6, margin: '0 0 0.75rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
-                  {summary}
-                </p>
-              )}
-
-              {project.tags?.length > 0 && (
-                <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
-                  {project.tags.slice(0, 3).map(tag => (
-                    <span key={tag} style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-label)' }}>
-                      {tag}
-                    </span>
-                  ))}
-                </div>
-              )}
+              <div className="project-row-meta">
+                {project.year && <span>{project.year}</span>}
+                <span>↗</span>
+              </div>
             </Link>
           )
         })}
