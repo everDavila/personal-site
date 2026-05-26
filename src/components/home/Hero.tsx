@@ -30,12 +30,13 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
         display: 'flex',
         flexDirection: 'column',
         justifyContent: 'flex-end',
-        paddingBottom: 'clamp(3.5rem, 8vw, 6rem)',
-        paddingTop: 'clamp(6rem, 15vw, 10rem)',
+        paddingBottom: 'clamp(4rem, 9vw, 7rem)',
+        paddingTop: 'clamp(7rem, 18vw, 12rem)',
       }}
     >
-      <div style={{ maxWidth: '72rem', width: '100%' }}>
+      <div style={{ maxWidth: '76rem', width: '100%' }}>
 
+        {/* Headline — anchored left, dominant */}
         <h1
           style={{
             fontFamily: 'var(--font-serif)',
@@ -44,38 +45,46 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
             lineHeight: 1.05,
             letterSpacing: '-0.03em',
             color: 'var(--color-text)',
-            margin: '0 0 clamp(2rem, 5vw, 3.5rem)',
-            maxWidth: '14ch',
+            margin: '0 0 clamp(3rem, 8vw, 6rem)',
+            maxWidth: '13ch',
           }}
         >
           {cleanHeadline}
           <span style={{ color: 'var(--color-accent)' }}>.</span>
         </h1>
 
+        {/* Subtitle + CTAs — staggered, not aligned with headline */}
         <div style={{
-          display: 'grid',
-          gridTemplateColumns: 'minmax(0, 26rem) 1fr',
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'flex-end',
           gap: 'clamp(2rem, 5vw, 4rem)',
-          alignItems: 'end',
+          flexWrap: 'wrap',
         }}>
-          <HeroSubtitle
-            initial={sub}
-            pool={subtitlePool}
-            style={{
-              color: 'var(--color-muted)',
-              fontSize: 'var(--text-body)',
-              lineHeight: 1.75,
-              margin: 0,
-            }}
-          />
 
+          {/* Subtitle — indented to create asymmetric tension with the headline */}
+          <div style={{ paddingLeft: 'clamp(0rem, 7vw, 6rem)' }}>
+            <HeroSubtitle
+              initial={sub}
+              pool={subtitlePool}
+              style={{
+                color: 'var(--color-muted)',
+                fontSize: 'var(--text-body)',
+                lineHeight: 1.75,
+                margin: 0,
+                maxWidth: '36ch',
+              }}
+            />
+          </div>
+
+          {/* CTAs — vertical stack, bottom-right */}
           <div style={{
             display: 'flex',
-            alignItems: 'center',
-            gap: '2rem',
-            justifyContent: 'flex-end',
-            flexWrap: 'wrap',
-            paddingBottom: '0.25rem',
+            flexDirection: 'column',
+            alignItems: 'flex-end',
+            gap: '0.75rem',
+            paddingBottom: '0.1rem',
+            flexShrink: 0,
           }}>
             <Link
               href={{ pathname: '/work' }}
@@ -85,7 +94,7 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
                 textDecoration: 'none',
                 textTransform: 'uppercase',
                 letterSpacing: '0.1em',
-                transition: 'color var(--transition)',
+                transition: 'opacity var(--transition)',
               }}
               className="link-accent"
             >
@@ -103,9 +112,8 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
                   textDecoration: 'none',
                   textTransform: 'uppercase',
                   letterSpacing: '0.1em',
-                  transition: 'color var(--transition)',
+                  transition: 'opacity var(--transition)',
                 }}
-                className="link-accent"
               >
                 {ctaCV} ↗
               </a>

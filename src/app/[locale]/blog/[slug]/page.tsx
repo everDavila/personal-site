@@ -90,7 +90,7 @@ export default async function PostPage({ params }: Props) {
         ← {t('back')}
       </Link>
 
-      <article style={{ maxWidth: '68ch' }}>
+      <article style={{ maxWidth: '64ch' }}>
 
         {/* Header */}
         <header style={{ marginBottom: '3rem' }}>
@@ -127,7 +127,6 @@ export default async function PostPage({ params }: Props) {
             alignItems: 'center',
             gap: '1.25rem',
             paddingTop: '1.25rem',
-            borderTop: 'var(--border-width) solid var(--color-border)',
             flexWrap: 'wrap',
           }}>
             <time style={{
@@ -158,7 +157,7 @@ export default async function PostPage({ params }: Props) {
               <div style={{
                 display: 'flex',
                 alignItems: 'center',
-                gap: '0.4rem',
+                gap: '0.75rem',
                 marginLeft: 'auto',
               }}>
                 {availableLocales.map(l => (
@@ -168,15 +167,11 @@ export default async function PostPage({ params }: Props) {
                     locale={l}
                     style={{
                       fontSize: 'var(--text-label)',
-                      fontWeight: 500,
                       color: 'var(--color-muted)',
                       textDecoration: 'none',
                       textTransform: 'uppercase',
-                      letterSpacing: 'var(--tracking-label)',
-                      border: 'var(--border-width) solid var(--color-border)',
-                      borderRadius: 'var(--radius)',
-                      padding: '0.2rem 0.5rem',
-                      transition: 'border-color var(--transition), color var(--transition)',
+                      letterSpacing: '0.08em',
+                      transition: 'color var(--transition)',
                     }}
                     className="link-accent"
                   >

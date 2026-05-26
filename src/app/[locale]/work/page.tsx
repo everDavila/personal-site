@@ -41,7 +41,7 @@ export default async function WorkPage() {
       {projects.length === 0 ? (
         <p style={{ color: 'var(--color-muted)' }}>{empty}</p>
       ) : (
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        <div className="projects-list">
           {projects.map((project, i) => {
             const projectTitle = localized(project.title, locale)
             const summary = localized(project.summary, locale)
@@ -49,72 +49,26 @@ export default async function WorkPage() {
               <Link
                 key={project._id}
                 href={{ pathname: '/work/[slug]', params: { slug: project.slug } }}
-                style={{ textDecoration: 'none', display: 'block' }}
+                className="project-row"
               >
-                <article
-                  className="card-hover exp-item"
-                  style={{
-                    display: 'grid',
-                    gridTemplateColumns: '1fr auto',
-                    gap: '1rem',
-                    alignItems: 'start',
-                    paddingBlock: '1.75rem',
-                    borderTop: i === 0 ? 'none' : 'var(--border-width) solid var(--color-border)',
-                    cursor: 'pointer',
-                  }}
-                >
-                  <div style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-                    <h2 style={{
-                      fontSize: 'var(--text-body)',
-                      fontWeight: 600,
-                      color: 'var(--color-text)',
-                      margin: 0,
-                    }}>
-                      {projectTitle.value || project.client}
-                    </h2>
-                    <span style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)' }}>
-                      {project.client}
-                    </span>
-                    {summary.value && (
-                      <p style={{
-                        fontSize: 'var(--text-small)',
-                        color: 'var(--color-muted)',
-                        lineHeight: 1.6,
-                        margin: 0,
-                        display: '-webkit-box',
-                        WebkitLineClamp: 2,
-                        WebkitBoxOrient: 'vertical',
-                        overflow: 'hidden',
-                      }}>
-                        {summary.value}
-                      </p>
-                    )}
-                    {project.tags?.length > 0 && (
-                      <div className="exp-tags" style={{ display: 'flex', gap: '0.75rem', flexWrap: 'wrap', marginTop: '0.25rem' }}>
-                        {project.tags.map(tag => (
-                          <span key={tag} style={{
-                            fontSize: 'var(--text-label)',
-                            color: 'var(--color-muted)',
-                            textTransform: 'uppercase',
-                            letterSpacing: '0.08em',
-                          }}>
-                            {tag}
-                          </span>
-                        ))}
-                      </div>
-                    )}
-                  </div>
-                  {project.year && (
-                    <span style={{
-                      fontSize: 'var(--text-small)',
-                      color: 'var(--color-muted)',
-                      whiteSpace: 'nowrap',
-                      paddingTop: '0.2rem',
-                    }}>
-                      {project.year}
-                    </span>
+                <span className="project-row-num">{String(i + 1).padStart(2, '0')}</span>
+                <div>
+                  <h2 className="project-row-title">
+                    {projectTitle.value || project.client}
+                  </h2>
+                  {project.client && (
+                    <span className="project-row-summary">{project.client}</span>
                   )}
-                </article>
+                  {summary.value && (
+                    <p className="project-row-summary" style={{ marginTop: '0.2rem' }}>
+                      {summary.value}
+                    </p>
+                  )}
+                </div>
+                <div className="project-row-meta">
+                  {project.year && <span>{project.year}</span>}
+                  <span>↗</span>
+                </div>
               </Link>
             )
           })}
