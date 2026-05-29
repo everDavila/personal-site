@@ -4,13 +4,13 @@ import { getPostBySlug, getAllPostSlugs, getAdjacentPosts } from '@/sanity/queri
 import { PostBody } from '@/components/blog/PostBody'
 import { FallbackBadge } from '@/components/ui/FallbackBadge'
 import { localized } from '@/lib/i18n'
-import { getLocale, getTranslations } from 'next-intl/server'
+import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
 import { LOCALE_NAMES } from '@/lib/i18n'
 import type { PortableTextBlock } from '@portabletext/types'
 
-type Props = { params: Promise<{ slug: string }> }
+type Props = { params: Promise<{ slug: string; locale: string }> }
 
 export async function generateMetadata(
   { params }: { params: Promise<{ slug: string; locale: string }> }
@@ -76,10 +76,10 @@ const MIN_LABEL: Record<Locale, string> = {
 }
 
 export default async function PostPage({ params }: Props) {
-  const { slug } = await params
-  const [post, locale, t] = await Promise.all([
+  const { slug, locale } = await params
+  setRequestLocale(locale)
+  const [post, t] = await Promise.all([
     getPostBySlug(slug),
-    getLocale(),
     getTranslations('blog'),
   ])
 

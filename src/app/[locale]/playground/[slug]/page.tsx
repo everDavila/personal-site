@@ -2,13 +2,13 @@ import { notFound } from 'next/navigation'
 import { getPlaygroundItemBySlug, getAllPlaygroundSlugs } from '@/sanity/queries/playground'
 import { PostBody } from '@/components/blog/PostBody'
 import { localized } from '@/lib/i18n'
-import { getLocale, getTranslations } from 'next-intl/server'
+import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import Image from 'next/image'
 import type { Locale } from '@/lib/i18n'
 import type { PortableTextBlock } from '@portabletext/types'
 
-type Props = { params: Promise<{ slug: string }> }
+type Props = { params: Promise<{ slug: string; locale: string }> }
 
 const STATUS_COLORS: Record<string, string> = {
   en_proceso: 'var(--color-accent)',
@@ -23,10 +23,10 @@ export async function generateStaticParams() {
 }
 
 export default async function PlaygroundItemPage({ params }: Props) {
-  const { slug } = await params
-  const [item, locale, t] = await Promise.all([
+  const { slug, locale } = await params
+  setRequestLocale(locale)
+  const [item, t] = await Promise.all([
     getPlaygroundItemBySlug(slug),
-    getLocale(),
     getTranslations('playground'),
   ])
 
