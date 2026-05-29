@@ -46,7 +46,7 @@ export function PostCard({ post, locale, featured = false }: Props) {
   const elabel  = editorialLabel(post.publishedAt, post._updatedAt, locale)
 
   if (featured) {
-    const featuredImageSrc = post.mainImage?.asset.url
+    const featuredImageSrc = post.mainImage?.asset?.url
       ?? `/api/og?title=${encodeURIComponent(title.value || '')}&date=${encodeURIComponent(date)}`
     const featuredImageAlt = post.mainImage?.alt?.[locale] ?? post.mainImage?.alt?.es ?? title.value ?? ''
 

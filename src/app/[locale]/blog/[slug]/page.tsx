@@ -29,7 +29,7 @@ export async function generateMetadata(
   )
 
   const base = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://davila.uno'
-  const ogImage = post.mainImage?.asset.url
+  const ogImage = post.mainImage?.asset?.url
     ?? `${base}/api/og?title=${encodeURIComponent(title.value ?? '')}&date=${encodeURIComponent(date)}`
 
   return {
@@ -92,11 +92,11 @@ export default async function PostPage({ params }: Props) {
   const locales: Locale[] = ['es', 'en', 'pt', 'qu', 'zh']
   const availableLocales = locales.filter(l => l !== currentLocale && post.title?.[l])
 
-  const bodyBlocks = (post.body as Record<Locale, PortableTextBlock[]>)
+  const bodyBlocks = post.body as Record<Locale, PortableTextBlock[]> | null
   const bodyValue: PortableTextBlock[] | null =
-    bodyBlocks[currentLocale] ??
-    bodyBlocks[post.originalLanguage] ??
-    locales.map(l => bodyBlocks[l]).find(v => v?.length) ??
+    bodyBlocks?.[currentLocale] ??
+    bodyBlocks?.[post.originalLanguage] ??
+    locales.map(l => bodyBlocks?.[l]).find(v => v?.length) ??
     null
 
   const date = new Date(post.publishedAt).toLocaleDateString(
@@ -132,7 +132,7 @@ export default async function PostPage({ params }: Props) {
 
       {/* Cover image — real from Sanity or generated from title */}
       {(() => {
-        const imageSrc = post.mainImage?.asset.url
+        const imageSrc = post.mainImage?.asset?.url
           ?? `/api/og?title=${encodeURIComponent(title.value || '')}&date=${encodeURIComponent(date)}`
         const imageAlt = post.mainImage
           ? (post.mainImage.alt?.[currentLocale] ?? post.mainImage.alt?.[post.originalLanguage as Locale] ?? title.value ?? '')
