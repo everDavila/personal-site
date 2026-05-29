@@ -78,6 +78,8 @@
     "count": "{count, plural, one {# apunte} other {# apuntes}}",
     "empty": "Aún no hay apuntes publicados.",
     "back": "Volver a apuntes",
-    "no_content": "Contenido no disponible en este idioma."
+    "no_content": "Contenido no disponible en este idioma.",
+    "prev": "Anterior",
+    "next": "Siguiente"
   }
 }

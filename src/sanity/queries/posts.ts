@@ -57,3 +57,23 @@ export async function getAllPostSlugs(): Promise<string[]> {
   const posts = await client.fetch(`*[_type == "post"]{ "slug": slug.current }`)
   return posts.map((p: { slug: string }) => p.slug)
 }
+
+type PostNav = { slug: string; title: Record<Locale, string>; originalLanguage: Locale }
+
+export async function getAdjacentPosts(publishedAt: string): Promise<{
+  prev: PostNav | null
+  next: PostNav | null
+}> {
+  return client.fetch(
+    `{
+      "prev": *[_type == "post" && publishedAt < $publishedAt] | order(publishedAt desc) [0] {
+        "slug": slug.current, title, originalLanguage
+      },
+      "next": *[_type == "post" && publishedAt > $publishedAt] | order(publishedAt asc) [0] {
+        "slug": slug.current, title, originalLanguage
+      }
+    }`,
+    { publishedAt },
+    { next: { tags: ['post'] } }
+  )
+}

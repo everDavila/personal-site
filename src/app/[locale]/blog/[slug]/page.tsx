@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getPostBySlug, getAllPostSlugs } from '@/sanity/queries/posts'
+import { getPostBySlug, getAllPostSlugs, getAdjacentPosts } from '@/sanity/queries/posts'
 import { PostBody } from '@/components/blog/PostBody'
 import { FallbackBadge } from '@/components/ui/FallbackBadge'
 import { localized } from '@/lib/i18n'
@@ -84,6 +84,8 @@ export default async function PostPage({ params }: Props) {
   ])
 
   if (!post) notFound()
+
+  const { prev: prevPost, next: nextPost } = await getAdjacentPosts(post.publishedAt)
 
   const currentLocale = locale as Locale
   const title  = localized(post.title,  currentLocale, post.originalLanguage)
@@ -265,6 +267,79 @@ export default async function PostPage({ params }: Props) {
         )}
 
       </article>
+
+      {/* Adjacent post navigation */}
+      {(prevPost || nextPost) && (
+        <nav
+          aria-label="Post navigation"
+          style={{
+            maxWidth: '64ch',
+            borderTop: 'var(--border-width) solid var(--color-border)',
+            marginTop: '5rem',
+            paddingTop: '3rem',
+            display: 'grid',
+            gridTemplateColumns: '1fr 1fr',
+            gap: '2rem',
+          }}
+        >
+          <div>
+            {prevPost && (
+              <Link
+                href={{ pathname: '/blog/[slug]', params: { slug: prevPost.slug } }}
+                style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+                className="link-accent"
+              >
+                <p style={{
+                  fontSize: 'var(--text-label)',
+                  color: 'var(--color-muted)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  margin: '0 0 0.5rem',
+                }}>
+                  ← {t('prev')}
+                </p>
+                <p style={{
+                  fontSize: 'var(--text-small)',
+                  lineHeight: 1.4,
+                  margin: 0,
+                  color: 'var(--color-text)',
+                }}>
+                  {localized(prevPost.title, currentLocale, prevPost.originalLanguage).value || '—'}
+                </p>
+              </Link>
+            )}
+          </div>
+
+          <div style={{ textAlign: 'right' }}>
+            {nextPost && (
+              <Link
+                href={{ pathname: '/blog/[slug]', params: { slug: nextPost.slug } }}
+                style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+                className="link-accent"
+              >
+                <p style={{
+                  fontSize: 'var(--text-label)',
+                  color: 'var(--color-muted)',
+                  textTransform: 'uppercase',
+                  letterSpacing: '0.08em',
+                  margin: '0 0 0.5rem',
+                }}>
+                  {t('next')} →
+                </p>
+                <p style={{
+                  fontSize: 'var(--text-small)',
+                  lineHeight: 1.4,
+                  margin: 0,
+                  color: 'var(--color-text)',
+                }}>
+                  {localized(nextPost.title, currentLocale, nextPost.originalLanguage).value || '—'}
+                </p>
+              </Link>
+            )}
+          </div>
+        </nav>
+      )}
+
     </main>
   )
 }

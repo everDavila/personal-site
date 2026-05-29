@@ -78,6 +78,8 @@
     "count": "{count, plural, one {# nota} other {# notas}}",
     "empty": "Ainda não há notas publicadas.",
     "back": "Voltar às notas",
-    "no_content": "Conteúdo não disponível neste idioma."
+    "no_content": "Conteúdo não disponível neste idioma.",
+    "prev": "Anterior",
+    "next": "Seguinte"
   }
 }

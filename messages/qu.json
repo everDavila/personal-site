@@ -78,6 +78,8 @@
     "count": "{count} qillqay",
     "empty": "Manaraq qillqasqachu.",
     "back": "Qillqaykunaman kutiy",
-    "no_content": "Kay simipim mana kanchu."
+    "no_content": "Kay simipim mana kanchu.",
+    "prev": "Ñawpaq",
+    "next": "Qhipa"
   }
 }
