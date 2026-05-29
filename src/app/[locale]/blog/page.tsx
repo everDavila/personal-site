@@ -24,8 +24,9 @@ export default async function BlogPage() {
     getSiteSettings(),
   ])
 
+  const n = settings?.labels?.nav
   const b = settings?.labels?.blog
-  const title    = lbl(b?.title, locale, t('title'))
+  const title    = lbl(n?.blog, locale, t('title'))
   const emptyMsg = lbl(b?.empty, locale, t('empty'))
 
   let posts = await getAllPosts(locale)

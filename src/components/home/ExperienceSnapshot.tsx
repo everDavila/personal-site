@@ -31,13 +31,13 @@ export async function ExperienceSnapshot({ workEntries, eduEntries, cvUrl, setti
 
   return (
     <section
-      className="container section"
+      className="container section-inner"
       style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
     >
       <div className="home-exp-grid">
 
         {/* ── Work column ── */}
-        <div>
+        <div style={{ paddingRight: 'clamp(1.5rem, 3vw, 2.5rem)' }}>
           <p className="text-label" style={{ marginBottom: '2rem' }}>{workLabel}</p>
 
           <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
@@ -50,7 +50,7 @@ export async function ExperienceSnapshot({ workEntries, eduEntries, cvUrl, setti
                   <p style={{ fontSize: 'var(--text-label)', fontWeight: 500, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-label)', margin: '0 0 0.375rem' }}>
                     {entry.period}
                   </p>
-                  <h3 style={{ fontSize: 'var(--text-body)', fontWeight: 600, color: 'var(--color-text)', margin: '0 0 0.2rem' }}>
+                  <h3 style={{ fontSize: 'var(--text-body)', fontWeight: 500, color: 'var(--color-text)', margin: '0 0 0.2rem' }}>
                     {entry.company}
                   </h3>
                   <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', fontWeight: 500, margin: '0 0 0.5rem' }}>
@@ -91,7 +91,7 @@ export async function ExperienceSnapshot({ workEntries, eduEntries, cvUrl, setti
               const degree = entry.degree?.[locale] || entry.degree?.es || entry.degree?.en || ''
               return (
                 <div key={entry._key} style={{ paddingBlock: '1.25rem', borderBottom: i < eduEntries.length - 1 ? 'var(--border-width) solid var(--color-border)' : 'none' }}>
-                  <p style={{ fontWeight: 600, fontSize: 'var(--text-body)', color: 'var(--color-text)', margin: '0 0 0.2rem' }}>{degree}</p>
+                  <p style={{ fontWeight: 500, fontSize: 'var(--text-body)', color: 'var(--color-text)', margin: '0 0 0.2rem' }}>{degree}</p>
                   <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', margin: '0 0 0.15rem' }}>{entry.institution}</p>
                   <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', margin: 0 }}>{entry.period}</p>
                 </div>

@@ -1,3 +1,4 @@
+import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getPostBySlug, getAllPostSlugs } from '@/sanity/queries/posts'
 import { PostBody } from '@/components/blog/PostBody'
@@ -10,6 +11,45 @@ import { LOCALE_NAMES } from '@/lib/i18n'
 import type { PortableTextBlock } from '@portabletext/types'
 
 type Props = { params: Promise<{ slug: string }> }
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ slug: string; locale: string }> }
+): Promise<Metadata> {
+  const { slug, locale } = await params
+  const post = await getPostBySlug(slug)
+  if (!post) return {}
+
+  const currentLocale = locale as Locale
+  const title  = localized(post.title,   currentLocale, post.originalLanguage)
+  const excerpt = localized(post.excerpt, currentLocale, post.originalLanguage)
+
+  const date = new Date(post.publishedAt).toLocaleDateString(
+    currentLocale === 'zh' ? 'zh-CN' : currentLocale,
+    { year: 'numeric', month: 'long', day: 'numeric' }
+  )
+
+  const base = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://davila.uno'
+  const ogImage = post.mainImage?.asset.url
+    ?? `${base}/api/og?title=${encodeURIComponent(title.value ?? '')}&date=${encodeURIComponent(date)}`
+
+  return {
+    title: title.value ?? undefined,
+    description: excerpt.value ?? undefined,
+    openGraph: {
+      title:         title.value  ?? undefined,
+      description:   excerpt.value ?? undefined,
+      type:          'article',
+      publishedTime: post.publishedAt,
+      images: [{ url: ogImage, width: 1200, height: 630, alt: title.value ?? '' }],
+    },
+    twitter: {
+      card:        'summary_large_image',
+      title:       title.value  ?? undefined,
+      description: excerpt.value ?? undefined,
+      images:      [ogImage],
+    },
+  }
+}
 
 export async function generateStaticParams() {
   const slugs = await getAllPostSlugs()
@@ -89,6 +129,40 @@ export default async function PostPage({ params }: Props) {
       >
         ← {t('back')}
       </Link>
+
+      {/* Cover image — real from Sanity or generated from title */}
+      {(() => {
+        const imageSrc = post.mainImage?.asset.url
+          ?? `/api/og?title=${encodeURIComponent(title.value || '')}&date=${encodeURIComponent(date)}`
+        const imageAlt = post.mainImage
+          ? (post.mainImage.alt?.[currentLocale] ?? post.mainImage.alt?.[post.originalLanguage as Locale] ?? title.value ?? '')
+          : (title.value ?? '')
+        return (
+          <div style={{
+            marginInline: 'calc(-1 * var(--spacing-container))',
+            aspectRatio: '1200 / 630',
+            overflow: 'hidden',
+            marginBottom: '3rem',
+            backgroundColor: '#0F0F0D',
+          }}>
+            <img
+              src={imageSrc}
+              alt={imageAlt}
+              width={1200}
+              height={630}
+              style={{
+                width: '100%',
+                height: '100%',
+                objectFit: 'cover',
+                display: 'block',
+                filter: post.mainImage
+                  ? 'grayscale(100%) brightness(0.97) contrast(1.05)'
+                  : 'none',
+              }}
+            />
+          </div>
+        )
+      })()}
 
       <article style={{ maxWidth: '64ch' }}>
 

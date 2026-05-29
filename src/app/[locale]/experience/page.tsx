@@ -116,7 +116,7 @@ export default async function ExperiencePage() {
       </section>
 
       {featured.length > 0 && (
-        <section className="container section" style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}>
+        <section className="container" style={{ borderTop: 'var(--border-width) solid var(--color-border)', paddingBlock: 'clamp(2.5rem, 5vw, 4rem)' }}>
           <SectionLabel accent>{featuredLabel}</SectionLabel>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {featured.map(entry => (
@@ -127,7 +127,7 @@ export default async function ExperiencePage() {
       )}
 
       {previous.length > 0 && (
-        <section className="container section" style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}>
+        <section className="container" style={{ borderTop: 'var(--border-width) solid var(--color-border)', paddingBlock: 'clamp(2.5rem, 5vw, 4rem)' }}>
           <SectionLabel>{previousLabel}</SectionLabel>
           <div style={{ display: 'flex', flexDirection: 'column' }}>
             {previous.map(entry => <PreviousEntry key={entry._key} entry={entry} locale={locale} />)}
@@ -136,7 +136,7 @@ export default async function ExperiencePage() {
       )}
 
       {edu.length > 0 && (
-        <section className="container section" style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}>
+        <section className="container section-inner" style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}>
           <SectionLabel accent>{eduLabel}</SectionLabel>
           <div className="exp-edu-grid">
             {edu.map(entry => <EduCard key={entry._key} entry={entry} locale={locale} />)}
@@ -152,7 +152,7 @@ export default async function ExperiencePage() {
       )}
 
       {work.length === 0 && edu.length === 0 && (
-        <section className="container section">
+        <section className="container section-inner">
           <p style={{ color: 'var(--color-muted)' }}>{emptyMsg}</p>
         </section>
       )}

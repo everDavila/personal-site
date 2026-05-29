@@ -22,7 +22,7 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
 
   return (
     <section
-      className="container section"
+      className="container section-inner"
       style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
     >
       <div style={{

@@ -11,7 +11,7 @@ export async function Philosophy({ text }: Props) {
 
   return (
     <section
-      className="container section"
+      className="container section-inner"
       style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
     >
       <p className="text-label" style={{ marginBottom: '2rem' }}>{t('philosophy_label')}</p>

@@ -26,12 +26,12 @@ export async function Nav() {
 
   return (
     <header
+      className="nav-glass"
       style={{
         position: 'fixed',
         insetInline: 0,
         top: 0,
         zIndex: 50,
-        backgroundColor: 'var(--color-bg)',
         transition: 'background-color var(--transition)',
       }}
     >

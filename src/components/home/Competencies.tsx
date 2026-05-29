@@ -16,7 +16,7 @@ export async function Competencies({ competencies, settings }: Props) {
   const sectionLabel = lbl(h?.competenciesLabel, locale, t('competencies_label'))
 
   return (
-    <section className="container section" style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}>
+    <section className="container section-inner" style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}>
       <p className="text-label" style={{ marginBottom: '2.5rem' }}>{sectionLabel}</p>
 
       <div style={{ display: 'grid', gridTemplateColumns: 'repeat(auto-fit, minmax(min(18rem, 100%), 1fr))', gap: '2.5rem' }}>

@@ -9,7 +9,7 @@ export async function FunFacts({ funFacts }: Props) {
   if (!funFacts?.length) return null
 
   return (
-    <section className="container section" style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}>
+    <section className="container section-inner" style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}>
       <div style={{
         display: 'grid',
         gridTemplateColumns: 'repeat(auto-fit, minmax(min(10rem, 45%), 1fr))',
