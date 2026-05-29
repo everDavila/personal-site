@@ -1,6 +1,6 @@
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
-import { getPostBySlug, getAllPostSlugs, getAdjacentPosts } from '@/sanity/queries/posts'
+import { getPostBySlug, getAdjacentPosts } from '@/sanity/queries/posts'
 import { PostBody } from '@/components/blog/PostBody'
 import { FallbackBadge } from '@/components/ui/FallbackBadge'
 import { localized } from '@/lib/i18n'
@@ -51,10 +51,6 @@ export async function generateMetadata(
   }
 }
 
-export async function generateStaticParams() {
-  const slugs = await getAllPostSlugs()
-  return slugs.map(slug => ({ slug }))
-}
 
 function readingTime(blocks: PortableTextBlock[]): number {
   const text = blocks.reduce((acc, block) => {

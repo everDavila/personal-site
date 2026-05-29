@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getPlaygroundItemBySlug, getAllPlaygroundSlugs } from '@/sanity/queries/playground'
+import { getPlaygroundItemBySlug } from '@/sanity/queries/playground'
 import { PostBody } from '@/components/blog/PostBody'
 import { localized } from '@/lib/i18n'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
@@ -17,10 +17,6 @@ const STATUS_COLORS: Record<string, string> = {
   fallido:    'var(--color-muted)',
 }
 
-export async function generateStaticParams() {
-  const slugs = await getAllPlaygroundSlugs()
-  return slugs.map(slug => ({ slug }))
-}
 
 export default async function PlaygroundItemPage({ params }: Props) {
   const { slug, locale } = await params

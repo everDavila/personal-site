@@ -5,10 +5,6 @@ import { notFound } from 'next/navigation'
 import { Nav } from '@/components/nav/Nav'
 import { Footer } from '@/components/layout/Footer'
 
-export function generateStaticParams() {
-  return routing.locales.map((locale) => ({ locale }))
-}
-
 export default async function LocaleLayout({
   children,
   params,

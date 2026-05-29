@@ -1,5 +1,5 @@
 import { notFound } from 'next/navigation'
-import { getProjectBySlug, getAllProjectSlugs } from '@/sanity/queries/projects'
+import { getProjectBySlug } from '@/sanity/queries/projects'
 import { PostBody } from '@/components/blog/PostBody'
 import { localized } from '@/lib/i18n'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
@@ -9,10 +9,6 @@ import type { PortableTextBlock } from '@portabletext/types'
 
 type Props = { params: Promise<{ slug: string; locale: string }> }
 
-export async function generateStaticParams() {
-  const slugs = await getAllProjectSlugs()
-  return slugs.map(slug => ({ slug }))
-}
 
 export default async function ProjectPage({ params }: Props) {
   const { slug, locale } = await params
