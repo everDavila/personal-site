@@ -214,7 +214,7 @@ export default function LabPage() {
                   {label}
                 </p>
                 <img
-                  src="/lab-character.jpg"
+                  src="/lab-character.png"
                   alt="Character reference"
                   style={{
                     width: '100%',
@@ -230,7 +230,7 @@ export default function LabPage() {
                   }}
                 />
                 <p style={{ display: 'none', fontFamily: 'ui-monospace', fontSize: '0.65rem', color: '#5A4A37', padding: '2rem', border: '1px dashed #3A3A37', textAlign: 'center' }}>
-                  Pon la imagen en /public/lab-character.jpg
+                  Pon la imagen en /public/lab-character.png
                 </p>
               </div>
             ))}
