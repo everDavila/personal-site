@@ -98,7 +98,7 @@ export function ThemeToggle() {
           transition: 'transform 280ms cubic-bezier(0.4, 0, 0.2, 1), background var(--transition)',
         }}
       >
-        {isDark ? <HumanIcon /> : <AstronautIcon />}
+        {isDark ? <AstronautIcon /> : <HumanIcon />}
       </span>
     </button>
   )
