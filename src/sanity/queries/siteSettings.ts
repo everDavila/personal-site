@@ -70,6 +70,15 @@ export type UILabels = {
   }
 }
 
+export type PageTitles = {
+  work?:       NarrativeModes | null
+  about?:      NarrativeModes | null
+  contact?:    NarrativeModes | null
+  experience?: NarrativeModes | null
+  playground?: NarrativeModes | null
+  blog?:       NarrativeModes | null
+}
+
 export type SiteSettings = {
   hero: {
     roleLabel:      LocalizedString
@@ -82,6 +91,7 @@ export type SiteSettings = {
     heroImage?:     { asset: { url: string } } | null
     heroImageLight?: { asset: { url: string } } | null
   }
+  pageTitles?: PageTitles | null
   pageImages?: {
     work?:       PageImageSet | null
     about?:      PageImageSet | null
@@ -142,6 +152,14 @@ export const NARRATIVE_FALLBACK = {
       es: 'Diseñador de sistemas digitales complejos.',
       en: 'Designer of complex digital systems.',
     } as LocalizedString,
+    pageTitles: {
+      work:       { es: 'Trabajo',      en: 'Work'       } as LocalizedString,
+      about:      { es: 'Enfoque',      en: 'About'      } as LocalizedString,
+      contact:    { es: 'Contacto',     en: 'Contact'    } as LocalizedString,
+      experience: { es: 'Experiencia',  en: 'Experience' } as LocalizedString,
+      playground: { es: 'Experimentos', en: 'Playground' } as LocalizedString,
+      blog:       { es: 'Apuntes',      en: 'Notes'      } as LocalizedString,
+    },
   },
   light: {
     philosophy: {
@@ -160,6 +178,14 @@ export const NARRATIVE_FALLBACK = {
       es: 'Hago que lo difícil sea fácil de usar.',
       en: 'I make the difficult easy to use.',
     } as LocalizedString,
+    pageTitles: {
+      work:       { es: 'Cosas que hice y que alguien pagó',       en: 'Things people actually paid for'      } as LocalizedString,
+      about:      { es: 'El ser humano detrás del PDF',             en: 'The human behind the PDF'             } as LocalizedString,
+      contact:    { es: 'Escríbeme (respondo, a veces)',            en: 'Write me (I reply, sometimes)'        } as LocalizedString,
+      experience: { es: 'El currículum que RRHH ignora',            en: 'The résumé HR skips'                  } as LocalizedString,
+      playground: { es: 'Experimentos con sobrevivientes',          en: 'Experiments with survivors'           } as LocalizedString,
+      blog:       { es: 'Apuntes que nadie pidió',                  en: 'Notes nobody asked for'               } as LocalizedString,
+    },
   },
 }
 
@@ -174,6 +200,14 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
         ctaWork, ctaCV,
         heroImage { asset->{ url } },
         heroImageLight { asset->{ url } }
+      },
+      pageTitles {
+        work       { dark, light },
+        about      { dark, light },
+        contact    { dark, light },
+        experience { dark, light },
+        playground { dark, light },
+        blog       { dark, light },
       },
       pageImages {
         work       { dark { asset->{ url } }, light { asset->{ url } } },

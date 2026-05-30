@@ -99,6 +99,23 @@ export const siteSettingsType = defineType({
       type: 'narrativeModesText',
     }),
 
+    // ── Títulos de página por modo narrativo ─────────────────
+    defineField({
+      name: 'pageTitles',
+      title: 'Títulos de página — por modo narrativo',
+      description: 'Título del <h1> de cada página. Modo oscuro = profesional/formal. Modo claro = más personal.',
+      type: 'object',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({ name: 'work',       title: 'Trabajo (/work)',            type: 'narrativeModesString' }),
+        defineField({ name: 'about',      title: 'Sobre mí (/about)',          type: 'narrativeModesString' }),
+        defineField({ name: 'contact',    title: 'Contacto (/contact)',        type: 'narrativeModesString' }),
+        defineField({ name: 'experience', title: 'Experiencia (/experience)',  type: 'narrativeModesString' }),
+        defineField({ name: 'playground', title: 'Playground (/playground)',   type: 'narrativeModesString' }),
+        defineField({ name: 'blog',       title: 'Blog/Apuntes (/blog)',       type: 'narrativeModesString' }),
+      ],
+    }),
+
     // ── Imágenes del personaje por página ────────────────────
     defineField({
       name: 'pageImages',

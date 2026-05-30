@@ -3,7 +3,7 @@ import { getAllPlaygroundItems } from '@/sanity/queries/playground'
 import { PlaygroundClient } from '@/components/playground/PlaygroundClient'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
@@ -19,8 +19,9 @@ export default async function PlaygroundPage() {
     getSiteSettings(),
   ])
 
-  const pg     = settings?.labels?.playground
-  const title  = lbl(pg?.title, locale, t('title'))
+  const pg         = settings?.labels?.playground
+  const titleDark  = narrativeText(settings?.pageTitles?.playground, 'dark',  locale, NARRATIVE_FALLBACK.dark.pageTitles.playground)  ?? lbl(pg?.title, locale, t('title'))
+  const titleLight = narrativeText(settings?.pageTitles?.playground, 'light', locale, NARRATIVE_FALLBACK.light.pageTitles.playground) ?? titleDark
 
   const imageSet = {
     dark:  settings?.pageImages?.playground?.dark?.asset?.url  ?? null,
@@ -46,14 +47,15 @@ export default async function PlaygroundPage() {
   return (
     <main className="container section">
       <PageHeader imageSet={imageSet}>
-        <h1 style={{
+        <h1 className="n-slot" style={{
           fontSize: 'var(--text-section)',
           fontFamily: 'var(--font-display)',
           fontWeight: 600,
           color: 'var(--color-text)',
           marginBottom: '0.25rem',
         }}>
-          {title}
+          <span className="n-d">{titleDark}</span>
+          <span className="n-l">{titleLight}</span>
         </h1>
         {subtitle && (
           <p style={{

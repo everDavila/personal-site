@@ -4,7 +4,7 @@ import { localized } from '@/lib/i18n'
 import type { Locale } from '@/lib/i18n'
 import type { WorkEntry, EducationEntry } from '@/sanity/queries/experience'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
@@ -83,8 +83,9 @@ export default async function ExperiencePage() {
     getSiteSettings(),
   ])
 
-  const e             = settings?.labels?.experience
-  const title         = lbl(e?.title,         locale, t('title'))
+  const e          = settings?.labels?.experience
+  const titleDark  = narrativeText(settings?.pageTitles?.experience, 'dark',  locale, NARRATIVE_FALLBACK.dark.pageTitles.experience)  ?? lbl(e?.title, locale, t('title'))
+  const titleLight = narrativeText(settings?.pageTitles?.experience, 'light', locale, NARRATIVE_FALLBACK.light.pageTitles.experience) ?? titleDark
   const currentLabel  = lbl(e?.current,       locale, t('current'))
   const featuredLabel = lbl(e?.featuredLabel, locale, t('featured_label'))
   const previousLabel = lbl(e?.previousLabel, locale, t('previous_label'))
@@ -107,8 +108,9 @@ export default async function ExperiencePage() {
     <>
       <section className="container" style={{ paddingTop: 'var(--spacing-section)', paddingBottom: '2.5rem', borderBottom: 'var(--border-width) solid var(--color-border)' }}>
         <PageHeader imageSet={imageSet}>
-          <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
-            {title}
+          <h1 className="page-title n-slot" style={{ marginBottom: '0.25rem' }}>
+            <span className="n-d">{titleDark}</span>
+            <span className="n-l">{titleLight}</span>
           </h1>
           {subtitle && (
             <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', lineHeight: 1.6, margin: 0, maxWidth: '52ch' }}>

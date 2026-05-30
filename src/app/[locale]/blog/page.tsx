@@ -4,7 +4,7 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import type { Locale } from '@/lib/i18n'
 import { BLOG_FALLBACK } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
@@ -25,10 +25,11 @@ export default async function BlogPage() {
     getSiteSettings(),
   ])
 
-  const n       = settings?.labels?.nav
-  const b       = settings?.labels?.blog
-  const title   = lbl(n?.blog, locale, t('title'))
-  const emptyMsg = lbl(b?.empty, locale, t('empty'))
+  const n          = settings?.labels?.nav
+  const b          = settings?.labels?.blog
+  const titleDark  = narrativeText(settings?.pageTitles?.blog, 'dark',  locale, NARRATIVE_FALLBACK.dark.pageTitles.blog)  ?? lbl(n?.blog, locale, t('title'))
+  const titleLight = narrativeText(settings?.pageTitles?.blog, 'light', locale, NARRATIVE_FALLBACK.light.pageTitles.blog) ?? titleDark
+  const emptyMsg   = lbl(b?.empty, locale, t('empty'))
 
   const imageSet = {
     dark:  settings?.pageImages?.blog?.dark?.asset?.url  ?? null,
@@ -60,7 +61,7 @@ export default async function BlogPage() {
           gap: '1rem',
           marginBottom: '0.5rem',
         }}>
-          <h1 style={{
+          <h1 className="n-slot" style={{
             fontFamily: 'var(--font-serif)',
             fontSize: 'clamp(2rem, 5vw, 3rem)',
             fontWeight: 400,
@@ -69,7 +70,8 @@ export default async function BlogPage() {
             color: 'var(--color-text)',
             margin: 0,
           }}>
-            {title}
+            <span className="n-d">{titleDark}</span>
+            <span className="n-l">{titleLight}</span>
           </h1>
           {posts.length > 0 && (
             <span style={{

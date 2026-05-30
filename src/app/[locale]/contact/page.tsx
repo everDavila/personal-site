@@ -15,7 +15,8 @@ export default async function ContactPage() {
   ])
 
   const c          = settings?.labels?.contact
-  const title      = lbl(c?.title,      locale, t('title'))
+  const titleDark  = narrativeText(settings?.pageTitles?.contact, 'dark',  locale, NARRATIVE_FALLBACK.dark.pageTitles.contact)  ?? lbl(c?.title, locale, t('title'))
+  const titleLight = narrativeText(settings?.pageTitles?.contact, 'light', locale, NARRATIVE_FALLBACK.light.pageTitles.contact) ?? titleDark
   const emailLabel = lbl(c?.emailLabel, locale, t('email_label'))
   const social     = settings?.social
 
@@ -31,8 +32,9 @@ export default async function ContactPage() {
   return (
     <main className="container section">
       <PageHeader imageSet={imageSet}>
-        <h1 className="page-title" style={{ marginBottom: '0.75rem' }}>
-          {title}
+        <h1 className="page-title n-slot" style={{ marginBottom: '0.75rem' }}>
+          <span className="n-d">{titleDark}</span>
+          <span className="n-l">{titleLight}</span>
         </h1>
         {subtitle && !hasIntro && (
           <p style={{

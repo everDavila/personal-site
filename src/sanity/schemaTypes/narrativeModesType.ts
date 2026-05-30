@@ -1,5 +1,16 @@
 import { defineField, defineType } from 'sanity'
 
+export const narrativeModesStringType = defineType({
+  name: 'narrativeModesString',
+  title: 'Título por modo narrativo',
+  type: 'object',
+  options: { collapsible: false },
+  fields: [
+    defineField({ name: 'dark',  title: '🌑 Modo Oscuro — Profesional', type: 'localizedString' }),
+    defineField({ name: 'light', title: '☀️ Modo Claro — Lúdico',       type: 'localizedString' }),
+  ],
+})
+
 export const narrativeModesImageType = defineType({
   name: 'narrativeModesImage',
   title: 'Imagen por modo narrativo',

@@ -15,8 +15,9 @@ export default async function AboutPage() {
     getPageSubtitle('about', locale),
   ])
 
-  const a       = settings?.labels?.about
-  const title   = lbl(a?.title,         locale, t('title'))
+  const a          = settings?.labels?.about
+  const titleDark  = narrativeText(settings?.pageTitles?.about, 'dark',  locale, NARRATIVE_FALLBACK.dark.pageTitles.about)  ?? lbl(a?.title, locale, t('title'))
+  const titleLight = narrativeText(settings?.pageTitles?.about, 'light', locale, NARRATIVE_FALLBACK.light.pageTitles.about) ?? titleDark
   const connect = lbl(a?.connect,       locale, t('connect'))
   const seeExp  = lbl(a?.seeExperience, locale, t('see_experience'))
   const social  = settings?.social
@@ -32,8 +33,9 @@ export default async function AboutPage() {
   return (
     <main className="container section">
       <PageHeader imageSet={imageSet}>
-        <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
-          {title}
+        <h1 className="page-title n-slot" style={{ marginBottom: '0.25rem' }}>
+          <span className="n-d">{titleDark}</span>
+          <span className="n-l">{titleLight}</span>
         </h1>
         {subtitle && (
           <p style={{

@@ -4,7 +4,7 @@ import { localized } from '@/lib/i18n'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
@@ -18,9 +18,10 @@ export default async function WorkPage() {
     getSiteSettings(),
   ])
 
-  const w     = settings?.labels?.work
-  const title = lbl(w?.title, locale, t('title'))
-  const empty = lbl(w?.empty, locale, t('empty'))
+  const w          = settings?.labels?.work
+  const titleDark  = narrativeText(settings?.pageTitles?.work, 'dark',  locale, NARRATIVE_FALLBACK.dark.pageTitles.work)  ?? lbl(w?.title, locale, t('title'))
+  const titleLight = narrativeText(settings?.pageTitles?.work, 'light', locale, NARRATIVE_FALLBACK.light.pageTitles.work) ?? titleDark
+  const empty      = lbl(w?.empty, locale, t('empty'))
 
   const imageSet = {
     dark:  settings?.pageImages?.work?.dark?.asset?.url  ?? null,
@@ -30,8 +31,9 @@ export default async function WorkPage() {
   return (
     <main className="container section">
       <PageHeader imageSet={imageSet}>
-        <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
-          {title}
+        <h1 className="page-title n-slot" style={{ marginBottom: '0.25rem' }}>
+          <span className="n-d">{titleDark}</span>
+          <span className="n-l">{titleLight}</span>
         </h1>
         {subtitle && (
           <p style={{
