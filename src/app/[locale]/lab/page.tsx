@@ -193,6 +193,50 @@ export default function LabPage() {
           </div>
         ))}
 
+        {/* ── Sección: filter:invert en imagen ── */}
+        <div style={{ borderTop: `1px solid ${c.border}`, paddingBlock: '2.5rem', transition: 'border-color 600ms ease' }}>
+          <p style={{ fontFamily: 'ui-monospace', fontSize: '0.68rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: c.text, margin: '0 0 0.3rem', transition: 'color 600ms ease' }}>
+            CSS filter — Inversión de imagen
+          </p>
+          <p style={{ fontFamily: 'ui-monospace', fontSize: '0.62rem', color: c.muted, margin: '0 0 1.75rem', transition: 'color 600ms ease' }}>
+            Una sola imagen, cuatro variantes de filter. Útil para subir solo un asset a Sanity.
+          </p>
+
+          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' }}>
+            {[
+              { label: 'Original',                        filter: 'none' },
+              { label: 'invert(1)',                       filter: 'invert(1)' },
+              { label: 'grayscale(1) invert(1)',          filter: 'grayscale(1) invert(1)' },
+              { label: 'invert(1) hue-rotate(180deg)',    filter: 'invert(1) hue-rotate(180deg)' },
+            ].map(({ label, filter }) => (
+              <div key={label}>
+                <p style={{ fontFamily: 'ui-monospace', fontSize: '0.6rem', color: c.muted, margin: '0 0 0.5rem', transition: 'color 600ms ease' }}>
+                  {label}
+                </p>
+                <img
+                  src="/lab-character.jpg"
+                  alt="Character reference"
+                  style={{
+                    width: '100%',
+                    display: 'block',
+                    filter,
+                    transition: 'filter 600ms ease',
+                    borderRadius: '2px',
+                  }}
+                  onError={e => {
+                    (e.currentTarget as HTMLImageElement).style.display = 'none'
+                    const p = e.currentTarget.nextSibling as HTMLElement
+                    if (p) p.style.display = 'block'
+                  }}
+                />
+                <p style={{ display: 'none', fontFamily: 'ui-monospace', fontSize: '0.65rem', color: '#5A4A37', padding: '2rem', border: '1px dashed #3A3A37', textAlign: 'center' }}>
+                  Pon la imagen en /public/lab-character.jpg
+                </p>
+              </div>
+            ))}
+          </div>
+        </div>
+
       </div>
     </div>
   )
