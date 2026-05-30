@@ -204,24 +204,38 @@ export default function LabPage() {
 
           {/* Comparación en 2 fondos side-by-side */}
           <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: c.border }}>
-            {/* Fondo claro — multiply */}
+            {/* Fondo claro — normalize + multiply */}
             <div style={{ background: '#E8E5DF', padding: '2rem' }}>
-              <p style={{ fontFamily: 'ui-monospace', fontSize: '0.6rem', color: '#6A6A67', margin: '0 0 1rem' }}>
+              <p style={{ fontFamily: 'ui-monospace', fontSize: '0.6rem', color: '#6A6A67', margin: '0 0 0.35rem' }}>
                 Fondo claro · <code>multiply</code>
               </p>
+              <p style={{ fontFamily: 'ui-monospace', fontSize: '0.55rem', color: '#9A9A97', margin: '0 0 1rem' }}>
+                grayscale → brightness → contrast → multiply
+              </p>
               <img src="/lab-character.png" alt="Character"
-                style={{ width: '100%', display: 'block', mixBlendMode: 'multiply' }}
+                style={{
+                  width: '100%', display: 'block',
+                  filter: 'grayscale(1) brightness(1.4) contrast(2)',
+                  mixBlendMode: 'multiply',
+                }}
                 onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.2' }}
               />
             </div>
 
-            {/* Fondo oscuro — invert + screen */}
+            {/* Fondo oscuro — normalize + invert + screen */}
             <div style={{ background: '#0F0F0D', padding: '2rem' }}>
-              <p style={{ fontFamily: 'ui-monospace', fontSize: '0.6rem', color: '#7A7975', margin: '0 0 1rem' }}>
-                Fondo oscuro · <code>invert(1) + screen</code>
+              <p style={{ fontFamily: 'ui-monospace', fontSize: '0.6rem', color: '#7A7975', margin: '0 0 0.35rem' }}>
+                Fondo oscuro · <code>invert + screen</code>
+              </p>
+              <p style={{ fontFamily: 'ui-monospace', fontSize: '0.55rem', color: '#4A4A47', margin: '0 0 1rem' }}>
+                grayscale → brightness → contrast → invert → screen
               </p>
               <img src="/lab-character.png" alt="Character"
-                style={{ width: '100%', display: 'block', filter: 'invert(1)', mixBlendMode: 'screen' }}
+                style={{
+                  width: '100%', display: 'block',
+                  filter: 'grayscale(1) brightness(1.4) contrast(2) invert(1)',
+                  mixBlendMode: 'screen',
+                }}
                 onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.2' }}
               />
             </div>
