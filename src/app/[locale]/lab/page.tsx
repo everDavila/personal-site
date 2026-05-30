@@ -193,47 +193,49 @@ export default function LabPage() {
           </div>
         ))}
 
-        {/* ── Sección: filter:invert en imagen ── */}
+        {/* ── Sección: blend-mode — fondo blanco sin cuadrado ── */}
         <div style={{ borderTop: `1px solid ${c.border}`, paddingBlock: '2.5rem', transition: 'border-color 600ms ease' }}>
           <p style={{ fontFamily: 'ui-monospace', fontSize: '0.68rem', fontWeight: 600, textTransform: 'uppercase', letterSpacing: '0.1em', color: c.text, margin: '0 0 0.3rem', transition: 'color 600ms ease' }}>
-            CSS filter — Inversión de imagen
+            mix-blend-mode — PNG fondo blanco sin cuadrado
           </p>
           <p style={{ fontFamily: 'ui-monospace', fontSize: '0.62rem', color: c.muted, margin: '0 0 1.75rem', transition: 'color 600ms ease' }}>
-            Una sola imagen, cuatro variantes de filter. Útil para subir solo un asset a Sanity.
+            Dibujado en papel blanco / lápiz negro. El trigger cambia el fondo — el blanco desaparece sin Photoshop.
           </p>
 
-          <div style={{ display: 'grid', gridTemplateColumns: 'repeat(2, 1fr)', gap: '1.5rem' }}>
-            {[
-              { label: 'Original',                        filter: 'none' },
-              { label: 'invert(1)',                       filter: 'invert(1)' },
-              { label: 'grayscale(1) invert(1)',          filter: 'grayscale(1) invert(1)' },
-              { label: 'invert(1) hue-rotate(180deg)',    filter: 'invert(1) hue-rotate(180deg)' },
-            ].map(({ label, filter }) => (
-              <div key={label}>
-                <p style={{ fontFamily: 'ui-monospace', fontSize: '0.6rem', color: c.muted, margin: '0 0 0.5rem', transition: 'color 600ms ease' }}>
-                  {label}
-                </p>
-                <img
-                  src="/lab-character.png"
-                  alt="Character reference"
-                  style={{
-                    width: '100%',
-                    display: 'block',
-                    filter,
-                    transition: 'filter 600ms ease',
-                    borderRadius: '2px',
-                  }}
-                  onError={e => {
-                    (e.currentTarget as HTMLImageElement).style.display = 'none'
-                    const p = e.currentTarget.nextSibling as HTMLElement
-                    if (p) p.style.display = 'block'
-                  }}
-                />
-                <p style={{ display: 'none', fontFamily: 'ui-monospace', fontSize: '0.65rem', color: '#5A4A37', padding: '2rem', border: '1px dashed #3A3A37', textAlign: 'center' }}>
-                  Pon la imagen en /public/lab-character.png
-                </p>
-              </div>
-            ))}
+          {/* Comparación en 2 fondos side-by-side */}
+          <div style={{ display: 'grid', gridTemplateColumns: '1fr 1fr', gap: '1px', background: c.border }}>
+            {/* Fondo claro — multiply */}
+            <div style={{ background: '#E8E5DF', padding: '2rem' }}>
+              <p style={{ fontFamily: 'ui-monospace', fontSize: '0.6rem', color: '#6A6A67', margin: '0 0 1rem' }}>
+                Fondo claro · <code>multiply</code>
+              </p>
+              <img src="/lab-character.png" alt="Character"
+                style={{ width: '100%', display: 'block', mixBlendMode: 'multiply' }}
+                onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.2' }}
+              />
+            </div>
+
+            {/* Fondo oscuro — invert + screen */}
+            <div style={{ background: '#0F0F0D', padding: '2rem' }}>
+              <p style={{ fontFamily: 'ui-monospace', fontSize: '0.6rem', color: '#7A7975', margin: '0 0 1rem' }}>
+                Fondo oscuro · <code>invert(1) + screen</code>
+              </p>
+              <img src="/lab-character.png" alt="Character"
+                style={{ width: '100%', display: 'block', filter: 'invert(1)', mixBlendMode: 'screen' }}
+                onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.2' }}
+              />
+            </div>
+          </div>
+
+          {/* Referencia: original con el cuadrado */}
+          <div style={{ marginTop: '1px', background: mode === 'dark' ? '#0F0F0D' : '#E8E5DF', padding: '2rem' }}>
+            <p style={{ fontFamily: 'ui-monospace', fontSize: '0.6rem', color: c.muted, margin: '0 0 1rem' }}>
+              Original sin blend (el "cuadrado" que queremos eliminar)
+            </p>
+            <img src="/lab-character.png" alt="Character"
+              style={{ width: '40%', display: 'block' }}
+              onError={e => { (e.currentTarget as HTMLImageElement).style.opacity = '0.2' }}
+            />
           </div>
         </div>
 
