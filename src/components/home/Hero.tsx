@@ -57,8 +57,8 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
     >
       <div style={{ maxWidth: '76rem', width: '100%' }}>
 
-        {/* Headline — both in DOM, CSS controls which is visible */}
-        <h1 style={headlineStyle}>
+        {/* Headline — grid stacking, crossfade on mode switch */}
+        <h1 className="n-slot" style={headlineStyle}>
           <span className="n-d">
             {cleanDark}<span style={{ color: 'var(--color-accent)' }}>.</span>
           </span>
@@ -76,32 +76,32 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
           flexWrap: 'wrap',
         }}>
           <div style={{ paddingLeft: 'clamp(0rem, 7vw, 6rem)' }}>
-            {/* Dark sub */}
-            <HeroSubtitle
-              initial={initialSub ?? darkSub}
-              pool={subtitlePool}
-              className="n-d"
-              style={{
-                color: 'var(--color-muted)',
-                fontSize: 'var(--text-body)',
-                lineHeight: 1.75,
-                margin: 0,
-                maxWidth: '36ch',
-              }}
-            />
-            {/* Light sub */}
-            <HeroSubtitle
-              initial={lightSub}
-              pool={[]}
-              className="n-l"
-              style={{
-                color: 'var(--color-muted)',
-                fontSize: 'var(--text-body)',
-                lineHeight: 1.75,
-                margin: 0,
-                maxWidth: '36ch',
-              }}
-            />
+            <div className="n-slot">
+              <HeroSubtitle
+                initial={initialSub ?? darkSub}
+                pool={subtitlePool}
+                className="n-d"
+                style={{
+                  color: 'var(--color-muted)',
+                  fontSize: 'var(--text-body)',
+                  lineHeight: 1.75,
+                  margin: 0,
+                  maxWidth: '36ch',
+                }}
+              />
+              <HeroSubtitle
+                initial={lightSub}
+                pool={[]}
+                className="n-l"
+                style={{
+                  color: 'var(--color-muted)',
+                  fontSize: 'var(--text-body)',
+                  lineHeight: 1.75,
+                  margin: 0,
+                  maxWidth: '36ch',
+                }}
+              />
+            </div>
           </div>
 
           <div style={{

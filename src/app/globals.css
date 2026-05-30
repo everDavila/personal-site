@@ -107,9 +107,24 @@
 [data-mode="dark"]  .mode-light-only { display: none !important; }
 [data-mode="light"] .mode-dark-only  { display: none !important; }
 
-/* Narrative slots — ambos textos/imágenes en el DOM, CSS controla cuál se ve */
-[data-mode="dark"]  .n-l { display: none !important; }
-[data-mode="light"] .n-d { display: none !important; }
+/* Narrative slots — crossfade entre variantes dark/light
+   .n-slot: grid stacking (ambos hijos en la misma celda)
+   Visibilidad con delay para que opacity termine antes de ocultar */
+.n-slot { display: grid; }
+.n-slot > .n-d,
+.n-slot > .n-l {
+  grid-area: 1 / 1;
+  opacity: 1;
+  visibility: visible;
+  transition: opacity 320ms ease, visibility 0s;
+}
+[data-mode="dark"]  .n-slot > .n-l,
+[data-mode="light"] .n-slot > .n-d {
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 320ms ease, visibility 0s 320ms;
+}
 
 /* Burst ring — toggle ThemeToggle */
 @keyframes narrative-burst {

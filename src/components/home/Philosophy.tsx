@@ -44,8 +44,10 @@ export async function Philosophy({ dark, light }: Props) {
         flexWrap: 'wrap',
       }}>
         <div style={{ flex: '1 1 32ch' }}>
-          <Paragraphs text={dark}  className="n-d" />
-          <Paragraphs text={light} className="n-l" />
+          <div className="n-slot">
+            <Paragraphs text={dark}  className="n-d" />
+            <Paragraphs text={light} className="n-l" />
+          </div>
         </div>
 
         <div style={{ paddingTop: '0.25rem', flexShrink: 0 }}>

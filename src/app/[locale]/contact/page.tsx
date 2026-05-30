@@ -57,8 +57,10 @@ export default async function ContactPage() {
           marginBottom: '2.5rem',
           marginTop: '0.5rem',
         }}>
-          {introDark  && <p className="n-d" style={{ margin: 0 }}>{introDark}</p>}
-          {introLight && <p className="n-l" style={{ margin: 0 }}>{introLight}</p>}
+          <div className="n-slot">
+            {introDark  && <p className="n-d" style={{ margin: 0 }}>{introDark}</p>}
+            {introLight && <p className="n-l" style={{ margin: 0 }}>{introLight}</p>}
+          </div>
         </div>
       )}
 

@@ -57,8 +57,10 @@ export default async function AboutPage() {
           marginBottom: '3rem',
           letterSpacing: 'var(--tracking-body)',
         }}>
-          {bioDark  && <p className="n-d" style={{ margin: 0 }}>{bioDark}</p>}
-          {bioLight && <p className="n-l" style={{ margin: 0 }}>{bioLight}</p>}
+          <div className="n-slot">
+            {bioDark  && <p className="n-d" style={{ margin: 0 }}>{bioDark}</p>}
+            {bioLight && <p className="n-l" style={{ margin: 0 }}>{bioLight}</p>}
+          </div>
         </div>
       )}
 
