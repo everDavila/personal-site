@@ -13,12 +13,14 @@ export const siteSettingsType = defineType({
       title: 'Hero',
       type: 'object',
       fields: [
-        defineField({ name: 'roleLabel', title: 'Etiqueta de rol (sobre el titular)', type: 'localizedString' }),
-        defineField({ name: 'headline', title: 'Titular', type: 'localizedString' }),
-        defineField({ name: 'sub',      title: 'Subtítulo / párrafo', type: 'localizedText' }),
-        defineField({ name: 'ctaWork',  title: 'CTA — Ver trabajo (texto)', type: 'localizedString' }),
-        defineField({ name: 'ctaCV',    title: 'CTA — Descargar CV (texto)', type: 'localizedString' }),
-        defineField({ name: 'heroImage', title: 'Imagen del hero (derecha)', type: 'image', options: { hotspot: true } }),
+        defineField({ name: 'roleLabel',     title: 'Etiqueta de rol (sobre el titular)', type: 'localizedString' }),
+        defineField({ name: 'headline',      title: '🌑 Titular — Modo Oscuro (profesional)', type: 'localizedString' }),
+        defineField({ name: 'headlineLight', title: '☀️ Titular — Modo Claro (lúdico)',       type: 'localizedString' }),
+        defineField({ name: 'sub',           title: '🌑 Subtítulo — Modo Oscuro', type: 'localizedText' }),
+        defineField({ name: 'subLight',      title: '☀️ Subtítulo — Modo Claro', type: 'localizedText' }),
+        defineField({ name: 'ctaWork',       title: 'CTA — Ver trabajo (texto)', type: 'localizedString' }),
+        defineField({ name: 'ctaCV',         title: 'CTA — Descargar CV (texto)', type: 'localizedString' }),
+        defineField({ name: 'heroImage',     title: 'Imagen del hero (derecha)', type: 'image', options: { hotspot: true } }),
       ],
     }),
 
@@ -33,9 +35,9 @@ export const siteSettingsType = defineType({
     // ── Filosofía / About homepage ───────────────────────────
     defineField({
       name: 'philosophy',
-      title: 'Filosofía / Sobre mí (homepage)',
-      description: 'Texto editorial breve. 2-3 oraciones. Aparece como sección en el home.',
-      type: 'localizedText',
+      title: 'Filosofía (homepage) — por modo narrativo',
+      description: 'Aparece en la sección de filosofía del home. Escribe una versión para cada modo.',
+      type: 'narrativeModesText',
     }),
 
     // ── Footer ──────────────────────────────────────────────
@@ -83,8 +85,17 @@ export const siteSettingsType = defineType({
     // ── About page ───────────────────────────────────────────
     defineField({
       name: 'about',
-      title: 'Sobre mí (página /about)',
-      type: 'localizedText',
+      title: 'Sobre mí (página /about) — por modo narrativo',
+      description: 'Biografía que aparece en /about. Escribe una versión para cada modo.',
+      type: 'narrativeModesText',
+    }),
+
+    // ── Contact intro ────────────────────────────────────────
+    defineField({
+      name: 'contactIntro',
+      title: 'Intro de contacto (página /contact) — por modo narrativo',
+      description: 'Texto introductorio antes de los enlaces. Puede ser null si prefieres no mostrarlo.',
+      type: 'narrativeModesText',
     }),
 
     // ── Social ──────────────────────────────────────────────

@@ -4,18 +4,22 @@ import { SelectedWork } from '@/components/home/SelectedWork'
 import { Philosophy } from '@/components/home/Philosophy'
 import { ExperienceSnapshot } from '@/components/home/ExperienceSnapshot'
 import { Writing } from '@/components/home/Writing'
-import { getSiteSettings } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { getFeaturedProjects } from '@/sanity/queries/projects'
 import { getExperience } from '@/sanity/queries/experience'
 import { getLatestPosts } from '@/sanity/queries/posts'
 import { getPageSubtitleData } from '@/sanity/queries/editorialSubtitle'
+import { getMode } from '@/lib/mode'
 import type { Locale } from '@/lib/i18n'
 import { BLOG_FALLBACK } from '@/lib/i18n'
 
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-  const locale = await getLocale() as Locale
+  const [locale, mode] = await Promise.all([
+    getLocale() as Promise<Locale>,
+    getMode(),
+  ])
 
   const [settings, projects, experience, posts, homeSubtitleData] = await Promise.all([
     getSiteSettings(),
@@ -26,15 +30,19 @@ export default async function Home() {
   ])
 
   const fallbackLocale = BLOG_FALLBACK[locale]
-  const displayPosts       = posts.length > 0 ? posts : await getLatestPosts(fallbackLocale)
+  const displayPosts        = posts.length > 0 ? posts : await getLatestPosts(fallbackLocale)
   const postsDisplayLocale: Locale = posts.length > 0 ? locale : fallbackLocale
-  const philosophy = settings?.philosophy?.[locale]
-    || settings?.philosophy?.es
-    || null
+
+  const philosophy = narrativeText(
+    settings?.philosophy,
+    mode,
+    locale,
+    NARRATIVE_FALLBACK[mode].philosophy,
+  )
 
   return (
     <>
-      <Hero settings={settings} cvUrl={settings?.cvUrl} initialSub={homeSubtitleData.initial} subtitlePool={homeSubtitleData.pool} />
+      <Hero settings={settings} cvUrl={settings?.cvUrl} mode={mode} initialSub={homeSubtitleData.initial} subtitlePool={homeSubtitleData.pool} />
       <SelectedWork projects={projects} settings={settings} />
       {philosophy && <Philosophy text={philosophy} />}
       <ExperienceSnapshot

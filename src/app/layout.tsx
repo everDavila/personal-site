@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Manrope, Source_Serif_4 } from 'next/font/google'
-import Script from 'next/script'
+import { cookies } from 'next/headers'
+import { ModeChooser } from '@/components/ui/ModeChooser'
 import './globals.css'
 
 const inter = Inter({
@@ -29,26 +30,20 @@ export const metadata: Metadata = {
   description: 'Portfolio personal',
 }
 
-const themeScript = `
-  (function() {
-    var stored = localStorage.getItem('theme');
-    var preferred = window.matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light';
-    document.documentElement.setAttribute('data-theme', stored || preferred);
-  })()
-`
+export default async function RootLayout({ children }: { children: React.ReactNode }) {
+  const jar = await cookies()
+  const cookieVal = jar.get('narrative-mode')?.value
+  const mode = cookieVal === 'light' ? 'light' : 'dark'
+  const hasMode = !!cookieVal
 
-export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html
+      data-mode={mode}
       className={`${inter.variable} ${manrope.variable} ${sourceSerif4.variable}`}
       suppressHydrationWarning
     >
       <body>
-        <Script
-          id="theme-init"
-          strategy="beforeInteractive"
-          dangerouslySetInnerHTML={{ __html: themeScript }}
-        />
+        <ModeChooser hasMode={hasMode} />
         {children}
       </body>
     </html>

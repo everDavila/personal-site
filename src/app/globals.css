@@ -1,22 +1,9 @@
 @import "tailwindcss";
 
 /* ─────────────────────────────────────────
-   TOKENS: MODO CLARO (default)
+   TOKENS: BASE (compartidos entre modos)
 ───────────────────────────────────────── */
 :root {
-  /* Surfaces */
-  --color-bg:       #F5F5F2;
-  --color-surface:  #EDECE9;
-  --color-border:   #D8D8D8;
-
-  /* Text */
-  --color-text:     #111111;
-  --color-muted:    #6B6B6B;
-
-  /* Accent — editorial technical blue */
-  --color-accent:       #2E4052;
-  --color-accent-hover: #1A2530;
-
   /* Fonts */
   --font-sans:    var(--font-inter),        system-ui, sans-serif;
   --font-display: var(--font-manrope),      system-ui, sans-serif;
@@ -49,42 +36,42 @@
 }
 
 /* ─────────────────────────────────────────
-   TOKENS: MODO OSCURO — detección automática
+   MODO OSCURO — Profesional (default)
+   Editorial, tenso, técnico.
 ───────────────────────────────────────── */
-@media (prefers-color-scheme: dark) {
-  :root {
-    --color-bg:       #0F0F0D;
-    --color-surface:  #181715;
-    --color-border:   #272522;
-    --color-text:     #F0EFEC;
-    --color-muted:    #7A7975;
-    --color-accent:       #5A7C94;
-    --color-accent-hover: #8FD3FF;
-  }
-}
-
-/* ─────────────────────────────────────────
-   TOKENS: MODO OSCURO — toggle manual
-───────────────────────────────────────── */
-[data-theme="dark"] {
-  --color-bg:       #0F0F0D;
-  --color-surface:  #181715;
-  --color-border:   #272522;
-  --color-text:     #F0EFEC;
-  --color-muted:    #7A7975;
+:root,
+[data-mode="dark"] {
+  --color-bg:           #0F0F0D;
+  --color-surface:      #181715;
+  --color-border:       #272522;
+  --color-text:         #F0EFEC;
+  --color-muted:        #7A7975;
   --color-accent:       #5A7C94;
   --color-accent-hover: #8FD3FF;
 }
 
-[data-theme="light"] {
-  --color-bg:       #F5F5F2;
-  --color-surface:  #EDECE9;
-  --color-border:   #D8D8D8;
-  --color-text:     #111111;
-  --color-muted:    #6B6B6B;
-  --color-accent:       #2E4052;
-  --color-accent-hover: #1A2530;
+/* ─────────────────────────────────────────
+   MODO CLARO — Lúdico / Personal
+   Más abierto, curioso, humano.
+───────────────────────────────────────── */
+[data-mode="light"] {
+  --color-bg:           #F5F4F0;
+  --color-surface:      #EDEDEA;
+  --color-border:       #D6D4CF;
+  --color-text:         #111110;
+  --color-muted:        #6A6A67;
+  --color-accent:       #3D6E5E;
+  --color-accent-hover: #1E4D3C;
+
+  /* Tipografía levemente más abierta — refuerza el tono lúdico */
+  --tracking-hero:  -0.015em;
+  --tracking-body:   0em;
+  --leading-body:    1.85;
 }
+
+/* Compatibilidad con data-theme (por si algún componente lo usa) */
+[data-theme="dark"]  { --color-bg: #0F0F0D; --color-surface: #181715; --color-border: #272522; --color-text: #F0EFEC; --color-muted: #7A7975; --color-accent: #5A7C94; --color-accent-hover: #8FD3FF; }
+[data-theme="light"] { --color-bg: #F5F4F0; --color-surface: #EDEDEA; --color-border: #D6D4CF; --color-text: #111110; --color-muted: #6A6A67; --color-accent: #3D6E5E; --color-accent-hover: #1E4D3C; }
 
 /* ─────────────────────────────────────────
    TAILWIND v4: FUENTES

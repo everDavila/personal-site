@@ -1,33 +1,38 @@
-import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { getLocale, getTranslations } from 'next-intl/server'
-import { localized } from '@/lib/i18n'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import { getMode } from '@/lib/mode'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AboutPage() {
-  const locale = await getLocale() as Locale
+  const [locale, mode] = await Promise.all([
+    getLocale() as Promise<Locale>,
+    getMode(),
+  ])
+
   const [settings, t, subtitle] = await Promise.all([
     getSiteSettings(),
     getTranslations('about'),
     getPageSubtitle('about', locale),
   ])
 
-  const a = settings?.labels?.about
-  const title         = lbl(a?.title,         locale, t('title'))
-  const connect       = lbl(a?.connect,       locale, t('connect'))
-  const seeExperience = lbl(a?.seeExperience, locale, t('see_experience'))
+  const a           = settings?.labels?.about
+  const title       = lbl(a?.title,         locale, t('title'))
+  const connect     = lbl(a?.connect,       locale, t('connect'))
+  const seeExp      = lbl(a?.seeExperience, locale, t('see_experience'))
+  const social      = settings?.social
 
-  const bio    = settings?.about ? localized(settings.about, locale) : null
-  const social = settings?.social
+  const bio = narrativeText(settings?.about, mode, locale, NARRATIVE_FALLBACK[mode].about)
 
   return (
     <main className="container section">
       <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
         {title}
       </h1>
+
       {subtitle && (
         <p style={{
           fontSize: 'var(--text-small)',
@@ -40,15 +45,16 @@ export default async function AboutPage() {
         </p>
       )}
 
-      {bio?.value ? (
+      {bio ? (
         <p style={{
           fontSize: 'var(--text-body)',
           color: 'var(--color-text)',
-          lineHeight: 1.8,
+          lineHeight: 'var(--leading-body)',
           maxWidth: '38rem',
           marginBottom: '3rem',
+          letterSpacing: 'var(--tracking-body)',
         }}>
-          {bio.value}
+          {bio}
         </p>
       ) : null}
 
@@ -77,7 +83,7 @@ export default async function AboutPage() {
 
       <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: 'var(--border-width) solid var(--color-border)' }}>
         <Link href={{ pathname: '/experience' }} className="link-accent" style={{ fontSize: 'var(--text-small)' }}>
-          {seeExperience} →
+          {seeExp} →
         </Link>
       </div>
     </main>

@@ -1,30 +1,52 @@
-import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import { getMode } from '@/lib/mode'
 import type { Locale } from '@/lib/i18n'
 
 export const dynamic = 'force-dynamic'
 
 export default async function ContactPage() {
-  const locale = await getLocale() as Locale
+  const [locale, mode] = await Promise.all([
+    getLocale() as Promise<Locale>,
+    getMode(),
+  ])
+
   const [settings, t, subtitle] = await Promise.all([
     getSiteSettings(),
     getTranslations('contact'),
     getPageSubtitle('contact', locale),
   ])
 
-  const c = settings?.labels?.contact
+  const c          = settings?.labels?.contact
   const title      = lbl(c?.title,      locale, t('title'))
   const emailLabel = lbl(c?.emailLabel, locale, t('email_label'))
+  const social     = settings?.social
 
-  const social = settings?.social
+  const intro = narrativeText(settings?.contactIntro, mode, locale, NARRATIVE_FALLBACK[mode].contactIntro)
 
   return (
     <main className="container section">
       <h1 className="page-title" style={{ marginBottom: '0.75rem' }}>
         {title}
       </h1>
-      {subtitle && (
+
+      {/* Narrative intro — changes per mode */}
+      {intro && (
+        <p style={{
+          fontSize: 'var(--text-body)',
+          color: 'var(--color-text)',
+          lineHeight: 'var(--leading-body)',
+          letterSpacing: 'var(--tracking-body)',
+          maxWidth: '44ch',
+          marginBottom: '2.5rem',
+        }}>
+          {intro}
+        </p>
+      )}
+
+      {/* Editorial subtitle — always shown, contextual rotation */}
+      {subtitle && !intro && (
         <p style={{
           fontSize: 'var(--text-small)',
           color: 'var(--color-muted)',
