@@ -83,6 +83,45 @@
 }
 
 /* ─────────────────────────────────────────
+   HERO — grid dos columnas con personaje
+───────────────────────────────────────── */
+.hero-grid {
+  display: grid;
+  grid-template-columns: 3fr 2fr;
+  min-height: calc(100svh - 57px);
+}
+.hero-text-col {
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  padding-bottom: clamp(4rem, 9vw, 7rem);
+  padding-top: clamp(7rem, 18vw, 12rem);
+}
+.hero-image-col {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  padding-bottom: clamp(2rem, 5vw, 4rem);
+  overflow: hidden;
+}
+.hero-image-col img {
+  width: 100%;
+  max-height: 80vh;
+  object-fit: contain;
+  object-position: bottom center;
+  display: block;
+  mix-blend-mode: multiply;
+}
+[data-mode="dark"] .hero-image-col img {
+  filter: invert(1);
+  mix-blend-mode: screen;
+}
+@media (max-width: 768px) {
+  .hero-grid { grid-template-columns: 1fr; }
+  .hero-image-col { display: none; }
+}
+
+/* ─────────────────────────────────────────
    PAGE HEADER — layout dos columnas con imagen
 ───────────────────────────────────────── */
 .page-header-grid {
