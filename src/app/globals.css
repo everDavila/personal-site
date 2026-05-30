@@ -97,6 +97,13 @@
   object-fit: contain;
   display: block;
   align-self: center;
+  /* Ilustración trazo negro / fondo blanco — fondo desaparece */
+  filter: grayscale(1) brightness(1.4) contrast(2);
+  mix-blend-mode: multiply;
+}
+[data-mode="dark"] .page-header-image {
+  filter: grayscale(1) brightness(1.4) contrast(2) invert(1);
+  mix-blend-mode: screen;
 }
 @media (max-width: 600px) {
   .page-header-grid  { grid-template-columns: 1fr; }
