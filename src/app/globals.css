@@ -185,12 +185,15 @@ html {
   background-color: var(--color-bg);
   color: var(--color-text);
   overflow-x: hidden;
+  transition: background-color 650ms cubic-bezier(0.45, 0, 0.15, 1);
 }
 
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
-  transition: background-color var(--transition), color var(--transition);
+  /* Background más lento que hover — evita destello al cambiar modo */
+  transition: background-color 650ms cubic-bezier(0.45, 0, 0.15, 1),
+              color 450ms ease-in-out;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
