@@ -107,23 +107,35 @@
 [data-mode="dark"]  .mode-light-only { display: none !important; }
 [data-mode="light"] .mode-dark-only  { display: none !important; }
 
-/* Narrative slots — crossfade entre variantes dark/light
-   .n-slot: grid stacking (ambos hijos en la misma celda)
-   Visibilidad con delay para que opacity termine antes de ocultar */
+/* Narrative slots — flip 3D (cubo rotando en eje X)
+   Saliente sube/rota afuera, entrante llega desde abajo */
 .n-slot { display: grid; }
+
 .n-slot > .n-d,
 .n-slot > .n-l {
   grid-area: 1 / 1;
-  opacity: 1;
-  visibility: visible;
-  transition: opacity 320ms ease, visibility 0s;
+  transition: transform 380ms ease-in-out, opacity 280ms ease;
 }
-[data-mode="dark"]  .n-slot > .n-l,
-[data-mode="light"] .n-slot > .n-d {
+
+[data-mode="dark"] .n-slot > .n-d {
+  transform: perspective(700px) rotateX(0deg);
+  opacity: 1;
+  pointer-events: auto;
+}
+[data-mode="dark"] .n-slot > .n-l {
+  transform: perspective(700px) rotateX(-90deg);
   opacity: 0;
-  visibility: hidden;
   pointer-events: none;
-  transition: opacity 320ms ease, visibility 0s 320ms;
+}
+[data-mode="light"] .n-slot > .n-l {
+  transform: perspective(700px) rotateX(0deg);
+  opacity: 1;
+  pointer-events: auto;
+}
+[data-mode="light"] .n-slot > .n-d {
+  transform: perspective(700px) rotateX(90deg);
+  opacity: 0;
+  pointer-events: none;
 }
 
 /* Burst ring — toggle ThemeToggle */
