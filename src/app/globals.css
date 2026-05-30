@@ -55,9 +55,9 @@
    Persona en tierra firme. Directo, técnico.
 ───────────────────────────────────────── */
 [data-mode="light"] {
-  --color-bg:           #F5F4F0;
-  --color-surface:      #EDEDEA;
-  --color-border:       #D6D4CF;
+  --color-bg:           #E8E5DF;
+  --color-surface:      #DEDAD3;
+  --color-border:       #C8C4BC;
   --color-text:         #111110;
   --color-muted:        #6A6A67;
   --color-accent:       #3D6E5E;
@@ -185,15 +185,15 @@ html {
   background-color: var(--color-bg);
   color: var(--color-text);
   overflow-x: hidden;
-  transition: background-color 650ms cubic-bezier(0.45, 0, 0.15, 1);
+  transition: background-color 950ms cubic-bezier(0.45, 0, 0.15, 1);
 }
 
 body {
   background-color: var(--color-bg);
   color: var(--color-text);
   /* Background más lento que hover — evita destello al cambiar modo */
-  transition: background-color 650ms cubic-bezier(0.45, 0, 0.15, 1),
-              color 450ms ease-in-out;
+  transition: background-color 950ms cubic-bezier(0.45, 0, 0.15, 1),
+              color 600ms ease-in-out;
   min-height: 100svh;
   display: flex;
   flex-direction: column;
