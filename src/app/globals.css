@@ -36,8 +36,8 @@
 }
 
 /* ─────────────────────────────────────────
-   MODO OSCURO — Profesional (default)
-   Editorial, tenso, técnico.
+   MODO OSCURO — Lúdico (default)
+   Astronauta. Curioso, aventurero, espacio.
 ───────────────────────────────────────── */
 :root,
 [data-mode="dark"] {
@@ -51,8 +51,8 @@
 }
 
 /* ─────────────────────────────────────────
-   MODO CLARO — Lúdico / Personal
-   Más abierto, curioso, humano.
+   MODO CLARO — Profesional
+   Persona en tierra firme. Directo, técnico.
 ───────────────────────────────────────── */
 [data-mode="light"] {
   --color-bg:           #F5F4F0;

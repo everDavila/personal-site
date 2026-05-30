@@ -55,7 +55,7 @@ export function ThemeToggle() {
   return (
     <button
       onClick={toggle}
-      aria-label={isDark ? 'Cambiar a modo claro (lúdico)' : 'Cambiar a modo oscuro (profesional)'}
+      aria-label={isDark ? 'Cambiar a modo claro (profesional)' : 'Cambiar a modo oscuro (lúdico)'}
       title={isDark ? 'Modo claro' : 'Modo oscuro'}
       style={{
         position: 'relative',

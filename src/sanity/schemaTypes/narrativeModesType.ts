@@ -6,8 +6,8 @@ export const narrativeModesStringType = defineType({
   type: 'object',
   options: { collapsible: false },
   fields: [
-    defineField({ name: 'dark',  title: '🌑 Modo Oscuro — Profesional', type: 'localizedString' }),
-    defineField({ name: 'light', title: '☀️ Modo Claro — Lúdico',       type: 'localizedString' }),
+    defineField({ name: 'dark',  title: '🌑 Modo Oscuro — Lúdico',      type: 'localizedString' }),
+    defineField({ name: 'light', title: '☀️ Modo Claro — Profesional',  type: 'localizedString' }),
   ],
 })
 
@@ -42,15 +42,15 @@ export const narrativeModesTextType = defineType({
   fields: [
     defineField({
       name: 'dark',
-      title: '🌑 Modo Oscuro — Profesional',
+      title: '🌑 Modo Oscuro — Lúdico',
       type: 'localizedText',
-      description: 'Tono directo, técnico, enfocado en el trabajo.',
+      description: 'Tono aventurero, curioso, personal. El astronauta en el espacio.',
     }),
     defineField({
       name: 'light',
-      title: '☀️ Modo Claro — Lúdico',
+      title: '☀️ Modo Claro — Profesional',
       type: 'localizedText',
-      description: 'Tono personal, curioso, más cercano y humano.',
+      description: 'Tono directo, técnico, enfocado en el trabajo.',
     }),
   ],
 })

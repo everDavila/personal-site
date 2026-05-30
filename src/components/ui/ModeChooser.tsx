@@ -76,7 +76,7 @@ export function ModeChooser({ hasMode }: Props) {
         <ModeOption
           mode="dark"
           label="Oscuro"
-          description="Tono profesional. Directo, técnico, enfocado en el trabajo."
+          description="Tono aventurero. Curioso, personal, el astronauta en el espacio."
           bg="#0F0F0D"
           bgHover="#181715"
           labelColor="#F0EFEC"
@@ -86,7 +86,7 @@ export function ModeChooser({ hasMode }: Props) {
         <ModeOption
           mode="light"
           label="Claro"
-          description="Tono personal. Curioso, cercano, con más historia detrás."
+          description="Tono profesional. Directo, técnico, enfocado en el trabajo."
           bg="#F5F4F0"
           bgHover="#EDEDEA"
           labelColor="#111110"

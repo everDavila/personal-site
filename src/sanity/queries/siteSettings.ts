@@ -136,6 +136,34 @@ export function narrativeText(
 // ── Demo fallback text (used while Sanity content is not yet filled) ─────────
 export const NARRATIVE_FALLBACK = {
   dark: {
+    // Modo oscuro = lúdico / astronauta en el espacio
+    philosophy: {
+      es: 'Me llevo bien con los problemas difíciles. Los sistemas complejos me parecen fascinantes — como puzzles enormes donde cada pieza importa. Y sí, también dibujo garabatos cuando pienso.',
+      en: 'I get along well with hard problems. Complex systems fascinate me — like enormous puzzles where every piece matters.',
+    } as LocalizedString,
+    about: {
+      es: 'Soy ese tipo que se pregunta por qué los trámites del Estado son tan confusos. Entonces los diseño mejor. Trabajo con datos, personas, burocracia y, a veces, mucha cafeína. Me apasiona hacer que cosas complicadas sean fáciles de usar.',
+      en: 'I\'m the kind of person who wonders why government processes are so confusing — then designs them better. I work with data, people, bureaucracy, and sometimes a lot of caffeine.',
+    } as LocalizedString,
+    contactIntro: {
+      es: '¿Tienes un proyecto interesante? Cuéntame. Me gustan los desafíos raros, las conversaciones honestas y los problemas que valen la pena resolver.',
+      en: 'Have an interesting project? Tell me about it. I like unusual challenges, honest conversations, and problems worth solving.',
+    } as LocalizedString,
+    heroHeadline: {
+      es: 'Hago que lo difícil sea fácil de usar.',
+      en: 'I make the difficult easy to use.',
+    } as LocalizedString,
+    pageTitles: {
+      work:       { es: 'Cosas que hice y que alguien pagó',  en: 'Things people actually paid for' } as LocalizedString,
+      about:      { es: 'El ser humano detrás del PDF',        en: 'The human behind the PDF'        } as LocalizedString,
+      contact:    { es: 'Escríbeme (respondo, a veces)',       en: 'Write me (I reply, sometimes)'   } as LocalizedString,
+      experience: { es: 'El currículum que RRHH ignora',       en: 'The résumé HR skips'             } as LocalizedString,
+      playground: { es: 'Experimentos con sobrevivientes',     en: 'Experiments with survivors'      } as LocalizedString,
+      blog:       { es: 'Apuntes que nadie pidió',             en: 'Notes nobody asked for'          } as LocalizedString,
+    },
+  },
+  light: {
+    // Modo claro = profesional / la persona en tierra firme
     philosophy: {
       es: 'Diseño sistemas digitales para que funcionen en el mundo real, no en el ideario de Silicon Valley. Cada interfaz es una pregunta sobre quién tiene acceso y quién no.',
       en: 'I design digital systems to work in the real world. Every interface is a question about who gets access and who doesn\'t.',
@@ -159,32 +187,6 @@ export const NARRATIVE_FALLBACK = {
       experience: { es: 'Experiencia',  en: 'Experience' } as LocalizedString,
       playground: { es: 'Experimentos', en: 'Playground' } as LocalizedString,
       blog:       { es: 'Apuntes',      en: 'Notes'      } as LocalizedString,
-    },
-  },
-  light: {
-    philosophy: {
-      es: 'Me llevo bien con los problemas difíciles. Los sistemas complejos me parecen fascinantes — como puzzles enormes donde cada pieza importa. Y sí, también dibujo garabatos cuando pienso.',
-      en: 'I get along well with hard problems. Complex systems fascinate me — like enormous puzzles where every piece matters.',
-    } as LocalizedString,
-    about: {
-      es: 'Soy ese tipo que se pregunta por qué los trámites del Estado son tan confusos. Entonces los diseño mejor. Trabajo con datos, personas, burocracia y, a veces, mucha cafeína. Me apasiona hacer que cosas complicadas sean fáciles de usar.',
-      en: 'I\'m the kind of person who wonders why government processes are so confusing — then designs them better. I work with data, people, bureaucracy, and sometimes a lot of caffeine.',
-    } as LocalizedString,
-    contactIntro: {
-      es: '¿Tienes un proyecto interesante? Cuéntame. Me gustan los desafíos raros, las conversaciones honestas y los problemas que valen la pena resolver.',
-      en: 'Have an interesting project? Tell me about it. I like unusual challenges, honest conversations, and problems worth solving.',
-    } as LocalizedString,
-    heroHeadline: {
-      es: 'Hago que lo difícil sea fácil de usar.',
-      en: 'I make the difficult easy to use.',
-    } as LocalizedString,
-    pageTitles: {
-      work:       { es: 'Cosas que hice y que alguien pagó',       en: 'Things people actually paid for'      } as LocalizedString,
-      about:      { es: 'El ser humano detrás del PDF',             en: 'The human behind the PDF'             } as LocalizedString,
-      contact:    { es: 'Escríbeme (respondo, a veces)',            en: 'Write me (I reply, sometimes)'        } as LocalizedString,
-      experience: { es: 'El currículum que RRHH ignora',            en: 'The résumé HR skips'                  } as LocalizedString,
-      playground: { es: 'Experimentos con sobrevivientes',          en: 'Experiments with survivors'           } as LocalizedString,
-      blog:       { es: 'Apuntes que nadie pidió',                  en: 'Notes nobody asked for'               } as LocalizedString,
     },
   },
 }
