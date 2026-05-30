@@ -6,9 +6,10 @@ type Props = {
   initial: string
   pool: string[]
   style?: React.CSSProperties
+  className?: string
 }
 
-export function HeroSubtitle({ initial, pool, style }: Props) {
+export function HeroSubtitle({ initial, pool, style, className }: Props) {
   const [text, setText] = useState(initial)
   const [opacity, setOpacity] = useState(1)
 
@@ -50,7 +51,7 @@ export function HeroSubtitle({ initial, pool, style }: Props) {
   }, []) // pool is stable for the component's lifetime
 
   return (
-    <p style={{ ...style, opacity, transition: 'opacity 300ms ease' }}>
+    <p className={className} style={{ ...style, opacity, transition: 'opacity 300ms ease' }}>
       {text}
     </p>
   )

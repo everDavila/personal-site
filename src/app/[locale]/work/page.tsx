@@ -4,17 +4,13 @@ import { localized } from '@/lib/i18n'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl, pageImage } from '@/sanity/queries/siteSettings'
-import { getMode } from '@/lib/mode'
+import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
 
 export default async function WorkPage() {
-  const [locale, mode] = await Promise.all([
-    getLocale() as Promise<Locale>,
-    getMode(),
-  ])
+  const locale = await getLocale() as Locale
   const [projects, t, subtitle, settings] = await Promise.all([
     getAllProjects(),
     getTranslations('work'),
@@ -25,11 +21,15 @@ export default async function WorkPage() {
   const w     = settings?.labels?.work
   const title = lbl(w?.title, locale, t('title'))
   const empty = lbl(w?.empty, locale, t('empty'))
-  const imgUrl = pageImage(settings?.pageImages?.work, mode)
+
+  const imageSet = {
+    dark:  settings?.pageImages?.work?.dark?.asset?.url  ?? null,
+    light: settings?.pageImages?.work?.light?.asset?.url ?? null,
+  }
 
   return (
     <main className="container section">
-      <PageHeader imageUrl={imgUrl}>
+      <PageHeader imageSet={imageSet}>
         <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
           {title}
         </h1>

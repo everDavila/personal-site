@@ -4,8 +4,7 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import type { Locale } from '@/lib/i18n'
 import { BLOG_FALLBACK } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl, pageImage } from '@/sanity/queries/siteSettings'
-import { getMode } from '@/lib/mode'
+import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
@@ -19,10 +18,7 @@ const COUNT_LABEL: Record<Locale, (n: number) => string> = {
 }
 
 export default async function BlogPage() {
-  const [locale, mode] = await Promise.all([
-    getLocale() as Promise<Locale>,
-    getMode(),
-  ])
+  const locale = await getLocale() as Locale
   const [t, subtitle, settings] = await Promise.all([
     getTranslations('blog'),
     getPageSubtitle('blog', locale),
@@ -33,7 +29,11 @@ export default async function BlogPage() {
   const b       = settings?.labels?.blog
   const title   = lbl(n?.blog, locale, t('title'))
   const emptyMsg = lbl(b?.empty, locale, t('empty'))
-  const imgUrl  = pageImage(settings?.pageImages?.blog, mode)
+
+  const imageSet = {
+    dark:  settings?.pageImages?.blog?.dark?.asset?.url  ?? null,
+    light: settings?.pageImages?.blog?.light?.asset?.url ?? null,
+  }
 
   let posts = await getAllPosts(locale)
   let displayLocale = locale
@@ -52,7 +52,7 @@ export default async function BlogPage() {
     <main className="container section">
 
       {/* ── Editorial header ── */}
-      <PageHeader imageUrl={imgUrl}>
+      <PageHeader imageSet={imageSet}>
         <div style={{
           display: 'flex',
           alignItems: 'baseline',
@@ -103,7 +103,7 @@ export default async function BlogPage() {
         </p>
       )}
 
-      {/* ── Featured post — no cover image, prominence via typography ── */}
+      {/* ── Featured post ── */}
       {featured && (
         <PostCard post={featured} locale={displayLocale} featured />
       )}

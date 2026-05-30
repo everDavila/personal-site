@@ -1,17 +1,13 @@
-import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, pageImage } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getMode } from '@/lib/mode'
 import { PageHeader } from '@/components/ui/PageHeader'
 import type { Locale } from '@/lib/i18n'
 
 export const dynamic = 'force-dynamic'
 
 export default async function ContactPage() {
-  const [locale, mode] = await Promise.all([
-    getLocale() as Promise<Locale>,
-    getMode(),
-  ])
+  const locale = await getLocale() as Locale
   const [settings, t, subtitle] = await Promise.all([
     getSiteSettings(),
     getTranslations('contact'),
@@ -22,16 +18,23 @@ export default async function ContactPage() {
   const title      = lbl(c?.title,      locale, t('title'))
   const emailLabel = lbl(c?.emailLabel, locale, t('email_label'))
   const social     = settings?.social
-  const intro      = narrativeText(settings?.contactIntro, mode, locale, NARRATIVE_FALLBACK[mode].contactIntro)
-  const imgUrl     = pageImage(settings?.pageImages?.contact, mode)
+
+  const introDark  = narrativeText(settings?.contactIntro, 'dark',  locale, NARRATIVE_FALLBACK.dark.contactIntro)
+  const introLight = narrativeText(settings?.contactIntro, 'light', locale, NARRATIVE_FALLBACK.light.contactIntro)
+  const hasIntro   = introDark || introLight
+
+  const imageSet = {
+    dark:  settings?.pageImages?.contact?.dark?.asset?.url  ?? null,
+    light: settings?.pageImages?.contact?.light?.asset?.url ?? null,
+  }
 
   return (
     <main className="container section">
-      <PageHeader imageUrl={imgUrl}>
+      <PageHeader imageSet={imageSet}>
         <h1 className="page-title" style={{ marginBottom: '0.75rem' }}>
           {title}
         </h1>
-        {subtitle && !intro && (
+        {subtitle && !hasIntro && (
           <p style={{
             fontSize: 'var(--text-small)',
             color: 'var(--color-muted)',
@@ -44,8 +47,8 @@ export default async function ContactPage() {
         )}
       </PageHeader>
 
-      {intro && (
-        <p style={{
+      {hasIntro && (
+        <div style={{
           fontSize: 'var(--text-body)',
           color: 'var(--color-text)',
           lineHeight: 'var(--leading-body)',
@@ -54,8 +57,9 @@ export default async function ContactPage() {
           marginBottom: '2.5rem',
           marginTop: '0.5rem',
         }}>
-          {intro}
-        </p>
+          {introDark  && <p className="n-d" style={{ margin: 0 }}>{introDark}</p>}
+          {introLight && <p className="n-l" style={{ margin: 0 }}>{introLight}</p>}
+        </div>
       )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>

@@ -1,18 +1,14 @@
-import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, pageImage } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getMode } from '@/lib/mode'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
 
 export default async function AboutPage() {
-  const [locale, mode] = await Promise.all([
-    getLocale() as Promise<Locale>,
-    getMode(),
-  ])
+  const locale = await getLocale() as Locale
   const [settings, t, subtitle] = await Promise.all([
     getSiteSettings(),
     getTranslations('about'),
@@ -24,12 +20,18 @@ export default async function AboutPage() {
   const connect = lbl(a?.connect,       locale, t('connect'))
   const seeExp  = lbl(a?.seeExperience, locale, t('see_experience'))
   const social  = settings?.social
-  const bio     = narrativeText(settings?.about, mode, locale, NARRATIVE_FALLBACK[mode].about)
-  const imgUrl  = pageImage(settings?.pageImages?.about, mode)
+
+  const bioDark  = narrativeText(settings?.about, 'dark',  locale, NARRATIVE_FALLBACK.dark.about)
+  const bioLight = narrativeText(settings?.about, 'light', locale, NARRATIVE_FALLBACK.light.about)
+
+  const imageSet = {
+    dark:  settings?.pageImages?.about?.dark?.asset?.url  ?? null,
+    light: settings?.pageImages?.about?.light?.asset?.url ?? null,
+  }
 
   return (
     <main className="container section">
-      <PageHeader imageUrl={imgUrl}>
+      <PageHeader imageSet={imageSet}>
         <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
           {title}
         </h1>
@@ -46,8 +48,8 @@ export default async function AboutPage() {
         )}
       </PageHeader>
 
-      {bio ? (
-        <p style={{
+      {(bioDark || bioLight) && (
+        <div style={{
           fontSize: 'var(--text-body)',
           color: 'var(--color-text)',
           lineHeight: 'var(--leading-body)',
@@ -55,9 +57,10 @@ export default async function AboutPage() {
           marginBottom: '3rem',
           letterSpacing: 'var(--tracking-body)',
         }}>
-          {bio}
-        </p>
-      ) : null}
+          {bioDark  && <p className="n-d" style={{ margin: 0 }}>{bioDark}</p>}
+          {bioLight && <p className="n-l" style={{ margin: 0 }}>{bioLight}</p>}
+        </div>
+      )}
 
       {social && (
         <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>

@@ -1,13 +1,33 @@
-import { getTranslations, getLocale } from 'next-intl/server'
+import { getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 
-type Props = { text: string }
+type Props = { dark: string; light: string }
 
-export async function Philosophy({ text }: Props) {
+export async function Philosophy({ dark, light }: Props) {
   const t = await getTranslations('home')
 
-  // Split on blank lines for multiple editorial paragraphs
-  const paragraphs = text.split(/\n\n+/).filter(Boolean)
+  function Paragraphs({ text, className }: { text: string; className: string }) {
+    const paras = text.split(/\n\n+/).filter(Boolean)
+    return (
+      <div className={className}>
+        {paras.map((para, i) => (
+          <p
+            key={i}
+            style={{
+              fontSize: 'clamp(1.125rem, 2vw, 1.5rem)',
+              lineHeight: 1.55,
+              color: 'var(--color-text)',
+              margin: i < paras.length - 1 ? '0 0 1.25rem' : '0',
+              fontWeight: 400,
+              letterSpacing: '-0.01em',
+            }}
+          >
+            {para}
+          </p>
+        ))}
+      </div>
+    )
+  }
 
   return (
     <section
@@ -24,21 +44,8 @@ export async function Philosophy({ text }: Props) {
         flexWrap: 'wrap',
       }}>
         <div style={{ flex: '1 1 32ch' }}>
-          {paragraphs.map((para, i) => (
-            <p
-              key={i}
-              style={{
-                fontSize: 'clamp(1.125rem, 2vw, 1.5rem)',
-                lineHeight: 1.55,
-                color: 'var(--color-text)',
-                margin: i < paragraphs.length - 1 ? '0 0 1.25rem' : '0',
-                fontWeight: 400,
-                letterSpacing: '-0.01em',
-              }}
-            >
-              {para}
-            </p>
-          ))}
+          <Paragraphs text={dark}  className="n-d" />
+          <Paragraphs text={light} className="n-l" />
         </div>
 
         <div style={{ paddingTop: '0.25rem', flexShrink: 0 }}>

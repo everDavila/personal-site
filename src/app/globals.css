@@ -107,6 +107,25 @@
 [data-mode="dark"]  .mode-light-only { display: none !important; }
 [data-mode="light"] .mode-dark-only  { display: none !important; }
 
+/* Narrative slots — ambos textos/imágenes en el DOM, CSS controla cuál se ve */
+[data-mode="dark"]  .n-l { display: none !important; }
+[data-mode="light"] .n-d { display: none !important; }
+
+/* Burst ring — toggle ThemeToggle */
+@keyframes narrative-burst {
+  0%   { transform: translate(-50%, -50%) scale(0.6); opacity: 0.7; }
+  100% { transform: translate(-50%, -50%) scale(2.4); opacity: 0; }
+}
+.toggle-burst {
+  position: absolute;
+  top: 50%; left: 50%;
+  width: 24px; height: 24px;
+  border-radius: 50%;
+  border: 1.5px solid var(--color-accent);
+  animation: narrative-burst 420ms ease-out forwards;
+  pointer-events: none;
+}
+
 /* Compatibilidad con data-theme (por si algún componente lo usa) */
 [data-theme="dark"]  { --color-bg: #0F0F0D; --color-surface: #181715; --color-border: #272522; --color-text: #F0EFEC; --color-muted: #7A7975; --color-accent: #5A7C94; --color-accent-hover: #8FD3FF; }
 [data-theme="light"] { --color-bg: #F5F4F0; --color-surface: #EDEDEA; --color-border: #D6D4CF; --color-text: #111110; --color-muted: #6A6A67; --color-accent: #3D6E5E; --color-accent-hover: #1E4D3C; }

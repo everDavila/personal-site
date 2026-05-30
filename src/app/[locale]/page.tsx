@@ -9,17 +9,13 @@ import { getFeaturedProjects } from '@/sanity/queries/projects'
 import { getExperience } from '@/sanity/queries/experience'
 import { getLatestPosts } from '@/sanity/queries/posts'
 import { getPageSubtitleData } from '@/sanity/queries/editorialSubtitle'
-import { getMode } from '@/lib/mode'
 import type { Locale } from '@/lib/i18n'
 import { BLOG_FALLBACK } from '@/lib/i18n'
 
 export const dynamic = 'force-dynamic'
 
 export default async function Home() {
-  const [locale, mode] = await Promise.all([
-    getLocale() as Promise<Locale>,
-    getMode(),
-  ])
+  const locale = await getLocale() as Locale
 
   const [settings, projects, experience, posts, homeSubtitleData] = await Promise.all([
     getSiteSettings(),
@@ -33,18 +29,16 @@ export default async function Home() {
   const displayPosts        = posts.length > 0 ? posts : await getLatestPosts(fallbackLocale)
   const postsDisplayLocale: Locale = posts.length > 0 ? locale : fallbackLocale
 
-  const philosophy = narrativeText(
-    settings?.philosophy,
-    mode,
-    locale,
-    NARRATIVE_FALLBACK[mode].philosophy,
-  )
+  const philosophyDark  = narrativeText(settings?.philosophy, 'dark',  locale, NARRATIVE_FALLBACK.dark.philosophy)
+  const philosophyLight = narrativeText(settings?.philosophy, 'light', locale, NARRATIVE_FALLBACK.light.philosophy)
 
   return (
     <>
-      <Hero settings={settings} cvUrl={settings?.cvUrl} mode={mode} initialSub={homeSubtitleData.initial} subtitlePool={homeSubtitleData.pool} />
+      <Hero settings={settings} cvUrl={settings?.cvUrl} initialSub={homeSubtitleData.initial} subtitlePool={homeSubtitleData.pool} />
       <SelectedWork projects={projects} settings={settings} />
-      {philosophy && <Philosophy text={philosophy} />}
+      {(philosophyDark || philosophyLight) && (
+        <Philosophy dark={philosophyDark ?? ''} light={philosophyLight ?? ''} />
+      )}
       <ExperienceSnapshot
         workEntries={experience?.workExperience ?? []}
         eduEntries={experience?.education ?? []}

@@ -4,8 +4,7 @@ import { localized } from '@/lib/i18n'
 import type { Locale } from '@/lib/i18n'
 import type { WorkEntry, EducationEntry } from '@/sanity/queries/experience'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl, pageImage } from '@/sanity/queries/siteSettings'
-import { getMode } from '@/lib/mode'
+import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
@@ -76,10 +75,7 @@ function SectionLabel({ children, accent }: { children: React.ReactNode; accent?
 }
 
 export default async function ExperiencePage() {
-  const [locale, mode] = await Promise.all([
-    getLocale() as Promise<Locale>,
-    getMode(),
-  ])
+  const locale = await getLocale() as Locale
   const [data, t, subtitle, settings] = await Promise.all([
     getExperience(),
     getTranslations('experience'),
@@ -95,7 +91,11 @@ export default async function ExperiencePage() {
   const eduLabel      = lbl(e?.eduLabel,      locale, t('edu_label'))
   const downloadCv    = lbl(e?.downloadCv,    locale, t('download_cv'))
   const emptyMsg      = lbl(e?.empty,         locale, t('empty'))
-  const imgUrl        = pageImage(settings?.pageImages?.experience, mode)
+
+  const imageSet = {
+    dark:  settings?.pageImages?.experience?.dark?.asset?.url  ?? null,
+    light: settings?.pageImages?.experience?.light?.asset?.url ?? null,
+  }
 
   const work     = data?.workExperience ?? []
   const edu      = data?.education ?? []
@@ -106,7 +106,7 @@ export default async function ExperiencePage() {
   return (
     <>
       <section className="container" style={{ paddingTop: 'var(--spacing-section)', paddingBottom: '2.5rem', borderBottom: 'var(--border-width) solid var(--color-border)' }}>
-        <PageHeader imageUrl={imgUrl}>
+        <PageHeader imageSet={imageSet}>
           <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
             {title}
           </h1>

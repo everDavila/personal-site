@@ -3,8 +3,7 @@ import { getAllPlaygroundItems } from '@/sanity/queries/playground'
 import { PlaygroundClient } from '@/components/playground/PlaygroundClient'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl, pageImage } from '@/sanity/queries/siteSettings'
-import { getMode } from '@/lib/mode'
+import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
@@ -12,10 +11,7 @@ export const dynamic = 'force-dynamic'
 const CATEGORIES = ['interfaces', 'motion', 'systems', 'ai', 'experiments', 'tools']
 
 export default async function PlaygroundPage() {
-  const [locale, mode] = await Promise.all([
-    getLocale() as Promise<Locale>,
-    getMode(),
-  ])
+  const locale = await getLocale() as Locale
   const [t, items, subtitle, settings] = await Promise.all([
     getTranslations('playground'),
     getAllPlaygroundItems(),
@@ -25,7 +21,11 @@ export default async function PlaygroundPage() {
 
   const pg     = settings?.labels?.playground
   const title  = lbl(pg?.title, locale, t('title'))
-  const imgUrl = pageImage(settings?.pageImages?.playground, mode)
+
+  const imageSet = {
+    dark:  settings?.pageImages?.playground?.dark?.asset?.url  ?? null,
+    light: settings?.pageImages?.playground?.light?.asset?.url ?? null,
+  }
 
   const translations = {
     filter_all:   lbl(pg?.filterAll,   locale, t('filter_all')),
@@ -45,7 +45,7 @@ export default async function PlaygroundPage() {
 
   return (
     <main className="container section">
-      <PageHeader imageUrl={imgUrl}>
+      <PageHeader imageSet={imageSet}>
         <h1 style={{
           fontSize: 'var(--text-section)',
           fontFamily: 'var(--font-display)',
