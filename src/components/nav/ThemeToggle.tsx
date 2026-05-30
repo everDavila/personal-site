@@ -5,6 +5,37 @@ import { useRouter } from 'next/navigation'
 import { setNarrativeMode } from '@/app/actions/setMode'
 import type { NarrativeMode } from '@/lib/mode'
 
+function AstronautIcon() {
+  return (
+    <svg
+      width="15"
+      height="19"
+      viewBox="0 0 15 19"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="1.35"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      aria-hidden="true"
+    >
+      {/* Helmet */}
+      <circle cx="7.5" cy="6.5" r="5" />
+      {/* Visor */}
+      <ellipse cx="7.5" cy="6" rx="2.6" ry="2.1" fill="currentColor" fillOpacity="0.22" stroke="none" />
+      {/* Neck ring */}
+      <line x1="5.5" y1="11.5" x2="9.5" y2="11.5" />
+      {/* Body suit */}
+      <path d="M3.5 13 L4 18.5 H11 L11.5 13" />
+      {/* Shoulders arc */}
+      <path d="M3.5 13 Q7.5 11.8 11.5 13" />
+      {/* Left arm */}
+      <path d="M3.5 14.5 L1 16" />
+      {/* Right arm */}
+      <path d="M11.5 14.5 L14 16" />
+    </svg>
+  )
+}
+
 export function ThemeToggle() {
   const [mode, setMode] = useState<NarrativeMode | null>(null)
   const [, startTransition] = useTransition()
@@ -17,10 +48,8 @@ export function ThemeToggle() {
 
   function toggle() {
     const next: NarrativeMode = mode === 'dark' ? 'light' : 'dark'
-    // Update CSS immediately — no flash
     document.documentElement.dataset.mode = next
     setMode(next)
-    // Persist cookie + refresh server components (text updates)
     startTransition(async () => {
       await setNarrativeMode(next)
       router.refresh()
@@ -40,19 +69,22 @@ export function ThemeToggle() {
         background: 'none',
         border: 'none',
         cursor: 'pointer',
-        color: 'var(--color-muted)',
         padding: '0.25rem',
         lineHeight: 1,
-        transition: 'color var(--transition)',
-        fontSize: '1rem',
         display: 'flex',
         alignItems: 'center',
-        gap: '0.3rem',
+        transition: 'opacity var(--transition)',
+        color: isDark ? 'var(--color-muted)' : 'var(--color-accent)',
       }}
-      onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-text)')}
-      onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-muted)')}
+      onMouseEnter={e => { e.currentTarget.style.opacity = '0.7' }}
+      onMouseLeave={e => { e.currentTarget.style.opacity = '1' }}
+      className={isDark ? undefined : 'astronaut-float'}
     >
-      {isDark ? '○' : '●'}
+      {isDark ? (
+        <span style={{ fontSize: '1rem', lineHeight: 1 }}>○</span>
+      ) : (
+        <AstronautIcon />
+      )}
     </button>
   )
 }

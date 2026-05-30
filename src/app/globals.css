@@ -69,6 +69,19 @@
   --leading-body:    1.85;
 }
 
+/* ─────────────────────────────────────────
+   ANIMACIÓN: astronauta flotando (modo claro)
+───────────────────────────────────────── */
+@keyframes astronaut-float {
+  0%, 100% { transform: translateY(0px);  }
+  50%       { transform: translateY(-3px); }
+}
+.astronaut-float {
+  animation: astronaut-float 3s ease-in-out infinite;
+  display: inline-block;
+  color: var(--color-accent);
+}
+
 /* Compatibilidad con data-theme (por si algún componente lo usa) */
 [data-theme="dark"]  { --color-bg: #0F0F0D; --color-surface: #181715; --color-border: #272522; --color-text: #F0EFEC; --color-muted: #7A7975; --color-accent: #5A7C94; --color-accent-hover: #8FD3FF; }
 [data-theme="light"] { --color-bg: #F5F4F0; --color-surface: #EDEDEA; --color-border: #D6D4CF; --color-text: #111110; --color-muted: #6A6A67; --color-accent: #3D6E5E; --color-accent-hover: #1E4D3C; }
