@@ -43,6 +43,9 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
     maxWidth: '13ch',
   }
 
+  const heroDarkUrl  = heroBase?.heroImage?.asset?.url  ?? null
+  const heroLightUrl = heroBase?.heroImageLight?.asset?.url ?? null
+
   return (
     <section
       className="container"
@@ -53,8 +56,21 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
         justifyContent: 'flex-end',
         paddingBottom: 'clamp(4rem, 9vw, 7rem)',
         paddingTop: 'clamp(7rem, 18vw, 12rem)',
+        position: 'relative',
       }}
     >
+      {/* Imagen del personaje — flota arriba a la derecha */}
+      {(heroDarkUrl || heroLightUrl) && (
+        <div style={{
+          position: 'absolute',
+          top: 'clamp(4rem, 8vw, 6rem)',
+          right: 'var(--spacing-container)',
+          pointerEvents: 'none',
+        }}>
+          {heroDarkUrl  && <img src={heroDarkUrl}  alt="" className="page-header-image mode-dark-only"  />}
+          {heroLightUrl && <img src={heroLightUrl} alt="" className="page-header-image mode-light-only" />}
+        </div>
+      )}
       <div style={{ maxWidth: '76rem', width: '100%' }}>
 
         {/* Headline — grid stacking, crossfade on mode switch */}
