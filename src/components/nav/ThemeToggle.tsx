@@ -6,25 +6,24 @@ import type { NarrativeMode } from '@/lib/mode'
 
 function HumanIcon() {
   return (
-    <svg width="12" height="14" viewBox="0 0 12 14" fill="none" stroke="currentColor"
-      strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="6" cy="3.5" r="2.5" />
-      <path d="M1.5 13.5 C1.5 10.5 10.5 10.5 10.5 13.5" />
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M17 18a5 5 0 0 0-10 0"/>
+      <circle cx="12" cy="9" r="4"/>
+      <path d="M10.5 9h.01M13.5 9h.01"/>
+      <path d="M12 12c-1 0-1.5-.5-1.5-.5"/>
     </svg>
   )
 }
 
 function AstronautIcon() {
   return (
-    <svg width="12" height="15" viewBox="0 0 15 19" fill="none" stroke="currentColor"
-      strokeWidth="1.35" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
-      <circle cx="7.5" cy="6.5" r="5" />
-      <ellipse cx="7.5" cy="6" rx="2.6" ry="2.1" fill="currentColor" fillOpacity="0.22" stroke="none" />
-      <line x1="5.5" y1="11.5" x2="9.5" y2="11.5" />
-      <path d="M3.5 13 L4 18.5 H11 L11.5 13" />
-      <path d="M3.5 13 Q7.5 11.8 11.5 13" />
-      <path d="M3.5 14.5 L1 16" />
-      <path d="M11.5 14.5 L14 16" />
+    <svg width="14" height="14" viewBox="0 0 24 24" fill="none"
+      stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round" aria-hidden="true">
+      <path d="M12 21a8 8 0 0 0 8-8V9a8 8 0 0 0-16 0v4a8 8 0 0 0 8 8z"/>
+      <rect x="7" y="6" width="10" height="9" rx="3.5"/>
+      <path d="M9 21v1a1 1 0 0 0 1 1h4a1 1 0 0 0 1-1v-1"/>
+      <path d="M17 15h1a2 2 0 0 0 2-2v-2"/>
     </svg>
   )
 }
