@@ -54,13 +54,13 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
             {/* Headline — flip 3D entre modos */}
             <h1 className="n-slot" style={{
               fontFamily: 'var(--font-serif)',
-              fontSize: 'var(--text-hero)',
+              fontSize: hasImage ? 'clamp(3rem, 5.5vw, 5.5rem)' : 'var(--text-hero)',
               fontWeight: 400,
               lineHeight: 1.05,
               letterSpacing: 'var(--tracking-hero)',
               color: 'var(--color-text)',
               margin: '0 0 clamp(3rem, 8vw, 6rem)',
-              maxWidth: '13ch',
+              maxWidth: hasImage ? 'none' : '13ch',
             }}>
               <span className="n-d">{cleanDark}<span style={{ color: 'var(--color-accent)' }}>.</span></span>
               <span className="n-l">{cleanLight}<span style={{ color: 'var(--color-accent)' }}>.</span></span>
@@ -74,7 +74,7 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
               gap: 'clamp(2rem, 5vw, 4rem)',
               flexWrap: 'wrap',
             }}>
-              <div style={{ paddingLeft: 'clamp(0rem, 7vw, 6rem)' }}>
+              <div>
                 <div className="n-slot">
                   <HeroSubtitle initial={initialSub ?? darkSub} pool={subtitlePool} className="n-d"
                     style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />

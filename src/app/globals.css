@@ -87,7 +87,7 @@
 ───────────────────────────────────────── */
 .hero-grid {
   display: grid;
-  grid-template-columns: 3fr 2fr;
+  grid-template-columns: 65fr 35fr;
   min-height: calc(100svh - 57px);
 }
 .hero-text-col {
