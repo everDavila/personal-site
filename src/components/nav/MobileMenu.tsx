@@ -4,6 +4,7 @@ import { useState, useEffect } from 'react'
 import Link from 'next/link'
 import { ThemeToggle } from './ThemeToggle'
 import { LocaleSwitcher } from './LocaleSwitcher'
+import { LogoMark } from './LogoMark'
 
 type NavLink = { href: string; label: string }
 
@@ -54,7 +55,7 @@ export function MobileMenu({ links }: Props) {
         >
           {/* Header del overlay */}
           <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center', paddingBlock: '0.5rem' }}>
-            <span style={{ fontWeight: 600, color: 'var(--color-text)' }}>ever davila</span>
+            <LogoMark />
             <button
               onClick={() => setOpen(false)}
               aria-label="Cerrar menú"
