@@ -46,42 +46,12 @@ export function PostCard({ post, locale, featured = false }: Props) {
   const elabel  = editorialLabel(post.publishedAt, post._updatedAt, locale)
 
   if (featured) {
-    const featuredImageSrc = post.mainImage?.asset?.url
-      ?? `/api/og?title=${encodeURIComponent(title.value || '')}&date=${encodeURIComponent(date)}`
-    const featuredImageAlt = post.mainImage?.alt?.[locale] ?? post.mainImage?.alt?.es ?? title.value ?? ''
-
     return (
       <Link
         href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }}
         style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
       >
         <article className="blog-featured">
-          {/* Cover image */}
-          <div style={{
-            marginInline: 'calc(-1 * var(--spacing-container))',
-            marginTop: 'calc(-1 * 3rem)',
-            aspectRatio: '1200 / 630',
-            overflow: 'hidden',
-            marginBottom: '2rem',
-            backgroundColor: '#0F0F0D',
-          }}>
-            <img
-              src={featuredImageSrc}
-              alt={featuredImageAlt}
-              width={1200}
-              height={630}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-                filter: post.mainImage
-                  ? 'grayscale(100%) brightness(0.97) contrast(1.05)'
-                  : 'none',
-              }}
-            />
-          </div>
-
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
             <p className="text-label" style={{ margin: 0 }}>{lbl('field', locale)}</p>
             {elabel && (

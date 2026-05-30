@@ -4,12 +4,17 @@ import { localized } from '@/lib/i18n'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, pageImage } from '@/sanity/queries/siteSettings'
+import { getMode } from '@/lib/mode'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
 
 export default async function WorkPage() {
-  const locale = await getLocale() as Locale
+  const [locale, mode] = await Promise.all([
+    getLocale() as Promise<Locale>,
+    getMode(),
+  ])
   const [projects, t, subtitle, settings] = await Promise.all([
     getAllProjects(),
     getTranslations('work'),
@@ -17,26 +22,29 @@ export default async function WorkPage() {
     getSiteSettings(),
   ])
 
-  const w = settings?.labels?.work
+  const w     = settings?.labels?.work
   const title = lbl(w?.title, locale, t('title'))
   const empty = lbl(w?.empty, locale, t('empty'))
+  const imgUrl = pageImage(settings?.pageImages?.work, mode)
 
   return (
     <main className="container section">
-      <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
-        {title}
-      </h1>
-      {subtitle && (
-        <p style={{
-          fontSize: 'var(--text-small)',
-          color: 'var(--color-muted)',
-          marginBottom: '3rem',
-          maxWidth: '52ch',
-          lineHeight: 1.6,
-        }}>
-          {subtitle}
-        </p>
-      )}
+      <PageHeader imageUrl={imgUrl}>
+        <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
+          {title}
+        </h1>
+        {subtitle && (
+          <p style={{
+            fontSize: 'var(--text-small)',
+            color: 'var(--color-muted)',
+            marginBottom: '3rem',
+            maxWidth: '52ch',
+            lineHeight: 1.6,
+          }}>
+            {subtitle}
+          </p>
+        )}
+      </PageHeader>
 
       {projects.length === 0 ? (
         <p style={{ color: 'var(--color-muted)' }}>{empty}</p>
@@ -46,17 +54,13 @@ export default async function WorkPage() {
             const summary = localized(project.summary, locale)
             const role    = localized(project.role,    locale)
             const detail  = [role.value, project.year].filter(Boolean).join(' · ')
-
             return (
               <Link
                 key={project._id}
                 href={{ pathname: '/work/[slug]', params: { slug: project.slug } }}
                 className="project-row"
               >
-                <p className="project-row-headline">
-                  {summary.value}
-                </p>
-
+                <p className="project-row-headline">{summary.value}</p>
                 <div className="project-row-footer">
                   <div className="project-row-meta-left">
                     <p className="project-row-client">{project.client}</p>

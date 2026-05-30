@@ -1,7 +1,8 @@
-import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, pageImage } from '@/sanity/queries/siteSettings'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
 import { getMode } from '@/lib/mode'
+import { PageHeader } from '@/components/ui/PageHeader'
 import type { Locale } from '@/lib/i18n'
 
 export const dynamic = 'force-dynamic'
@@ -11,7 +12,6 @@ export default async function ContactPage() {
     getLocale() as Promise<Locale>,
     getMode(),
   ])
-
   const [settings, t, subtitle] = await Promise.all([
     getSiteSettings(),
     getTranslations('contact'),
@@ -22,16 +22,28 @@ export default async function ContactPage() {
   const title      = lbl(c?.title,      locale, t('title'))
   const emailLabel = lbl(c?.emailLabel, locale, t('email_label'))
   const social     = settings?.social
-
-  const intro = narrativeText(settings?.contactIntro, mode, locale, NARRATIVE_FALLBACK[mode].contactIntro)
+  const intro      = narrativeText(settings?.contactIntro, mode, locale, NARRATIVE_FALLBACK[mode].contactIntro)
+  const imgUrl     = pageImage(settings?.pageImages?.contact, mode)
 
   return (
     <main className="container section">
-      <h1 className="page-title" style={{ marginBottom: '0.75rem' }}>
-        {title}
-      </h1>
+      <PageHeader imageUrl={imgUrl}>
+        <h1 className="page-title" style={{ marginBottom: '0.75rem' }}>
+          {title}
+        </h1>
+        {subtitle && !intro && (
+          <p style={{
+            fontSize: 'var(--text-small)',
+            color: 'var(--color-muted)',
+            lineHeight: 1.6,
+            marginBottom: '0',
+            maxWidth: '52ch',
+          }}>
+            {subtitle}
+          </p>
+        )}
+      </PageHeader>
 
-      {/* Narrative intro — changes per mode */}
       {intro && (
         <p style={{
           fontSize: 'var(--text-body)',
@@ -40,21 +52,9 @@ export default async function ContactPage() {
           letterSpacing: 'var(--tracking-body)',
           maxWidth: '44ch',
           marginBottom: '2.5rem',
+          marginTop: '0.5rem',
         }}>
           {intro}
-        </p>
-      )}
-
-      {/* Editorial subtitle — always shown, contextual rotation */}
-      {subtitle && !intro && (
-        <p style={{
-          fontSize: 'var(--text-small)',
-          color: 'var(--color-muted)',
-          lineHeight: 1.6,
-          marginBottom: '3rem',
-          maxWidth: '52ch',
-        }}>
-          {subtitle}
         </p>
       )}
 

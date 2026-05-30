@@ -82,6 +82,31 @@
   color: var(--color-accent);
 }
 
+/* ─────────────────────────────────────────
+   PAGE HEADER — layout dos columnas con imagen
+───────────────────────────────────────── */
+.page-header-grid {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  align-items: end;
+  gap: clamp(1.5rem, 4vw, 3rem);
+}
+.page-header-image {
+  width: clamp(80px, 11vw, 160px);
+  height: auto;
+  object-fit: contain;
+  display: block;
+  align-self: center;
+}
+@media (max-width: 600px) {
+  .page-header-grid  { grid-template-columns: 1fr; }
+  .page-header-image { display: none; }
+}
+
+/* Visibilidad por modo — útil para imágenes y cualquier elemento */
+[data-mode="dark"]  .mode-light-only { display: none !important; }
+[data-mode="light"] .mode-dark-only  { display: none !important; }
+
 /* Compatibilidad con data-theme (por si algún componente lo usa) */
 [data-theme="dark"]  { --color-bg: #0F0F0D; --color-surface: #181715; --color-border: #272522; --color-text: #F0EFEC; --color-muted: #7A7975; --color-accent: #5A7C94; --color-accent-hover: #8FD3FF; }
 [data-theme="light"] { --color-bg: #F5F4F0; --color-surface: #EDEDEA; --color-border: #D6D4CF; --color-text: #111110; --color-muted: #6A6A67; --color-accent: #3D6E5E; --color-accent-hover: #1E4D3C; }

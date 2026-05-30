@@ -4,7 +4,9 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import type { Locale } from '@/lib/i18n'
 import { BLOG_FALLBACK } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, pageImage } from '@/sanity/queries/siteSettings'
+import { getMode } from '@/lib/mode'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
 
@@ -17,17 +19,21 @@ const COUNT_LABEL: Record<Locale, (n: number) => string> = {
 }
 
 export default async function BlogPage() {
-  const locale = await getLocale() as Locale
+  const [locale, mode] = await Promise.all([
+    getLocale() as Promise<Locale>,
+    getMode(),
+  ])
   const [t, subtitle, settings] = await Promise.all([
     getTranslations('blog'),
     getPageSubtitle('blog', locale),
     getSiteSettings(),
   ])
 
-  const n = settings?.labels?.nav
-  const b = settings?.labels?.blog
-  const title    = lbl(n?.blog, locale, t('title'))
+  const n       = settings?.labels?.nav
+  const b       = settings?.labels?.blog
+  const title   = lbl(n?.blog, locale, t('title'))
   const emptyMsg = lbl(b?.empty, locale, t('empty'))
+  const imgUrl  = pageImage(settings?.pageImages?.blog, mode)
 
   let posts = await getAllPosts(locale)
   let displayLocale = locale
@@ -46,48 +52,50 @@ export default async function BlogPage() {
     <main className="container section">
 
       {/* ── Editorial header ── */}
-      <div style={{
-        display: 'flex',
-        alignItems: 'baseline',
-        justifyContent: 'space-between',
-        gap: '1rem',
-        marginBottom: '0.5rem',
-      }}>
-        <h1 style={{
-          fontFamily: 'var(--font-serif)',
-          fontSize: 'clamp(2rem, 5vw, 3rem)',
-          fontWeight: 400,
-          letterSpacing: '-0.03em',
-          lineHeight: 1.1,
-          color: 'var(--color-text)',
-          margin: 0,
+      <PageHeader imageUrl={imgUrl}>
+        <div style={{
+          display: 'flex',
+          alignItems: 'baseline',
+          justifyContent: 'space-between',
+          gap: '1rem',
+          marginBottom: '0.5rem',
         }}>
-          {title}
-        </h1>
-        {posts.length > 0 && (
-          <span style={{
-            fontSize: 'var(--text-label)',
-            color: 'var(--color-muted)',
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-            whiteSpace: 'nowrap',
+          <h1 style={{
+            fontFamily: 'var(--font-serif)',
+            fontSize: 'clamp(2rem, 5vw, 3rem)',
+            fontWeight: 400,
+            letterSpacing: '-0.03em',
+            lineHeight: 1.1,
+            color: 'var(--color-text)',
+            margin: 0,
           }}>
-            {countLabel}
-          </span>
-        )}
-      </div>
+            {title}
+          </h1>
+          {posts.length > 0 && (
+            <span style={{
+              fontSize: 'var(--text-label)',
+              color: 'var(--color-muted)',
+              textTransform: 'uppercase',
+              letterSpacing: '0.1em',
+              whiteSpace: 'nowrap',
+            }}>
+              {countLabel}
+            </span>
+          )}
+        </div>
 
-      {subtitle && (
-        <p style={{
-          fontSize: 'var(--text-small)',
-          color: 'var(--color-muted)',
-          maxWidth: '52ch',
-          lineHeight: 1.6,
-          marginBottom: '0',
-        }}>
-          {subtitle}
-        </p>
-      )}
+        {subtitle && (
+          <p style={{
+            fontSize: 'var(--text-small)',
+            color: 'var(--color-muted)',
+            maxWidth: '52ch',
+            lineHeight: 1.6,
+            marginBottom: '0',
+          }}>
+            {subtitle}
+          </p>
+        )}
+      </PageHeader>
 
       {posts.length === 0 && (
         <p style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', marginTop: '3rem' }}>
@@ -95,7 +103,7 @@ export default async function BlogPage() {
         </p>
       )}
 
-      {/* ── Featured post ── */}
+      {/* ── Featured post — no cover image, prominence via typography ── */}
       {featured && (
         <PostCard post={featured} locale={displayLocale} featured />
       )}

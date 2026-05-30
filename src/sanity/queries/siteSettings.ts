@@ -10,6 +10,19 @@ export type NarrativeModes = {
   light?: LocalizedString | null
 }
 
+export type PageImageSet = {
+  dark?:  { asset?: { url: string } | null } | null
+  light?: { asset?: { url: string } | null } | null
+}
+
+/** Resolve the image URL for a given mode. No cross-mode fallback — each is independent. */
+export function pageImage(
+  set: PageImageSet | null | undefined,
+  mode: 'dark' | 'light'
+): string | null {
+  return set?.[mode]?.asset?.url ?? null
+}
+
 export type Competency = {
   title: LocalizedString
   description: LocalizedString
@@ -59,15 +72,24 @@ export type UILabels = {
 
 export type SiteSettings = {
   hero: {
-    roleLabel:     LocalizedString
-    headline:      LocalizedString
+    roleLabel:      LocalizedString
+    headline:       LocalizedString
     headlineLight?: LocalizedString | null
-    sub:           LocalizedString
-    subLight?:     LocalizedString | null
-    ctaWork:       LocalizedString
-    ctaCV:         LocalizedString
-    heroImage:     { asset: { url: string } } | null
+    sub:            LocalizedString
+    subLight?:      LocalizedString | null
+    ctaWork:        LocalizedString
+    ctaCV:          LocalizedString
+    heroImage?:     { asset: { url: string } } | null
+    heroImageLight?: { asset: { url: string } } | null
   }
+  pageImages?: {
+    work?:       PageImageSet | null
+    about?:      PageImageSet | null
+    contact?:    PageImageSet | null
+    experience?: PageImageSet | null
+    playground?: PageImageSet | null
+    blog?:       PageImageSet | null
+  } | null
   cvUrl?:       string | null
   philosophy?:  NarrativeModes | null
   contactIntro?: NarrativeModes | null
@@ -150,7 +172,16 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
         roleLabel, headline, headlineLight,
         sub, subLight,
         ctaWork, ctaCV,
-        heroImage { asset->{ url } }
+        heroImage { asset->{ url } },
+        heroImageLight { asset->{ url } }
+      },
+      pageImages {
+        work       { dark { asset->{ url } }, light { asset->{ url } } },
+        about      { dark { asset->{ url } }, light { asset->{ url } } },
+        contact    { dark { asset->{ url } }, light { asset->{ url } } },
+        experience { dark { asset->{ url } }, light { asset->{ url } } },
+        playground { dark { asset->{ url } }, light { asset->{ url } } },
+        blog       { dark { asset->{ url } }, light { asset->{ url } } },
       },
       cvUrl,
       philosophy { dark, light },

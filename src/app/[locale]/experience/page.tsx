@@ -4,7 +4,9 @@ import { localized } from '@/lib/i18n'
 import type { Locale } from '@/lib/i18n'
 import type { WorkEntry, EducationEntry } from '@/sanity/queries/experience'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, pageImage } from '@/sanity/queries/siteSettings'
+import { getMode } from '@/lib/mode'
+import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
 
@@ -13,7 +15,6 @@ function FeaturedEntry({ entry, locale, currentLabel }: {
 }) {
   const role = localized(entry.role, locale)
   const desc = localized(entry.description, locale)
-
   return (
     <div className="exp-feat-row">
       <div>
@@ -30,13 +31,9 @@ function FeaturedEntry({ entry, locale, currentLabel }: {
             </span>
           )}
         </h3>
-        <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', margin: '0 0 1rem' }}>
-          {entry.company}
-        </p>
+        <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', margin: '0 0 1rem' }}>{entry.company}</p>
         {desc.value && (
-          <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', lineHeight: 1.7, margin: '0 0 1rem', maxWidth: '56ch' }}>
-            {desc.value}
-          </p>
+          <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', lineHeight: 1.7, margin: '0 0 1rem', maxWidth: '56ch' }}>{desc.value}</p>
         )}
         {entry.tags?.length ? (
           <p style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-label)', margin: 0 }}>
@@ -79,7 +76,10 @@ function SectionLabel({ children, accent }: { children: React.ReactNode; accent?
 }
 
 export default async function ExperiencePage() {
-  const locale = await getLocale() as Locale
+  const [locale, mode] = await Promise.all([
+    getLocale() as Promise<Locale>,
+    getMode(),
+  ])
   const [data, t, subtitle, settings] = await Promise.all([
     getExperience(),
     getTranslations('experience'),
@@ -87,7 +87,7 @@ export default async function ExperiencePage() {
     getSiteSettings(),
   ])
 
-  const e = settings?.labels?.experience
+  const e             = settings?.labels?.experience
   const title         = lbl(e?.title,         locale, t('title'))
   const currentLabel  = lbl(e?.current,       locale, t('current'))
   const featuredLabel = lbl(e?.featuredLabel, locale, t('featured_label'))
@@ -95,6 +95,7 @@ export default async function ExperiencePage() {
   const eduLabel      = lbl(e?.eduLabel,      locale, t('edu_label'))
   const downloadCv    = lbl(e?.downloadCv,    locale, t('download_cv'))
   const emptyMsg      = lbl(e?.empty,         locale, t('empty'))
+  const imgUrl        = pageImage(settings?.pageImages?.experience, mode)
 
   const work     = data?.workExperience ?? []
   const edu      = data?.education ?? []
@@ -105,14 +106,16 @@ export default async function ExperiencePage() {
   return (
     <>
       <section className="container" style={{ paddingTop: 'var(--spacing-section)', paddingBottom: '2.5rem', borderBottom: 'var(--border-width) solid var(--color-border)' }}>
-        <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
-          {title}
-        </h1>
-        {subtitle && (
-          <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', lineHeight: 1.6, margin: 0, maxWidth: '52ch' }}>
-            {subtitle}
-          </p>
-        )}
+        <PageHeader imageUrl={imgUrl}>
+          <h1 className="page-title" style={{ marginBottom: '0.25rem' }}>
+            {title}
+          </h1>
+          {subtitle && (
+            <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', lineHeight: 1.6, margin: 0, maxWidth: '52ch' }}>
+              {subtitle}
+            </p>
+          )}
+        </PageHeader>
       </section>
 
       {featured.length > 0 && (
