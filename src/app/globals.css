@@ -98,11 +98,10 @@
   display: block;
   align-self: center;
   /* Ilustración trazo negro / fondo blanco puro — fondo desaparece, colores se preservan */
-  filter: brightness(1.1) contrast(1.8);
   mix-blend-mode: multiply;
 }
 [data-mode="dark"] .page-header-image {
-  filter: brightness(1.1) contrast(1.8) invert(1);
+  filter: invert(1);
   mix-blend-mode: screen;
 }
 @media (max-width: 600px) {
