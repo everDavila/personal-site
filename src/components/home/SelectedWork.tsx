@@ -27,13 +27,9 @@ export async function SelectedWork({ projects, settings }: Props) {
     >
       <div style={{
         display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'baseline',
+        justifyContent: 'flex-end',
         marginBottom: '3rem',
-        gap: '1rem',
-        flexWrap: 'wrap',
       }}>
-        <p className="text-label" style={{ margin: 0 }}>{sectionLabel}</p>
         <Link
           href={{ pathname: '/work' }}
           className="link-accent"

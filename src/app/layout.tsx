@@ -27,7 +27,21 @@ const sourceSerif4 = Source_Serif_4({
 
 export const metadata: Metadata = {
   title: 'Ever Davila',
-  description: 'Portfolio personal',
+  description: 'Diseñador UI/UX y consultor de gobierno. Sistemas digitales para el sector público peruano.',
+  openGraph: {
+    title:       'Ever Davila',
+    description: 'Diseñador UI/UX y consultor de gobierno. Sistemas digitales para el sector público peruano.',
+    url:         'https://davila.uno',
+    siteName:    'Ever Davila',
+    images: [{ url: 'https://davila.uno/og-home.png', width: 1200, height: 630, alt: 'Ever Davila' }],
+    type:        'website',
+  },
+  twitter: {
+    card:        'summary_large_image',
+    title:       'Ever Davila',
+    description: 'Diseñador UI/UX y consultor de gobierno.',
+    images:      ['https://davila.uno/og-home.png'],
+  },
 }
 
 export default async function RootLayout({ children }: { children: React.ReactNode }) {

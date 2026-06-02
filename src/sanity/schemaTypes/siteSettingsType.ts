@@ -133,6 +133,15 @@ export const siteSettingsType = defineType({
       ],
     }),
 
+    // ── OG Image ─────────────────────────────────────────────
+    defineField({
+      name: 'ogImage',
+      title: 'Imagen OG (redes sociales)',
+      type: 'image',
+      description: 'Imagen que aparece al compartir davila.uno en Twitter, LinkedIn, WhatsApp, etc. Tamaño: 1200 × 630 px. Cámbiala para fechas especiales (navidad, año nuevo, etc.).',
+      options: { hotspot: true },
+    }),
+
     // ── Social ──────────────────────────────────────────────
     defineField({
       name: 'social',

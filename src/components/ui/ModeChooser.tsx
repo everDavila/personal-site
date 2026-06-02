@@ -61,7 +61,7 @@ export function ModeChooser({ hasMode }: Props) {
         maxWidth: '22ch',
         margin: 0,
       }}>
-        Elige cómo quieres descubrirme hoy
+       Elige cómo quieres explorar hoy
       </p>
 
       {/* Options */}
@@ -75,8 +75,8 @@ export function ModeChooser({ hasMode }: Props) {
       }}>
         <ModeOption
           mode="dark"
-          label="Oscuro"
-          description="Tono aventurero. Curioso, personal, el astronauta en el espacio."
+          label="Orbital"
+          description="Curiosidad, experimentos y algunas preguntas sin respuesta."
           bg="#0F0F0D"
           bgHover="#181715"
           labelColor="#F0EFEC"
@@ -85,8 +85,8 @@ export function ModeChooser({ hasMode }: Props) {
         />
         <ModeOption
           mode="light"
-          label="Claro"
-          description="Tono profesional. Directo, técnico, enfocado en el trabajo."
+          label="Tierra"
+          description="Experiencia, proyectos y problemas resueltos."
           bg="#F5F4F0"
           bgHover="#EDEDEA"
           labelColor="#111110"
