@@ -80,6 +80,7 @@ export type PageTitles = {
 }
 
 export type SiteSettings = {
+  ogImage?: { asset?: { url: string } | null } | null
   hero: {
     roleLabel:      LocalizedString
     headline:       LocalizedString
@@ -219,6 +220,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
         playground { dark { asset->{ url } }, light { asset->{ url } } },
         blog       { dark { asset->{ url } }, light { asset->{ url } } },
       },
+      ogImage { asset->{ url } },
       cvUrl,
       philosophy { dark, light },
       contactIntro { dark, light },

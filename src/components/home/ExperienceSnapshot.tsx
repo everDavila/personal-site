@@ -13,6 +13,10 @@ type Props = {
   settings?: SiteSettings | null
 }
 
+function isCurrent(period: string) {
+  return /presente|present|actual|ongoing|now|current/i.test(period)
+}
+
 export async function ExperienceSnapshot({ workEntries, eduEntries, cvUrl, settings }: Props) {
   if (!workEntries.length && !eduEntries.length) return null
 
@@ -22,12 +26,12 @@ export async function ExperienceSnapshot({ workEntries, eduEntries, cvUrl, setti
 
   const e = settings?.labels?.experience
   const h = settings?.labels?.home
-  const workLabel     = lbl(e?.workLabel,     locale, t('work_label'))
-  const eduLabel      = lbl(e?.eduLabel,      locale, t('edu_label'))
-  const downloadCv    = lbl(e?.downloadCv,    locale, t('download_cv'))
-  const viewExp       = lbl(h?.viewExperience, locale, th('view_experience'))
+  const workLabel  = lbl(e?.workLabel,      locale, t('work_label'))
+  const eduLabel   = lbl(e?.eduLabel,       locale, t('edu_label'))
+  const downloadCv = lbl(e?.downloadCv,     locale, t('download_cv'))
+  const viewExp    = lbl(h?.viewExperience, locale, th('view_experience'))
 
-  const recent = workEntries.slice(0, 3)
+  const recent = workEntries.slice(0, 2)
 
   return (
     <section
@@ -36,35 +40,87 @@ export async function ExperienceSnapshot({ workEntries, eduEntries, cvUrl, setti
     >
       <div className="home-exp-grid">
 
-        {/* ── Work column ── */}
+        {/* ── Trayectoria ── */}
         <div style={{ paddingRight: 'clamp(1.5rem, 3vw, 2.5rem)' }}>
-          <p className="text-label" style={{ marginBottom: '2rem' }}>{workLabel}</p>
+          <p className="text-label" style={{ marginBottom: '3rem' }}>{workLabel}</p>
 
-          <div style={{ display: 'flex', flexDirection: 'column', gap: '2rem' }}>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '3.5rem' }}>
             {recent.map(entry => {
-              const role = entry.role?.[locale] || entry.role?.es || entry.role?.en || ''
-              const desc = entry.description?.[locale] || entry.description?.es || entry.description?.en || ''
+              const role    = entry.role?.[locale]        || entry.role?.es        || entry.role?.en        || ''
+              const desc    = entry.description?.[locale] || entry.description?.es || entry.description?.en || ''
+              const current = isCurrent(entry.period ?? '')
 
               return (
-                <div key={entry._key} className="home-timeline-item">
-                  <p style={{ fontSize: 'var(--text-label)', fontWeight: 500, color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-label)', margin: '0 0 0.375rem' }}>
+                <div key={entry._key} style={{ position: 'relative', paddingLeft: '1.375rem' }}>
+                  {/* dot */}
+                  <span style={{
+                    position: 'absolute',
+                    left: 0,
+                    top: '0.4em',
+                    width: 6,
+                    height: 6,
+                    borderRadius: '50%',
+                    backgroundColor: current ? 'var(--color-accent)' : 'var(--color-border)',
+                    flexShrink: 0,
+                  }} />
+
+                  {/* período */}
+                  <p style={{
+                    fontSize: 'var(--text-label)',
+                    fontWeight: 500,
+                    color: current ? 'var(--color-accent)' : 'var(--color-muted)',
+                    textTransform: 'uppercase',
+                    letterSpacing: 'var(--tracking-label)',
+                    margin: '0 0 0.5rem',
+                    fontVariantNumeric: 'tabular-nums',
+                  }}>
                     {entry.period}
                   </p>
-                  <h3 style={{ fontSize: 'var(--text-body)', fontWeight: 500, color: 'var(--color-text)', margin: '0 0 0.2rem' }}>
+
+                  {/* empresa */}
+                  <h3 style={{
+                    fontSize: 'var(--text-body)',
+                    fontWeight: 600,
+                    color: 'var(--color-text)',
+                    margin: '0 0 0.2rem',
+                    letterSpacing: '-0.01em',
+                  }}>
                     {entry.company}
                   </h3>
-                  <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', fontWeight: 500, margin: '0 0 0.5rem' }}>
+
+                  {/* rol */}
+                  <p style={{
+                    fontSize: 'var(--text-small)',
+                    color: 'var(--color-muted)',
+                    fontWeight: 400,
+                    margin: '0 0 0.75rem',
+                  }}>
                     {role}
                   </p>
+
+                  {/* descripción */}
                   {desc && (
-                    <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', lineHeight: 1.6, margin: '0 0 0.625rem', display: '-webkit-box', WebkitLineClamp: 2, WebkitBoxOrient: 'vertical', overflow: 'hidden' }}>
+                    <p style={{
+                      fontSize: 'var(--text-small)',
+                      color: 'var(--color-muted)',
+                      lineHeight: 1.7,
+                      margin: entry.tags?.length ? '0 0 1rem' : '0',
+                    }}>
                       {desc}
                     </p>
                   )}
+
+                  {/* tags */}
                   {entry.tags?.length ? (
-                    <div style={{ display: 'flex', gap: '0.5rem', flexWrap: 'wrap' }}>
+                    <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
                       {entry.tags.map(tag => (
-                        <span key={tag} style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textTransform: 'uppercase', letterSpacing: 'var(--tracking-label)' }}>
+                        <span key={tag} style={{
+                          fontSize: '0.5625rem',
+                          color: 'var(--color-muted)',
+                          textTransform: 'uppercase',
+                          letterSpacing: '0.14em',
+                          opacity: 0.55,
+                        }}>
                           {tag}
                         </span>
                       ))}
@@ -75,38 +131,76 @@ export async function ExperienceSnapshot({ workEntries, eduEntries, cvUrl, setti
             })}
           </div>
 
-          <div style={{ marginTop: '2rem' }}>
-            <Link href={{ pathname: '/experience' }} className="link-accent" style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', textDecoration: 'none', borderBottom: '1px solid currentColor', paddingBottom: '2px' }}>
+          <div style={{ marginTop: '3rem' }}>
+            <Link href={{ pathname: '/experience' }} className="link-accent" style={{
+              fontSize: 'var(--text-small)',
+              color: 'var(--color-muted)',
+              textDecoration: 'none',
+            }}>
               {viewExp} →
             </Link>
           </div>
         </div>
 
-        {/* ── Education column ── */}
+        {/* ── Formación ── */}
         <div className="home-exp-edu-col">
-          <p className="text-label" style={{ marginBottom: '2rem' }}>{eduLabel}</p>
+          <p className="text-label" style={{ marginBottom: '3rem' }}>{eduLabel}</p>
 
-          <div>
+          <div style={{ display: 'flex', flexDirection: 'column', gap: '0' }}>
             {eduEntries.map((entry, i) => {
               const degree = entry.degree?.[locale] || entry.degree?.es || entry.degree?.en || ''
               return (
-                <div key={entry._key} style={{ paddingBlock: '1.25rem', borderBottom: i < eduEntries.length - 1 ? 'var(--border-width) solid var(--color-border)' : 'none' }}>
-                  <p style={{ fontWeight: 500, fontSize: 'var(--text-body)', color: 'var(--color-text)', margin: '0 0 0.2rem' }}>{degree}</p>
-                  <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', margin: '0 0 0.15rem' }}>{entry.institution}</p>
-                  <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', margin: 0 }}>{entry.period}</p>
+                <div key={entry._key} style={{
+                  paddingBlock: '1.75rem',
+                  borderBottom: i < eduEntries.length - 1
+                    ? 'var(--border-width) solid var(--color-border)'
+                    : 'none',
+                }}>
+                  <p style={{
+                    fontFamily: 'var(--font-serif)',
+                    fontWeight: 600,
+                    fontSize: 'var(--text-body)',
+                    color: 'var(--color-text)',
+                    margin: '0 0 0.3rem',
+                    lineHeight: 1.3,
+                    letterSpacing: '-0.01em',
+                  }}>
+                    {degree}
+                  </p>
+                  <p style={{
+                    fontSize: 'var(--text-small)',
+                    color: 'var(--color-muted)',
+                    margin: '0 0 0.2rem',
+                  }}>
+                    {entry.institution}
+                  </p>
+                  <p style={{
+                    fontSize: 'var(--text-label)',
+                    color: 'var(--color-muted)',
+                    margin: 0,
+                    fontVariantNumeric: 'tabular-nums',
+                    letterSpacing: '0.04em',
+                  }}>
+                    {entry.period}
+                  </p>
                 </div>
               )
             })}
           </div>
 
           {cvUrl && (
-            <div style={{ marginTop: '2rem' }}>
-              <a href={cvUrl} target="_blank" rel="noopener noreferrer" className="link-accent" style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', textDecoration: 'none', borderBottom: '1px solid currentColor', paddingBottom: '2px' }}>
+            <div style={{ marginTop: '2.5rem' }}>
+              <a href={cvUrl} target="_blank" rel="noopener noreferrer" className="link-accent" style={{
+                fontSize: 'var(--text-small)',
+                color: 'var(--color-muted)',
+                textDecoration: 'none',
+              }}>
                 {downloadCv} ↗
               </a>
             </div>
           )}
         </div>
+
       </div>
     </section>
   )
