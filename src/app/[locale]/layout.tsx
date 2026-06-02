@@ -11,27 +11,26 @@ export async function generateMetadata(): Promise<Metadata> {
   const settings = await getSiteSettings()
   const ogUrl = settings?.ogImage?.asset?.url ?? null
 
-  const base = {
-    title:       'Ever Davila',
-    description: 'Diseñador UI/UX y consultor de gobierno. Sistemas digitales para el sector público peruano.',
-  }
-
-  if (!ogUrl) return base
+  const title       = 'Ever Davila'
+  const description = 'Diseñador UI/UX y consultor de gobierno. Sistemas digitales para el sector público peruano.'
+  const images      = ogUrl ? [{ url: ogUrl, width: 1200, height: 630, alt: title }] : []
 
   return {
-    ...base,
+    title,
+    description,
     openGraph: {
-      ...base,
+      title,
+      description,
       url:      'https://davila.uno',
       siteName: 'Ever Davila',
-      images:   [{ url: ogUrl, width: 1200, height: 630, alt: 'Ever Davila' }],
       type:     'website',
+      ...(images.length ? { images } : {}),
     },
     twitter: {
-      card:        'summary_large_image',
-      title:       base.title,
-      description: base.description,
-      images:      [ogUrl],
+      card:  images.length ? 'summary_large_image' : 'summary',
+      title,
+      description,
+      ...(images.length ? { images: [ogUrl!] } : {}),
     },
   }
 }
