@@ -14,16 +14,17 @@ type Props = {
 }
 
 export function ModeChooser({ hasMode, question, darkLabel, darkDesc, lightLabel, lightDesc, footer }: Props) {
-  const [visible, setVisible] = useState(!hasMode)
+  const [visible,  setVisible]  = useState(!hasMode)
+  const [leaving,  setLeaving]  = useState(false)
   const [, startTransition] = useTransition()
 
   if (!visible) return null
 
   const choose = (mode: 'dark' | 'light') => {
+    setLeaving(true)
     startTransition(async () => {
       await setNarrativeMode(mode)
       document.documentElement.dataset.mode = mode
-      setVisible(false)
     })
   }
 
@@ -32,6 +33,7 @@ export function ModeChooser({ hasMode, question, darkLabel, darkDesc, lightLabel
       role="dialog"
       aria-modal="true"
       aria-label={question}
+      onTransitionEnd={() => { if (leaving) setVisible(false) }}
       style={{
         position: 'fixed',
         inset: 0,
@@ -43,6 +45,8 @@ export function ModeChooser({ hasMode, question, darkLabel, darkDesc, lightLabel
         justifyContent: 'center',
         padding: 'clamp(2rem, 6vw, 5rem)',
         gap: 'clamp(2.5rem, 5vw, 4rem)',
+        opacity: leaving ? 0 : 1,
+        transition: 'opacity 700ms ease',
       }}
     >
       <p style={{
