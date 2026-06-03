@@ -9,23 +9,43 @@ import { Footer } from '@/components/layout/Footer'
 import { ModeChooser } from '@/components/ui/ModeChooser'
 import { getSiteSettings } from '@/sanity/queries/siteSettings'
 
-export async function generateMetadata(): Promise<Metadata> {
-  const settings = await getSiteSettings()
-  const ogUrl = settings?.ogImage?.asset?.url ?? null
+const BASE = 'https://davila.uno'
+
+// Localized home URLs for hreflang — mirrors routing.ts
+const LOCALE_URLS: Record<string, string> = {
+  es: `${BASE}/es`,
+  en: `${BASE}/en`,
+  pt: `${BASE}/pt`,
+  qu: `${BASE}/qu`,
+  zh: `${BASE}/zh`,
+}
+
+export async function generateMetadata(
+  { params }: { params: Promise<{ locale: string }> }
+): Promise<Metadata> {
+  const { locale } = await params
+  const settings   = await getSiteSettings()
+  const ogUrl      = settings?.ogImage?.asset?.url ?? null
 
   const title       = 'Ever Davila'
   const description = 'Diseñador UI/UX y consultor de gobierno. Sistemas digitales para el sector público peruano.'
   const images      = ogUrl ? [{ url: ogUrl, width: 1200, height: 630, alt: title }] : []
+  const canonical   = LOCALE_URLS[locale] ?? `${BASE}/${locale}`
 
   return {
     title,
     description,
+    alternates: {
+      canonical,
+      languages: LOCALE_URLS,
+    },
     openGraph: {
       title,
       description,
-      url:      'https://davila.uno',
+      url:      canonical,
       siteName: 'Ever Davila',
       type:     'website',
+      locale:   locale,
       ...(images.length ? { images } : {}),
     },
     twitter: {
