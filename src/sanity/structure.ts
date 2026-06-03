@@ -9,6 +9,9 @@ import {
   RocketIcon,
   SparklesIcon,
   ErrorOutlineIcon,
+  HomeIcon,
+  EnvelopeIcon,
+  EarthGlobeIcon,
 } from '@sanity/icons'
 
 export const structure: StructureResolver = (S) =>
@@ -16,9 +19,49 @@ export const structure: StructureResolver = (S) =>
     .title('ever davila · studio')
     .items([
 
-      // ── Blog ──────────────────────────────
+      // ── PÁGINAS ───────────────────────────────────────────
       S.listItem()
-        .title('Blog')
+        .title('Home')
+        .icon(HomeIcon)
+        .child(
+          S.document()
+            .schemaType('siteSettings')
+            .documentId('siteSettings')
+            .title('Home')
+        ),
+
+      S.listItem()
+        .title('Enfoque')
+        .icon(UserIcon)
+        .child(
+          S.document()
+            .schemaType('siteSettings')
+            .documentId('siteSettings')
+            .title('Enfoque')
+        ),
+
+      S.listItem()
+        .title('Hablemos')
+        .icon(EnvelopeIcon)
+        .child(
+          S.document()
+            .schemaType('siteSettings')
+            .documentId('siteSettings')
+            .title('Hablemos')
+        ),
+
+      S.divider(),
+
+      // ── CONTENIDO ─────────────────────────────────────────
+      S.listItem()
+        .title('Proyectos')
+        .icon(CaseIcon)
+        .child(
+          S.documentTypeList('project').title('Proyectos')
+        ),
+
+      S.listItem()
+        .title('Blog · Apuntes')
         .icon(DocumentTextIcon)
         .child(
           S.list()
@@ -33,34 +76,36 @@ export const structure: StructureResolver = (S) =>
             ])
         ),
 
-      // ── Trabajo ───────────────────────────
       S.listItem()
-        .title('Proyectos')
-        .icon(CaseIcon)
-        .child(
-          S.documentTypeList('project').title('Proyectos')
-        ),
-
-      // ── Playground ────────────────────────
-      S.listItem()
-        .title('Playground')
+        .title('Laboratorio')
         .icon(RocketIcon)
         .child(
           S.documentTypeList('playgroundItem').title('Experimentos')
         ),
 
-      // ── Experiencia ───────────────────────
       S.listItem()
-        .title('Experiencia & Estudios')
+        .title('Experiencia')
         .icon(StarIcon)
         .child(
           S.document()
             .schemaType('experience')
             .documentId('experience')
-            .title('Experiencia & Estudios')
+            .title('Experiencia')
         ),
 
-      // ── Subtítulos editoriales ────────────
+      S.divider(),
+
+      // ── CONFIG ────────────────────────────────────────────
+      S.listItem()
+        .title('Global')
+        .icon(EarthGlobeIcon)
+        .child(
+          S.document()
+            .schemaType('siteSettings')
+            .documentId('siteSettings')
+            .title('Global')
+        ),
+
       S.listItem()
         .title('Subtítulos')
         .icon(SparklesIcon)
@@ -83,20 +128,6 @@ export const structure: StructureResolver = (S) =>
             )
         ),
 
-      S.divider(),
-
-      // ── Configuración ─────────────────────
-      S.listItem()
-        .title('Configuración del sitio')
-        .icon(CogIcon)
-        .child(
-          S.document()
-            .schemaType('siteSettings')
-            .documentId('siteSettings')
-            .title('Configuración del sitio')
-        ),
-
-      // ── Página 404 ────────────────────────
       S.listItem()
         .title('Página 404')
         .icon(ErrorOutlineIcon)
@@ -116,4 +147,5 @@ export const structure: StructureResolver = (S) =>
             .documentId('author')
             .title('Autor')
         ),
+
     ])

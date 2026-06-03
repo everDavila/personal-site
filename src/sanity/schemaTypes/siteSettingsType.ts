@@ -6,54 +6,137 @@ export const siteSettingsType = defineType({
   title: 'Configuración del sitio',
   type: 'document',
   icon: CogIcon,
+
+  groups: [
+    { name: 'home',    title: 'Home',     default: true },
+    { name: 'about',   title: 'Enfoque'                 },
+    { name: 'contact', title: 'Hablemos'                },
+    { name: 'pages',   title: 'Páginas'                 },
+    { name: 'global',  title: 'Global'                  },
+  ],
+
   fields: [
-    // ── Hero ────────────────────────────────────────────────
+    // ── HOME ────────────────────────────────────────────────
     defineField({
       name: 'hero',
       title: 'Hero',
       type: 'object',
+      group: 'home',
       fields: [
         defineField({ name: 'roleLabel',     title: 'Etiqueta de rol (sobre el titular)', type: 'localizedString' }),
         defineField({ name: 'headline',      title: '🌑 Titular — Modo Oscuro (profesional)', type: 'localizedString' }),
         defineField({ name: 'headlineLight', title: '☀️ Titular — Modo Claro (lúdico)',       type: 'localizedString' }),
         defineField({ name: 'sub',           title: '🌑 Subtítulo — Modo Oscuro', type: 'localizedText' }),
         defineField({ name: 'subLight',      title: '☀️ Subtítulo — Modo Claro', type: 'localizedText' }),
-        defineField({ name: 'ctaWork',        title: 'CTA — Ver trabajo (texto)', type: 'localizedString' }),
-        defineField({ name: 'ctaCV',          title: 'CTA — Descargar CV (texto)', type: 'localizedString' }),
-        defineField({ name: 'heroImage',      title: '🌑 Imagen hero — Modo Oscuro', type: 'image', options: { hotspot: true } }),
-        defineField({ name: 'heroImageLight', title: '☀️ Imagen hero — Modo Claro',  type: 'image', options: { hotspot: true } }),
+        defineField({ name: 'ctaWork',       title: 'CTA — Ver trabajo (texto)', type: 'localizedString' }),
+        defineField({ name: 'ctaCV',         title: 'CTA — Descargar CV (texto)', type: 'localizedString' }),
+        defineField({ name: 'heroImage',     title: '🌑 Imagen hero — Modo Oscuro', type: 'image', options: { hotspot: true } }),
+        defineField({ name: 'heroImageLight',title: '☀️ Imagen hero — Modo Claro',  type: 'image', options: { hotspot: true } }),
       ],
     }),
 
-    // ── CV ──────────────────────────────────────────────────
+    defineField({
+      name: 'philosophy',
+      title: 'Filosofía (sección home)',
+      type: 'narrativeModesText',
+      group: 'home',
+      description: 'Texto de la sección filosófica del home. Una versión por modo.',
+    }),
+
+    // ── ENFOQUE / ABOUT ──────────────────────────────────────
+    defineField({
+      name: 'about',
+      title: 'Bio — página /enfoque',
+      type: 'narrativeModesText',
+      group: 'about',
+      description: 'Biografía que aparece en /enfoque. Una versión por modo narrativo.',
+    }),
+
+    // ── HABLEMOS / CONTACT ───────────────────────────────────
+    defineField({
+      name: 'contactIntro',
+      title: 'Intro — página /hablemos',
+      type: 'narrativeModesText',
+      group: 'contact',
+      description: 'Texto introductorio en /hablemos. Una versión por modo.',
+    }),
+
+    defineField({
+      name: 'social',
+      title: 'Redes sociales',
+      type: 'object',
+      group: 'contact',
+      fields: [
+        defineField({ name: 'linkedin', title: 'LinkedIn', type: 'url'    }),
+        defineField({ name: 'github',   title: 'GitHub',   type: 'url'    }),
+        defineField({ name: 'email',    title: 'Email',    type: 'string' }),
+      ],
+    }),
+
+    // ── PÁGINAS — títulos e imágenes del personaje ───────────
+    defineField({
+      name: 'pageTitles',
+      title: 'Títulos de página — por modo narrativo',
+      type: 'object',
+      group: 'pages',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({ name: 'work',       title: 'Proyectos (/work)',            type: 'narrativeModesString' }),
+        defineField({ name: 'about',      title: 'Enfoque (/about)',             type: 'narrativeModesString' }),
+        defineField({ name: 'contact',    title: 'Hablemos (/contact)',          type: 'narrativeModesString' }),
+        defineField({ name: 'experience', title: 'Experiencia (/experience)',    type: 'narrativeModesString' }),
+        defineField({ name: 'playground', title: 'Laboratorio (/laboratorio)',   type: 'narrativeModesString' }),
+        defineField({ name: 'blog',       title: 'Apuntes (/blog)',              type: 'narrativeModesString' }),
+      ],
+    }),
+
+    defineField({
+      name: 'pageImages',
+      title: 'Imagen del personaje por página',
+      type: 'object',
+      group: 'pages',
+      description: 'El personaje en distintas situaciones. Cada modo es independiente — dejar vacío = no aparece.',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({ name: 'work',       title: 'Proyectos (/work)',           type: 'narrativeModesImage' }),
+        defineField({ name: 'about',      title: 'Enfoque (/about)',            type: 'narrativeModesImage' }),
+        defineField({ name: 'contact',    title: 'Hablemos (/contact)',         type: 'narrativeModesImage' }),
+        defineField({ name: 'experience', title: 'Experiencia (/experience)',   type: 'narrativeModesImage' }),
+        defineField({ name: 'playground', title: 'Laboratorio (/laboratorio)',  type: 'narrativeModesImage' }),
+        defineField({ name: 'blog',       title: 'Apuntes (/blog)',             type: 'narrativeModesImage' }),
+      ],
+    }),
+
+    // ── GLOBAL ───────────────────────────────────────────────
+    defineField({
+      name: 'ogImage',
+      title: 'Imagen OG (redes sociales)',
+      type: 'image',
+      group: 'global',
+      description: 'Imagen al compartir davila.uno. 1200 × 630 px. Cámbiala para fechas especiales.',
+      options: { hotspot: true },
+    }),
+
     defineField({
       name: 'cvUrl',
       title: 'CV — Enlace de descarga (PDF)',
       type: 'url',
+      group: 'global',
       description: 'URL pública al PDF del CV — Google Drive, Dropbox, etc.',
     }),
 
-    // ── Filosofía / About homepage ───────────────────────────
-    defineField({
-      name: 'philosophy',
-      title: 'Filosofía (homepage) — por modo narrativo',
-      description: 'Aparece en la sección de filosofía del home. Escribe una versión para cada modo.',
-      type: 'narrativeModesText',
-    }),
-
-    // ── Footer ──────────────────────────────────────────────
     defineField({
       name: 'footerText',
       title: 'Texto del footer',
-      description: 'Ej: "Currently designing digital systems in Peru."',
       type: 'localizedString',
+      group: 'global',
     }),
 
-    // ── Competencias ─────────────────────────────────────────
     defineField({
       name: 'competencies',
       title: 'Competencias',
       type: 'array',
+      group: 'global',
       of: [
         defineArrayMember({
           type: 'object',
@@ -66,11 +149,11 @@ export const siteSettingsType = defineType({
       ],
     }),
 
-    // ── Fun Facts ────────────────────────────────────────────
     defineField({
       name: 'funFacts',
       title: 'Datos curiosos',
       type: 'array',
+      group: 'global',
       of: [
         defineArrayMember({
           type: 'object',
@@ -83,83 +166,12 @@ export const siteSettingsType = defineType({
       ],
     }),
 
-    // ── About page ───────────────────────────────────────────
-    defineField({
-      name: 'about',
-      title: 'Sobre mí (página /about) — por modo narrativo',
-      description: 'Biografía que aparece en /about. Escribe una versión para cada modo.',
-      type: 'narrativeModesText',
-    }),
-
-    // ── Contact intro ────────────────────────────────────────
-    defineField({
-      name: 'contactIntro',
-      title: 'Intro de contacto (página /contact) — por modo narrativo',
-      description: 'Texto introductorio antes de los enlaces. Puede ser null si prefieres no mostrarlo.',
-      type: 'narrativeModesText',
-    }),
-
-    // ── Títulos de página por modo narrativo ─────────────────
-    defineField({
-      name: 'pageTitles',
-      title: 'Títulos de página — por modo narrativo',
-      description: 'Título del <h1> de cada página. Modo oscuro = profesional/formal. Modo claro = más personal.',
-      type: 'object',
-      options: { collapsible: true, collapsed: false },
-      fields: [
-        defineField({ name: 'work',       title: 'Trabajo (/work)',            type: 'narrativeModesString' }),
-        defineField({ name: 'about',      title: 'Sobre mí (/about)',          type: 'narrativeModesString' }),
-        defineField({ name: 'contact',    title: 'Contacto (/contact)',        type: 'narrativeModesString' }),
-        defineField({ name: 'experience', title: 'Experiencia (/experience)',  type: 'narrativeModesString' }),
-        defineField({ name: 'playground', title: 'Playground (/playground)',   type: 'narrativeModesString' }),
-        defineField({ name: 'blog',       title: 'Blog/Apuntes (/blog)',       type: 'narrativeModesString' }),
-      ],
-    }),
-
-    // ── Imágenes del personaje por página ────────────────────
-    defineField({
-      name: 'pageImages',
-      title: 'Imágenes del personaje por página',
-      description: 'El personaje en distintas situaciones. Sube solo el modo que tengas — cada uno es independiente.',
-      type: 'object',
-      options: { collapsible: true, collapsed: false },
-      fields: [
-        defineField({ name: 'work',       title: 'Proyectos (/work)',          type: 'narrativeModesImage' }),
-        defineField({ name: 'about',      title: 'Enfoque (/about)',           type: 'narrativeModesImage' }),
-        defineField({ name: 'contact',    title: 'Hablemos (/contact)',        type: 'narrativeModesImage' }),
-        defineField({ name: 'experience', title: 'Experiencia (/experience)',  type: 'narrativeModesImage' }),
-        defineField({ name: 'playground', title: 'Experimentos (/playground)', type: 'narrativeModesImage' }),
-        defineField({ name: 'blog',       title: 'Apuntes (/blog)',            type: 'narrativeModesImage' }),
-      ],
-    }),
-
-    // ── OG Image ─────────────────────────────────────────────
-    defineField({
-      name: 'ogImage',
-      title: 'Imagen OG (redes sociales)',
-      type: 'image',
-      description: 'Imagen que aparece al compartir davila.uno en Twitter, LinkedIn, WhatsApp, etc. Tamaño: 1200 × 630 px. Cámbiala para fechas especiales (navidad, año nuevo, etc.).',
-      options: { hotspot: true },
-    }),
-
-    // ── Social ──────────────────────────────────────────────
-    defineField({
-      name: 'social',
-      title: 'Redes sociales',
-      type: 'object',
-      fields: [
-        defineField({ name: 'linkedin', title: 'LinkedIn', type: 'url'    }),
-        defineField({ name: 'github',   title: 'GitHub',   type: 'url'    }),
-        defineField({ name: 'email',    title: 'Email',    type: 'string' }),
-      ],
-    }),
-
-    // ── Textos de interfaz ───────────────────────────────────
     defineField({
       name: 'labels',
       title: 'Textos de interfaz',
-      description: 'Navegación, títulos de página y etiquetas de sección en todos los idiomas.',
       type: 'object',
+      group: 'global',
+      description: 'Navegación, títulos de página y etiquetas de sección en todos los idiomas.',
       fields: [
         defineField({
           name: 'nav',
@@ -191,7 +203,7 @@ export const siteSettingsType = defineType({
         }),
         defineField({
           name: 'work',
-          title: 'Trabajo (/work)',
+          title: 'Proyectos (/work)',
           type: 'object',
           fields: [
             defineField({ name: 'title',       title: 'Título de página',  type: 'localizedString' }),
@@ -205,7 +217,7 @@ export const siteSettingsType = defineType({
         }),
         defineField({
           name: 'playground',
-          title: 'Playground (/playground)',
+          title: 'Laboratorio (/laboratorio)',
           type: 'object',
           fields: [
             defineField({ name: 'title',       title: 'Título de página',   type: 'localizedString' }),
@@ -217,7 +229,7 @@ export const siteSettingsType = defineType({
         }),
         defineField({
           name: 'about',
-          title: 'Sobre mí (/about)',
+          title: 'Enfoque (/about)',
           type: 'object',
           fields: [
             defineField({ name: 'title',         title: 'Título de página',     type: 'localizedString' }),
@@ -242,7 +254,7 @@ export const siteSettingsType = defineType({
         }),
         defineField({
           name: 'contact',
-          title: 'Contacto (/contact)',
+          title: 'Hablemos (/contact)',
           type: 'object',
           fields: [
             defineField({ name: 'title',      title: 'Título de página', type: 'localizedString' }),
@@ -251,7 +263,7 @@ export const siteSettingsType = defineType({
         }),
         defineField({
           name: 'blog',
-          title: 'Blog (/blog)',
+          title: 'Apuntes (/blog)',
           type: 'object',
           fields: [
             defineField({ name: 'title',     title: 'Título de página',        type: 'localizedString' }),
@@ -263,6 +275,7 @@ export const siteSettingsType = defineType({
       ],
     }),
   ],
+
   preview: {
     prepare: () => ({ title: 'Configuración del sitio' }),
   },
