@@ -79,8 +79,33 @@ export type PageTitles = {
   blog?:       NarrativeModes | null
 }
 
+export type SeoFields = {
+  title?:       LocalizedString | null
+  description?: LocalizedString | null
+}
+
+export function resolveSeo(
+  fields: SeoFields | null | undefined,
+  locale: Locale,
+  fallback: { title: string; description: string }
+): { title: string; description: string } {
+  return {
+    title:       fields?.title?.[locale]       || fields?.title?.es       || fallback.title,
+    description: fields?.description?.[locale] || fields?.description?.es || fallback.description,
+  }
+}
+
 export type SiteSettings = {
   ogImage?: { asset?: { url: string } | null } | null
+  seoHome?:    SeoFields | null
+  seoAbout?:   SeoFields | null
+  seoContact?: SeoFields | null
+  seoPages?: {
+    work?:       SeoFields | null
+    blog?:       SeoFields | null
+    experience?: SeoFields | null
+    lab?:        SeoFields | null
+  } | null
   hero: {
     roleLabel:      LocalizedString
     headline:       LocalizedString
@@ -221,6 +246,15 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
         blog       { dark { asset->{ url } }, light { asset->{ url } } },
       },
       ogImage { asset->{ url } },
+      seoHome    { title, description },
+      seoAbout   { title, description },
+      seoContact { title, description },
+      seoPages {
+        work       { title, description },
+        blog       { title, description },
+        experience { title, description },
+        lab        { title, description },
+      },
       cvUrl,
       philosophy { dark, light },
       contactIntro { dark, light },

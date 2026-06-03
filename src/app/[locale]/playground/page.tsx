@@ -1,10 +1,21 @@
+import type { Metadata } from 'next'
 import { getTranslations, getLocale } from 'next-intl/server'
 import { getAllPlaygroundItems } from '@/sanity/queries/playground'
 import { PlaygroundClient } from '@/components/playground/PlaygroundClient'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params
+  const settings = await getSiteSettings()
+  const { title, description } = resolveSeo(settings?.seoPages?.lab, locale as Locale, {
+    title: 'Laboratorio — Ever Davila',
+    description: 'Experimentos de diseño, interfaces y sistemas.',
+  })
+  return { title, description, openGraph: { title, description }, twitter: { title, description } }
+}
 
 export const dynamic = 'force-dynamic'
 

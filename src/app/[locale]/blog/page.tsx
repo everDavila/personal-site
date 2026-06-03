@@ -1,11 +1,22 @@
+import type { Metadata } from 'next'
 import { getAllPosts } from '@/sanity/queries/posts'
 import { PostCard } from '@/components/blog/PostCard'
 import { getTranslations, getLocale } from 'next-intl/server'
 import type { Locale } from '@/lib/i18n'
 import { BLOG_FALLBACK } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params
+  const settings = await getSiteSettings()
+  const { title, description } = resolveSeo(settings?.seoPages?.blog, locale as Locale, {
+    title: 'Apuntes — Ever Davila',
+    description: 'Notas sobre diseño, sistemas complejos y tecnología.',
+  })
+  return { title, description, openGraph: { title, description }, twitter: { title, description } }
+}
 
 export const dynamic = 'force-dynamic'
 

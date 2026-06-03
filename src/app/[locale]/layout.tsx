@@ -7,7 +7,7 @@ import { notFound } from 'next/navigation'
 import { Nav } from '@/components/nav/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { ModeChooser } from '@/components/ui/ModeChooser'
-import { getSiteSettings } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, resolveSeo } from '@/sanity/queries/siteSettings'
 
 const BASE = 'https://davila.uno'
 
@@ -27,9 +27,11 @@ export async function generateMetadata(
   const settings   = await getSiteSettings()
   const ogUrl      = settings?.ogImage?.asset?.url ?? null
 
-  const title       = 'Ever Davila'
-  const description = 'Diseñador UI/UX y consultor de gobierno. Sistemas digitales para el sector público peruano.'
-  const images      = ogUrl ? [{ url: ogUrl, width: 1200, height: 630, alt: title }] : []
+  const { title, description } = resolveSeo(settings?.seoHome, locale as 'es' | 'en' | 'pt' | 'qu' | 'zh', {
+    title:       'Ever Davila',
+    description: 'Diseñador UI/UX y consultor de gobierno. Sistemas digitales para el sector público peruano.',
+  })
+  const images = ogUrl ? [{ url: ogUrl, width: 1200, height: 630, alt: title }] : []
   const canonical   = LOCALE_URLS[locale] ?? `${BASE}/${locale}`
 
   return {

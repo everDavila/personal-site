@@ -43,6 +43,19 @@ export const siteSettingsType = defineType({
       description: 'Texto de la sección filosófica del home. Una versión por modo.',
     }),
 
+    defineField({
+      name: 'seoHome',
+      title: 'SEO — Home',
+      type: 'object',
+      group: 'home',
+      description: 'Lo que aparece en Google cuando buscan tu nombre o sitio.',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({ name: 'title',       title: 'Título (50–60 car.)',       type: 'localizedString' }),
+        defineField({ name: 'description', title: 'Descripción (150–160 car.)', type: 'localizedText'   }),
+      ],
+    }),
+
     // ── ENFOQUE / ABOUT ──────────────────────────────────────
     defineField({
       name: 'about',
@@ -52,6 +65,18 @@ export const siteSettingsType = defineType({
       description: 'Biografía que aparece en /enfoque. Una versión por modo narrativo.',
     }),
 
+    defineField({
+      name: 'seoAbout',
+      title: 'SEO — Enfoque',
+      type: 'object',
+      group: 'about',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({ name: 'title',       title: 'Título (50–60 car.)',        type: 'localizedString' }),
+        defineField({ name: 'description', title: 'Descripción (150–160 car.)', type: 'localizedText'   }),
+      ],
+    }),
+
     // ── HABLEMOS / CONTACT ───────────────────────────────────
     defineField({
       name: 'contactIntro',
@@ -59,6 +84,18 @@ export const siteSettingsType = defineType({
       type: 'narrativeModesText',
       group: 'contact',
       description: 'Texto introductorio en /hablemos. Una versión por modo.',
+    }),
+
+    defineField({
+      name: 'seoContact',
+      title: 'SEO — Hablemos',
+      type: 'object',
+      group: 'contact',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({ name: 'title',       title: 'Título (50–60 car.)',        type: 'localizedString' }),
+        defineField({ name: 'description', title: 'Descripción (150–160 car.)', type: 'localizedText'   }),
+      ],
     }),
 
     defineField({
@@ -104,6 +141,40 @@ export const siteSettingsType = defineType({
         defineField({ name: 'experience', title: 'Experiencia (/experience)',   type: 'narrativeModesImage' }),
         defineField({ name: 'playground', title: 'Laboratorio (/laboratorio)',  type: 'narrativeModesImage' }),
         defineField({ name: 'blog',       title: 'Apuntes (/blog)',             type: 'narrativeModesImage' }),
+      ],
+    }),
+
+    defineField({
+      name: 'seoPages',
+      title: 'SEO por página',
+      type: 'object',
+      group: 'pages',
+      options: { collapsible: true, collapsed: false },
+      fields: [
+        defineField({ name: 'work', title: 'Proyectos (/work)', type: 'object', options: { collapsible: true, collapsed: true },
+          fields: [
+            defineField({ name: 'title',       title: 'Título',       type: 'localizedString' }),
+            defineField({ name: 'description', title: 'Descripción',  type: 'localizedText'   }),
+          ],
+        }),
+        defineField({ name: 'blog', title: 'Blog · Apuntes (/blog)', type: 'object', options: { collapsible: true, collapsed: true },
+          fields: [
+            defineField({ name: 'title',       title: 'Título',       type: 'localizedString' }),
+            defineField({ name: 'description', title: 'Descripción',  type: 'localizedText'   }),
+          ],
+        }),
+        defineField({ name: 'experience', title: 'Experiencia (/experience)', type: 'object', options: { collapsible: true, collapsed: true },
+          fields: [
+            defineField({ name: 'title',       title: 'Título',       type: 'localizedString' }),
+            defineField({ name: 'description', title: 'Descripción',  type: 'localizedText'   }),
+          ],
+        }),
+        defineField({ name: 'lab', title: 'Laboratorio (/laboratorio)', type: 'object', options: { collapsible: true, collapsed: true },
+          fields: [
+            defineField({ name: 'title',       title: 'Título',       type: 'localizedString' }),
+            defineField({ name: 'description', title: 'Descripción',  type: 'localizedText'   }),
+          ],
+        }),
       ],
     }),
 

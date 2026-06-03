@@ -1,10 +1,21 @@
-import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
+import type { Metadata } from 'next'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
 import { PageHeader } from '@/components/ui/PageHeader'
 import type { Locale } from '@/lib/i18n'
 
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params
+  const settings = await getSiteSettings()
+  const { title, description } = resolveSeo(settings?.seoContact, locale as Locale, {
+    title: 'Hablemos — Ever Davila',
+    description: 'Disponible para consultas estratégicas y proyectos complejos.',
+  })
+  return { title, description, openGraph: { title, description }, twitter: { title, description } }
+}
 
 export default async function ContactPage() {
   const locale = await getLocale() as Locale

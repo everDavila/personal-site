@@ -1,11 +1,22 @@
+import type { Metadata } from 'next'
 import { getExperience } from '@/sanity/queries/experience'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { localized } from '@/lib/i18n'
 import type { Locale } from '@/lib/i18n'
 import type { WorkEntry, EducationEntry } from '@/sanity/queries/experience'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params
+  const settings = await getSiteSettings()
+  const { title, description } = resolveSeo(settings?.seoPages?.experience, locale as Locale, {
+    title: 'Experiencia — Ever Davila',
+    description: 'Trayectoria profesional en diseño UX/UI para el sector público peruano.',
+  })
+  return { title, description, openGraph: { title, description }, twitter: { title, description } }
+}
 
 export const dynamic = 'force-dynamic'
 

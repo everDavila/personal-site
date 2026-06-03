@@ -1,11 +1,22 @@
+import type { Metadata } from 'next'
 import { getAllProjects } from '@/sanity/queries/projects'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { localized } from '@/lib/i18n'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
-import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params
+  const settings = await getSiteSettings()
+  const { title, description } = resolveSeo(settings?.seoPages?.work, locale as Locale, {
+    title: 'Proyectos — Ever Davila',
+    description: 'Intervenciones de diseño en sistemas complejos del sector público peruano.',
+  })
+  return { title, description, openGraph: { title, description }, twitter: { title, description } }
+}
 
 export const dynamic = 'force-dynamic'
 

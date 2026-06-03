@@ -1,4 +1,5 @@
-import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
+import type { Metadata } from 'next'
+import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
@@ -6,6 +7,16 @@ import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
+
+export async function generateMetadata({ params }: { params: Promise<{ locale: string }> }): Promise<Metadata> {
+  const { locale } = await params
+  const settings = await getSiteSettings()
+  const { title, description } = resolveSeo(settings?.seoAbout, locale as Locale, {
+    title: 'Enfoque — Ever Davila',
+    description: 'UX/UI Designer especializado en sistemas digitales complejos para el sector público peruano.',
+  })
+  return { title, description, openGraph: { title, description }, twitter: { title, description } }
+}
 
 export default async function AboutPage() {
   const locale = await getLocale() as Locale
