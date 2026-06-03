@@ -147,7 +147,7 @@ export async function Footer() {
         style={{ paddingBlock: '0.75rem', borderTop: 'var(--border-width) solid var(--color-border)' }}
       >
         <p style={{ fontSize: '0.75rem', color: 'var(--color-muted)', margin: 0 }}>
-          © {year} Ever Dávila. All rights reserved.
+          © {year} Ever Dávila. All lefts reserved.
         </p>
       </div>
     </footer>
