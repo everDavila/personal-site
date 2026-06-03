@@ -191,27 +191,41 @@ export function ModeChooser({ hasMode, question, darkLabel, darkDesc, lightLabel
             onMouseEnter={e => { (e.currentTarget as HTMLButtonElement).style.background = '#EDEDEA' }}
             onMouseLeave={e => { (e.currentTarget as HTMLButtonElement).style.background = '#F5F4F0' }}
           >
-            {/* Earth sphere */}
+            {/* Earth sphere — wireframe */}
             <div className="mc-earth-sphere" style={{
               position: 'absolute',
               top: '50%', right: '2rem',
-              width: 48, height: 48,
-              marginTop: -24,
+              width: 46, height: 46,
+              marginTop: -23,
               borderRadius: '50%',
+              border: '1px solid #B8B6B4',
+              background: 'transparent',
               overflow: 'hidden',
               pointerEvents: 'none',
-              boxShadow: '0 0 0 1px #C0BEBB',
             }}>
-              {/* landmass strips — muted pastel */}
+              {/* latitude line top */}
               <div style={{
-                width: '200%',
-                height: '100%',
-                background: `
-                  radial-gradient(ellipse 18px 10px at 30% 35%, #A8A6A4 0%, transparent 100%),
-                  radial-gradient(ellipse 12px 8px  at 65% 55%, #AEACAA 0%, transparent 100%),
-                  radial-gradient(ellipse 10px 6px  at 20% 70%, #A6A4A2 0%, transparent 100%),
-                  #CCCAC8
-                `,
+                position: 'absolute',
+                top: '30%', left: '-10%',
+                width: '120%', height: '30%',
+                borderTop: '1px solid #C4C2C0',
+                borderRadius: '50%',
+              }} />
+              {/* latitude line mid */}
+              <div style={{
+                position: 'absolute',
+                top: '58%', left: '-10%',
+                width: '120%', height: '30%',
+                borderTop: '1px solid #C4C2C0',
+                borderRadius: '50%',
+              }} />
+              {/* vertical arc */}
+              <div style={{
+                position: 'absolute',
+                top: '-10%', left: '25%',
+                width: '50%', height: '120%',
+                borderLeft: '1px solid #C4C2C0',
+                borderRadius: '50%',
               }} />
             </div>
 
