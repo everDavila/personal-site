@@ -6,7 +6,7 @@
     "experience": "Experience",
     "blog": "Notes",
     "contact": "Elsewhere",
-    "playground": "Playground"
+    "playground": "Lab"
   },
   "home": {
     "hero": {
@@ -34,7 +34,7 @@
     "no_content": "Description not available."
   },
   "playground": {
-    "title": "Playground",
+    "title": "Lab",
     "stats_label": "Current status",
     "filter_label": "Filter by",
     "filter_all": "All",

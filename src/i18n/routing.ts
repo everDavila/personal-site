@@ -63,17 +63,17 @@ export const routing = defineRouting({
     },
 
     '/playground': {
-      es: '/experimentos',
-      en: '/playground',
-      pt: '/experimentos',
+      es: '/laboratorio',
+      en: '/lab',
+      pt: '/laboratorio',
       qu: '/pukllay',
       zh: '/shiyanshi',
     },
 
     '/playground/[slug]': {
-      es: '/experimentos/[slug]',
-      en: '/playground/[slug]',
-      pt: '/experimentos/[slug]',
+      es: '/laboratorio/[slug]',
+      en: '/lab/[slug]',
+      pt: '/laboratorio/[slug]',
       qu: '/pukllay/[slug]',
       zh: '/shiyanshi/[slug]',
     },

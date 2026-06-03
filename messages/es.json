@@ -6,7 +6,7 @@
     "experience": "Experiencia",
     "blog": "Apuntes",
     "contact": "Hablemos",
-    "playground": "Experimentos"
+    "playground": "Laboratorio"
   },
   "home": {
     "hero": {
@@ -34,7 +34,7 @@
     "no_content": "Descripción no disponible."
   },
   "playground": {
-    "title": "Experimentos",
+    "title": "Laboratorio",
     "stats_label": "Estado actual",
     "filter_label": "Filtrar por",
     "filter_all": "Todos",
