@@ -12,6 +12,8 @@ const LOCALE_LABELS: Record<string, string> = {
   zh: '中',
 }
 
+const VISIBLE_LOCALES = ['es', 'en']
+
 export function LocaleSwitcher() {
   const locale = useLocale()
   const pathname = usePathname()
@@ -40,7 +42,7 @@ export function LocaleSwitcher() {
         appearance: 'none',
       }}
     >
-      {routing.locales.map((loc) => (
+      {routing.locales.filter(loc => VISIBLE_LOCALES.includes(loc)).map((loc) => (
         <option
           key={loc}
           value={loc}
