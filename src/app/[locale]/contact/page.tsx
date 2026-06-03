@@ -30,41 +30,39 @@ export default async function ContactPage() {
   }
 
   return (
-    <main className="container section">
+    <main className="container section-page">
       <PageHeader imageSet={imageSet}>
         <h1 className="page-title n-slot" style={{ marginBottom: '0.75rem' }}>
           <span className="n-d">{titleDark}</span>
           <span className="n-l">{titleLight}</span>
         </h1>
+        {hasIntro && (
+          <div style={{
+            fontSize: 'var(--text-body)',
+            color: 'var(--color-text)',
+            lineHeight: 'var(--leading-body)',
+            letterSpacing: 'var(--tracking-body)',
+            maxWidth: '44ch',
+            marginTop: '0.25rem',
+          }}>
+            <div className="n-slot">
+              {introDark  && <p className="n-d" style={{ margin: 0 }}>{introDark}</p>}
+              {introLight && <p className="n-l" style={{ margin: 0 }}>{introLight}</p>}
+            </div>
+          </div>
+        )}
         {subtitle && !hasIntro && (
           <p style={{
             fontSize: 'var(--text-small)',
             color: 'var(--color-muted)',
             lineHeight: 1.6,
-            marginBottom: '0',
+            margin: 0,
             maxWidth: '52ch',
           }}>
             {subtitle}
           </p>
         )}
       </PageHeader>
-
-      {hasIntro && (
-        <div style={{
-          fontSize: 'var(--text-body)',
-          color: 'var(--color-text)',
-          lineHeight: 'var(--leading-body)',
-          letterSpacing: 'var(--tracking-body)',
-          maxWidth: '44ch',
-          marginBottom: '2.5rem',
-          marginTop: '0.5rem',
-        }}>
-          <div className="n-slot">
-            {introDark  && <p className="n-d" style={{ margin: 0 }}>{introDark}</p>}
-            {introLight && <p className="n-l" style={{ margin: 0 }}>{introLight}</p>}
-          </div>
-        </div>
-      )}
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>
         {social?.email && (

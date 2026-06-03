@@ -127,11 +127,11 @@
 .page-header-grid {
   display: grid;
   grid-template-columns: 1fr auto;
-  align-items: end;
+  align-items: start;
   gap: clamp(1.5rem, 4vw, 3rem);
 }
 .page-header-image {
-  width: clamp(80px, 11vw, 160px);
+  width: clamp(180px, 22vw, 350px);
   height: auto;
   object-fit: contain;
   display: block;
@@ -299,6 +299,12 @@ body {
 
 .section {
   padding-block: var(--spacing-section);
+}
+
+/* Páginas internas — menos aire arriba, mantiene abajo */
+.section-page {
+  padding-top: clamp(6rem, 13vw, 10rem);
+  padding-bottom: var(--spacing-section);
 }
 
 /* Secciones apiladas dentro de una misma página — espaciado editorial */

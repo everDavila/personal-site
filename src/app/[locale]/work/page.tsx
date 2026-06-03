@@ -29,7 +29,7 @@ export default async function WorkPage() {
   }
 
   return (
-    <main className="container section">
+    <main className="container section-page">
       <PageHeader imageSet={imageSet}>
         <h1 className="page-title n-slot" style={{ marginBottom: '0.25rem' }}>
           <span className="n-d">{titleDark}</span>

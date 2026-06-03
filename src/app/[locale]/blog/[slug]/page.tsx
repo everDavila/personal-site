@@ -106,7 +106,7 @@ export default async function PostPage({ params }: Props) {
   const minLabel = MIN_LABEL[currentLocale] ?? 'min read'
 
   return (
-    <main className="container section">
+    <main className="container section-page">
 
       {/* Back link */}
       <Link

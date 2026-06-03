@@ -45,7 +45,7 @@ export default async function PlaygroundPage() {
   const activeCategories = CATEGORIES.filter(c => items.some(i => i.category === c))
 
   return (
-    <main className="container section">
+    <main className="container section-page">
       <PageHeader imageSet={imageSet}>
         <h1 className="n-slot" style={{
           fontSize: 'var(--text-section)',
