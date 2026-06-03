@@ -12,6 +12,7 @@ type LocalizedText = {
 export type EditorialSubtitle = {
   _id: string
   text: LocalizedText
+  mode: 'any' | 'dark' | 'light'
   weight: number
   rotation: 'random' | 'weighted' | 'daily' | 'manual'
   time: string[]
@@ -25,10 +26,12 @@ const subtitlePoolQuery = groq`
     _type == "editorialSubtitle" &&
     page == $page &&
     active == true &&
-    archived != true
+    archived != true &&
+    (mode == "any" || !defined(mode) || mode == $mode)
   ] {
     _id,
     text,
+    "mode": coalesce(mode, "any"),
     "weight": coalesce(weight, 1),
     "rotation": coalesce(rotation, "random"),
     "time": coalesce(time, []),
@@ -129,10 +132,14 @@ function selectSubtitle(pool: EditorialSubtitle[]): EditorialSubtitle | null {
 
 // ── Public API ─────────────────────────────────────────────────────────────
 
-export async function getPageSubtitle(page: string, locale: string): Promise<string | null> {
+export async function getPageSubtitle(
+  page: string,
+  locale: string,
+  mode: 'dark' | 'light' = 'dark',
+): Promise<string | null> {
   const pool: EditorialSubtitle[] = await client.fetch(
     subtitlePoolQuery,
-    { page },
+    { page, mode },
     { next: { revalidate: 0 } },
   )
   const eligible = applyContext(pool)
@@ -144,14 +151,14 @@ export async function getPageSubtitle(page: string, locale: string): Promise<str
 export async function getPageSubtitleData(
   page: string,
   locale: string,
+  mode: 'dark' | 'light' = 'dark',
 ): Promise<{ initial: string | null; pool: string[] }> {
   const raw: EditorialSubtitle[] = await client.fetch(
     subtitlePoolQuery,
-    { page },
+    { page, mode },
     { next: { revalidate: 0 } },
   )
   const eligible = applyContext(raw)
-  // Resolve all subtitles to current locale (for client-side rotation pool)
   const pool = eligible
     .map(s => resolveText(s.text, locale))
     .filter((t): t is string => !!t)

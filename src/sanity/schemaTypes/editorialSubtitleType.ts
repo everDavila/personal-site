@@ -74,6 +74,23 @@ export const editorialSubtitleType = defineType({
       group: 'content',
       options: { layout: 'tags' },
     }),
+    defineField({
+      name: 'mode',
+      title: 'Narrative mode',
+      type: 'string',
+      group: 'behavior',
+      initialValue: 'any',
+      description: 'Restrict this subtitle to a specific narrative mode, or show in both.',
+      options: {
+        list: [
+          { title: 'Any mode (dark + light)', value: 'any' },
+          { title: '🌑 Dark only',            value: 'dark'  },
+          { title: '☀️ Light only',           value: 'light' },
+        ],
+        layout: 'radio',
+      },
+    }),
+
     // Behavior
     defineField({
       name: 'active',

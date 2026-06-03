@@ -4,6 +4,7 @@ import { getAllPlaygroundItems } from '@/sanity/queries/playground'
 import { PlaygroundClient } from '@/components/playground/PlaygroundClient'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import { getMode } from '@/lib/mode'
 import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
 
@@ -23,10 +24,11 @@ const CATEGORIES = ['interfaces', 'motion', 'systems', 'ai', 'experiments', 'too
 
 export default async function PlaygroundPage() {
   const locale = await getLocale() as Locale
+  const mode   = await getMode()
   const [t, items, subtitle, settings] = await Promise.all([
     getTranslations('playground'),
     getAllPlaygroundItems(),
-    getPageSubtitle('playground', locale),
+    getPageSubtitle('playground', locale, mode),
     getSiteSettings(),
   ])
 

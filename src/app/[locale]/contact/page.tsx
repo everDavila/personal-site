@@ -2,6 +2,7 @@ import type { Metadata } from 'next'
 import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import { getMode } from '@/lib/mode'
 import { PageHeader } from '@/components/ui/PageHeader'
 import type { Locale } from '@/lib/i18n'
 
@@ -19,10 +20,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function ContactPage() {
   const locale = await getLocale() as Locale
+  const mode   = await getMode()
   const [settings, t, subtitle] = await Promise.all([
     getSiteSettings(),
     getTranslations('contact'),
-    getPageSubtitle('contact', locale),
+    getPageSubtitle('contact', locale, mode),
   ])
 
   const c          = settings?.labels?.contact

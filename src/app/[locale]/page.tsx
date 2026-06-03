@@ -9,6 +9,7 @@ import { getFeaturedProjects } from '@/sanity/queries/projects'
 import { getExperience } from '@/sanity/queries/experience'
 import { getLatestPosts } from '@/sanity/queries/posts'
 import { getPageSubtitleData } from '@/sanity/queries/editorialSubtitle'
+import { getMode } from '@/lib/mode'
 import type { Locale } from '@/lib/i18n'
 import { BLOG_FALLBACK } from '@/lib/i18n'
 
@@ -16,13 +17,14 @@ export const dynamic = 'force-dynamic'
 
 export default async function Home() {
   const locale = await getLocale() as Locale
+  const mode   = await getMode()
 
   const [settings, projects, experience, posts, homeSubtitleData] = await Promise.all([
     getSiteSettings(),
     getFeaturedProjects(),
     getExperience(),
     getLatestPosts(locale),
-    getPageSubtitleData('home', locale),
+    getPageSubtitleData('home', locale, mode),
   ])
 
   const fallbackLocale = BLOG_FALLBACK[locale]

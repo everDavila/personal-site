@@ -5,6 +5,7 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import type { Locale } from '@/lib/i18n'
 import { BLOG_FALLBACK } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import { getMode } from '@/lib/mode'
 import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
 
@@ -30,9 +31,10 @@ const COUNT_LABEL: Record<Locale, (n: number) => string> = {
 
 export default async function BlogPage() {
   const locale = await getLocale() as Locale
+  const mode   = await getMode()
   const [t, subtitle, settings] = await Promise.all([
     getTranslations('blog'),
-    getPageSubtitle('blog', locale),
+    getPageSubtitle('blog', locale, mode),
     getSiteSettings(),
   ])
 

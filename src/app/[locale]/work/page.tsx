@@ -5,6 +5,7 @@ import { localized } from '@/lib/i18n'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import { getMode } from '@/lib/mode'
 import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
 
@@ -22,10 +23,11 @@ export const dynamic = 'force-dynamic'
 
 export default async function WorkPage() {
   const locale = await getLocale() as Locale
+  const mode   = await getMode()
   const [projects, t, subtitle, settings] = await Promise.all([
     getAllProjects(),
     getTranslations('work'),
-    getPageSubtitle('work', locale),
+    getPageSubtitle('work', locale, mode),
     getSiteSettings(),
   ])
 

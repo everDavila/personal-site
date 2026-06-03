@@ -5,6 +5,7 @@ import { localized } from '@/lib/i18n'
 import type { Locale } from '@/lib/i18n'
 import type { WorkEntry, EducationEntry } from '@/sanity/queries/experience'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import { getMode } from '@/lib/mode'
 import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { PageHeader } from '@/components/ui/PageHeader'
 
@@ -87,10 +88,11 @@ function SectionLabel({ children, accent }: { children: React.ReactNode; accent?
 
 export default async function ExperiencePage() {
   const locale = await getLocale() as Locale
+  const mode   = await getMode()
   const [data, t, subtitle, settings] = await Promise.all([
     getExperience(),
     getTranslations('experience'),
-    getPageSubtitle('experience', locale),
+    getPageSubtitle('experience', locale, mode),
     getSiteSettings(),
   ])
 

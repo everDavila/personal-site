@@ -4,6 +4,7 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
+import { getMode } from '@/lib/mode'
 import { PageHeader } from '@/components/ui/PageHeader'
 
 export const dynamic = 'force-dynamic'
@@ -20,10 +21,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 
 export default async function AboutPage() {
   const locale = await getLocale() as Locale
+  const mode   = await getMode()
   const [settings, t, subtitle] = await Promise.all([
     getSiteSettings(),
     getTranslations('about'),
-    getPageSubtitle('about', locale),
+    getPageSubtitle('about', locale, mode),
   ])
 
   const a          = settings?.labels?.about
