@@ -1,7 +1,6 @@
 import type { Metadata } from 'next'
 import { Inter, Manrope, Source_Serif_4 } from 'next/font/google'
 import { cookies } from 'next/headers'
-import { ModeChooser } from '@/components/ui/ModeChooser'
 import './globals.css'
 
 const inter = Inter({
@@ -43,7 +42,6 @@ export default async function RootLayout({ children }: { children: React.ReactNo
       suppressHydrationWarning
     >
       <body>
-        <ModeChooser hasMode={hasMode} />
         {children}
       </body>
     </html>

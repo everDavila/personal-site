@@ -73,6 +73,14 @@
     "title": "Contacto",
     "email_label": "Email"
   },
+  "modeChooser": {
+    "question":   "Elige cómo quieres explorar hoy",
+    "darkLabel":  "Orbital",
+    "darkDesc":   "Curiosidad, experimentos y preguntas todavía abiertas.",
+    "lightLabel": "Tierra",
+    "lightDesc":  "Experiencia, proyectos y problemas resueltos.",
+    "footer":     "Puedes cambiarlo cuando quieras."
+  },
   "blog": {
     "title": "Apuntes",
     "count": "{count, plural, one {# apunte} other {# apuntes}}",

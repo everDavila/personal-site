@@ -73,6 +73,14 @@
     "title": "Contact",
     "email_label": "Email"
   },
+  "modeChooser": {
+    "question":   "Choose how you want to explore today",
+    "darkLabel":  "Orbital",
+    "darkDesc":   "Curiosity, experiments, and questions still open.",
+    "lightLabel": "Earth",
+    "lightDesc":  "Experience, projects, and problems solved.",
+    "footer":     "You can switch it anytime."
+  },
   "blog": {
     "title": "Notes",
     "count": "{count, plural, one {# note} other {# notes}}",

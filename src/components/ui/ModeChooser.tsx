@@ -3,9 +3,17 @@
 import { useState, useTransition } from 'react'
 import { setNarrativeMode } from '@/app/actions/setMode'
 
-type Props = { hasMode: boolean }
+type Props = {
+  hasMode:    boolean
+  question:   string
+  darkLabel:  string
+  darkDesc:   string
+  lightLabel: string
+  lightDesc:  string
+  footer:     string
+}
 
-export function ModeChooser({ hasMode }: Props) {
+export function ModeChooser({ hasMode, question, darkLabel, darkDesc, lightLabel, lightDesc, footer }: Props) {
   const [visible, setVisible] = useState(!hasMode)
   const [, startTransition] = useTransition()
 
@@ -23,7 +31,7 @@ export function ModeChooser({ hasMode }: Props) {
     <div
       role="dialog"
       aria-modal="true"
-      aria-label="Elige tu modo narrativo"
+      aria-label={question}
       style={{
         position: 'fixed',
         inset: 0,
@@ -37,7 +45,6 @@ export function ModeChooser({ hasMode }: Props) {
         gap: 'clamp(2.5rem, 5vw, 4rem)',
       }}
     >
-      {/* Eyebrow */}
       <p style={{
         fontSize: '0.6875rem',
         color: '#3A3A37',
@@ -49,7 +56,6 @@ export function ModeChooser({ hasMode }: Props) {
         davila.uno
       </p>
 
-      {/* Main question */}
       <p style={{
         fontFamily: 'var(--font-serif, Georgia, serif)',
         fontSize: 'clamp(1.625rem, 4vw, 2.75rem)',
@@ -61,10 +67,9 @@ export function ModeChooser({ hasMode }: Props) {
         maxWidth: '22ch',
         margin: 0,
       }}>
-       Elige cómo quieres explorar hoy
+        {question}
       </p>
 
-      {/* Options */}
       <div style={{
         display: 'grid',
         gridTemplateColumns: '1fr 1fr',
@@ -75,8 +80,8 @@ export function ModeChooser({ hasMode }: Props) {
       }}>
         <ModeOption
           mode="dark"
-          label="Orbital"
-          description="Curiosidad, experimentos y algunas preguntas sin respuesta."
+          label={darkLabel}
+          description={darkDesc}
           bg="#0F0F0D"
           bgHover="#181715"
           labelColor="#F0EFEC"
@@ -85,8 +90,8 @@ export function ModeChooser({ hasMode }: Props) {
         />
         <ModeOption
           mode="light"
-          label="Tierra"
-          description="Experiencia, proyectos y problemas resueltos."
+          label={lightLabel}
+          description={lightDesc}
           bg="#F5F4F0"
           bgHover="#EDEDEA"
           labelColor="#111110"
@@ -103,7 +108,7 @@ export function ModeChooser({ hasMode }: Props) {
         margin: 0,
         fontFamily: 'var(--font-mono, monospace)',
       }}>
-        Puedes cambiar esto en cualquier momento
+        {footer}
       </p>
     </div>
   )
