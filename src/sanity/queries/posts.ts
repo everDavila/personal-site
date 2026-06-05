@@ -31,7 +31,7 @@ const SUMMARY_FIELDS = `
 
 export async function getAllPosts(locale: Locale): Promise<PostSummary[]> {
   return client.fetch(
-    `*[_type == "post" && (defined(title[$locale]) || originalLanguage == $locale)] | order(publishedAt desc) { ${SUMMARY_FIELDS} }`,
+    `*[_type == "post" && hidden != true && (defined(title[$locale]) || originalLanguage == $locale)] | order(publishedAt desc) { ${SUMMARY_FIELDS} }`,
     { locale },
     { next: { tags: ['post'] } }
   )
@@ -39,7 +39,7 @@ export async function getAllPosts(locale: Locale): Promise<PostSummary[]> {
 
 export async function getPostBySlug(slug: string): Promise<PostFull | null> {
   return client.fetch(
-    `*[_type == "post" && slug.current == $slug][0] { ${SUMMARY_FIELDS}, body }`,
+    `*[_type == "post" && hidden != true && slug.current == $slug][0] { ${SUMMARY_FIELDS}, body }`,
     { slug },
     { next: { tags: ['post'] } }
   )
@@ -47,14 +47,14 @@ export async function getPostBySlug(slug: string): Promise<PostFull | null> {
 
 export async function getLatestPosts(locale: Locale): Promise<PostSummary[]> {
   return client.fetch(
-    `*[_type == "post" && (defined(title[$locale]) || originalLanguage == $locale)] | order(publishedAt desc) [0...3] { ${SUMMARY_FIELDS} }`,
+    `*[_type == "post" && hidden != true && (defined(title[$locale]) || originalLanguage == $locale)] | order(publishedAt desc) [0...3] { ${SUMMARY_FIELDS} }`,
     { locale },
     { next: { tags: ['post'] } }
   )
 }
 
 export async function getAllPostSlugs(): Promise<string[]> {
-  const posts = await client.fetch(`*[_type == "post"]{ "slug": slug.current }`)
+  const posts = await client.fetch(`*[_type == "post" && hidden != true]{ "slug": slug.current }`)
   return posts.map((p: { slug: string }) => p.slug)
 }
 
@@ -66,10 +66,10 @@ export async function getAdjacentPosts(publishedAt: string): Promise<{
 }> {
   return client.fetch(
     `{
-      "prev": *[_type == "post" && publishedAt < $publishedAt] | order(publishedAt desc) [0] {
+      "prev": *[_type == "post" && hidden != true && publishedAt < $publishedAt] | order(publishedAt desc) [0] {
         "slug": slug.current, title, originalLanguage
       },
-      "next": *[_type == "post" && publishedAt > $publishedAt] | order(publishedAt asc) [0] {
+      "next": *[_type == "post" && hidden != true && publishedAt > $publishedAt] | order(publishedAt asc) [0] {
         "slug": slug.current, title, originalLanguage
       }
     }`,

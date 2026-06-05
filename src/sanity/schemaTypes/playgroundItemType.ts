@@ -86,6 +86,13 @@ export const playgroundItemType = defineType({
       title: 'URL de demo / preview',
       type: 'url',
     }),
+    defineField({
+      name: 'hidden',
+      title: 'Ocultar del sitio',
+      type: 'boolean',
+      description: 'Si está activado, este experimento no aparece en el laboratorio.',
+      initialValue: false,
+    }),
   ],
   orderings: [
     { title: 'Año (reciente)', name: 'yearDesc', by: [{ field: 'year', direction: 'desc' }] },

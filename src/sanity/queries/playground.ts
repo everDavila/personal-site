@@ -22,7 +22,7 @@ export type PlaygroundItemFull = PlaygroundItem & {
 
 export async function getAllPlaygroundItems(): Promise<PlaygroundItem[]> {
   return client.fetch(
-    `*[_type == "playgroundItem"] | order(year desc, _createdAt desc) {
+    `*[_type == "playgroundItem" && hidden != true] | order(year desc, _createdAt desc) {
       _id,
       "slug": slug.current,
       title, category, status, year, description,
@@ -36,7 +36,7 @@ export async function getAllPlaygroundItems(): Promise<PlaygroundItem[]> {
 
 export async function getPlaygroundItemBySlug(slug: string): Promise<PlaygroundItemFull | null> {
   return client.fetch(
-    `*[_type == "playgroundItem" && slug.current == $slug][0] {
+    `*[_type == "playgroundItem" && hidden != true && slug.current == $slug][0] {
       _id,
       "slug": slug.current,
       title, category, status, year, description,
@@ -50,6 +50,6 @@ export async function getPlaygroundItemBySlug(slug: string): Promise<PlaygroundI
 }
 
 export async function getAllPlaygroundSlugs(): Promise<string[]> {
-  const items = await client.fetch(`*[_type == "playgroundItem" && defined(slug.current)]{ "slug": slug.current }`)
+  const items = await client.fetch(`*[_type == "playgroundItem" && hidden != true && defined(slug.current)]{ "slug": slug.current }`)
   return items.map((i: { slug: string }) => i.slug)
 }

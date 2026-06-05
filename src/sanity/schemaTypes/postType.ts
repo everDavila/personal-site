@@ -80,6 +80,13 @@ export const postType = defineType({
       title: 'Contenido',
       type: 'localizedBlockContent',
     }),
+    defineField({
+      name: 'hidden',
+      title: 'Ocultar del sitio',
+      type: 'boolean',
+      description: 'Si está activado, este post no aparece en ninguna lista ni es accesible por URL.',
+      initialValue: false,
+    }),
   ],
   preview: {
     select: {
