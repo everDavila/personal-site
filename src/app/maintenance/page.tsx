@@ -191,9 +191,8 @@ export default function MaintenancePage() {
                 margin: 0,
               }}>
                 {t.contactPrefix}{' '}
-                {/* TODO: reemplaza con tu URL de LinkedIn */}
                 <a
-                  href="https://www.linkedin.com/in/everdavila"
+                  href="https://www.linkedin.com/in/ever-davila/"
                   target="_blank"
                   rel="noopener noreferrer"
                   className="m-link"
