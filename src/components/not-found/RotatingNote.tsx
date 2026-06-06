@@ -21,11 +21,11 @@ export function RotatingNote({ notes }: Props) {
   return (
     <p style={{
       fontSize: '0.8125rem',
-      color: '#4A4845',
+      color: '#7A7775',
       fontStyle: 'italic',
       lineHeight: 1.6,
       margin: 0,
-      borderLeft: '1px solid #272522',
+      borderLeft: '1px solid #3A3835',
       paddingLeft: '1rem',
     }}>
       {note}
