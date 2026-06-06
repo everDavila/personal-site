@@ -175,6 +175,8 @@ export default async function NotFound() {
               LAST_SIGNAL: {signal}
             </span>
           </div>
+
+          <RotatingNote notes={notes} />
         </div>
 
         {/* RIGHT — image */}
@@ -198,8 +200,6 @@ export default async function NotFound() {
         </div>
       </div>
 
-      {/* ── Rotating note — bottom bar ── */}
-      <RotatingNote notes={notes} label={c.noteLabel} />
     </div>
   )
 }
