@@ -34,13 +34,10 @@ export default async function RootNotFound() {
 
   return (
     <div style={{
-      position: 'fixed',
-      inset: 0,
-      zIndex: 60,
+      minHeight: '100vh',
       background: '#0F0F0D',
       display: 'flex',
       flexDirection: 'column',
-      overflow: 'auto',
       fontFamily: 'var(--font-sans, system-ui, sans-serif)',
     }}>
       <style>{`
@@ -51,19 +48,34 @@ export default async function RootNotFound() {
         }
       `}</style>
 
-      {/* ── Top bar ── */}
-      <nav style={{
-        position: 'relative',
-        display: 'flex', justifyContent: 'space-between', alignItems: 'center',
-        padding: '1.125rem clamp(1.5rem, 5vw, 3rem)',
-        borderBottom: '1px solid #1E1C1A',
-        color: '#F0EFEC',
-      }}>
-        <LogoMark />
-        <span style={{ fontSize: '0.6875rem', color: '#3A3835', fontFamily: 'ui-monospace, monospace', letterSpacing: '0.08em' }}>
-          SYS://404
-        </span>
-      </nav>
+      {/* ── Header ── */}
+      <header
+        className="nav-glass"
+        style={{
+          position: 'fixed',
+          insetInline: 0,
+          top: 0,
+          zIndex: 50,
+          transition: 'background-color var(--transition)',
+        }}
+      >
+        <div
+          className="container"
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'space-between',
+            paddingBlock: '1rem',
+          }}
+        >
+          <a href="/" style={{ color: 'var(--color-text)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+            <LogoMark />
+          </a>
+          <span style={{ fontSize: '0.6875rem', color: '#3A3835', fontFamily: 'ui-monospace, monospace', letterSpacing: '0.08em' }}>
+            SYS://404
+          </span>
+        </div>
+      </header>
 
       {/* ── Main grid ── */}
       <div className="nf-grid" style={{
@@ -72,6 +84,7 @@ export default async function RootNotFound() {
         gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)',
         gap: '2rem',
         padding: 'clamp(2.5rem, 7vw, 5rem) clamp(1.5rem, 5vw, 3rem)',
+        paddingTop: 'calc(3.5rem + clamp(2.5rem, 7vw, 5rem))',
         position: 'relative',
         maxWidth: '80rem',
         marginInline: 'auto',

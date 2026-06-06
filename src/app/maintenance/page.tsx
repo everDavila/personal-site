@@ -86,36 +86,49 @@ export default function MaintenancePage() {
         fontFamily: 'var(--font-inter, system-ui, sans-serif)',
       }}>
 
-        {/* Nav */}
-        <nav style={{
-          padding: '1.5rem 3rem',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'space-between',
-        }}>
-          <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.8125rem' }}>
-            <LogoMark />
-            <span style={{ opacity: 0.3 }}>•</span>
-            <span style={{ opacity: 0.55 }}>{t.nav}</span>
-          </div>
-          <button
-            className="m-lang-btn"
-            onClick={() => setLang(other)}
+        {/* Header */}
+        <header
+          className="nav-glass"
+          style={{
+            position: 'fixed',
+            insetInline: 0,
+            top: 0,
+            zIndex: 50,
+          }}
+        >
+          <div
+            className="container"
             style={{
-              background: 'none',
-              border: 'none',
-              color: '#E8E5DF',
-              opacity: 0.35,
-              cursor: 'pointer',
-              fontSize: '0.6875rem',
-              fontFamily: 'ui-monospace, monospace',
-              letterSpacing: '0.1em',
-              padding: '0.25rem 0.5rem',
+              display: 'flex',
+              alignItems: 'center',
+              justifyContent: 'space-between',
+              paddingBlock: '1rem',
             }}
           >
-            {other.toUpperCase()}
-          </button>
-        </nav>
+            <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.8125rem' }}>
+              <LogoMark />
+              <span style={{ opacity: 0.3 }}>•</span>
+              <span style={{ opacity: 0.55 }}>{t.nav}</span>
+            </div>
+            <button
+              className="m-lang-btn"
+              onClick={() => setLang(other)}
+              style={{
+                background: 'none',
+                border: 'none',
+                color: '#E8E5DF',
+                opacity: 0.35,
+                cursor: 'pointer',
+                fontSize: '0.6875rem',
+                fontFamily: 'ui-monospace, monospace',
+                letterSpacing: '0.1em',
+                padding: '0.25rem 0.5rem',
+              }}
+            >
+              {other.toUpperCase()}
+            </button>
+          </div>
+        </header>
 
         {/* Content */}
         <main
@@ -126,6 +139,7 @@ export default function MaintenancePage() {
             gridTemplateColumns: '1fr 1fr',
             gap: '2rem',
             padding: 'clamp(3rem, 8vw, 6rem) 3rem',
+            paddingTop: 'calc(3.5rem + clamp(3rem, 8vw, 6rem))',
             maxWidth: '82rem',
             margin: '0 auto',
             width: '100%',
