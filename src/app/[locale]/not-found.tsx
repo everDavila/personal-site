@@ -2,6 +2,7 @@ import { getLocale } from 'next-intl/server'
 import type { Locale } from '@/lib/i18n'
 import { getPage404 } from '@/sanity/queries/page404'
 import { RotatingNote } from '@/components/not-found/RotatingNote'
+import { LogoMark } from '@/components/nav/LogoMark'
 
 const COPY: Record<Locale, { eyebrow: string; ctaHome: string; ctaWork: string; noteLabel: string }> = {
   es: { eyebrow: 'Error de navegación', ctaHome: 'Volver al inicio',  ctaWork: 'Explorar proyectos', noteLabel: 'Nota del sistema' },
@@ -42,6 +43,13 @@ export default async function NotFound() {
       overflow: 'auto',
       fontFamily: 'var(--font-sans)',
     }}>
+      <style>{`
+        @media (max-width: 768px) {
+          .nf-grid { grid-template-columns: 1fr !important; }
+          .nf-visual { order: -1; max-width: 280px; margin-inline: auto; }
+          .nf-content { order: 1; }
+        }
+      `}</style>
 
       {/* ── Background layers ── */}
       <div aria-hidden style={{
@@ -80,17 +88,16 @@ export default async function NotFound() {
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         padding: '1.125rem clamp(1.5rem, 5vw, 3rem)',
         borderBottom: '1px solid #1E1C1A',
+        color: '#3A3835',
       }}>
-        <span style={{ fontSize: '0.6875rem', color: '#3A3835', textTransform: 'uppercase', letterSpacing: '0.12em' }}>
-          ever dávila
-        </span>
+        <LogoMark />
         <span style={{ fontSize: '0.6875rem', color: '#3A3835', fontFamily: 'ui-monospace, monospace', letterSpacing: '0.08em' }}>
           SYS://404
         </span>
       </nav>
 
       {/* ── Main grid ── */}
-      <div style={{
+      <div className="nf-grid" style={{
         flex: 1,
         display: 'grid',
         gridTemplateColumns: 'minmax(0,1fr) minmax(0,1fr)',
@@ -104,7 +111,7 @@ export default async function NotFound() {
       }}>
 
         {/* LEFT — editorial content */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
+        <div className="nf-content" style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
 
           <p style={{
             fontSize: '0.6875rem', color: '#5A7C94',
@@ -170,7 +177,7 @@ export default async function NotFound() {
         </div>
 
         {/* RIGHT — system visualization */}
-        <div style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        <div className="nf-visual" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <svg
             viewBox="0 0 420 420"
             fill="none"
