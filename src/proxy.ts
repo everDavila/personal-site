@@ -7,6 +7,7 @@ const intlMiddleware = createMiddleware(routing)
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  // La página de mantenimiento bypasea next-intl para evitar redirect loop
   if (pathname.startsWith('/maintenance')) {
     return NextResponse.next()
   }

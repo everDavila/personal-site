@@ -12,8 +12,8 @@ const content = {
       'Some systems are being simplified.\nOthers are being questioned.',
       'Back soon.',
     ],
-    contactPrefix: "If it's important, you can find me on",
-    contactMid: 'or send an email to',
+    contactPrefix: "If it matters, find me on",
+    contactMid: 'or email me to',
     footer: 'Designing systems with intention.',
   },
   es: {
@@ -24,7 +24,7 @@ const content = {
       'Algunos sistemas están siendo simplificados.\nOtros están siendo cuestionados.',
       'Vuelvo pronto.',
     ],
-    contactPrefix: 'Si es importante, puedes encontrarme en',
+    contactPrefix: 'Si realmente importa, puedes encontrarme en',
     contactMid: 'o escribir a',
     footer: 'Diseñando sistemas con intención.',
   },
@@ -71,7 +71,9 @@ export default function MaintenancePage() {
         @media (max-width: 768px) {
           .m-grid { grid-template-columns: 1fr !important; }
           .m-image { display: none !important; }
+          .m-image-mobile { display: flex !important; }
         }
+        .m-image-mobile { display: none; }
       `}</style>
 
       <div style={{
@@ -134,6 +136,26 @@ export default function MaintenancePage() {
         >
           {/* Left: text */}
           <div>
+            <div className="m-image-mobile" style={{
+              justifyContent: 'center',
+              marginBottom: '2rem',
+            }}>
+              <Image
+                src="/mantenimiento-mobile.jpg"
+                alt=""
+                width={400}
+                height={300}
+                style={{
+                  maxWidth: '100%',
+                  height: 'auto',
+                  filter: 'invert(1)',
+                  mixBlendMode: 'screen',
+                  opacity: 0.9,
+                }}
+                priority
+              />
+            </div>
+
             <h1 style={{
               fontFamily: 'var(--font-source-serif, Georgia, serif)',
               fontSize: 'clamp(2.75rem, 5vw, 4.5rem)',
@@ -219,7 +241,7 @@ export default function MaintenancePage() {
             }}
           >
             <Image
-              src="/lab-character.png"
+              src="/mantenimiento.jpg"
               alt=""
               width={500}
               height={600}
