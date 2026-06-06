@@ -3,6 +3,7 @@ import type { Locale } from '@/lib/i18n'
 import { getPage404 } from '@/sanity/queries/page404'
 import { RotatingNote } from '@/components/not-found/RotatingNote'
 import { LogoMark } from '@/components/nav/LogoMark'
+import Image from 'next/image'
 
 const COPY: Record<Locale, { eyebrow: string; ctaHome: string; ctaWork: string; noteLabel: string }> = {
   es: { eyebrow: 'Error de navegación', ctaHome: 'Volver al inicio',  ctaWork: 'Explorar proyectos', noteLabel: 'Nota del sistema' },
@@ -88,7 +89,7 @@ export default async function NotFound() {
         display: 'flex', justifyContent: 'space-between', alignItems: 'center',
         padding: '1.125rem clamp(1.5rem, 5vw, 3rem)',
         borderBottom: '1px solid #1E1C1A',
-        color: '#3A3835',
+        color: '#F0EFEC',
       }}>
         <LogoMark />
         <span style={{ fontSize: '0.6875rem', color: '#3A3835', fontFamily: 'ui-monospace, monospace', letterSpacing: '0.08em' }}>
@@ -176,54 +177,24 @@ export default async function NotFound() {
           </div>
         </div>
 
-        {/* RIGHT — system visualization */}
-        <div className="nf-visual" style={{ position: 'relative', display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <svg
-            viewBox="0 0 420 420"
-            fill="none"
-            aria-hidden
-            style={{ width: '100%', maxWidth: '420px', opacity: 0.9 }}
-          >
-            {/* Corner brackets */}
-            <path d="M 24 48 L 24 24 L 48 24"  stroke="#2E4052" strokeWidth="1" strokeLinecap="square"/>
-            <path d="M 372 24 L 396 24 L 396 48" stroke="#2E4052" strokeWidth="1" strokeLinecap="square"/>
-            <path d="M 24 372 L 24 396 L 48 396" stroke="#2E4052" strokeWidth="1" strokeLinecap="square"/>
-            <path d="M 396 372 L 396 396 L 372 396" stroke="#2E4052" strokeWidth="1" strokeLinecap="square"/>
-
-            {/* Route paths — dashed */}
-            <path d="M 210 60 C 180 110 260 170 210 210"  stroke="#2E4052" strokeWidth="0.75" strokeDasharray="4 10"/>
-            <path d="M 90 150 C 140 160 180 195 210 210"  stroke="#2E4052" strokeWidth="0.75" strokeDasharray="4 10" opacity="0.7"/>
-            <path d="M 330 100 C 300 150 240 185 210 210" stroke="#2E4052" strokeWidth="0.75" strokeDasharray="4 10" opacity="0.7"/>
-            <path d="M 210 210 C 220 270 320 320 370 310" stroke="#2E4052" strokeWidth="0.75" strokeDasharray="4 10" opacity="0.5"/>
-            <path d="M 210 210 C 180 280 100 310 70 330"  stroke="#2E4052" strokeWidth="0.75" strokeDasharray="4 10" opacity="0.4"/>
-
-            {/* Orbit ring */}
-            <circle cx="210" cy="210" r="46" stroke="#2E4052" strokeWidth="0.5" strokeDasharray="2 7" opacity="0.5"/>
-
-            {/* Glow rings */}
-            <circle cx="210" cy="210" r="28" fill="#5A7C94" opacity="0.04"/>
-            <circle cx="210" cy="210" r="14" fill="#5A7C94" opacity="0.06"/>
-
-            {/* Active dot */}
-            <circle cx="210" cy="210" r="4" fill="#8FD3FF" opacity="0.9"/>
-            <circle cx="210" cy="210" r="8" fill="#8FD3FF" opacity="0.15"/>
-
-            {/* Cross marker */}
-            <path d="M 305 72 L 311 78 M 311 72 L 305 78" stroke="#2E4052" strokeWidth="1"/>
-
-            {/* Floating labels — top right */}
-            <text x="248" y="138" fill="#2E4052" fontSize="7.5" fontFamily="ui-monospace,monospace" letterSpacing="0.5">RUTA_SOLICITADA</text>
-            <text x="248" y="152" fill="#5A7C94" fontSize="9"   fontFamily="ui-monospace,monospace" letterSpacing="0.3">/inexistente</text>
-            <text x="248" y="168" fill="#2E4052" fontSize="7.5" fontFamily="ui-monospace,monospace" letterSpacing="0.5">ESTADO: NO_ENCONTRADA</text>
-
-            {/* Floating labels — bottom left */}
-            <text x="52" y="300" fill="#2E2C2A" fontSize="7.5" fontFamily="ui-monospace,monospace" letterSpacing="0.5">ÚLTIMA_SEÑAL</text>
-            <text x="52" y="314" fill="#2E2C2A" fontSize="8"   fontFamily="ui-monospace,monospace">desconocida</text>
-            <text x="52" y="328" fill="#2E2C2A" fontSize="7.5" fontFamily="ui-monospace,monospace" letterSpacing="0.5">HORA: {signal}</text>
-
-            {/* Small x marker bottom */}
-            <path d="M 338 334 L 342 338 M 342 334 L 338 338" stroke="#272522" strokeWidth="1"/>
-          </svg>
+        {/* RIGHT — image */}
+        <div className="nf-visual" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+          <Image
+            src="/mantenimiento.jpg"
+            alt=""
+            width={500}
+            height={600}
+            style={{
+              maxWidth: '100%',
+              maxHeight: '65vh',
+              height: 'auto',
+              width: 'auto',
+              filter: 'invert(1)',
+              mixBlendMode: 'screen',
+              opacity: 0.9,
+            }}
+            priority
+          />
         </div>
       </div>
 
