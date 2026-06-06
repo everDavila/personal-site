@@ -5,9 +5,11 @@ import { useState, useEffect } from 'react'
 type Props = { notes: string[] }
 
 export function RotatingNote({ notes }: Props) {
-  const [index, setIndex] = useState(() => Math.floor(Math.random() * Math.max(notes.length, 1)))
+  const [index, setIndex] = useState(0)
 
   useEffect(() => {
+    const initial = Math.floor(Math.random() * Math.max(notes.length, 1))
+    setIndex(initial)
     if (notes.length <= 1) return
     const id = setInterval(() => setIndex(i => (i + 1) % notes.length), 4500)
     return () => clearInterval(id)
