@@ -2,7 +2,6 @@ import { headers } from 'next/headers'
 import { getPage404 } from '@/sanity/queries/page404'
 import { RotatingNote } from '@/components/not-found/RotatingNote'
 import { LogoMark } from '@/components/nav/LogoMark'
-import Image from 'next/image'
 import type { Locale } from '@/lib/i18n'
 
 const COPY: Record<Locale, { eyebrow: string; ctaHome: string; ctaWork: string; noteLabel: string }> = {
@@ -141,11 +140,9 @@ export default async function RootNotFound() {
 
         {/* RIGHT — image */}
         <div className="nf-visual" style={{ display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
-          <Image
+          <img
             src="/error-404.jpg"
             alt=""
-            width={500}
-            height={600}
             style={{
               maxWidth: '100%',
               maxHeight: '65vh',
@@ -155,7 +152,6 @@ export default async function RootNotFound() {
               mixBlendMode: 'screen',
               opacity: 0.9,
             }}
-            priority
           />
         </div>
       </div>
