@@ -2,6 +2,7 @@
 
 import { useState, useEffect } from 'react'
 import Image from 'next/image'
+import { LogoMark } from '@/components/nav/LogoMark'
 
 const content = {
   en: {
@@ -93,9 +94,7 @@ export default function MaintenancePage() {
           justifyContent: 'space-between',
         }}>
           <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', fontSize: '0.8125rem' }}>
-            <span style={{ fontFamily: 'var(--font-manrope, sans-serif)', fontWeight: 600, letterSpacing: '0.04em' }}>
-              EVER DÁVILA
-            </span>
+            <LogoMark />
             <span style={{ opacity: 0.3 }}>•</span>
             <span style={{ opacity: 0.55 }}>{t.nav}</span>
           </div>
