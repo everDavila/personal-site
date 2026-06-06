@@ -7,9 +7,12 @@ const intlMiddleware = createMiddleware(routing)
 export default function middleware(request: NextRequest) {
   const { pathname } = request.nextUrl
 
+  if (pathname.startsWith('/maintenance')) {
+    return NextResponse.next()
+  }
+
   if (
     process.env.MAINTENANCE_MODE === 'true' &&
-    !pathname.startsWith('/maintenance') &&
     !pathname.startsWith('/api')
   ) {
     return NextResponse.redirect(new URL('/maintenance', request.url))
