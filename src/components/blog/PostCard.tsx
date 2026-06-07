@@ -12,20 +12,17 @@ function estimateReadTime(text: string): number {
 
 const DAY = 86_400_000
 
-function editorialLabel(publishedAt: string, updatedAt: string, locale: Locale): string | null {
+function editorialLabel(publishedAt: string, locale: Locale): string | null {
   const published = new Date(publishedAt).getTime()
-  const updated   = new Date(updatedAt).getTime()
   const now       = Date.now()
-  if (now - published < 7 * DAY)                        return LABELS.new[locale]
-  if (updated - published > DAY && now - updated < 30 * DAY) return LABELS.updated[locale]
+  if (now - published < 7 * DAY) return LABELS.new[locale]
   return null
 }
 
 const LABELS = {
-  new:     { es: 'Nuevo',              en: 'New',              pt: 'Novo',            qu: 'Musuq',       zh: '最新' },
-  updated: { es: 'Actualizado',        en: 'Updated recently', pt: 'Atualizado',      qu: 'Musuqchasqa', zh: '已更新' },
-  field:   { es: 'Notas de campo',     en: 'Field Notes',      pt: 'Notas de campo',  qu: 'Willakuy',    zh: '田野笔记' },
-  min:     { es: 'min',                en: 'min',              pt: 'min',             qu: 'min',         zh: '分钟' },
+  new:   { es: 'Nuevo',          en: 'New',        pt: 'Novo',           qu: 'Musuq',    zh: '最新'     },
+  field: { es: 'Notas de campo', en: 'Field Notes', pt: 'Notas de campo', qu: 'Willakuy', zh: '田野笔记' },
+  min:   { es: 'min',            en: 'min',         pt: 'min',            qu: 'min',      zh: '分钟'     },
 } as const
 
 type LabelKey = keyof typeof LABELS
@@ -43,7 +40,7 @@ export function PostCard({ post, locale, featured = false }: Props) {
   )
 
   const mins    = estimateReadTime(excerpt.value || title.value || '')
-  const elabel  = editorialLabel(post.publishedAt, post._updatedAt, locale)
+  const elabel  = editorialLabel(post.publishedAt, locale)
 
   if (featured) {
     return (
