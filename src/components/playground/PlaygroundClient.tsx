@@ -106,11 +106,11 @@ export function PlaygroundClient({ items, locale, t, categories }: Props) {
         </div>
       </div>
 
-      {/* Grid */}
+      {/* Lista editorial */}
       {filtered.length === 0 ? (
         <p style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)' }}>{t.empty}</p>
       ) : (
-        <div className="projects-grid">
+        <div className="lab-list">
           {filtered.map(item => (
             <PlaygroundCard key={item._id} item={item} locale={locale} t={t} />
           ))}
@@ -149,94 +149,42 @@ function PlaygroundCard({ item, locale, t }: { item: PlaygroundItem; locale: Loc
   return (
     <Link
       href={{ pathname: '/playground/[slug]', params: { slug: item.slug } }}
-      style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
-      className="card-hover"
+      className="lab-row"
     >
-    <article style={{
-      display: 'flex',
-      flexDirection: 'column',
-      background: 'var(--color-surface)',
-      borderRadius: 'var(--radius)',
-      overflow: 'hidden',
-      height: '100%',
-    }}>
-      {/* Image */}
-      {item.image?.asset?.url ? (
-        <div style={{ aspectRatio: '4/3', overflow: 'hidden', background: 'var(--color-border)' }}>
+      {/* Imagen izquierda */}
+      <div className="lab-row-image">
+        {item.image?.asset?.url ? (
           <Image
             src={item.image.asset.url}
             alt={localized(item.image.alt ?? {}, locale).value ?? ''}
-            width={600}
-            height={450}
+            width={240}
+            height={160}
             style={{ width: '100%', height: '100%', objectFit: 'cover' }}
           />
-        </div>
-      ) : (
-        <div style={{
-          aspectRatio: '4/3',
-          background: 'var(--color-border)',
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-        }}>
-          <span style={{ fontSize: '2rem', opacity: 0.3 }}>◌</span>
-        </div>
-      )}
+        ) : (
+          <span style={{ fontSize: '1.5rem', opacity: 0.25 }}>◌</span>
+        )}
+      </div>
 
-      {/* Body */}
-      <div style={{ padding: '1.25rem', display: 'flex', flexDirection: 'column', flex: 1, gap: '0.5rem' }}>
-        {/* Status + category */}
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'center' }}>
-          <span style={{
-            fontSize: 'var(--text-label)',
-            fontWeight: 500,
-            color: STATUS_COLORS[statusKey],
-            textTransform: 'uppercase',
-            letterSpacing: 'var(--tracking-label)',
-          }}>
-            {t.status[statusKey] ?? item.status}
+      {/* Contenido derecha */}
+      <div className="lab-row-body">
+        <div className="lab-row-meta">
+          <span style={{ color: STATUS_COLORS[statusKey] }}>
+            {STATUS_ICONS[statusKey]} {t.status[statusKey] ?? item.status}
           </span>
-          <span style={{
-            fontSize: 'var(--text-label)',
-            color: 'var(--color-muted)',
-            textTransform: 'uppercase',
-            letterSpacing: 'var(--tracking-label)',
-          }}>
+          <span style={{ color: 'var(--color-muted)' }}>
             {t.category[item.category] ?? item.category}
           </span>
         </div>
 
-        {/* Title */}
-        <h3 style={{
-          fontSize: 'var(--text-body)',
-          fontFamily: 'var(--font-display)',
-          fontWeight: 600,
-          color: 'var(--color-text)',
-          margin: 0,
-          lineHeight: 1.3,
-        }}>
-          {title.value || '—'}
-        </h3>
+        <h3 className="lab-row-title">{title.value || '—'}</h3>
 
-        {/* Description */}
         {description?.value && (
-          <p style={{
-            fontSize: 'var(--text-small)',
-            color: 'var(--color-muted)',
-            lineHeight: 1.6,
-            margin: 0,
-            display: '-webkit-box',
-            WebkitLineClamp: 3,
-            WebkitBoxOrient: 'vertical',
-            overflow: 'hidden',
-          }}>
-            {description.value}
-          </p>
+          <p className="lab-row-desc">{description.value}</p>
         )}
 
-        {/* Links */}
         {(item.repoUrl || item.demoUrl) && (
-          <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto', paddingTop: '0.75rem' }}>
+          <div style={{ display: 'flex', gap: '1rem', marginTop: 'auto' }}>
             {item.repoUrl && (
               <a
                 href={item.repoUrl}
@@ -264,7 +212,6 @@ function PlaygroundCard({ item, locale, t }: { item: PlaygroundItem; locale: Loc
           </div>
         )}
       </div>
-    </article>
     </Link>
   )
 }

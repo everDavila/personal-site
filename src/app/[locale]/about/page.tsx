@@ -31,7 +31,6 @@ export default async function AboutPage() {
   const a          = settings?.labels?.about
   const titleDark  = narrativeText(settings?.pageTitles?.about, 'dark',  locale, NARRATIVE_FALLBACK.dark.pageTitles.about)  ?? lbl(a?.title, locale, t('title'))
   const titleLight = narrativeText(settings?.pageTitles?.about, 'light', locale, NARRATIVE_FALLBACK.light.pageTitles.about) ?? titleDark
-  const connect = lbl(a?.connect,       locale, t('connect'))
   const seeExp  = lbl(a?.seeExperience, locale, t('see_experience'))
   const social  = settings?.social
 
@@ -79,27 +78,10 @@ export default async function AboutPage() {
         </div>
       )}
 
-      {social && (
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.75rem' }}>
-          <p style={{ fontSize: 'var(--text-small)', color: 'var(--color-muted)', marginBottom: '0.25rem' }}>
-            {connect}
-          </p>
-          {social.email && (
-            <a href={`mailto:${social.email}`} className="link-accent" style={{ fontSize: 'var(--text-body)' }}>
-              {social.email}
-            </a>
-          )}
-          {social.linkedin && (
-            <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="link-accent" style={{ fontSize: 'var(--text-body)' }}>
-              LinkedIn
-            </a>
-          )}
-          {social.github && (
-            <a href={social.github} target="_blank" rel="noopener noreferrer" className="link-accent" style={{ fontSize: 'var(--text-body)' }}>
-              GitHub
-            </a>
-          )}
-        </div>
+      {social?.email && (
+        <a href={`mailto:${social.email}`} className="link-accent" style={{ fontSize: 'var(--text-body)' }}>
+          {social.email}
+        </a>
       )}
 
       <div style={{ marginTop: '3rem', paddingTop: '2rem', borderTop: 'var(--border-width) solid var(--color-border)' }}>
