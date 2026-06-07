@@ -2,11 +2,9 @@ import { getLocale } from 'next-intl/server'
 import { Hero } from '@/components/home/Hero'
 import { SelectedWork } from '@/components/home/SelectedWork'
 import { Philosophy } from '@/components/home/Philosophy'
-import { ExperienceSnapshot } from '@/components/home/ExperienceSnapshot'
 import { Writing } from '@/components/home/Writing'
 import { getSiteSettings, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { getFeaturedProjects } from '@/sanity/queries/projects'
-import { getExperience } from '@/sanity/queries/experience'
 import { getLatestPosts } from '@/sanity/queries/posts'
 import { getPageSubtitleData } from '@/sanity/queries/editorialSubtitle'
 import { getMode } from '@/lib/mode'
@@ -19,10 +17,9 @@ export default async function Home() {
   const locale = await getLocale() as Locale
   const mode   = await getMode()
 
-  const [settings, projects, experience, posts, homeSubtitleData] = await Promise.all([
+  const [settings, projects, posts, homeSubtitleData] = await Promise.all([
     getSiteSettings(),
     getFeaturedProjects(),
-    getExperience(),
     getLatestPosts(locale),
     getPageSubtitleData('home', locale, mode),
   ])
@@ -41,12 +38,6 @@ export default async function Home() {
       {(philosophyDark || philosophyLight) && (
         <Philosophy dark={philosophyDark ?? ''} light={philosophyLight ?? ''} />
       )}
-      <ExperienceSnapshot
-        workEntries={experience?.workExperience ?? []}
-        eduEntries={experience?.education ?? []}
-        cvUrl={experience?.cvUrl ?? settings?.cvUrl}
-        settings={settings}
-      />
       <Writing posts={displayPosts} displayLocale={postsDisplayLocale} settings={settings} />
     </>
   )
