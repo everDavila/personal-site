@@ -11,7 +11,7 @@ export async function Philosophy({ dark, light }: Props) {
     return (
       <div className={className}>
         {paras.map((para, i) => (
-          <p key={i} className="philosophy-para">{para}</p>
+          <p key={i} className="philosophy-para" style={{ whiteSpace: 'pre-line' }}>{para}</p>
         ))}
       </div>
     )

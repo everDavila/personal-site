@@ -73,8 +73,8 @@ export default async function AboutPage() {
           letterSpacing: 'var(--tracking-body)',
         }}>
           <div className="n-slot">
-            {bioDark  && <p className="n-d" style={{ margin: 0 }}>{bioDark}</p>}
-            {bioLight && <p className="n-l" style={{ margin: 0 }}>{bioLight}</p>}
+            {bioDark  && <p className="n-d" style={{ margin: 0, whiteSpace: 'pre-line' }}>{bioDark}</p>}
+            {bioLight && <p className="n-l" style={{ margin: 0, whiteSpace: 'pre-line' }}>{bioLight}</p>}
           </div>
         </div>
       )}
