@@ -117,13 +117,19 @@
   mix-blend-mode: screen;
 }
 @media (max-width: 768px) {
-  .hero-grid { grid-template-columns: 1fr; }
+  .hero-grid { grid-template-columns: 1fr; gap: 1rem; }
   .hero-image-col {
     order: -1;
-    max-height: 45vh;
     overflow: visible;
     padding-bottom: 0;
+    align-items: flex-start;
     justify-content: flex-start;
+    height: auto;
+  }
+  .hero-image-col img {
+    max-height: 38vw;
+    width: auto;
+    max-width: 100%;
   }
 }
 
