@@ -52,13 +52,13 @@ export default function MaintenancePage() {
           50% { opacity: 0; }
         }
         @keyframes head-look {
-          0%,  20% { transform: rotateX(0deg); }
-          30%, 40% { transform: rotateX(-7deg); }
-          50%, 60% { transform: rotateX(6deg); }
-          70%, 100%{ transform: rotateX(0deg); }
+          0%,  15% { transform: rotateZ(0deg); }
+          28%, 44% { transform: rotateZ(-10deg); }
+          54%, 68% { transform: rotateZ(8deg); }
+          80%, 100%{ transform: rotateZ(0deg); }
         }
         #head-frame {
-          animation: head-look 8s ease-in-out infinite;
+          animation: head-look 9s ease-in-out infinite;
           transform-box: fill-box;
           transform-origin: center bottom;
         }
