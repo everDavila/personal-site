@@ -333,12 +333,12 @@ body {
   opacity: 0.85;
 }
 .nav-link--active {
-  color: #ffffff;
+  color: var(--color-accent);
   opacity: 1;
   font-weight: 600;
 }
 [data-mode="light"] .nav-link--active {
-  color: var(--color-text);
+  color: var(--color-accent);
   opacity: 1;
   font-weight: 600;
 }
