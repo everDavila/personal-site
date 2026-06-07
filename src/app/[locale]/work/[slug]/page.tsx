@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation'
 import { getProjectBySlug } from '@/sanity/queries/projects'
 import { PostBody } from '@/components/blog/PostBody'
-import { localized } from '@/lib/i18n'
+import { FallbackBadge } from '@/components/ui/FallbackBadge'
+import { localized, LOCALE_NAMES } from '@/lib/i18n'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { Locale } from '@/lib/i18n'
@@ -21,14 +22,18 @@ export default async function ProjectPage({ params }: Props) {
   if (!project) notFound()
 
   const currentLocale = locale as Locale
-  const title = localized(project.title, currentLocale)
-  const role = localized(project.role, currentLocale)
-  const summary = localized(project.summary, currentLocale)
-
   const locales: Locale[] = ['es', 'en', 'pt', 'qu', 'zh']
+
+  const title   = localized(project.title,   currentLocale, 'es')
+  const role    = localized(project.role,    currentLocale, 'es')
+  const summary = localized(project.summary, currentLocale, 'es')
+
+  const availableLocales = locales.filter(l => l !== currentLocale && project.title?.[l])
+
   const bodyBlocks = project.body as Record<Locale, PortableTextBlock[]>
   const bodyValue: PortableTextBlock[] | null =
     bodyBlocks?.[currentLocale] ??
+    bodyBlocks?.['es'] ??
     locales.map(l => bodyBlocks?.[l]).find(v => v?.length) ??
     null
 
@@ -59,8 +64,15 @@ export default async function ProjectPage({ params }: Props) {
             lineHeight: 1.2,
             color: 'var(--color-text)',
             margin: '0 0 0.5rem',
+            display: 'flex',
+            alignItems: 'baseline',
+            gap: '0.75rem',
+            flexWrap: 'wrap',
           }}>
             {title.value || project.client}
+            {title.isFallback && title.fallbackLocale && (
+              <FallbackBadge fallbackLocale={title.fallbackLocale} />
+            )}
           </h1>
 
           {summary.value && (
@@ -85,6 +97,28 @@ export default async function ProjectPage({ params }: Props) {
             <MetaItem label={t('client_label')} value={project.client} />
             {role.value && <MetaItem label={t('role_label')} value={role.value} />}
             {project.year && <MetaItem label={t('year_label')} value={String(project.year)} />}
+            {availableLocales.length > 0 && (
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', flexWrap: 'wrap' }}>
+                {availableLocales.map(l => (
+                  <Link
+                    key={l}
+                    href={{ pathname: '/work/[slug]', params: { slug: project.slug } }}
+                    locale={l}
+                    style={{
+                      fontSize: 'var(--text-label)',
+                      color: 'var(--color-muted)',
+                      textDecoration: 'none',
+                      textTransform: 'uppercase',
+                      letterSpacing: '0.08em',
+                      transition: 'color var(--transition)',
+                    }}
+                    className="link-accent"
+                  >
+                    {LOCALE_NAMES[l]}
+                  </Link>
+                ))}
+              </div>
+            )}
           </div>
         </header>
 

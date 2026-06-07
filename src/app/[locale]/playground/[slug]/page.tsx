@@ -1,7 +1,8 @@
 import { notFound } from 'next/navigation'
 import { getPlaygroundItemBySlug } from '@/sanity/queries/playground'
 import { PostBody } from '@/components/blog/PostBody'
-import { localized } from '@/lib/i18n'
+import { FallbackBadge } from '@/components/ui/FallbackBadge'
+import { localized, LOCALE_NAMES } from '@/lib/i18n'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import Image from 'next/image'
@@ -31,12 +32,14 @@ export default async function PlaygroundItemPage({ params }: Props) {
   const currentLocale = locale as Locale
   const locales: Locale[] = ['es', 'en', 'pt', 'qu', 'zh']
 
-  const title       = localized(item.title, currentLocale)
-  const description = item.description ? localized(item.description, currentLocale) : null
+  const title       = localized(item.title,       currentLocale, 'es')
+  const description = item.description ? localized(item.description, currentLocale, 'es') : null
+
+  const availableLocales = locales.filter(l => l !== currentLocale && item.title?.[l])
 
   const bodyBlocks = item.body as Record<Locale, PortableTextBlock[]> | null
   const bodyValue: PortableTextBlock[] | null = bodyBlocks
-    ? (bodyBlocks[currentLocale] ?? locales.map(l => bodyBlocks[l]).find(v => v?.length) ?? null)
+    ? (bodyBlocks[currentLocale] ?? bodyBlocks['es'] ?? locales.map(l => bodyBlocks[l]).find(v => v?.length) ?? null)
     : null
 
   return (
@@ -104,9 +107,40 @@ export default async function PlaygroundItemPage({ params }: Props) {
             color: 'var(--color-text)',
             margin: '0 0 0.75rem',
             lineHeight: 1.3,
+            display: 'flex',
+            alignItems: 'baseline',
+            gap: '0.75rem',
+            flexWrap: 'wrap',
           }}>
             {title.value || '—'}
+            {title.isFallback && title.fallbackLocale && (
+              <FallbackBadge fallbackLocale={title.fallbackLocale} />
+            )}
           </h1>
+
+          {/* Language switcher */}
+          {availableLocales.length > 0 && (
+            <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+              {availableLocales.map(l => (
+                <Link
+                  key={l}
+                  href={{ pathname: '/playground/[slug]', params: { slug: item.slug } }}
+                  locale={l}
+                  style={{
+                    fontSize: 'var(--text-label)',
+                    color: 'var(--color-muted)',
+                    textDecoration: 'none',
+                    textTransform: 'uppercase',
+                    letterSpacing: '0.08em',
+                    transition: 'color var(--transition)',
+                  }}
+                  className="link-accent"
+                >
+                  {LOCALE_NAMES[l]}
+                </Link>
+              ))}
+            </div>
+          )}
 
           {/* Description */}
           {description?.value && (

@@ -142,8 +142,8 @@ function FilterPill({ label, active, onClick }: { label: string; active: boolean
 }
 
 function PlaygroundCard({ item, locale, t }: { item: PlaygroundItem; locale: Locale; t: Translations }) {
-  const title = localized(item.title, locale)
-  const description = item.description ? localized(item.description, locale) : null
+  const title = localized(item.title, locale, 'es')
+  const description = item.description ? localized(item.description, locale, 'es') : null
   const statusKey = item.status as StatusKey
 
   return (
