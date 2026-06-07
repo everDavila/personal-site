@@ -36,9 +36,9 @@ export const postType = defineType({
     }),
     defineField({
       name: 'slug',
-      title: 'Slug (URL)',
+      title: 'Slug canónico (legado)',
       type: 'slug',
-      description: 'Generado desde el título en el idioma original',
+      description: 'Slug original — mantener para compatibilidad con URLs existentes. Usar "Slugs por idioma" para publicaciones nuevas.',
       options: {
         source: (doc: Record<string, unknown>) => {
           const lang = (doc.originalLanguage as string) || 'es'
@@ -47,6 +47,41 @@ export const postType = defineType({
         },
       },
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'localizedSlug',
+      title: 'Slugs por idioma',
+      description: 'URL amigable para SEO en cada idioma. Quechua y 中文 usan el fallback (ES / EN).',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'es',
+          title: 'Español',
+          type: 'slug',
+          options: {
+            source: (doc: Record<string, unknown>) =>
+              (doc.title as Record<string, string>)?.es ?? '',
+          },
+        }),
+        defineField({
+          name: 'en',
+          title: 'English',
+          type: 'slug',
+          options: {
+            source: (doc: Record<string, unknown>) =>
+              (doc.title as Record<string, string>)?.en ?? '',
+          },
+        }),
+        defineField({
+          name: 'pt',
+          title: 'Português',
+          type: 'slug',
+          options: {
+            source: (doc: Record<string, unknown>) =>
+              (doc.title as Record<string, string>)?.pt ?? '',
+          },
+        }),
+      ],
     }),
     defineField({
       name: 'publishedAt',

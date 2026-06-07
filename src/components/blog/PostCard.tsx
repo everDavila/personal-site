@@ -46,7 +46,7 @@ export function PostCard({ post, locale, featured = false }: Props) {
   if (featured) {
     return (
       <Link
-        href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }}
+        href={{ pathname: '/blog/[slug]', params: { slug: post.slugs[locale] } }}
         style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
       >
         <article className="blog-featured">
@@ -87,7 +87,7 @@ export function PostCard({ post, locale, featured = false }: Props) {
 
   return (
     <Link
-      href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }}
+      href={{ pathname: '/blog/[slug]', params: { slug: post.slugs[locale] } }}
       className="lab-row"
     >
       <div className="lab-row-image">

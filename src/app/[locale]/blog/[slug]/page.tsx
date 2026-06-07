@@ -16,7 +16,7 @@ export async function generateMetadata(
   { params }: { params: Promise<{ slug: string; locale: string }> }
 ): Promise<Metadata> {
   const { slug, locale } = await params
-  const post = await getPostBySlug(slug)
+  const post = await getPostBySlug(slug, locale as Locale)
   if (!post) return {}
 
   const currentLocale = locale as Locale
@@ -75,7 +75,7 @@ export default async function PostPage({ params }: Props) {
   const { slug, locale } = await params
   setRequestLocale(locale)
   const [post, t] = await Promise.all([
-    getPostBySlug(slug),
+    getPostBySlug(slug, locale as Locale),
     getTranslations('blog'),
   ])
 
@@ -235,7 +235,7 @@ export default async function PostPage({ params }: Props) {
                 {availableLocales.map(l => (
                   <Link
                     key={l}
-                    href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }}
+                    href={{ pathname: '/blog/[slug]', params: { slug: post.slugs[l] } }}
                     locale={l}
                     style={{
                       fontSize: 'var(--text-label)',
@@ -281,7 +281,7 @@ export default async function PostPage({ params }: Props) {
           <div>
             {prevPost && (
               <Link
-                href={{ pathname: '/blog/[slug]', params: { slug: prevPost.slug } }}
+                href={{ pathname: '/blog/[slug]', params: { slug: prevPost.slugs[currentLocale] } }}
                 style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
                 className="link-accent"
               >
@@ -309,7 +309,7 @@ export default async function PostPage({ params }: Props) {
           <div style={{ textAlign: 'right' }}>
             {nextPost && (
               <Link
-                href={{ pathname: '/blog/[slug]', params: { slug: nextPost.slug } }}
+                href={{ pathname: '/blog/[slug]', params: { slug: nextPost.slugs[currentLocale] } }}
                 style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
                 className="link-accent"
               >

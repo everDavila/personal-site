@@ -1,9 +1,10 @@
 import { client } from '../lib/client'
 import type { Locale } from '@/lib/i18n'
+import { BLOG_FALLBACK } from '@/lib/i18n'
 
 export type PostSummary = {
   _id: string
-  slug: string
+  slugs: Record<Locale, string>
   originalLanguage: Locale
   publishedAt: string
   _updatedAt: string
@@ -17,9 +18,20 @@ export type PostFull = PostSummary & {
   body: Record<Locale, unknown[]>
 }
 
+// Resolves localized slug: localizedSlug[locale] → localizedSlug[fallback] → canonical slug.current
+const SLUG_PROJECTION = `
+  "slugs": {
+    "es": coalesce(localizedSlug.es.current, slug.current),
+    "en": coalesce(localizedSlug.en.current, slug.current),
+    "pt": coalesce(localizedSlug.pt.current, localizedSlug.es.current, slug.current),
+    "qu": coalesce(localizedSlug.es.current, slug.current),
+    "zh": coalesce(localizedSlug.en.current, slug.current),
+  }
+`
+
 const SUMMARY_FIELDS = `
   _id,
-  "slug": slug.current,
+  ${SLUG_PROJECTION},
   originalLanguage,
   publishedAt,
   _updatedAt,
@@ -37,10 +49,15 @@ export async function getAllPosts(locale: Locale): Promise<PostSummary[]> {
   )
 }
 
-export async function getPostBySlug(slug: string): Promise<PostFull | null> {
+export async function getPostBySlug(slug: string, locale: Locale): Promise<PostFull | null> {
+  // Use BLOG_FALLBACK so qu→es and zh→en at lookup time
+  const effectiveLocale = BLOG_FALLBACK[locale]
   return client.fetch(
-    `*[_type == "post" && hidden != true && slug.current == $slug][0] { ${SUMMARY_FIELDS}, body }`,
-    { slug },
+    `*[_type == "post" && hidden != true && (
+      localizedSlug[$effectiveLocale].current == $slug ||
+      slug.current == $slug
+    )][0] { ${SUMMARY_FIELDS}, body }`,
+    { slug, effectiveLocale },
     { next: { tags: ['post'] } }
   )
 }
@@ -53,12 +70,21 @@ export async function getLatestPosts(locale: Locale): Promise<PostSummary[]> {
   )
 }
 
+/** Returns one slugs map per post — for generateStaticParams and sitemap */
+export async function getAllPostSlugsLocalized(): Promise<Array<Record<Locale, string>>> {
+  const posts: { slugs: Record<Locale, string> }[] = await client.fetch(
+    `*[_type == "post" && hidden != true] { ${SLUG_PROJECTION} }`
+  )
+  return posts.map(p => p.slugs)
+}
+
+/** @deprecated Use getAllPostSlugsLocalized */
 export async function getAllPostSlugs(): Promise<string[]> {
   const posts = await client.fetch(`*[_type == "post" && hidden != true]{ "slug": slug.current }`)
   return posts.map((p: { slug: string }) => p.slug)
 }
 
-type PostNav = { slug: string; title: Record<Locale, string>; originalLanguage: Locale }
+type PostNav = { slugs: Record<Locale, string>; title: Record<Locale, string>; originalLanguage: Locale }
 
 export async function getAdjacentPosts(publishedAt: string): Promise<{
   prev: PostNav | null
@@ -67,10 +93,10 @@ export async function getAdjacentPosts(publishedAt: string): Promise<{
   return client.fetch(
     `{
       "prev": *[_type == "post" && hidden != true && publishedAt < $publishedAt] | order(publishedAt desc) [0] {
-        "slug": slug.current, title, originalLanguage
+        ${SLUG_PROJECTION}, title, originalLanguage
       },
       "next": *[_type == "post" && hidden != true && publishedAt > $publishedAt] | order(publishedAt asc) [0] {
-        "slug": slug.current, title, originalLanguage
+        ${SLUG_PROJECTION}, title, originalLanguage
       }
     }`,
     { publishedAt },
