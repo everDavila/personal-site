@@ -211,7 +211,7 @@ export const NARRATIVE_FALLBACK = {
       about:      { es: 'Enfoque',      en: 'About'      } as LocalizedString,
       contact:    { es: 'Contacto',     en: 'Contact'    } as LocalizedString,
       experience: { es: 'Experiencia',  en: 'Experience' } as LocalizedString,
-      playground: { es: 'Experimentos', en: 'Playground' } as LocalizedString,
+      playground: { es: 'Laboratorio', en: 'Lab' } as LocalizedString,
       blog:       { es: 'Apuntes',      en: 'Notes'      } as LocalizedString,
     },
   },
