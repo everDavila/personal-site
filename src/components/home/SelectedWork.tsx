@@ -6,6 +6,10 @@ import type { Locale } from '@/lib/i18n'
 import type { SiteSettings } from '@/sanity/queries/siteSettings'
 import { lbl } from '@/sanity/queries/siteSettings'
 
+const DARK_LABEL: Record<string, string> = {
+  es: 'Misiones', en: 'Missions', pt: 'Missões', qu: 'Misiones', zh: '使命',
+}
+
 type Props = { projects: ProjectSummary[]; settings?: SiteSettings | null }
 
 export async function SelectedWork({ projects, settings }: Props) {
@@ -19,6 +23,7 @@ export async function SelectedWork({ projects, settings }: Props) {
   const w  = settings?.labels?.work
   const sectionLabel = lbl(h?.projectsLabel, locale, t('projects_label'))
   const workTitle    = lbl(w?.title,         locale, tw('title'))
+  const darkLabel    = DARK_LABEL[locale] ?? DARK_LABEL.en
 
   return (
     <section
@@ -41,7 +46,11 @@ export async function SelectedWork({ projects, settings }: Props) {
             letterSpacing: '0.1em',
           }}
         >
-          {workTitle} →
+          <span className="n-slot">
+            <span className="n-d">{darkLabel}</span>
+            <span className="n-l">{workTitle}</span>
+          </span>
+          {' →'}
         </Link>
       </div>
 

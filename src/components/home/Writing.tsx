@@ -6,6 +6,10 @@ import type { SiteSettings } from '@/sanity/queries/siteSettings'
 import { lbl } from '@/sanity/queries/siteSettings'
 import { PostCard } from '@/components/blog/PostCard'
 
+const DARK_LABEL: Record<string, string> = {
+  es: 'Apuntes', en: 'Logs', pt: 'Registros', qu: 'Bitácora', zh: '日志',
+}
+
 type Props = { posts: PostSummary[]; displayLocale?: Locale; settings?: SiteSettings | null }
 
 export async function Writing({ posts, displayLocale, settings }: Props) {
@@ -19,6 +23,7 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
   const b = settings?.labels?.blog
   const sectionLabel = lbl(n?.blog,  locale, tn('blog'))
   const blogTitle    = lbl(b?.title, locale, tb('title'))
+  const darkLabel    = DARK_LABEL[locale] ?? DARK_LABEL.en
 
   return (
     <section
@@ -39,7 +44,11 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
           className="link-accent"
           style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textDecoration: 'none', letterSpacing: '0.08em', textTransform: 'uppercase' }}
         >
-          {blogTitle} →
+          <span className="n-slot">
+            <span className="n-d">{darkLabel}</span>
+            <span className="n-l">{blogTitle}</span>
+          </span>
+          {' →'}
         </Link>
       </div>
 
