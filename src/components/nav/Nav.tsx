@@ -19,8 +19,9 @@ export async function Nav() {
   const nav = settings?.labels?.nav
   const links = [
     { href: '/work',       label: lbl(nav?.work,       locale, t('work'))       },
-    { href: '/experience', label: lbl(nav?.experience, locale, t('experience')) },
+    { href: '/playground', label: lbl(nav?.playground, locale, t('playground')) },
     { href: '/blog',       label: lbl(nav?.blog,       locale, t('blog'))       },
+    { href: '/about',      label: lbl(nav?.about,      locale, t('about'))      },
     { href: '/contact',    label: lbl(nav?.contact,    locale, t('contact'))    },
   ]
 
