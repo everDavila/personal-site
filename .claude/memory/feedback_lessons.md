@@ -264,6 +264,28 @@ Toda la sesión commiteé a `main` sin preguntar en qué rama trabajar. Vercel h
 
 ---
 
+## Sesión 2026-06-07 (noche) — Rollback y precisión
+
+### git reset --hard revierte TODO el commit, no un archivo
+
+Hice rollback con `git reset --hard HEAD~1` para deshacer el rediseño del blog, pero ese commit también incluía el fix de "Actualizado" en PostCard.tsx. Revertí ambos y tuve que re-aplicar el fix.
+
+**Why:** `git reset --hard HEAD~1` descarta el commit completo sin distinción.
+
+**How to apply:** Para revertir solo un archivo: `git checkout HEAD~1 -- ruta/archivo.tsx`. Para deshacer un commit preservando partes: `git reset HEAD~1` (soft) y re-seleccionar qué commitear.
+
+---
+
+### "Analiza y dime qué entiendes" = checkpoint, no luz verde
+
+Cuando Ever dice "analiza" y luego "realiza una prueba", no es confirmación de que mi interpretación es correcta. Debí listar los cambios exactos antes de escribir código.
+
+**Why:** Implementé una reescritura completa del blog sin confirmar si debía reescribir o solo ajustar.
+
+**How to apply:** Antes de cualquier rediseño: listar "voy a cambiar X, Y, Z — ¿correcto?" y esperar confirmación explícita.
+
+---
+
 ## Patrón de trabajo que funciona con Ever
 
 1. Ever comparte imagen de referencia + prompt de intención
