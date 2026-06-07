@@ -36,21 +36,21 @@ const HEADERS: Record<Locale, { col1: string; col2: string; col3: string }> = {
 }
 
 /* Links modo oscuro por locale */
-const DARK_LINKS: Record<Locale, { work: string; experience: string; blog: string; about: string; playground: string }> = {
-  es: { work: 'Misiones',  experience: 'Experiencia', blog: 'Apuntes',   about: 'Operador',    playground: 'Laboratorio'  },
-  en: { work: 'Missions',  experience: 'Experience',  blog: 'Logs',      about: 'Readme',      playground: 'Lab'          },
-  pt: { work: 'Missões',   experience: 'Experiência', blog: 'Registros', about: 'Readme',      playground: 'Laboratório'  },
-  qu: { work: 'Misiones',  experience: 'Experiencia', blog: 'Bitácora',  about: 'Readme',      playground: 'Pukllay'      },
-  zh: { work: '使命',       experience: '经历',         blog: '日志',       about: '说明',         playground: '实验室'        },
+const DARK_LINKS: Record<Locale, { work: string; experience: string; blog: string; about: string; playground: string; sobreMi: string }> = {
+  es: { work: 'Misiones',  experience: 'Experiencia', blog: 'Apuntes',   about: 'Operador',    playground: 'Laboratorio',  sobreMi: 'Sobre Mí'  },
+  en: { work: 'Missions',  experience: 'Experience',  blog: 'Logs',      about: 'Readme',      playground: 'Lab',          sobreMi: 'About Me'  },
+  pt: { work: 'Missões',   experience: 'Experiência', blog: 'Registros', about: 'Readme',      playground: 'Laboratório',  sobreMi: 'Sobre Mim' },
+  qu: { work: 'Misiones',  experience: 'Experiencia', blog: 'Bitácora',  about: 'Readme',      playground: 'Pukllay',      sobreMi: 'Sobre Mí'  },
+  zh: { work: '使命',       experience: '经历',         blog: '日志',       about: '说明',         playground: '实验室',        sobreMi: '关于我'     },
 }
 
 /* Links modo claro por locale */
-const LIGHT_LINKS: Record<Locale, { work: string; experience: string; blog: string; about: string; playground: string }> = {
-  es: { work: 'Proyectos', experience: 'Experiencia', blog: 'Apuntes',   about: 'Perfil',      playground: 'Laboratorio'  },
-  en: { work: 'Work',      experience: 'Experience',  blog: 'Notes',     about: 'About',       playground: 'Lab'          },
-  pt: { work: 'Projetos',  experience: 'Experiência', blog: 'Apuntes',   about: 'Perfil',      playground: 'Laboratório'  },
-  qu: { work: 'Ruray',     experience: 'Experiencia', blog: 'Qillqa',    about: 'Perfil',      playground: 'Pukllay'      },
-  zh: { work: '项目',       experience: '经历',         blog: '笔记',       about: '关于',         playground: '实验室'        },
+const LIGHT_LINKS: Record<Locale, { work: string; experience: string; blog: string; about: string; playground: string; sobreMi: string }> = {
+  es: { work: 'Proyectos', experience: 'Experiencia', blog: 'Apuntes',   about: 'Perfil',      playground: 'Laboratorio',  sobreMi: 'Sobre Mí'  },
+  en: { work: 'Work',      experience: 'Experience',  blog: 'Notes',     about: 'About',       playground: 'Lab',          sobreMi: 'About Me'  },
+  pt: { work: 'Projetos',  experience: 'Experiência', blog: 'Apuntes',   about: 'Perfil',      playground: 'Laboratório',  sobreMi: 'Sobre Mim' },
+  qu: { work: 'Ruray',     experience: 'Experiencia', blog: 'Qillqa',    about: 'Perfil',      playground: 'Pukllay',      sobreMi: 'Sobre Mí'  },
+  zh: { work: '项目',       experience: '经历',         blog: '笔记',       about: '关于',         playground: '实验室',        sobreMi: '关于我'     },
 }
 
 function ModeLink({
@@ -118,6 +118,7 @@ export async function Footer() {
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
             <ModeLink href={{ pathname: '/about' }}      dark={dark.about}      light={light.about}      />
             <ModeLink href={{ pathname: '/playground' }} dark={dark.playground} light={light.playground} />
+            <ModeLink href={{ pathname: '/about' }}      dark={dark.sobreMi}    light={light.sobreMi}    />
           </nav>
         </div>
 

@@ -1,5 +1,4 @@
-import { getLocale } from 'next-intl/server'
-import { getTranslations } from 'next-intl/server'
+import { getLocale, getTranslations } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
 import type { ProjectSummary } from '@/sanity/queries/projects'
 import type { Locale } from '@/lib/i18n'
@@ -16,11 +15,9 @@ export async function SelectedWork({ projects, settings }: Props) {
   if (!projects.length) return null
 
   const locale = await getLocale() as Locale
-  const t  = await getTranslations('home')
-  const tw = await getTranslations('work')
+  const t = await getTranslations('home')
 
-  const h  = settings?.labels?.home
-  const w  = settings?.labels?.work
+  const h = settings?.labels?.home
 
   const PROJECTS_DESC_FALLBACK: Record<string, string> = {
     es: 'Proyectos de diseño UX/UI en sistemas reales, entidades públicas y productos digitales complejos.',
@@ -30,10 +27,9 @@ export async function SelectedWork({ projects, settings }: Props) {
     zh: '真实系统中的 UX/UI 设计项目，包括政府机构和复杂数字产品。',
   }
 
-  const sectionLabel   = lbl(h?.projectsLabel, locale, t('projects_label'))
-  const sectionDesc    = lbl(h?.projectsDesc,  locale, PROJECTS_DESC_FALLBACK[locale] ?? PROJECTS_DESC_FALLBACK.en)
-  const workTitle      = lbl(w?.title,         locale, tw('title'))
-  const darkLabel      = DARK_LABEL[locale] ?? DARK_LABEL.en
+  const sectionLabel = lbl(h?.projectsLabel, locale, t('projects_label'))
+  const sectionDesc  = lbl(h?.projectsDesc,  locale, PROJECTS_DESC_FALLBACK[locale] ?? PROJECTS_DESC_FALLBACK.en)
+  const darkLabel    = DARK_LABEL[locale] ?? DARK_LABEL.en
 
   return (
     <section
@@ -41,24 +37,13 @@ export async function SelectedWork({ projects, settings }: Props) {
       style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
     >
       <div style={{ marginBottom: '3rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.75rem' }}>
+        <div style={{ marginBottom: '0.75rem' }}>
           <p className="text-label" style={{ margin: 0 }}>
             <span className="n-slot">
               <span className="n-d">{darkLabel}</span>
               <span className="n-l">{sectionLabel}</span>
             </span>
           </p>
-          <Link
-            href={{ pathname: '/work' }}
-            className="link-accent"
-            style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.1em' }}
-          >
-            <span className="n-slot">
-              <span className="n-d">{darkLabel}</span>
-              <span className="n-l">{workTitle}</span>
-            </span>
-            {' →'}
-          </Link>
         </div>
         <p style={{ fontSize: 'var(--text-body)', color: 'var(--color-muted)', margin: 0, maxWidth: '52ch', lineHeight: 1.6 }}>
           {sectionDesc}

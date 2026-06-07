@@ -18,34 +18,23 @@ export async function Philosophy({ dark, light }: Props) {
   }
 
   return (
-    <section className="container philosophy-section">
-      <div className="philosophy-grid">
+    <Link href={{ pathname: '/about' }} className="philosophy-link">
+      <section className="container philosophy-section">
+        <div className="philosophy-grid">
 
-        <div className="philosophy-label-col">
-          <p className="text-label" style={{ margin: 0 }}>{t('philosophy_label')}</p>
-        </div>
-
-        <div className="philosophy-text-col">
-          <div className="n-slot">
-            <Paragraphs text={dark}  className="n-d" />
-            <Paragraphs text={light} className="n-l" />
+          <div className="philosophy-label-col">
+            <p className="text-label" style={{ margin: 0 }}>{t('philosophy_label')}</p>
           </div>
-          <div className="philosophy-cta">
-            <Link
-              href={{ pathname: '/about' }}
-              className="link-accent"
-              style={{
-                fontSize: 'var(--text-small)',
-                color: 'var(--color-muted)',
-                textDecoration: 'none',
-              }}
-            >
-              {t('more_about')} →
-            </Link>
-          </div>
-        </div>
 
-      </div>
-    </section>
+          <div className="philosophy-text-col">
+            <div className="n-slot">
+              <Paragraphs text={dark}  className="n-d" />
+              <Paragraphs text={light} className="n-l" />
+            </div>
+          </div>
+
+        </div>
+      </section>
+    </Link>
   )
 }

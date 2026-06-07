@@ -484,6 +484,10 @@ body {
   opacity: 0.65;
 }
 
+.projects-list .project-row:first-child {
+  border-top: none;
+}
+
 /* Editorial headline — the problem statement */
 .project-row-headline {
   font-family: var(--font-serif);
@@ -780,7 +784,7 @@ body::after {
   font-size: clamp(1.5rem, 2.8vw, 2.25rem);
   line-height: 1.45;
   letter-spacing: -0.025em;
-  color: var(--color-text);
+  color: var(--color-accent);
   font-weight: 400;
   margin: 0 0 1.5em;
   max-width: 50ch;
@@ -790,8 +794,15 @@ body::after {
   margin-bottom: 0;
 }
 
-.philosophy-cta {
-  margin-top: clamp(2.5rem, 5vw, 4rem);
+.philosophy-link {
+  display: block;
+  text-decoration: none;
+  color: inherit;
+  transition: opacity var(--transition);
+}
+
+.philosophy-link:hover {
+  opacity: 0.65;
 }
 
 /* Social icon circle buttons */
