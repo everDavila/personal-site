@@ -6,8 +6,12 @@ import type { SiteSettings } from '@/sanity/queries/siteSettings'
 import { lbl } from '@/sanity/queries/siteSettings'
 import { PostCard } from '@/components/blog/PostCard'
 
-const DARK_LABEL: Record<string, string> = {
-  es: 'Apuntes', en: 'Logs', pt: 'Registros', qu: 'Bitácora', zh: '日志',
+const CTA_LABEL: Record<string, { dark: string; light: string }> = {
+  es: { dark: 'Ver todos los apuntes', light: 'Ver todos los apuntes' },
+  en: { dark: 'See all logs',          light: 'See all notes'         },
+  pt: { dark: 'Ver todos os registros',light: 'Ver todos os apuntes'  },
+  qu: { dark: 'Llapan bitácora',       light: 'Llapan qillqa'         },
+  zh: { dark: '查看所有日志',             light: '查看所有笔记'             },
 }
 
 type Props = { posts: PostSummary[]; displayLocale?: Locale; settings?: SiteSettings | null }
@@ -32,7 +36,7 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
   const sectionLabel = lbl(n?.blog,  locale, tn('blog'))
   const sectionDesc  = lbl(settings?.labels?.home?.postsDesc, locale, POSTS_DESC_FALLBACK[locale] ?? POSTS_DESC_FALLBACK.en)
   const blogTitle    = lbl(b?.title, locale, tb('title'))
-  const darkLabel    = DARK_LABEL[locale] ?? DARK_LABEL.en
+  const cta      = CTA_LABEL[locale] ?? CTA_LABEL.en
 
   return (
     <section
@@ -48,8 +52,8 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
             style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textDecoration: 'none', letterSpacing: '0.08em', textTransform: 'uppercase' }}
           >
             <span className="n-slot">
-              <span className="n-d">{darkLabel}</span>
-              <span className="n-l">{blogTitle}</span>
+              <span className="n-d">{cta.dark}</span>
+              <span className="n-l">{cta.light}</span>
             </span>
             {' →'}
           </Link>
