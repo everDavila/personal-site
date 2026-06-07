@@ -59,7 +59,7 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
               lineHeight: 1.05,
               letterSpacing: 'var(--tracking-hero)',
               color: 'var(--color-text)',
-              margin: '0 0 clamp(3rem, 8vw, 6rem)',
+              margin: '0 0 clamp(1.5rem, 3vw, 2.5rem)',
               maxWidth: hasImage ? 'none' : '13ch',
             }}>
               <span className="n-d">{cleanDark}<span style={{ color: 'var(--color-accent)' }}>.</span></span>
@@ -69,25 +69,22 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
             {/* Subtitle + CTAs */}
             <div style={{
               display: 'flex',
-              justifyContent: 'space-between',
-              alignItems: 'flex-end',
-              gap: 'clamp(2rem, 5vw, 4rem)',
-              flexWrap: 'wrap',
+              flexDirection: 'column',
+              alignItems: 'flex-start',
+              gap: '1.5rem',
             }}>
-              <div>
-                <div className="n-slot">
-                  <span className="n-d" style={{ display: 'block' }}>
-                    <HeroSubtitle initial={initialSub ?? darkSub} pool={subtitlePool}
-                      style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
-                  </span>
-                  <span className="n-l" style={{ display: 'block' }}>
-                    <HeroSubtitle initial={lightSub} pool={[]}
-                      style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
-                  </span>
-                </div>
+              <div className="n-slot">
+                <span className="n-d" style={{ display: 'block' }}>
+                  <HeroSubtitle initial={initialSub ?? darkSub} pool={subtitlePool}
+                    style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
+                </span>
+                <span className="n-l" style={{ display: 'block' }}>
+                  <HeroSubtitle initial={lightSub} pool={[]}
+                    style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
+                </span>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-end', gap: '0.75rem', paddingBottom: '0.1rem', flexShrink: 0 }}>
+              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.75rem' }}>
                 <Link href={{ pathname: '/work' }} className="link-accent"
                   style={{ fontSize: 'var(--text-label)', color: 'var(--color-text)', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.1em', transition: 'opacity var(--transition)' }}>
                   {ctaWork} →
