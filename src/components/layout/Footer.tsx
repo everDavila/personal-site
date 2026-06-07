@@ -1,6 +1,6 @@
 import { getTranslations, getLocale } from 'next-intl/server'
 import { Link } from '@/i18n/navigation'
-import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
+import { getSiteSettings } from '@/sanity/queries/siteSettings'
 import type { Locale } from '@/lib/i18n'
 
 function LogoStatic() {
@@ -26,34 +26,65 @@ const LINK_STYLE = {
   textDecoration: 'none',
 } as const
 
-const LABELS: Record<Locale, { nav: string; resources: string; follow: string }> = {
-  es: { nav: 'Navegación', resources: 'Recursos',  follow: 'Canales'   },
-  en: { nav: 'Navigation', resources: 'Resources', follow: 'Elsewhere' },
-  pt: { nav: 'Navegação',  resources: 'Recursos',  follow: 'Canales'   },
-  qu: { nav: 'Puriyway',   resources: 'Imaykuna',  follow: 'Canales'   },
-  zh: { nav: '导航',        resources: '资源',       follow: 'Elsewhere' },
+/* Column headers por locale */
+const HEADERS: Record<Locale, { col1: string; col2: string; col3: string }> = {
+  es: { col1: 'Trabajo',    col2: 'Explorar',  col3: 'Encontrarme' },
+  en: { col1: 'Work',       col2: 'Explore',   col3: 'Find me'     },
+  pt: { col1: 'Trabalho',   col2: 'Explorar',  col3: 'Encontre-me' },
+  qu: { col1: 'Llank\'ay',  col2: 'Maskay',    col3: 'Taripaway'   },
+  zh: { col1: '工作',        col2: '探索',       col3: '联系'         },
+}
+
+/* Links modo oscuro por locale */
+const DARK_LINKS: Record<Locale, { work: string; experience: string; blog: string; about: string; playground: string }> = {
+  es: { work: 'Misiones',  experience: 'Experiencia', blog: 'Apuntes',   about: 'Operador',    playground: 'Laboratorio'  },
+  en: { work: 'Missions',  experience: 'Experience',  blog: 'Logs',      about: 'Readme',      playground: 'Lab'          },
+  pt: { work: 'Missões',   experience: 'Experiência', blog: 'Registros', about: 'Readme',      playground: 'Laboratório'  },
+  qu: { work: 'Misiones',  experience: 'Experiencia', blog: 'Bitácora',  about: 'Readme',      playground: 'Pukllay'      },
+  zh: { work: '使命',       experience: '经历',         blog: '日志',       about: '说明',         playground: '实验室'        },
+}
+
+/* Links modo claro por locale */
+const LIGHT_LINKS: Record<Locale, { work: string; experience: string; blog: string; about: string; playground: string }> = {
+  es: { work: 'Proyectos', experience: 'Experiencia', blog: 'Apuntes',   about: 'Perfil',      playground: 'Laboratorio'  },
+  en: { work: 'Work',      experience: 'Experience',  blog: 'Notes',     about: 'About',       playground: 'Lab'          },
+  pt: { work: 'Projetos',  experience: 'Experiência', blog: 'Apuntes',   about: 'Perfil',      playground: 'Laboratório'  },
+  qu: { work: 'Ruray',     experience: 'Experiencia', blog: 'Qillqa',    about: 'Perfil',      playground: 'Pukllay'      },
+  zh: { work: '项目',       experience: '经历',         blog: '笔记',       about: '关于',         playground: '实验室'        },
+}
+
+function ModeLink({
+  href,
+  dark,
+  light,
+}: {
+  href: Parameters<typeof Link>[0]['href']
+  dark: string
+  light: string
+}) {
+  return (
+    <Link href={href} className="link-accent" style={LINK_STYLE}>
+      <span className="n-slot">
+        <span className="n-d">{dark}</span>
+        <span className="n-l">{light}</span>
+      </span>
+    </Link>
+  )
 }
 
 export async function Footer() {
-  const [settings, t, locale] = await Promise.all([
+  const [settings, , locale] = await Promise.all([
     getSiteSettings(),
     getTranslations('nav'),
     getLocale() as Promise<Locale>,
   ])
 
-  const nav  = settings?.labels?.nav
   const text   = settings?.footerText?.[locale] || settings?.footerText?.es || null
   const social = settings?.social
-  const cvUrl  = settings?.cvUrl
   const year   = new Date().getFullYear()
-  const lbl2   = LABELS[locale]
-
-  const navLinks = [
-    { label: lbl(nav?.work,       locale, t('work')),       pathname: '/work'       },
-    { label: lbl(nav?.experience, locale, t('experience')), pathname: '/experience' },
-    { label: lbl(nav?.blog,       locale, t('blog')),       pathname: '/blog'       },
-    { label: lbl(nav?.about,      locale, t('about')),      pathname: '/about'      },
-  ]
+  const h      = HEADERS[locale]    ?? HEADERS.en
+  const dark   = DARK_LINKS[locale] ?? DARK_LINKS.en
+  const light  = LIGHT_LINKS[locale] ?? LIGHT_LINKS.en
 
   return (
     <footer style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}>
@@ -71,72 +102,46 @@ export async function Footer() {
           )}
         </div>
 
-        {/* Col 2 — Navigation */}
+        {/* Col 2 — TRABAJO */}
         <div>
-          <p className="text-label" style={{ marginBottom: '0.75rem' }}>{lbl2.nav}</p>
+          <p className="text-label" style={{ marginBottom: '0.75rem' }}>{h.col1}</p>
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-            {navLinks.map(({ label, pathname }) => (
-              <Link
-                key={pathname}
-                href={{ pathname } as Parameters<typeof Link>[0]['href']}
-                className="link-accent"
-                style={LINK_STYLE}
-              >
-                {label}
-              </Link>
-            ))}
+            <ModeLink href={{ pathname: '/work' }}       dark={dark.work}       light={light.work}       />
+            <ModeLink href={{ pathname: '/experience' }} dark={dark.experience} light={light.experience} />
+            <ModeLink href={{ pathname: '/blog' }}       dark={dark.blog}       light={light.blog}       />
           </nav>
         </div>
 
-        {/* Col 3 — Resources */}
+        {/* Col 3 — EXPLORAR */}
         <div>
-          <p className="text-label" style={{ marginBottom: '0.75rem' }}>{lbl2.resources}</p>
+          <p className="text-label" style={{ marginBottom: '0.75rem' }}>{h.col2}</p>
           <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
-            <Link href={{ pathname: '/playground' }} className="link-accent" style={LINK_STYLE}>
-              {lbl(nav?.playground, locale, t('playground'))}
-            </Link>
-            <Link href={{ pathname: '/contact' }} className="link-accent" style={LINK_STYLE}>
-              {lbl(nav?.contact, locale, t('contact'))}
-            </Link>
-            {cvUrl && (
-              <a href={cvUrl} target="_blank" rel="noopener noreferrer" className="link-accent" style={LINK_STYLE}>
-                CV ↗
-              </a>
-            )}
+            <ModeLink href={{ pathname: '/about' }}      dark={dark.about}      light={light.about}      />
+            <ModeLink href={{ pathname: '/playground' }} dark={dark.playground} light={light.playground} />
           </nav>
         </div>
 
-        {/* Col 4 — Social */}
+        {/* Col 4 — ENCONTRARME */}
         {social && (
           <div>
-            <p className="text-label" style={{ marginBottom: '0.75rem' }}>{lbl2.follow}</p>
-            <div style={{ display: 'flex', gap: '0.5rem', alignItems: 'center' }}>
-              {social.email && (
-                <a href={`mailto:${social.email}`} className="footer-social-icon" aria-label="Email">
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round" strokeLinejoin="round">
-                    <rect x="1" y="2.5" width="11" height="8" rx="1"/>
-                    <polyline points="1,2.5 6.5,7.5 12,2.5"/>
-                  </svg>
-                </a>
-              )}
+            <p className="text-label" style={{ marginBottom: '0.75rem' }}>{h.col3}</p>
+            <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
               {social.linkedin && (
-                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="LinkedIn">
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="none" stroke="currentColor" strokeWidth="1.2" strokeLinecap="round">
-                    <rect x="1" y="1" width="11" height="11" rx="2"/>
-                    <line x1="4" y1="5.5" x2="4" y2="9.5"/>
-                    <line x1="4" y1="3.5" x2="4" y2="4"/>
-                    <path d="M7 9.5V7a1.5 1.5 0 013 0v2.5M7 5.5v4"/>
-                  </svg>
+                <a href={social.linkedin} target="_blank" rel="noopener noreferrer" className="link-accent" style={LINK_STYLE}>
+                  LinkedIn ↗
                 </a>
               )}
               {social.github && (
-                <a href={social.github} target="_blank" rel="noopener noreferrer" className="footer-social-icon" aria-label="GitHub">
-                  <svg width="12" height="12" viewBox="0 0 13 13" fill="currentColor">
-                    <path d="M6.5 1A5.5 5.5 0 001 6.5c0 2.43 1.57 4.49 3.76 5.22.27.05.37-.12.37-.26v-.95c-1.52.33-1.84-.74-1.84-.74-.25-.63-.61-.8-.61-.8-.5-.34.04-.33.04-.33.55.04.84.57.84.57.49.84 1.28.6 1.59.46.05-.36.19-.6.35-.74-1.22-.14-2.5-.61-2.5-2.72 0-.6.21-1.09.57-1.48-.06-.14-.25-.7.05-1.46 0 0 .47-.15 1.53.57.44-.12.92-.18 1.39-.18.47 0 .95.06 1.39.18 1.06-.72 1.53-.57 1.53-.57.3.76.11 1.32.05 1.46.36.39.57.88.57 1.48 0 2.12-1.29 2.58-2.52 2.72.2.17.37.51.37 1.03v1.53c0 .14.1.31.38.26A5.5 5.5 0 0012 6.5 5.5 5.5 0 006.5 1z"/>
-                  </svg>
+                <a href={social.github} target="_blank" rel="noopener noreferrer" className="link-accent" style={LINK_STYLE}>
+                  GitHub ↗
                 </a>
               )}
-            </div>
+              {social.email && (
+                <a href={`mailto:${social.email}`} className="link-accent" style={LINK_STYLE}>
+                  Correo
+                </a>
+              )}
+            </nav>
           </div>
         )}
       </div>
