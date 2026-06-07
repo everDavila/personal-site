@@ -40,21 +40,23 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
       style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
     >
       <div style={{ marginBottom: '2rem' }}>
-        <p className="text-label" style={{ margin: '0 0 0.5rem' }}>{sectionLabel}</p>
-        <p style={{ fontSize: 'var(--text-body)', color: 'var(--color-muted)', margin: '0 0 1.5rem', maxWidth: '52ch', lineHeight: 1.6 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.75rem' }}>
+          <p className="text-label" style={{ margin: 0 }}>{sectionLabel}</p>
+          <Link
+            href={{ pathname: '/blog' }}
+            className="link-accent"
+            style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textDecoration: 'none', letterSpacing: '0.08em', textTransform: 'uppercase' }}
+          >
+            <span className="n-slot">
+              <span className="n-d">{darkLabel}</span>
+              <span className="n-l">{blogTitle}</span>
+            </span>
+            {' →'}
+          </Link>
+        </div>
+        <p style={{ fontSize: 'var(--text-body)', color: 'var(--color-muted)', margin: 0, maxWidth: '52ch', lineHeight: 1.6 }}>
           {sectionDesc}
         </p>
-        <Link
-          href={{ pathname: '/blog' }}
-          className="link-accent"
-          style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textDecoration: 'none', letterSpacing: '0.08em', textTransform: 'uppercase' }}
-        >
-          <span className="n-slot">
-            <span className="n-d">{darkLabel}</span>
-            <span className="n-l">{blogTitle}</span>
-          </span>
-          {' →'}
-        </Link>
       </div>
 
       <div>

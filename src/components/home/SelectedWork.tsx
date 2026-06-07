@@ -41,26 +41,23 @@ export async function SelectedWork({ projects, settings }: Props) {
       style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
     >
       <div style={{ marginBottom: '3rem' }}>
-        <p style={{ fontSize: 'var(--text-body)', color: 'var(--color-muted)', margin: '0.5rem 0 1.5rem', maxWidth: '52ch', lineHeight: 1.6 }}>
+        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.75rem' }}>
+          <p className="text-label" style={{ margin: 0 }}>{sectionLabel}</p>
+          <Link
+            href={{ pathname: '/work' }}
+            className="link-accent"
+            style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.1em' }}
+          >
+            <span className="n-slot">
+              <span className="n-d">{darkLabel}</span>
+              <span className="n-l">{workTitle}</span>
+            </span>
+            {' →'}
+          </Link>
+        </div>
+        <p style={{ fontSize: 'var(--text-body)', color: 'var(--color-muted)', margin: 0, maxWidth: '52ch', lineHeight: 1.6 }}>
           {sectionDesc}
         </p>
-        <Link
-          href={{ pathname: '/work' }}
-          className="link-accent"
-          style={{
-            fontSize: 'var(--text-label)',
-            color: 'var(--color-muted)',
-            textDecoration: 'none',
-            textTransform: 'uppercase',
-            letterSpacing: '0.1em',
-          }}
-        >
-          <span className="n-slot">
-            <span className="n-d">{darkLabel}</span>
-            <span className="n-l">{workTitle}</span>
-          </span>
-          {' →'}
-        </Link>
       </div>
 
       <div className="projects-list">
