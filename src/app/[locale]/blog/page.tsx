@@ -74,15 +74,7 @@ export default async function BlogPage() {
           gap: '1rem',
           marginBottom: '0.5rem',
         }}>
-          <h1 className="n-slot" style={{
-            fontFamily: 'var(--font-serif)',
-            fontSize: 'clamp(2rem, 5vw, 3rem)',
-            fontWeight: 400,
-            letterSpacing: '-0.03em',
-            lineHeight: 1.1,
-            color: 'var(--color-text)',
-            margin: 0,
-          }}>
+          <h1 className="n-slot page-title" style={{ margin: 0 }}>
             <span className="n-d">{titleDark}</span>
             <span className="n-l">{titleLight}</span>
           </h1>
