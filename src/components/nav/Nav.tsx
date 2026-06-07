@@ -10,7 +10,7 @@ import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 import type { Locale } from '@/lib/i18n'
 
 const DARK_NAV: Record<Locale, Record<string, string>> = {
-  es: { work: 'Misiones', playground: 'Laboratorio', blog: 'Bitácora', about: 'Readme', contact: 'Señal'  },
+  es: { work: 'Misiones', playground: 'Laboratorio', blog: 'Apuntes', about: 'Operador', contact: 'Enlace' },
   en: { work: 'Missions', playground: 'Lab',         blog: 'Logs',     about: 'Readme', contact: 'Signal' },
   pt: { work: 'Missões',  playground: 'Laboratório', blog: 'Registros',about: 'Readme', contact: 'Sinal'  },
   qu: { work: 'Misiones', playground: 'Pukllay',     blog: 'Bitácora', about: 'Readme', contact: 'Señal'  },
