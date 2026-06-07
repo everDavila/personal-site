@@ -62,8 +62,8 @@ export default function MaintenancePage() {
         }
         @keyframes head-look {
           0%,  25% { transform: rotateZ(0deg); }
-          35%, 48% { transform: rotateZ(-10deg); }
-          58%, 70% { transform: rotateZ(8deg); }
+          35%, 48% { transform: rotateZ(-5deg); }
+          58%, 70% { transform: rotateZ(4deg); }
           82%, 100%{ transform: rotateZ(0deg); }
         }
         #head-frame {
