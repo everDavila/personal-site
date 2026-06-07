@@ -144,7 +144,7 @@ Resoluciones: Hero `800×1000px`, páginas internas `400×500px`, OG `1200×630p
 
 ---
 
-## Estado (2026-06-06, commit `90521b1`)
+## Estado (2026-06-07, commit `c3611d1`)
 
 **En producción:**
 - Redesign editorial: max-width 82rem, espaciado generoso, filosofía como pausa
@@ -155,7 +155,7 @@ Resoluciones: Hero `800×1000px`, páginas internas `400×500px`, OG `1200×630p
 - Laboratorio reemplaza Playground en nomenclatura y rutas
 - Solo ES/EN visibles en el switcher de idioma
 - **Campo `hidden: boolean`** en `post` y `playgroundItem` — checkbox en Studio para ocultar sin eliminar. Filtrado `hidden != true` en todas las queries GROQ (lista, detalle, slugs, prev/next). `status` en lab sigue siendo semántico (tag del estado del proyecto), independiente de visibilidad.
-- **Página de mantenimiento** en `src/app/maintenance/page.tsx` — estática, ES/EN con toggle client-side, imagen desktop (`/public/mantenimiento.jpg`) + imagen mobile (`/public/mantenimiento-mobile.jpg`). Ambas con `filter: invert(1)` + `mix-blend-mode: screen`. Toggle activado por env var `MAINTENANCE_MODE=true` en Vercel (o `.env.local` para local). El proxy `src/proxy.ts` intercepta todas las rutas excepto `/maintenance`, `/api` y `/studio`. IMPORTANTE: `/maintenance` debe bypassear next-intl con `NextResponse.next()` antes del check de mantenimiento — si no, next-intl redirige a `/es/maintenance` que no está excluido → redirect loop infinito.
+- **Página de mantenimiento** en `src/app/maintenance/page.tsx` — estática, ES/EN con toggle client-side, imagen desktop (`/public/mantenimiento.jpg`) + personaje SVG animado inline en mobile (`/public/personaje-mantenimiento.svg`). Toggle activado por env var `MAINTENANCE_MODE=true` en Vercel (o `.env.local` para local). El proxy `src/proxy.ts` intercepta todas las rutas excepto `/maintenance`, `/api` y `/studio`. IMPORTANTE: `/maintenance` debe bypassear next-intl con `NextResponse.next()` antes del check de mantenimiento — si no, next-intl redirige a `/es/maintenance` que no está excluido → redirect loop infinito. Header de mantenimiento usa `background: '#0F0F0D'` hardcodeado (NO `nav-glass` — esa clase depende de `--color-bg` del modo y causa franja blanca en páginas fuera del layout principal). SVG animado: cuerpo estático, cabeza sube 10px suavemente cada 7s (30% idle → sube → pausa arriba → baja → idle), `transform-box: fill-box`, `transform-origin: center bottom`.
 
 **También en producción (2026-06-06):**
 - Dominio `davila.uno` conectado a Vercel (A record `216.198.79.1`, CNAME `www` → Vercel). HostGator sigue activo para experimentos/carpetas — se usarán subdominos (`lab.davila.uno`) para separar.
@@ -170,3 +170,5 @@ Resoluciones: Hero `800×1000px`, páginas internas `400×500px`, OG `1200×630p
 - Subir imágenes PNG del personaje a Sanity (hero dark/light + páginas internas)
 - Contenido narrativo real en Sanity (sigue usando NARRATIVE_FALLBACK en varios campos)
 - PT tiene contenido decente (Ever lo domina) — habilitarlo en el switcher cuando esté listo
+- Animación del personaje en otras páginas del sitio (cabeza SVG inline, misma técnica que maintenance)
+- Revisar/confirmar que animación SVG mantenimiento se ve bien en Vercel

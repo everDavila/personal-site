@@ -7,6 +7,28 @@ metadata:
   originSessionId: b2539090-46ae-44ab-954c-8cd5ec511fa8
 ---
 
+## Sesión 2026-06-07 — Mantenimiento, SVG animado, multi-PC
+
+### No aplicar cambios sin confirmación explícita
+Ever dijo "nunca te dije que aplicaras el cambio, pero ya lo hiciste". No hacer commits ni edits sin que el usuario lo pida directamente.
+**Why:** El usuario quiere revisar/decidir antes de que los cambios queden en el repo.
+**How to apply:** Si hay algo listo para implementar, proponer y esperar confirmación. No asumir que "mostrar el plan" = aprobación.
+
+### node_modules corruptos por npm install interrumpido
+El `npm install` falló con exit code 137 (OOM kill) dejando `@next/swc-linux-x64-gnu` corrupto (SIGBUS al cargar). El server decía "Ready" pero moría en silencio en el primer request. Fix: `rm -rf node_modules && npm install`.
+**How to apply:** Si el server arranca ("Ready") pero el browser da "connection refused" sin error en terminal, sospechar módulos nativos corruptos — verificar con `node -e "require('...next-swc.node')"`.
+
+### nav-glass en páginas fuera del layout principal causa franja blanca
+La clase `nav-glass` usa `--color-bg` del sistema de modos. Páginas standalone (como `/maintenance`) no tienen `data-mode` en el root → `--color-bg` puede ser blanco. Fix: usar `background: '#0F0F0D'` hardcodeado en el header de maintenance.
+
+### SVG animado por capas desde Figma
+Para animar un personaje SVG por partes: en Figma, cada parte en su propio Group/Frame con nombre descriptivo → Export SVG del frame contenedor con "Include id attribute". Los nombres de capa se convierten en IDs. Con `transform-box: fill-box` + `transform-origin` en CSS se anima cada grupo independientemente sin afectar los demás.
+
+### SSH una vez por máquina
+El usuario trabaja en múltiples PCs (Linux EDZorin, Windows wi11). Cada máquina necesita su propia SSH key registrada en GitHub. Una vez configurado, Claude puede hacer push/pull sin interrupciones.
+
+---
+
 ## Sesión 2026-06-06 (tarde) — Labels nav, Sanity vs local
 
 ### Error principal: asumir que un campo de Sanity estaba vacío
