@@ -4,12 +4,12 @@ import { RotatingNote } from '@/components/not-found/RotatingNote'
 import { LogoMark } from '@/components/nav/LogoMark'
 import type { Locale } from '@/lib/i18n'
 
-const COPY: Record<Locale, { eyebrow: string; ctaHome: string; ctaWork: string; noteLabel: string }> = {
-  es: { eyebrow: 'Error de navegación', ctaHome: 'Ir al inicio',  ctaWork: 'Explorar proyectos', noteLabel: 'Nota del sistema' },
-  en: { eyebrow: 'Navigation error',    ctaHome: 'Go home',       ctaWork: 'Explore projects',   noteLabel: 'System note'       },
-  pt: { eyebrow: 'Erro de navegação',   ctaHome: 'Ir ao início',  ctaWork: 'Explorar projetos',  noteLabel: 'Nota do sistema'   },
-  qu: { eyebrow: 'Puriy pantay',        ctaHome: 'Qallariypi kutiy',  ctaWork: 'Llamk\'ayta qhaway', noteLabel: 'Sistemap willakuyn'},
-  zh: { eyebrow: '导航错误',             ctaHome: '返回首页',           ctaWork: '浏览项目',            noteLabel: '系统备注'          },
+const COPY: Record<Locale, { ctaHome: string; ctaWork: string; noteLabel: string }> = {
+  es: { ctaHome: 'Ir al inicio',      ctaWork: 'Explorar proyectos', noteLabel: 'Nota del sistema'   },
+  en: { ctaHome: 'Go home',           ctaWork: 'Explore projects',   noteLabel: 'System note'        },
+  pt: { ctaHome: 'Ir ao início',      ctaWork: 'Explorar projetos',  noteLabel: 'Nota do sistema'    },
+  qu: { ctaHome: 'Qallariypi kutiy',  ctaWork: 'Llamk\'ayta qhaway', noteLabel: 'Sistemap willakuyn' },
+  zh: { ctaHome: '返回首页',           ctaWork: '浏览项目',            noteLabel: '系统备注'           },
 }
 
 function lastSignal() {
@@ -95,20 +95,13 @@ export default async function RootNotFound() {
         {/* LEFT — editorial content */}
         <div className="nf-content" style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
 
-          <p style={{
-            fontSize: '0.6875rem', color: '#5A7C94',
-            textTransform: 'uppercase', letterSpacing: '0.12em', margin: 0,
-          }}>
-            {c.eyebrow}
-          </p>
-
           <h1 style={{
             fontFamily: 'Georgia, serif',
             fontSize: 'clamp(1.875rem, 3.5vw, 2.875rem)',
             fontWeight: 400,
             letterSpacing: '-0.025em',
             lineHeight: 1.2,
-            color: '#F0EFEC',
+            color: '#5A7C94',
             margin: 0,
             maxWidth: '20ch',
           }}>
