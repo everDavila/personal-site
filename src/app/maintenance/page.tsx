@@ -51,6 +51,14 @@ export default function MaintenancePage() {
           0%, 100% { opacity: 1; }
           50% { opacity: 0; }
         }
+        @keyframes char-float {
+          0%, 100% { transform: translateY(0px) rotate(-1deg); }
+          50% { transform: translateY(-12px) rotate(1deg); }
+        }
+        .m-char-float {
+          animation: char-float 4s ease-in-out infinite;
+          transform-origin: center bottom;
+        }
         .m-cursor {
           display: inline-block;
           width: 2px;
@@ -158,8 +166,9 @@ export default function MaintenancePage() {
                 alt=""
                 width={400}
                 height={300}
+                className="m-char-float"
                 style={{
-                  maxWidth: '100%',
+                  maxWidth: '75%',
                   height: 'auto',
                   filter: 'invert(1)',
                   mixBlendMode: 'screen',
