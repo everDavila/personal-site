@@ -60,13 +60,7 @@ export default async function PlaygroundPage() {
   return (
     <main className="container section-page">
       <PageHeader imageSet={imageSet}>
-        <h1 className="n-slot" style={{
-          fontSize: 'var(--text-section)',
-          fontFamily: 'var(--font-display)',
-          fontWeight: 600,
-          color: 'var(--color-text)',
-          marginBottom: '0.25rem',
-        }}>
+        <h1 className="n-slot page-title" style={{ marginBottom: '0.25rem' }}>
           <span className="n-d">{titleDark}</span>
           <span className="n-l">{titleLight}</span>
         </h1>
