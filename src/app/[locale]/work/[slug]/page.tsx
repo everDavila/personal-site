@@ -38,7 +38,7 @@ export default async function ProjectPage({ params }: Props) {
     null
 
   return (
-    <main className="container section prose">
+    <main className="container section">
       <Link
         href={{ pathname: '/work' }}
         style={{
@@ -122,11 +122,13 @@ export default async function ProjectPage({ params }: Props) {
           </div>
         </header>
 
-        {bodyValue?.length ? (
-          <PostBody value={bodyValue} />
-        ) : (
-          <p style={{ color: 'var(--color-muted)' }}>{t('no_content')}</p>
-        )}
+        <div className="prose">
+          {bodyValue?.length ? (
+            <PostBody value={bodyValue} />
+          ) : (
+            <p style={{ color: 'var(--color-muted)' }}>{t('no_content')}</p>
+          )}
+        </div>
       </article>
     </main>
   )
