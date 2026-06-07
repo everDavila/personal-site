@@ -33,7 +33,7 @@ export default async function Home() {
 
   return (
     <>
-      <Hero settings={settings} cvUrl={settings?.cvUrl} initialSub={homeSubtitleData.initial} subtitlePool={homeSubtitleData.pool} />
+      <Hero settings={settings} initialSub={homeSubtitleData.initial} subtitlePool={homeSubtitleData.pool} />
       <SelectedWork projects={projects} settings={settings} />
       {(philosophyDark || philosophyLight) && (
         <Philosophy dark={philosophyDark ?? ''} light={philosophyLight ?? ''} />

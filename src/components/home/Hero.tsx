@@ -1,17 +1,15 @@
 import { getTranslations, getLocale } from 'next-intl/server'
-import { Link } from '@/i18n/navigation'
 import type { SiteSettings } from '@/sanity/queries/siteSettings'
 import { NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { HeroSubtitle } from './HeroSubtitle'
 
 type Props = {
-  settings:    SiteSettings | null
-  cvUrl?:      string | null
-  initialSub?: string | null
+  settings:      SiteSettings | null
+  initialSub?:   string | null
   subtitlePool?: string[]
 }
 
-export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: Props) {
+export async function Hero({ settings, initialSub, subtitlePool = [] }: Props) {
   const locale = await getLocale() as 'es' | 'en' | 'pt' | 'qu' | 'zh'
   const t      = await getTranslations('home.hero')
 
@@ -25,9 +23,6 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
 
   const darkSub  = heroBase?.sub?.[locale]      ?? t('sub')
   const lightSub = heroBase?.subLight?.[locale]  ?? darkSub
-
-  const ctaWork = heroBase?.ctaWork?.[locale] || t('cta_work')
-  const ctaCV   = heroBase?.ctaCV?.[locale]   || t('cta_cv')
 
   const cleanDark  = darkHeadline.replace(/\.\s*$/, '')
   const cleanLight = lightHeadline.replace(/\.\s*$/, '')
@@ -66,42 +61,16 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
               <span className="n-l">{cleanLight}<span style={{ color: 'var(--color-accent)' }}>.</span></span>
             </h1>
 
-            {/* Subtitle + CTAs */}
-            <div style={{
-              display: 'flex',
-              flexDirection: 'column',
-              alignItems: 'flex-start',
-              gap: '1.5rem',
-            }}>
-              <div className="n-slot">
-                <span className="n-d" style={{ display: 'block' }}>
-                  <HeroSubtitle initial={initialSub ?? darkSub} pool={subtitlePool}
-                    style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
-                </span>
-                <span className="n-l" style={{ display: 'block' }}>
-                  <HeroSubtitle initial={lightSub} pool={[]}
-                    style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
-                </span>
-              </div>
-
-              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
-                <Link href={{ pathname: '/work' }} className="link-accent"
-                  style={{
-                    fontSize: 'var(--text-label)', color: 'var(--color-text)', textDecoration: 'none',
-                    textTransform: 'uppercase', letterSpacing: '0.1em',
-                    border: '1px solid var(--color-border)', borderRadius: '2px',
-                    padding: '0.6rem 1.1rem', transition: 'opacity var(--transition)',
-                    display: 'inline-block',
-                  }}>
-                  {ctaWork} →
-                </Link>
-                {cvUrl && (
-                  <a href={cvUrl} target="_blank" rel="noopener noreferrer"
-                    style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.1em', transition: 'opacity var(--transition)' }}>
-                    {ctaCV} ↗
-                  </a>
-                )}
-              </div>
+            {/* Subtitle */}
+            <div className="n-slot">
+              <span className="n-d" style={{ display: 'block' }}>
+                <HeroSubtitle initial={initialSub ?? darkSub} pool={subtitlePool}
+                  style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
+              </span>
+              <span className="n-l" style={{ display: 'block' }}>
+                <HeroSubtitle initial={lightSub} pool={[]}
+                  style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
+              </span>
             </div>
 
           </div>
