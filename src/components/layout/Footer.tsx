@@ -50,10 +50,9 @@ export async function Footer() {
 
   const navLinks = [
     { label: lbl(nav?.work,       locale, t('work')),       pathname: '/work'       },
-    { label: lbl(nav?.playground, locale, t('playground')), pathname: '/playground' },
+    { label: lbl(nav?.experience, locale, t('experience')), pathname: '/experience' },
     { label: lbl(nav?.blog,       locale, t('blog')),       pathname: '/blog'       },
     { label: lbl(nav?.about,      locale, t('about')),      pathname: '/about'      },
-    { label: lbl(nav?.contact,    locale, t('contact')),    pathname: '/contact'    },
   ]
 
   return (
@@ -90,16 +89,22 @@ export async function Footer() {
         </div>
 
         {/* Col 3 — Resources */}
-        {cvUrl && (
-          <div>
-            <p className="text-label" style={{ marginBottom: '0.75rem' }}>{lbl2.resources}</p>
-            <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+        <div>
+          <p className="text-label" style={{ marginBottom: '0.75rem' }}>{lbl2.resources}</p>
+          <nav style={{ display: 'flex', flexDirection: 'column', gap: '0.4rem' }}>
+            <Link href={{ pathname: '/playground' }} className="link-accent" style={LINK_STYLE}>
+              {lbl(nav?.playground, locale, t('playground'))}
+            </Link>
+            <Link href={{ pathname: '/contact' }} className="link-accent" style={LINK_STYLE}>
+              {lbl(nav?.contact, locale, t('contact'))}
+            </Link>
+            {cvUrl && (
               <a href={cvUrl} target="_blank" rel="noopener noreferrer" className="link-accent" style={LINK_STYLE}>
                 CV ↗
               </a>
-            </nav>
-          </div>
-        )}
+            )}
+          </nav>
+        </div>
 
         {/* Col 4 — Social */}
         {social && (
