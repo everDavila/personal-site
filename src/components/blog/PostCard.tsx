@@ -2,6 +2,7 @@ import { Link } from '@/i18n/navigation'
 import { localized, type Locale } from '@/lib/i18n'
 import { FallbackBadge } from '@/components/ui/FallbackBadge'
 import type { PostSummary } from '@/sanity/queries/posts'
+import Image from 'next/image'
 
 type Props = { post: PostSummary; locale: Locale; featured?: boolean }
 
@@ -81,41 +82,39 @@ export function PostCard({ post, locale, featured = false }: Props) {
     )
   }
 
+  const imgUrl = post.mainImage?.asset?.url ?? null
+  const imgAlt = post.mainImage?.alt?.[locale] ?? post.mainImage?.alt?.es ?? ''
+
   return (
     <Link
       href={{ pathname: '/blog/[slug]', params: { slug: post.slug } }}
-      style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
+      className="lab-row"
     >
-      <article className="blog-row">
-        <div className="blog-row-main">
-          <div style={{ display: 'flex', alignItems: 'baseline', gap: '0.6rem', flexWrap: 'wrap' }}>
-            <h2 className="blog-row-title">
-              {title.value || '—'}
-              {title.isFallback && title.fallbackLocale && (
-                <FallbackBadge fallbackLocale={title.fallbackLocale} />
-              )}
-            </h2>
-            {elabel && (
-              <span style={{
-                fontSize: 'var(--text-label)',
-                color: 'var(--color-accent)',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-                whiteSpace: 'nowrap',
-              }}>
-                {elabel}
-              </span>
-            )}
-          </div>
-          {excerpt.value && (
-            <p className="blog-row-excerpt">{excerpt.value}</p>
+      <div className="lab-row-image">
+        {imgUrl ? (
+          <Image src={imgUrl} alt={imgAlt} width={240} height={160} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+        ) : (
+          <span style={{ fontSize: '1.5rem', opacity: 0.25 }}>◌</span>
+        )}
+      </div>
+      <div className="lab-row-body">
+        <div className="lab-row-meta">
+          <time style={{ color: 'var(--color-muted)' }}>{date}</time>
+          <span style={{ color: 'var(--color-muted)' }}>{mins} {lbl('min', locale)}</span>
+          {elabel && (
+            <span style={{ color: 'var(--color-accent)', textTransform: 'uppercase' }}>{elabel}</span>
           )}
         </div>
-        <div className="blog-row-meta">
-          <time>{date}</time>
-          <span>{mins} {lbl('min', locale)}</span>
-        </div>
-      </article>
+        <h2 className="lab-row-title">
+          {title.value || '—'}
+          {title.isFallback && title.fallbackLocale && (
+            <FallbackBadge fallbackLocale={title.fallbackLocale} />
+          )}
+        </h2>
+        {excerpt.value && (
+          <p className="lab-row-desc">{excerpt.value}</p>
+        )}
+      </div>
     </Link>
   )
 }
