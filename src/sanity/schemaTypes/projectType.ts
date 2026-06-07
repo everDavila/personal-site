@@ -84,6 +84,13 @@ export const projectType = defineType({
       type: 'boolean',
       initialValue: false,
     }),
+    defineField({
+      name: 'hidden',
+      title: 'Ocultar del sitio',
+      type: 'boolean',
+      description: 'Si está activado, este proyecto no aparece en ninguna lista ni es accesible por URL.',
+      initialValue: false,
+    }),
   ],
   preview: {
     select: {
@@ -91,10 +98,11 @@ export const projectType = defineType({
       client: 'client',
       media: 'mainImage',
       year: 'year',
+      hidden: 'hidden',
     },
-    prepare({ title, client, media, year }) {
+    prepare({ title, client, media, year, hidden }) {
       return {
-        title: title ?? 'Sin título',
+        title: (hidden ? '⊘ ' : '') + (title ?? 'Sin título'),
         subtitle: `${client ?? ''} ${year ? `· ${year}` : ''}`,
         media,
       }
