@@ -117,7 +117,7 @@
   mix-blend-mode: screen;
 }
 @media (max-width: 768px) {
-  .hero-grid { grid-template-columns: 1fr; }
+  .hero-grid { grid-template-columns: 1fr; gap: 0; }
   .hero-image-col { order: -1; }
   .hero-text-col { padding-top: 2rem; }
 }
