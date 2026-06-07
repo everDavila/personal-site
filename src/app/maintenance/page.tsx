@@ -51,6 +51,15 @@ export default function MaintenancePage() {
           0%, 100% { opacity: 1; }
           50% { opacity: 0; }
         }
+        @keyframes body-breathe {
+          0%, 100% { transform: scaleX(1)    scaleY(1); }
+          40%, 60% { transform: scaleX(1.012) scaleY(1.018); }
+        }
+        #body-frame {
+          animation: body-breathe 5s ease-in-out infinite;
+          transform-box: fill-box;
+          transform-origin: center 30%;
+        }
         @keyframes head-look {
           0%,  25% { transform: rotateZ(0deg); }
           35%, 48% { transform: rotateZ(-10deg); }
