@@ -84,9 +84,15 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
                 </span>
               </div>
 
-              <div style={{ display: 'flex', flexDirection: 'column', alignItems: 'flex-start', gap: '0.75rem' }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', flexWrap: 'wrap' }}>
                 <Link href={{ pathname: '/work' }} className="link-accent"
-                  style={{ fontSize: 'var(--text-label)', color: 'var(--color-text)', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.1em', transition: 'opacity var(--transition)' }}>
+                  style={{
+                    fontSize: 'var(--text-label)', color: 'var(--color-text)', textDecoration: 'none',
+                    textTransform: 'uppercase', letterSpacing: '0.1em',
+                    border: '1px solid var(--color-border)', borderRadius: '2px',
+                    padding: '0.6rem 1.1rem', transition: 'opacity var(--transition)',
+                    display: 'inline-block',
+                  }}>
                   {ctaWork} →
                 </Link>
                 {cvUrl && (
