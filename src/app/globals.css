@@ -117,19 +117,26 @@
   mix-blend-mode: screen;
 }
 @media (max-width: 768px) {
-  .hero-grid { grid-template-columns: 1fr; gap: 1rem; }
+  .hero-grid {
+    grid-template-columns: 1fr;
+    gap: 0;
+    min-height: unset;
+  }
   .hero-image-col {
     order: -1;
     overflow: visible;
-    padding-bottom: 0;
+    padding: 0;
     align-items: flex-start;
     justify-content: flex-start;
     height: auto;
   }
   .hero-image-col img {
-    max-height: 38vw;
-    width: auto;
-    max-width: 100%;
+    width: 70%;
+    max-height: none;
+  }
+  .hero-text-col {
+    padding-top: 2rem;
+    justify-content: flex-start;
   }
 }
 
