@@ -165,7 +165,7 @@ export default function MaintenancePage() {
               marginBottom: '2rem',
             }}>
               <svg
-                width="404" height="337" viewBox="0 0 404 337" fill="none"
+                width="404" height="349" viewBox="0 -12 404 349" fill="none"
                 xmlns="http://www.w3.org/2000/svg"
                 style={{ maxWidth: '72%', height: 'auto' }}
                 aria-hidden="true"
