@@ -19,9 +19,18 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
   const tn = await getTranslations('nav')
   const tb = await getTranslations('blog')
 
+  const POSTS_DESC_FALLBACK: Record<string, string> = {
+    es: 'Reflexiones sobre diseño, sistemas y todo lo que no cabe en un brief.',
+    en: 'Thoughts on design, systems, and everything that doesn\'t fit in a brief.',
+    pt: 'Reflexões sobre design, sistemas e tudo o que não cabe num briefing.',
+    qu: 'Yuyaykuna diseño, sistemas ukumanta.',
+    zh: '关于设计、系统以及一切不适合写在简报里的思考。',
+  }
+
   const n = settings?.labels?.nav
   const b = settings?.labels?.blog
   const sectionLabel = lbl(n?.blog,  locale, tn('blog'))
+  const sectionDesc  = lbl(settings?.labels?.home?.postsDesc, locale, POSTS_DESC_FALLBACK[locale] ?? POSTS_DESC_FALLBACK.en)
   const blogTitle    = lbl(b?.title, locale, tb('title'))
   const darkLabel    = DARK_LABEL[locale] ?? DARK_LABEL.en
 
@@ -30,15 +39,11 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
       className="container section-inner"
       style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
     >
-      <div style={{
-        display: 'flex',
-        justifyContent: 'space-between',
-        alignItems: 'baseline',
-        marginBottom: '0.5rem',
-        gap: '1rem',
-        flexWrap: 'wrap',
-      }}>
-        <p className="text-label" style={{ margin: 0 }}>{sectionLabel}</p>
+      <div style={{ marginBottom: '2rem' }}>
+        <p className="text-label" style={{ margin: '0 0 0.5rem' }}>{sectionLabel}</p>
+        <p style={{ fontSize: 'var(--text-body)', color: 'var(--color-muted)', margin: '0 0 1.5rem', maxWidth: '52ch', lineHeight: 1.6 }}>
+          {sectionDesc}
+        </p>
         <Link
           href={{ pathname: '/blog' }}
           className="link-accent"

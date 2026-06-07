@@ -21,20 +21,29 @@ export async function SelectedWork({ projects, settings }: Props) {
 
   const h  = settings?.labels?.home
   const w  = settings?.labels?.work
-  const sectionLabel = lbl(h?.projectsLabel, locale, t('projects_label'))
-  const workTitle    = lbl(w?.title,         locale, tw('title'))
-  const darkLabel    = DARK_LABEL[locale] ?? DARK_LABEL.en
+
+  const PROJECTS_DESC_FALLBACK: Record<string, string> = {
+    es: 'Proyectos de diseño UX/UI en sistemas reales, entidades públicas y productos digitales complejos.',
+    en: 'UX/UI design projects for real systems, public institutions and complex digital products.',
+    pt: 'Projetos de design UX/UI em sistemas reais, entidades públicas e produtos digitais complexos.',
+    qu: 'Proyectos de diseño UX/UI en sistemas reales.',
+    zh: '真实系统中的 UX/UI 设计项目，包括政府机构和复杂数字产品。',
+  }
+
+  const sectionLabel   = lbl(h?.projectsLabel, locale, t('projects_label'))
+  const sectionDesc    = lbl(h?.projectsDesc,  locale, PROJECTS_DESC_FALLBACK[locale] ?? PROJECTS_DESC_FALLBACK.en)
+  const workTitle      = lbl(w?.title,         locale, tw('title'))
+  const darkLabel      = DARK_LABEL[locale] ?? DARK_LABEL.en
 
   return (
     <section
       className="container section-inner"
       style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
     >
-      <div style={{
-        display: 'flex',
-        justifyContent: 'flex-end',
-        marginBottom: '3rem',
-      }}>
+      <div style={{ marginBottom: '3rem' }}>
+        <p style={{ fontSize: 'var(--text-body)', color: 'var(--color-muted)', margin: '0.5rem 0 1.5rem', maxWidth: '52ch', lineHeight: 1.6 }}>
+          {sectionDesc}
+        </p>
         <Link
           href={{ pathname: '/work' }}
           className="link-accent"

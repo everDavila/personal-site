@@ -41,7 +41,8 @@ export type UILabels = {
   }
   home?: {
     philosophyLabel?: LocalizedString; competenciesLabel?: LocalizedString
-    projectsLabel?: LocalizedString; postsLabel?: LocalizedString
+    projectsLabel?: LocalizedString; projectsDesc?: LocalizedString
+    postsLabel?: LocalizedString;    postsDesc?: LocalizedString
     moreAbout?: LocalizedString; viewExperience?: LocalizedString; ctaBlog?: LocalizedString
   }
   work?: {
@@ -265,7 +266,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
       social,
       labels {
         nav { home, about, work, experience, blog, contact, playground },
-        home { philosophyLabel, competenciesLabel, projectsLabel, postsLabel, moreAbout, viewExperience, ctaBlog },
+        home { philosophyLabel, competenciesLabel, projectsLabel, projectsDesc, postsLabel, postsDesc, moreAbout, viewExperience, ctaBlog },
         work { title, empty, back, clientLabel, roleLabel, yearLabel, noContent },
         playground { title, statsLabel, filterLabel, filterAll, empty },
         about { title, connect, seeExperience },
