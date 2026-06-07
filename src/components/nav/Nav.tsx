@@ -9,6 +9,14 @@ import { NavLink } from './NavLink'
 import { getSiteSettings, lbl } from '@/sanity/queries/siteSettings'
 import type { Locale } from '@/lib/i18n'
 
+const DARK_NAV: Record<Locale, Record<string, string>> = {
+  es: { work: 'Misiones', playground: 'Laboratorio', blog: 'Bitácora', about: 'Readme', contact: 'Señal'  },
+  en: { work: 'Missions', playground: 'Lab',         blog: 'Logs',     about: 'Readme', contact: 'Signal' },
+  pt: { work: 'Missões',  playground: 'Laboratório', blog: 'Registros',about: 'Readme', contact: 'Sinal'  },
+  qu: { work: 'Misiones', playground: 'Pukllay',     blog: 'Bitácora', about: 'Readme', contact: 'Señal'  },
+  zh: { work: '使命',      playground: '实验室',       blog: '日志',      about: '说明',   contact: '信号'   },
+}
+
 export async function Nav() {
   const locale = await getLocale() as Locale
   const [t, settings] = await Promise.all([
@@ -16,13 +24,14 @@ export async function Nav() {
     getSiteSettings(),
   ])
 
-  const nav = settings?.labels?.nav
+  const nav  = settings?.labels?.nav
+  const dark = DARK_NAV[locale] ?? DARK_NAV.en
   const links = [
-    { href: '/work',       label: lbl(nav?.work,       locale, t('work'))       },
-    { href: '/playground', label: lbl(nav?.playground, locale, t('playground')) },
-    { href: '/blog',       label: lbl(nav?.blog,       locale, t('blog'))       },
-    { href: '/about',      label: lbl(nav?.about,      locale, t('about'))      },
-    { href: '/contact',    label: lbl(nav?.contact,    locale, t('contact'))    },
+    { href: '/work',       labelDark: dark.work,       labelLight: lbl(nav?.work,       locale, t('work'))       },
+    { href: '/playground', labelDark: dark.playground, labelLight: lbl(nav?.playground, locale, t('playground')) },
+    { href: '/blog',       labelDark: dark.blog,       labelLight: lbl(nav?.blog,       locale, t('blog'))       },
+    { href: '/about',      labelDark: dark.about,      labelLight: lbl(nav?.about,      locale, t('about'))      },
+    { href: '/contact',    labelDark: dark.contact,    labelLight: lbl(nav?.contact,    locale, t('contact'))    },
   ]
 
   return (
@@ -62,8 +71,8 @@ export async function Nav() {
 
         {/* Desktop: links + controles */}
         <div className="nav-desktop" style={{ alignItems: 'center', gap: '1.5rem' }}>
-          {links.map(({ href, label }) => (
-            <NavLink key={href} href={{ pathname: href } as ComponentProps<typeof Link>['href']} label={label} />
+          {links.map(({ href, labelDark, labelLight }) => (
+            <NavLink key={href} href={{ pathname: href } as ComponentProps<typeof Link>['href']} labelDark={labelDark} labelLight={labelLight} />
           ))}
 
           <div style={{
@@ -79,7 +88,7 @@ export async function Nav() {
         {/* Mobile: hamburguesa */}
         <div className="nav-mobile" style={{ alignItems: 'center', gap: '0.75rem' }}>
           <ThemeToggle />
-          <MobileMenu links={links} />
+          <MobileMenu links={links.map(l => ({ href: l.href, labelDark: l.labelDark, labelLight: l.labelLight }))} />
         </div>
       </nav>
     </header>

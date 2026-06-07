@@ -8,10 +8,11 @@ type Href = ComponentProps<typeof Link>['href']
 
 type Props = {
   href: Href
-  label: string
+  labelDark: string
+  labelLight: string
 }
 
-export function NavLink({ href, label }: Props) {
+export function NavLink({ href, labelDark, labelLight }: Props) {
   const pathname = usePathname()
   const hrefStr = typeof href === 'string' ? href : (href as { pathname?: string }).pathname ?? ''
   const isActive = pathname === hrefStr || (hrefStr !== '/' && pathname.startsWith(hrefStr))
@@ -27,7 +28,10 @@ export function NavLink({ href, label }: Props) {
         textDecoration: 'none',
       }}
     >
-      {label}
+      <span className="n-slot">
+        <span className="n-d">{labelDark}</span>
+        <span className="n-l">{labelLight}</span>
+      </span>
     </Link>
   )
 }

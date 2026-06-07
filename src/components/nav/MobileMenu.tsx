@@ -6,7 +6,7 @@ import { ThemeToggle } from './ThemeToggle'
 import { LocaleSwitcher } from './LocaleSwitcher'
 import { LogoMark } from './LogoMark'
 
-type NavLink = { href: string; label: string }
+type NavLink = { href: string; labelDark: string; labelLight: string }
 
 type Props = { links: NavLink[] }
 
@@ -83,7 +83,7 @@ export function MobileMenu({ links }: Props) {
               flex: 1,
             }}
           >
-            {links.map(({ href, label }) => (
+            {links.map(({ href, labelDark, labelLight }) => (
               <Link
                 key={href}
                 href={href}
@@ -101,7 +101,10 @@ export function MobileMenu({ links }: Props) {
                 onMouseEnter={e => (e.currentTarget.style.color = 'var(--color-accent)')}
                 onMouseLeave={e => (e.currentTarget.style.color = 'var(--color-text)')}
               >
-                {label}
+                <span className="n-slot">
+                  <span className="n-d">{labelDark}</span>
+                  <span className="n-l">{labelLight}</span>
+                </span>
               </Link>
             ))}
           </nav>
