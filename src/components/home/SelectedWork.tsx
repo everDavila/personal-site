@@ -42,7 +42,12 @@ export async function SelectedWork({ projects, settings }: Props) {
     >
       <div style={{ marginBottom: '3rem' }}>
         <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.75rem' }}>
-          <p className="text-label" style={{ margin: 0 }}>{sectionLabel}</p>
+          <p className="text-label" style={{ margin: 0 }}>
+            <span className="n-slot">
+              <span className="n-d">{darkLabel}</span>
+              <span className="n-l">{sectionLabel}</span>
+            </span>
+          </p>
           <Link
             href={{ pathname: '/work' }}
             className="link-accent"
