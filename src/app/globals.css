@@ -24,7 +24,7 @@
   --tracking-label: 0.1em;
 
   /* Layout */
-  --spacing-section:   clamp(8rem, 18vw, 14rem);
+  --spacing-section:   clamp(4rem, 9vw, 7rem);
   --spacing-container: clamp(1.5rem, 5vw, 3rem);
   --max-width:         82rem;
   --max-width-prose:   64ch;
@@ -299,13 +299,13 @@ body {
 
 /* Páginas internas — menos aire arriba, mantiene abajo */
 .section-page {
-  padding-top: clamp(6rem, 13vw, 10rem);
+  padding-top: clamp(3rem, 7vw, 5rem);
   padding-bottom: var(--spacing-section);
 }
 
 /* Secciones apiladas dentro de una misma página — espaciado editorial */
 .section-inner {
-  padding-block: clamp(5rem, 10vw, 8rem);
+  padding-block: clamp(3rem, 6vw, 5rem);
 }
 
 /* ─────────────────────────────────────────
@@ -754,7 +754,7 @@ body::after {
 ───────────────────────────────────────── */
 .philosophy-section {
   border-top: var(--border-width) solid var(--color-border);
-  padding-block: clamp(6rem, 14vw, 12rem);
+  padding-block: clamp(4rem, 8vw, 7rem);
 }
 
 .philosophy-grid {
