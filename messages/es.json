@@ -1,11 +1,11 @@
 {
   "nav": {
     "home": "Inicio",
-    "about": "Enfoque",
+    "about": "Perfil",
     "work": "Proyectos",
     "experience": "Experiencia",
     "blog": "Apuntes",
-    "contact": "Hablemos",
+    "contact": "Contacto",
     "playground": "Laboratorio"
   },
   "home": {
