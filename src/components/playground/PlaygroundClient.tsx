@@ -148,7 +148,7 @@ function PlaygroundCard({ item, locale, t }: { item: PlaygroundItem; locale: Loc
 
   return (
     <Link
-      href={{ pathname: '/playground/[slug]', params: { slug: item.slug } }}
+      href={{ pathname: '/playground/[slug]', params: { slug: item.slugs[locale === 'en' ? 'en' : 'es'] } }}
       className="lab-row"
     >
       {/* Imagen izquierda */}

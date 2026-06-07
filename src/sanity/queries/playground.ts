@@ -5,7 +5,7 @@ type LocalizedString = Partial<Record<Locale, string>>
 
 export type PlaygroundItem = {
   _id: string
-  slug: string
+  slugs: { es: string; en: string }
   title: LocalizedString
   category: string
   status: string
@@ -20,31 +20,38 @@ export type PlaygroundItemFull = PlaygroundItem & {
   body: Partial<Record<Locale, unknown[]>> | null
 }
 
+// en → localizedSlug.en, everything else → es
+const SLUG_PROJECTION = `
+  "slugs": {
+    "es": coalesce(localizedSlug.es.current, slug.current),
+    "en": coalesce(localizedSlug.en.current, slug.current),
+  }
+`
+
+const ITEM_FIELDS = `
+  _id,
+  ${SLUG_PROJECTION},
+  title, category, status, year, description,
+  image { asset->{ url }, alt },
+  repoUrl, demoUrl
+`
+
 export async function getAllPlaygroundItems(): Promise<PlaygroundItem[]> {
   return client.fetch(
-    `*[_type == "playgroundItem" && hidden != true] | order(year desc, _createdAt desc) {
-      _id,
-      "slug": slug.current,
-      title, category, status, year, description,
-      image { asset->{ url }, alt },
-      repoUrl, demoUrl
-    }`,
+    `*[_type == "playgroundItem" && hidden != true] | order(year desc, _createdAt desc) { ${ITEM_FIELDS} }`,
     {},
     { next: { tags: ['playgroundItem'] } }
   )
 }
 
-export async function getPlaygroundItemBySlug(slug: string): Promise<PlaygroundItemFull | null> {
+export async function getPlaygroundItemBySlug(slug: string, locale: Locale): Promise<PlaygroundItemFull | null> {
+  const effectiveLocale = locale === 'en' ? 'en' : 'es'
   return client.fetch(
-    `*[_type == "playgroundItem" && hidden != true && slug.current == $slug][0] {
-      _id,
-      "slug": slug.current,
-      title, category, status, year, description,
-      image { asset->{ url }, alt },
-      body,
-      repoUrl, demoUrl
-    }`,
-    { slug },
+    `*[_type == "playgroundItem" && hidden != true && (
+      localizedSlug[$effectiveLocale].current == $slug ||
+      slug.current == $slug
+    )][0] { ${ITEM_FIELDS}, body }`,
+    { slug, effectiveLocale },
     { next: { tags: ['playgroundItem'] } }
   )
 }

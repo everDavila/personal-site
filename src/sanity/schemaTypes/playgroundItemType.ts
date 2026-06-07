@@ -31,10 +31,37 @@ export const playgroundItemType = defineType({
     }),
     defineField({
       name: 'slug',
-      title: 'Slug (URL)',
+      title: 'Slug canónico (legado)',
       type: 'slug',
+      description: 'Slug original — mantener para compatibilidad. Usar "Slugs por idioma" para ítems nuevos.',
       options: { source: 'title.es' },
       validation: (rule) => rule.required(),
+    }),
+    defineField({
+      name: 'localizedSlug',
+      title: 'Slugs por idioma',
+      description: 'URL amigable por idioma. Otros idiomas usan el slug en español como fallback.',
+      type: 'object',
+      fields: [
+        defineField({
+          name: 'es',
+          title: 'Español',
+          type: 'slug',
+          options: {
+            source: (doc: Record<string, unknown>) =>
+              (doc.title as Record<string, string>)?.es ?? '',
+          },
+        }),
+        defineField({
+          name: 'en',
+          title: 'English',
+          type: 'slug',
+          options: {
+            source: (doc: Record<string, unknown>) =>
+              (doc.title as Record<string, string>)?.en ?? '',
+          },
+        }),
+      ],
     }),
     defineField({
       name: 'category',

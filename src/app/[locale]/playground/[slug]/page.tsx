@@ -23,7 +23,7 @@ export default async function PlaygroundItemPage({ params }: Props) {
   const { slug, locale } = await params
   setRequestLocale(locale)
   const [item, t] = await Promise.all([
-    getPlaygroundItemBySlug(slug),
+    getPlaygroundItemBySlug(slug, locale as Locale),
     getTranslations('playground'),
   ])
 
@@ -124,7 +124,7 @@ export default async function PlaygroundItemPage({ params }: Props) {
               {availableLocales.map(l => (
                 <Link
                   key={l}
-                  href={{ pathname: '/playground/[slug]', params: { slug: item.slug } }}
+                  href={{ pathname: '/playground/[slug]', params: { slug: item.slugs[l === 'en' ? 'en' : 'es'] } }}
                   locale={l}
                   style={{
                     fontSize: 'var(--text-label)',
