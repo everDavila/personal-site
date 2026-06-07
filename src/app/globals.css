@@ -120,8 +120,10 @@
   .hero-grid { grid-template-columns: 1fr; }
   .hero-image-col {
     order: -1;
-    max-height: 50vw;
+    max-height: 45vh;
+    overflow: visible;
     padding-bottom: 0;
+    justify-content: flex-start;
   }
 }
 
