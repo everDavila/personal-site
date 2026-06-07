@@ -51,32 +51,16 @@ export default function MaintenancePage() {
           0%, 100% { opacity: 1; }
           50% { opacity: 0; }
         }
-        @keyframes body-float {
-          0%, 100% { transform: translateY(0px); }
-          50% { transform: translateY(-14px); }
-        }
-        @keyframes head-sway {
-          0%, 100% { transform: translateY(0px) rotate(-1.2deg); }
-          50% { transform: translateY(-17px) rotate(1.2deg); }
-        }
-        @keyframes shadow-breathe {
-          0%, 100% { transform: scaleX(1); opacity: 0.8; }
-          50% { transform: scaleX(0.78); opacity: 0.3; }
-        }
-        #body-frame {
-          animation: body-float 4s ease-in-out infinite;
-          transform-box: fill-box;
-          transform-origin: center bottom;
+        @keyframes head-look {
+          0%, 30%   { transform: translateY(0px); }
+          42%       { transform: translateY(-10px); }
+          58%       { transform: translateY(-10px); }
+          70%, 100% { transform: translateY(0px); }
         }
         #head-frame {
-          animation: head-sway 4s ease-in-out infinite 0.15s;
+          animation: head-look 7s ease-in-out infinite;
           transform-box: fill-box;
-          transform-origin: center center;
-        }
-        #ground-frame {
-          animation: shadow-breathe 4s ease-in-out infinite;
-          transform-box: fill-box;
-          transform-origin: center center;
+          transform-origin: center bottom;
         }
         .m-cursor {
           display: inline-block;
@@ -115,12 +99,12 @@ export default function MaintenancePage() {
 
         {/* Header */}
         <header
-          className="nav-glass"
           style={{
             position: 'fixed',
             insetInline: 0,
             top: 0,
             zIndex: 50,
+            background: '#0F0F0D',
           }}
         >
           <div
