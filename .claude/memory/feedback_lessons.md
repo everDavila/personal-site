@@ -296,6 +296,31 @@ Cuando Ever dice "analiza" y luego "realiza una prueba", no es confirmación de 
 
 ---
 
+## Sesión 2026-06-07 (final) — Ambigüedad de scope
+
+### Asumir el scope de "lo mismo" sin preguntar
+
+Ever dijo "aplica lo mismo para proyectos, post". Había dos cambios recientes en contexto: (1) el indicador `⊘` en Sanity Studio y (2) el layout editorial horizontal del lab. Asumí que se refería al layout del front, cuando quería el indicador en Sanity Studio.
+
+**Why:** No pregunté cuál de los dos cambios recientes debía extender. La frase "lo mismo" era ambigua.
+
+**How to apply:** Cuando "lo mismo" puede referirse a más de un cambio reciente, preguntar explícitamente: "¿el indicador en Sanity Studio o el layout editorial del front?" Costo de preguntar: 5 segundos. Costo de asumir: código no pedido + un 500 + retrabajo.
+
+---
+
+### next/image requiere dominio autorizado en next.config
+
+Al agregar `<Image src={cdnUrl}>` con URLs de Sanity por primera vez en SSR, Next.js tira 500 porque `cdn.sanity.io` no estaba en `images.remotePatterns` de `next.config.ts`.
+
+**How to apply:** Cada vez que se use `next/image` con un dominio externo nuevo, agregar el hostname a `next.config.ts` en el mismo commit:
+```ts
+images: {
+  remotePatterns: [{ protocol: 'https', hostname: 'cdn.sanity.io' }]
+}
+```
+
+---
+
 ## Patrón de trabajo que funciona con Ever
 
 1. Ever comparte imagen de referencia + prompt de intención

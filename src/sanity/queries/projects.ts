@@ -23,7 +23,7 @@ export type ProjectFull = ProjectSummary & {
 
 export async function getFeaturedProjects(): Promise<ProjectSummary[]> {
   return client.fetch(
-    `*[_type == "project" && featured == true] | order(year desc) [0...3] {
+    `*[_type == "project" && featured == true && hidden != true] | order(year desc) [0...3] {
       _id,
       "slug": slug.current,
       title, client, role, year, summary, tags, featured,
@@ -36,7 +36,7 @@ export async function getFeaturedProjects(): Promise<ProjectSummary[]> {
 
 export async function getAllProjects(): Promise<ProjectSummary[]> {
   return client.fetch(
-    `*[_type == "project"] | order(year desc, _createdAt desc) {
+    `*[_type == "project" && hidden != true] | order(year desc, _createdAt desc) {
       _id,
       "slug": slug.current,
       title, client, role, year, summary, tags, featured,

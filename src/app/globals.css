@@ -320,6 +320,42 @@ body {
   opacity: 0.65;
 }
 
+/* Nav links — jerarquía 3 estados */
+.nav-link {
+  font-size: var(--text-small);
+  font-weight: 500;
+  color: var(--color-text);
+  opacity: 0.55;
+  text-decoration: none;
+  transition: opacity 200ms ease, color 200ms ease;
+}
+.nav-link:hover {
+  opacity: 0.85;
+}
+.nav-link--active {
+  color: #ffffff;
+  opacity: 1;
+  font-weight: 600;
+}
+[data-mode="light"] .nav-link--active {
+  color: var(--color-text);
+  opacity: 1;
+  font-weight: 600;
+}
+
+/* Logo nav */
+.nav-logo {
+  color: var(--color-text);
+  opacity: 0.82;
+  text-decoration: none;
+  display: flex;
+  align-items: center;
+  transition: opacity 200ms ease;
+}
+.nav-logo:hover {
+  opacity: 1;
+}
+
 .divider {
   border: none;
   border-top: var(--border-width) solid var(--color-border);
@@ -332,7 +368,7 @@ body {
 .nav-mobile  { display: none; }
 
 .nav-glass {
-  background-color: var(--color-bg);
+  background-color: color-mix(in srgb, var(--color-bg) 88%, var(--color-surface));
 }
 
 @media (max-width: 900px) {
@@ -351,6 +387,87 @@ body {
 }
 .card-hover:hover {
   opacity: 0.75;
+}
+
+/* Lab / Playground — lista editorial horizontal */
+.lab-list {
+  display: flex;
+  flex-direction: column;
+}
+
+.lab-row {
+  display: flex;
+  gap: 2rem;
+  align-items: flex-start;
+  padding-block: 1.75rem;
+  border-top: var(--border-width) solid var(--color-border);
+  text-decoration: none;
+  color: inherit;
+  transition: opacity var(--transition);
+}
+.lab-row:last-child {
+  border-bottom: var(--border-width) solid var(--color-border);
+}
+.lab-row:hover {
+  opacity: 0.65;
+}
+
+.lab-row-image {
+  flex-shrink: 0;
+  width: 140px;
+  aspect-ratio: 3/2;
+  background: var(--color-surface);
+  border-radius: var(--radius);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.lab-row-body {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+  min-width: 0;
+}
+
+.lab-row-meta {
+  display: flex;
+  gap: 1.25rem;
+  font-family: var(--font-mono);
+  font-size: var(--text-label);
+  text-transform: uppercase;
+  letter-spacing: var(--tracking-label);
+}
+
+.lab-row-title {
+  font-family: var(--font-serif);
+  font-size: clamp(1rem, 2vw, 1.2rem);
+  font-weight: 400;
+  color: var(--color-text);
+  margin: 0;
+  line-height: 1.3;
+}
+
+.lab-row-desc {
+  font-size: var(--text-small);
+  color: var(--color-muted);
+  line-height: 1.6;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+@media (max-width: 640px) {
+  .lab-row {
+    gap: 1rem;
+  }
+  .lab-row-image {
+    width: 90px;
+  }
 }
 
 /* Experience section — 70/30 editorial grid */
@@ -462,46 +579,85 @@ body {
 /* ─────────────────────────────────────────
    SELECTED WORK — editorial list
 ───────────────────────────────────────── */
+/* ─── Misiones — header ─── */
+.missions-header {
+  display: flex;
+  flex-direction: column;
+  gap: 1.25rem;
+  margin-bottom: clamp(2.5rem, 5vw, 4rem);
+}
+
+.missions-desc {
+  font-size: var(--text-small);
+  color: var(--color-muted);
+  margin: 0;
+  max-width: 48ch;
+  line-height: 1.65;
+}
+
+/* ─── Misiones — lista ─── */
 .projects-list {
   display: flex;
   flex-direction: column;
-  gap: 0.5rem;
 }
 
 .project-row {
   display: flex;
   flex-direction: column;
-  padding-block: clamp(1.75rem, 3vw, 2.75rem);
+  padding-block: clamp(1.1rem, 2vw, 1.6rem);
   padding-inline: var(--spacing-container);
   margin-inline: calc(-1 * var(--spacing-container));
   border-top: var(--border-width) solid var(--color-border);
   text-decoration: none;
   color: inherit;
-  transition: opacity var(--transition);
+  transition: opacity 250ms ease;
   gap: 0;
 }
 
-.project-row:hover {
-  opacity: 0.65;
+/* hover editorial: dim todos, ilumina el activo */
+.projects-list:has(.project-row:hover) .project-row {
+  opacity: 0.35;
+}
+.projects-list:has(.project-row:hover) .project-row:hover {
+  opacity: 1;
 }
 
 .projects-list .project-row:first-child {
   border-top: none;
 }
 
-/* Editorial headline — the problem statement */
+/* Primera misión — destacada */
+.projects-list .project-row:first-child {
+  padding-block: clamp(1.5rem, 3vw, 2.25rem);
+}
+.projects-list .project-row:first-child .project-row-headline {
+  font-size: clamp(1.75rem, 4vw, 3rem);
+}
+
+/* Índice — MISIÓN 01 */
+.project-row-index {
+  font-size: var(--text-label);
+  font-family: var(--font-mono);
+  letter-spacing: 0.1em;
+  text-transform: uppercase;
+  color: var(--color-accent);
+  margin: 0 0 0.6rem;
+  opacity: 0.7;
+}
+
+/* Headline editorial — el enunciado del problema */
 .project-row-headline {
   font-family: var(--font-serif);
-  font-size: clamp(1.375rem, 3vw, 2.25rem);
+  font-size: clamp(1.25rem, 2.5vw, 2rem);
   font-weight: 400;
-  line-height: 1.3;
+  line-height: 1.25;
   letter-spacing: -0.025em;
   color: var(--color-text);
   margin: 0 0 1rem;
-  max-width: none;
+  max-width: 42ch;
 }
 
-/* Footer: client/year left, arrow right */
+/* Footer: meta izq, CTA der */
 .project-row-footer {
   display: flex;
   justify-content: space-between;
@@ -512,7 +668,7 @@ body {
 .project-row-meta-left {
   display: flex;
   flex-direction: column;
-  gap: 0.2rem;
+  gap: 0.15rem;
 }
 
 .project-row-client {
@@ -525,24 +681,42 @@ body {
 .project-row-detail {
   font-size: var(--text-label);
   color: var(--color-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.08em;
+  letter-spacing: 0.06em;
   margin: 0;
 }
 
-.project-row-arrow {
+.project-row-cta {
   font-size: var(--text-label);
+  font-family: var(--font-mono);
   color: var(--color-muted);
-  text-transform: uppercase;
-  letter-spacing: 0.1em;
+  letter-spacing: 0.06em;
   white-space: nowrap;
   flex-shrink: 0;
+  display: flex;
+  align-items: center;
+  gap: 0.4rem;
+  transition: color 200ms ease;
+}
+
+.project-row:hover .project-row-cta {
+  color: var(--color-accent);
+}
+
+.project-row-cta-arrow {
+  transition: transform 200ms ease;
+}
+.project-row:hover .project-row-cta-arrow {
+  transform: translateX(3px);
 }
 
 @media (max-width: 600px) {
   .project-row-headline {
-    font-size: clamp(1.15rem, 5vw, 1.4rem);
+    font-size: clamp(1.1rem, 5vw, 1.35rem);
   }
+  .projects-list .project-row:first-child .project-row-headline {
+    font-size: clamp(1.3rem, 6vw, 1.75rem);
+  }
+  .project-row-cta { display: none; }
 }
 
 /* ─────────────────────────────────────────

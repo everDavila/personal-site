@@ -94,14 +94,15 @@ export const postType = defineType({
       originalLanguage: 'originalLanguage',
       media: 'mainImage',
       date: 'publishedAt',
+      hidden: 'hidden',
     },
-    prepare({ title, originalLanguage, media, date }) {
+    prepare({ title, originalLanguage, media, date, hidden }) {
       const lang = originalLanguage || 'es'
       const displayTitle = title?.[lang] ?? title?.es ?? 'Sin título'
       const year = date ? new Date(date).getFullYear() : ''
       const langLabel = LOCALES.find(l => l.value === lang)?.title ?? lang
       return {
-        title: displayTitle,
+        title: (hidden ? '⊘ ' : '') + displayTitle,
         subtitle: `${langLabel} · ${year}`,
         media,
       }

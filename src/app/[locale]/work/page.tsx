@@ -3,6 +3,7 @@ import { getAllProjects } from '@/sanity/queries/projects'
 import { getLocale, getTranslations } from 'next-intl/server'
 import { localized } from '@/lib/i18n'
 import { Link } from '@/i18n/navigation'
+import Image from 'next/image'
 import type { Locale } from '@/lib/i18n'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
 import { getMode } from '@/lib/mode'
@@ -64,24 +65,32 @@ export default async function WorkPage() {
       {projects.length === 0 ? (
         <p style={{ color: 'var(--color-muted)' }}>{empty}</p>
       ) : (
-        <div className="projects-list">
+        <div className="lab-list">
           {projects.map((project) => {
             const summary = localized(project.summary, locale)
             const role    = localized(project.role,    locale)
             const detail  = [role.value, project.year].filter(Boolean).join(' · ')
+            const imgUrl  = project.mainImage?.asset?.url ?? null
+            const imgAlt  = localized(project.mainImage?.alt ?? {}, locale).value ?? project.client ?? ''
             return (
               <Link
                 key={project._id}
                 href={{ pathname: '/work/[slug]', params: { slug: project.slug } }}
-                className="project-row"
+                className="lab-row"
               >
-                <p className="project-row-headline">{summary.value}</p>
-                <div className="project-row-footer">
-                  <div className="project-row-meta-left">
-                    <p className="project-row-client">{project.client}</p>
-                    {detail && <p className="project-row-detail">{detail}</p>}
+                <div className="lab-row-image">
+                  {imgUrl ? (
+                    <Image src={imgUrl} alt={imgAlt} width={240} height={160} style={{ width: '100%', height: '100%', objectFit: 'cover' }} />
+                  ) : (
+                    <span style={{ fontSize: '1.5rem', opacity: 0.25 }}>◌</span>
+                  )}
+                </div>
+                <div className="lab-row-body">
+                  <div className="lab-row-meta">
+                    <span style={{ color: 'var(--color-muted)' }}>{project.client}</span>
+                    {detail && <span style={{ color: 'var(--color-muted)' }}>{detail}</span>}
                   </div>
-                  <span className="project-row-arrow">↗</span>
+                  <h3 className="lab-row-title">{summary.value || '—'}</h3>
                 </div>
               </Link>
             )

@@ -104,10 +104,11 @@ export const playgroundItemType = defineType({
       status: 'status',
       media: 'image',
       year: 'year',
+      hidden: 'hidden',
     },
-    prepare({ title, category, status, media, year }) {
+    prepare({ title, category, status, media, year, hidden }) {
       return {
-        title: title ?? 'Sin título',
+        title: (hidden ? '⊘ ' : '') + (title ?? 'Sin título'),
         subtitle: `${category ?? ''} · ${status ?? ''} ${year ? `· ${year}` : ''}`,
         media,
       }
