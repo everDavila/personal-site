@@ -20,13 +20,7 @@ export function NavLink({ href, labelDark, labelLight }: Props) {
   return (
     <Link
       href={href}
-      className="link-accent"
-      style={{
-        fontSize: 'var(--text-small)',
-        fontWeight: 500,
-        color: isActive ? 'var(--color-accent)' : undefined,
-        textDecoration: 'none',
-      }}
+      className={`nav-link${isActive ? ' nav-link--active' : ''}`}
     >
       <span className="n-slot">
         <span className="n-d">{labelDark}</span>

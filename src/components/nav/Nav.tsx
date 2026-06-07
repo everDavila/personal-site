@@ -57,13 +57,7 @@ export async function Nav() {
         {/* Logo */}
         <Link
           href="/"
-          style={{
-            color: 'var(--color-text)',
-            textDecoration: 'none',
-            transition: 'color var(--transition)',
-            display: 'flex',
-            alignItems: 'center',
-          }}
+          className="nav-logo"
           aria-label="ever dávila — inicio"
         >
           <LogoMark />
@@ -82,6 +76,14 @@ export async function Nav() {
           }} />
 
           <LocaleSwitcher />
+
+          <div style={{
+            width: 'var(--border-width)',
+            height: '1rem',
+            backgroundColor: 'var(--color-border)',
+            opacity: 0.5,
+          }} />
+
           <ThemeToggle />
         </div>
 
