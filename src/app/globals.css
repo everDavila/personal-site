@@ -537,7 +537,7 @@ body {
   letter-spacing: -0.025em;
   color: var(--color-text);
   margin: 0 0 1rem;
-  max-width: 52ch;
+  max-width: 42ch;
 }
 
 /* Footer: meta izq, CTA der */
