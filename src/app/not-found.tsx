@@ -95,6 +95,8 @@ export default async function RootNotFound() {
         {/* LEFT — editorial content */}
         <div className="nf-content" style={{ display: 'flex', flexDirection: 'column', gap: '1.75rem' }}>
 
+          <RotatingNote notes={notes} />
+
           <h1 style={{
             fontFamily: 'Georgia, serif',
             fontSize: 'clamp(1.875rem, 3.5vw, 2.875rem)',
@@ -116,8 +118,6 @@ export default async function RootNotFound() {
           }}>
             {body}
           </p>
-
-          <RotatingNote notes={notes} />
 
           {/* CTAs */}
           <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexWrap: 'nowrap', marginTop: '0.25rem' }}>
