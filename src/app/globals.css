@@ -335,12 +335,12 @@ body {
 .nav-link--active {
   color: var(--color-accent);
   opacity: 1;
-  font-weight: 600;
+  font-weight: 700;
 }
 [data-mode="light"] .nav-link--active {
   color: var(--color-accent);
   opacity: 1;
-  font-weight: 600;
+  font-weight: 700;
 }
 
 /* Logo nav */
