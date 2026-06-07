@@ -276,6 +276,16 @@ Hice rollback con `git reset --hard HEAD~1` para deshacer el rediseño del blog,
 
 ---
 
+### Al cambiar un patrón CSS global, verificar TODAS las páginas que lo usan
+
+Cambié `.page-title` para usar `var(--color-accent)` pero no verifiqué qué páginas realmente usaban esa clase. Blog y Laboratorio tenían inline styles hardcodeados que pisaban el cambio.
+
+**Why:** Asumí que todas las páginas usaban la clase. Dos páginas tenían `color: var(--color-text)` inline que tenía más especificidad.
+
+**How to apply:** Después de cambiar una clase CSS global → grep en todos los page.tsx para verificar que ninguno tiene inline styles que la pisen. Si los hay, limpiarlos en el mismo commit.
+
+---
+
 ### "Analiza y dime qué entiendes" = checkpoint, no luz verde
 
 Cuando Ever dice "analiza" y luego "realiza una prueba", no es confirmación de que mi interpretación es correcta. Debí listar los cambios exactos antes de escribir código.
