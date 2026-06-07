@@ -76,10 +76,14 @@ export async function Hero({ settings, cvUrl, initialSub, subtitlePool = [] }: P
             }}>
               <div>
                 <div className="n-slot">
-                  <HeroSubtitle initial={initialSub ?? darkSub} pool={subtitlePool} className="n-d"
-                    style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
-                  <HeroSubtitle initial={lightSub} pool={[]} className="n-l"
-                    style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
+                  <span className="n-d" style={{ display: 'block' }}>
+                    <HeroSubtitle initial={initialSub ?? darkSub} pool={subtitlePool}
+                      style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
+                  </span>
+                  <span className="n-l" style={{ display: 'block' }}>
+                    <HeroSubtitle initial={lightSub} pool={[]}
+                      style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
+                  </span>
                 </div>
               </div>
 
