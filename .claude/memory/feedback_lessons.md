@@ -7,28 +7,6 @@ metadata:
   originSessionId: b2539090-46ae-44ab-954c-8cd5ec511fa8
 ---
 
-## Sesión 2026-06-07 — Mantenimiento, SVG animado, multi-PC
-
-### No aplicar cambios sin confirmación explícita
-Ever dijo "nunca te dije que aplicaras el cambio, pero ya lo hiciste". No hacer commits ni edits sin que el usuario lo pida directamente.
-**Why:** El usuario quiere revisar/decidir antes de que los cambios queden en el repo.
-**How to apply:** Si hay algo listo para implementar, proponer y esperar confirmación. No asumir que "mostrar el plan" = aprobación.
-
-### node_modules corruptos por npm install interrumpido
-El `npm install` falló con exit code 137 (OOM kill) dejando `@next/swc-linux-x64-gnu` corrupto (SIGBUS al cargar). El server decía "Ready" pero moría en silencio en el primer request. Fix: `rm -rf node_modules && npm install`.
-**How to apply:** Si el server arranca ("Ready") pero el browser da "connection refused" sin error en terminal, sospechar módulos nativos corruptos — verificar con `node -e "require('...next-swc.node')"`.
-
-### nav-glass en páginas fuera del layout principal causa franja blanca
-La clase `nav-glass` usa `--color-bg` del sistema de modos. Páginas standalone (como `/maintenance`) no tienen `data-mode` en el root → `--color-bg` puede ser blanco. Fix: usar `background: '#0F0F0D'` hardcodeado en el header de maintenance.
-
-### SVG animado por capas desde Figma
-Para animar un personaje SVG por partes: en Figma, cada parte en su propio Group/Frame con nombre descriptivo → Export SVG del frame contenedor con "Include id attribute". Los nombres de capa se convierten en IDs. Con `transform-box: fill-box` + `transform-origin` en CSS se anima cada grupo independientemente sin afectar los demás.
-
-### SSH una vez por máquina
-El usuario trabaja en múltiples PCs (Linux EDZorin, Windows wi11). Cada máquina necesita su propia SSH key registrada en GitHub. Una vez configurado, Claude puede hacer push/pull sin interrupciones.
-
----
-
 ## Sesión 2026-06-06 (tarde) — Labels nav, Sanity vs local
 
 ### Error principal: asumir que un campo de Sanity estaba vacío
@@ -51,6 +29,42 @@ Declaré `siteSettings.labels.nav = null` sin verificarlo en el Studio ni con GR
 
 **Why:** El usuario lo pidió como "más discreto" — el 3D era teatral para el contexto.
 **How to apply:** Reservar transformaciones 3D (`perspective + rotateX/Y`) para bloques grandes (héroe, títulos). Para nav labels, badges, metadata → solo opacity.
+
+---
+
+## Inline style gana sobre CSS — conflicto con sistema n-slot
+
+Si un componente aplica `opacity` como inline style (`style={{ opacity: 1 }}`), el CSS del sistema n-slot (`opacity: 0` vía clase) no puede pisarlo. Resultado: ambos estados visibles al mismo tiempo.
+
+**Why:** En CSS, inline style tiene especificidad máxima — siempre gana sobre clases, sin importar cuántos selectores tenga la regla CSS.
+
+**How to apply:** Cuando un componente maneja su propio `opacity` internamente (ej. para animaciones de fade propias), NO pasarle la clase n-d/n-l directamente. En su lugar, envolver el componente en un `<span>` que lleve la clase:
+```tsx
+<div className="n-slot">
+  <span className="n-d" style={{ display: 'block' }}>
+    <ComponenteConOpacityInline ... />
+  </span>
+  <span className="n-l" style={{ display: 'block' }}>
+    <ComponenteConOpacityInline ... />
+  </span>
+</div>
+```
+El CSS apunta al span → el componente controla su opacity interna → sin conflicto.
+
+---
+
+## SVG animations — clipping por viewBox
+
+Cuando un elemento dentro de un SVG se anima fuera de los límites del viewBox (ej. `translateY(-10px)` y el elemento empieza cerca de Y=0), el SVG lo recorta silenciosamente. No hay error — simplemente desaparece.
+
+**Why:** SVGs tienen `overflow: hidden` por defecto. Todo lo que salga del viewBox se corta.
+
+**How to apply:** Antes de animar cualquier elemento SVG en Y o X:
+1. Revisar si el elemento está cerca del borde del viewBox en la dirección del movimiento.
+2. Si sí, expandir el viewBox para dar margen: `viewBox="0 -12 404 349"` en lugar de `viewBox="0 0 404 337"` da 12px de espacio arriba.
+3. Alternativa: agregar `overflow: visible` al SVG, pero expandir el viewBox es más limpio porque el espacio queda reservado en el layout.
+
+**Regla práctica:** margen de seguridad = valor máximo de la animación + 2px. Si animas `-10px`, da al menos `-12` de origen en el viewBox.
 
 ---
 
@@ -183,6 +197,70 @@ El header (`Nav.tsx`) y el footer (`Footer.tsx`) son secciones distintas con org
 **Why:** Al arreglar "Experimentos→Laboratorio" en el footer, también cambié la estructura de columnas del footer sin que Ever lo pidiera. Tuve que revertirlo.
 
 **How to apply:** Cambio de label = tocar el archivo de mensajes/traducciones y verificar que el label correcto llegue a ambos componentes. Cambio de estructura = solo si Ever lo pide explícitamente.
+
+---
+
+## Sesión 2026-06-07 — Home sections, Philosophy link, Footer
+
+### CSS tokens modo-aware no necesitan n-slot
+
+Si un token como `var(--color-accent)` ya está definido distinto en `[data-mode="dark"]` y `[data-mode="light"]`, usarlo directamente en cualquier regla CSS cambia automáticamente con el modo.
+
+**Why:** El sistema de variables CSS resuelve el valor en tiempo de render según el `data-mode` del `<html>`. No hace falta duplicar con n-slot solo para cambiar color.
+
+**How to apply:** Para propiedades de color que deben cambiar por modo → usar el token directo. n-slot es para contenido (texto, imágenes), no para estilos.
+
+---
+
+### Sección completa como link: válido solo sin links hijos
+
+Si una sección no tiene elementos interactivos dentro, se puede envolver en `<Link>` limpiamente (`display: block`, `color: inherit`, hover opacity). Si la sección tiene `<Link>` en hijos (ej. filas de proyectos), anidar `<a>` dentro de `<a>` es HTML inválido.
+
+**Why:** HTML5 permite `<a>` con contenido block, pero no permite `<a>` anidados.
+
+**How to apply:** Antes de hacer una sección clickeable, preguntar: ¿tiene links hijos? Sí → solo quitar el CTA, dejar hijos clickeables. No → toda la sección puede ser el link.
+
+---
+
+### Cambio CSS no visible ≠ código incorrecto — verificar caché primero
+
+El color accent en Philosophy estaba correctamente aplicado en el CSS desde el primer edit. El usuario no lo veía por caché de Turbopack/navegador. Leí el CSS tres veces y busqué reglas que lo pudieran pisar antes de decir "prueba hard refresh".
+
+**Why:** Turbopack HMR a veces no propaga cambios CSS sin un reload completo.
+
+**How to apply:** Si un cambio CSS no aparece visualmente → decir "prueba Ctrl+Shift+R" PRIMERO. Solo investigar el código si el problema persiste después del refresh. El diagnóstico costoso va después de lo más simple.
+
+---
+
+### Implementar con duda sin validar — duplicate link
+
+Añadí "Sobre Mí" → `/about` en EXPLORAR sabiendo que ya había un link a `/about` ("Operador"/"Perfil") en la misma columna. Dudé si era correcto pero lo implementé sin preguntar.
+
+**Why:** Cuando hay ambigüedad sobre qué página debe recibir el link, o si el link duplica una ruta existente, el usuario no lo ve hasta que está en producción.
+
+**How to apply:** Si al implementar surge duda sobre duplicación o destino → parar y preguntar antes de escribir código. Formato: "EXPLORAR ya tiene `/about` como 'Operador'/'Perfil' — ¿quieres un tercer link o renombrar el existente?"
+
+---
+
+## Sesión 2026-06-07 (tarde) — Ramas y flujo de trabajo
+
+### Afirmar estado del repo sin verificar
+
+Dije "no hay rama dev" basándome en memoria. La rama existía. Un `git branch -a` habría evitado el error.
+
+**Why:** La memoria puede estar desactualizada. El repo es la fuente de verdad.
+
+**How to apply:** Cualquier pregunta sobre estado del repo (ramas, commits, remotes) → verificar con git antes de responder. Nunca desde memoria.
+
+---
+
+### Commitear directo a main sin confirmar la rama activa
+
+Toda la sesión commiteé a `main` sin preguntar en qué rama trabajar. Vercel hace auto-deploy desde `main` → cambios experimentales fueron a producción sin revisión previa.
+
+**Why:** No pregunté la rama al inicio de la sesión.
+
+**How to apply:** Al iniciar cada sesión → `git branch` para ver rama activa → confirmar con Ever si es la correcta antes de tocar código. Default: trabajar en `dev`, mergear a `main` solo cuando Ever confirma.
 
 ---
 
