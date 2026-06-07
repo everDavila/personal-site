@@ -368,8 +368,7 @@ body {
 .nav-mobile  { display: none; }
 
 .nav-glass {
-  background-color: var(--color-surface);
-  border-bottom: var(--border-width) solid var(--color-border);
+  background-color: color-mix(in srgb, var(--color-bg) 88%, var(--color-surface));
 }
 
 @media (max-width: 900px) {
