@@ -109,26 +109,28 @@ export default async function PostPage({ params }: Props) {
     <main className="container section-page">
 
       {/* Back link */}
-      <Link
-        href={{ pathname: '/blog' }}
-        style={{
-          fontSize: 'var(--text-label)',
-          color: 'var(--color-muted)',
-          textDecoration: 'none',
-          textTransform: 'uppercase',
-          letterSpacing: '0.1em',
-          display: 'inline-flex',
-          alignItems: 'center',
-          gap: '0.4rem',
-          marginBottom: '3rem',
-          transition: 'color var(--transition)',
-        }}
-        className="link-accent"
-      >
-        ← {t('back')}
-      </Link>
+      <div style={{ maxWidth: '64ch', marginInline: 'auto' }}>
+        <Link
+          href={{ pathname: '/blog' }}
+          style={{
+            fontSize: 'var(--text-label)',
+            color: 'var(--color-muted)',
+            textDecoration: 'none',
+            textTransform: 'uppercase',
+            letterSpacing: '0.1em',
+            display: 'inline-flex',
+            alignItems: 'center',
+            gap: '0.4rem',
+            marginBottom: '3rem',
+            transition: 'color var(--transition)',
+          }}
+          className="link-accent"
+        >
+          ← {t('back')}
+        </Link>
+      </div>
 
-      <article style={{ maxWidth: '64ch' }}>
+      <article style={{ maxWidth: '64ch', marginInline: 'auto' }}>
 
         {/* Header: título + meta */}
         <header style={{ marginBottom: '2.5rem' }}>
@@ -233,6 +235,7 @@ export default async function PostPage({ params }: Props) {
           aria-label="Post navigation"
           style={{
             maxWidth: '64ch',
+            marginInline: 'auto',
             borderTop: 'var(--border-width) solid var(--color-border)',
             marginTop: '5rem',
             paddingTop: '3rem',
