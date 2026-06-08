@@ -1,206 +1,192 @@
-import { notFound } from 'next/navigation'
-import { getPlaygroundItemBySlug } from '@/sanity/queries/playground'
-import { PostBody } from '@/components/blog/PostBody'
-import { FallbackBadge } from '@/components/ui/FallbackBadge'
-import { localized, LOCALE_NAMES } from '@/lib/i18n'
-import { setRequestLocale, getTranslations } from 'next-intl/server'
-import { Link } from '@/i18n/navigation'
-import Image from 'next/image'
-import type { Locale } from '@/lib/i18n'
-import type { PortableTextBlock } from '@portabletext/types'
+import { notFound }                   from 'next/navigation'
+import { setRequestLocale }            from 'next-intl/server'
+import { Link }                        from '@/i18n/navigation'
+import { getPlaygroundItemBySlug }     from '@/sanity/queries/playground'
+import { localized }                   from '@/lib/i18n'
+import { LabTimeline }                 from '@/components/lab/LabTimeline'
+import type { Locale }                 from '@/lib/i18n'
+
+export const dynamic = 'force-dynamic'
 
 type Props = { params: Promise<{ slug: string; locale: string }> }
 
-const STATUS_COLORS: Record<string, string> = {
+const STATUS_LABEL: Record<string, string> = {
+  en_proceso: 'En proceso',
+  prototipo:  'Prototipo',
+  archivado:  'Archivado',
+  fallido:    'Fallido',
+}
+
+const STATUS_COLOR: Record<string, string> = {
   en_proceso: 'var(--color-accent)',
   prototipo:  'var(--color-text)',
   archivado:  'var(--color-muted)',
   fallido:    'var(--color-muted)',
 }
 
-
-export default async function PlaygroundItemPage({ params }: Props) {
+export default async function LabDetailPage({ params }: Props) {
   const { slug, locale } = await params
   setRequestLocale(locale)
-  const [item, t] = await Promise.all([
-    getPlaygroundItemBySlug(slug, locale as Locale),
-    getTranslations('playground'),
-  ])
 
+  const item = await getPlaygroundItemBySlug(slug, locale as Locale)
   if (!item) notFound()
 
-  const currentLocale = locale as Locale
-  const locales: Locale[] = ['es', 'en', 'pt', 'qu', 'zh']
-
-  const title       = localized(item.title,       currentLocale, 'es')
-  const description = item.description ? localized(item.description, currentLocale, 'es') : null
-
-  const availableLocales = locales.filter(l => l !== currentLocale && item.title?.[l])
-
-  const bodyBlocks = item.body as Record<Locale, PortableTextBlock[]> | null
-  const bodyValue: PortableTextBlock[] | null = bodyBlocks
-    ? (bodyBlocks[currentLocale] ?? bodyBlocks['es'] ?? locales.map(l => bodyBlocks[l]).find(v => v?.length) ?? null)
-    : null
+  const loc   = locale as Locale
+  const title = localized(item.title, loc, 'es')
+  const desc  = item.description ? localized(item.description, loc, 'es') : null
+  const idea  = item.idea?.[loc] ?? item.idea?.es ?? null
+  const why   = item.why?.[loc]  ?? item.why?.es  ?? null
 
   return (
-    <main className="container section prose">
+    <main style={{ maxWidth: 'var(--max-width, 82rem)', margin: '0 auto', padding: '0 var(--space-side, 2rem)' }}>
+
+      {/* Back */}
       <Link
         href={{ pathname: '/playground' }}
         style={{
-          fontSize: 'var(--text-small)',
-          color: 'var(--color-muted)',
-          textDecoration: 'none',
           display: 'inline-flex',
           alignItems: 'center',
           gap: '0.35rem',
-          marginBottom: '2rem',
+          fontSize: 'var(--text-small)',
+          color: 'var(--color-muted)',
+          textDecoration: 'none',
+          padding: '2rem 0 0',
+          transition: 'opacity var(--transition)',
         }}
+        className="link-muted"
       >
-        ← {t('title')}
+        ← Lab
       </Link>
 
-      <article>
-        <header style={{ marginBottom: '2.5rem' }}>
-          {/* Category + Status */}
-          <div style={{
-            display: 'flex',
-            gap: '1rem',
-            alignItems: 'center',
-            marginBottom: '0.75rem',
-            flexWrap: 'wrap',
-          }}>
-            <span style={{
-              fontSize: 'var(--text-label)',
-              fontWeight: 500,
-              color: 'var(--color-muted)',
-              textTransform: 'uppercase',
-              letterSpacing: 'var(--tracking-label)',
-            }}>
-              {t(`category.${item.category}`)}
-            </span>
-            <span style={{ color: 'var(--color-border)' }}>·</span>
-            <span style={{
-              fontSize: 'var(--text-label)',
-              fontWeight: 500,
-              color: STATUS_COLORS[item.status] ?? 'var(--color-muted)',
-              textTransform: 'uppercase',
-              letterSpacing: 'var(--tracking-label)',
-            }}>
-              {t(`status.${item.status}`)}
-            </span>
-            <span style={{ color: 'var(--color-border)' }}>·</span>
-            <span style={{
-              fontSize: 'var(--text-label)',
-              color: 'var(--color-muted)',
-              textTransform: 'uppercase',
-              letterSpacing: 'var(--tracking-label)',
-            }}>
-              {item.year}
-            </span>
-          </div>
+      {/* ── Header ── */}
+      <header style={{ paddingBlock: 'clamp(2rem, 5vw, 3.5rem)', borderBottom: 'var(--border-width) solid var(--color-border)' }}>
+        <div style={{ display: 'flex', gap: '0.75rem', alignItems: 'center', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
+          <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: '0.625rem', letterSpacing: '0.1em', color: 'var(--color-muted)', textTransform: 'uppercase' }}>
+            {item.category}
+          </span>
+          <span style={{ color: 'var(--color-border)' }}>·</span>
+          <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: '0.625rem', letterSpacing: '0.1em', color: STATUS_COLOR[item.status] ?? 'var(--color-muted)', textTransform: 'uppercase' }}>
+            {STATUS_LABEL[item.status] ?? item.status}
+          </span>
+          <span style={{ color: 'var(--color-border)' }}>·</span>
+          <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: '0.625rem', letterSpacing: '0.1em', color: 'var(--color-muted)' }}>
+            {item.year}
+          </span>
+        </div>
 
-          {/* Title */}
-          <h1 style={{
-            fontSize: 'var(--text-section)',
+        <h1 style={{
+          fontFamily: 'var(--font-display)',
+          fontSize: 'clamp(2rem, 5vw, 3.25rem)',
+          fontWeight: 400,
+          letterSpacing: '-0.03em',
+          color: 'var(--color-text)',
+          margin: '0 0 0.5rem',
+          lineHeight: 1.15,
+        }}>
+          {title.value || '—'}
+        </h1>
+
+        {desc?.value && (
+          <p style={{
             fontFamily: 'var(--font-display)',
-            fontWeight: 600,
-            color: 'var(--color-text)',
-            margin: '0 0 0.75rem',
-            lineHeight: 1.3,
-            display: 'flex',
-            alignItems: 'baseline',
-            gap: '0.75rem',
-            flexWrap: 'wrap',
+            fontSize: 'clamp(1rem, 2vw, 1.25rem)',
+            color: 'var(--color-muted)',
+            margin: '0 0 1.5rem',
+            letterSpacing: '-0.01em',
           }}>
-            {title.value || '—'}
-            {title.isFallback && title.fallbackLocale && (
-              <FallbackBadge fallbackLocale={title.fallbackLocale} />
+            {desc.value}
+          </p>
+        )}
+
+        {(item.repoUrl || item.demoUrl) && (
+          <div style={{ display: 'flex', gap: '1.25rem' }}>
+            {item.repoUrl && (
+              <a href={item.repoUrl} target="_blank" rel="noopener noreferrer" className="link-accent"
+                style={{ fontSize: 'var(--text-small)', fontWeight: 500 }}>
+                GitHub ↗
+              </a>
             )}
-          </h1>
+            {item.demoUrl && (
+              <a href={item.demoUrl} target="_blank" rel="noopener noreferrer" className="link-accent"
+                style={{ fontSize: 'var(--text-small)', fontWeight: 500 }}>
+                Ver demo ↗
+              </a>
+            )}
+          </div>
+        )}
+      </header>
 
-          {/* Language switcher */}
-          {availableLocales.length > 0 && (
-            <div style={{ display: 'flex', gap: '0.75rem', marginBottom: '0.75rem', flexWrap: 'wrap' }}>
-              {availableLocales.map(l => (
-                <Link
-                  key={l}
-                  href={{ pathname: '/playground/[slug]', params: { slug: item.slugs[l === 'en' ? 'en' : 'es'] } }}
-                  locale={l}
-                  style={{
-                    fontSize: 'var(--text-label)',
-                    color: 'var(--color-muted)',
-                    textDecoration: 'none',
-                    textTransform: 'uppercase',
-                    letterSpacing: '0.08em',
-                    transition: 'color var(--transition)',
-                  }}
-                  className="link-accent"
-                >
-                  {LOCALE_NAMES[l]}
-                </Link>
-              ))}
-            </div>
-          )}
+      {/* ── 01 La Idea ── */}
+      {idea && (
+        <section className="lab-section">
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.25rem', marginBottom: '1.75rem' }}>
+            <span className="lab-section-num">01</span>
+            <h2 className="lab-section-title">La Idea</h2>
+          </div>
+          <p style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--color-text)', opacity: 0.8, margin: 0 }}>
+            {idea}
+          </p>
+        </section>
+      )}
 
-          {/* Links */}
+      {/* ── 02 El Porqué ── */}
+      {why && (
+        <section className="lab-section">
+          <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.25rem', marginBottom: '1.75rem' }}>
+            <span className="lab-section-num">02</span>
+            <h2 className="lab-section-title">El Porqué</h2>
+          </div>
+          <p style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--color-text)', opacity: 0.8, margin: 0 }}>
+            {why}
+          </p>
+        </section>
+      )}
+
+      {/* ── 03 Bitácora ── */}
+      {item.logEntries && item.logEntries.length > 0 && (
+        <section className="lab-section">
+          <LabTimeline entries={item.logEntries} locale={loc} />
+        </section>
+      )}
+
+      {/* ── 04 Estado actual ── */}
+      <section className="lab-section" style={{ borderBottom: 'none' }}>
+        <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.25rem', marginBottom: '1.25rem' }}>
+          <span className="lab-section-num">04</span>
+          <h2 className="lab-section-title">Estado actual</h2>
+        </div>
+        <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
+          <span style={{
+            fontFamily: 'ui-monospace,monospace',
+            fontSize: '0.6875rem',
+            letterSpacing: '0.08em',
+            textTransform: 'uppercase',
+            padding: '0.3rem 0.85rem',
+            borderRadius: '2px',
+            border: 'var(--border-width) solid var(--color-border)',
+            color: STATUS_COLOR[item.status] ?? 'var(--color-muted)',
+          }}>
+            {STATUS_LABEL[item.status] ?? item.status}
+          </span>
           {(item.repoUrl || item.demoUrl) && (
-            <div style={{
-              display: 'flex',
-              gap: '1rem',
-              paddingTop: '1.25rem',
-              borderTop: 'var(--border-width) solid var(--color-border)',
-            }}>
+            <div style={{ display: 'flex', gap: '1.25rem' }}>
               {item.repoUrl && (
-                <a
-                  href={item.repoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="link-accent"
-                  style={{ fontSize: 'var(--text-small)', fontWeight: 500 }}
-                >
-                  Repositorio ↗
+                <a href={item.repoUrl} target="_blank" rel="noopener noreferrer" className="link-accent"
+                  style={{ fontSize: 'var(--text-small)', fontWeight: 500 }}>
+                  GitHub ↗
                 </a>
               )}
               {item.demoUrl && (
-                <a
-                  href={item.demoUrl}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="link-accent"
-                  style={{ fontSize: 'var(--text-small)', fontWeight: 500 }}
-                >
-                  Demo ↗
+                <a href={item.demoUrl} target="_blank" rel="noopener noreferrer" className="link-accent"
+                  style={{ fontSize: 'var(--text-small)', fontWeight: 500 }}>
+                  Ver demo ↗
                 </a>
               )}
             </div>
           )}
-        </header>
+        </div>
+      </section>
 
-        {/* Main image */}
-        {item.image?.asset?.url && (
-          <div style={{
-            marginBottom: '2.5rem',
-            borderRadius: 'var(--radius)',
-            overflow: 'hidden',
-            background: 'var(--color-surface)',
-          }}>
-            <Image
-              src={item.image.asset.url}
-              alt={localized(item.image.alt ?? {}, currentLocale).value ?? ''}
-              width={1200}
-              height={900}
-              style={{ width: '100%', height: 'auto', display: 'block' }}
-            />
-          </div>
-        )}
-
-        {/* Body */}
-        {bodyValue?.length ? (
-          <PostBody value={bodyValue} />
-        ) : (
-          <p style={{ color: 'var(--color-muted)' }}>{t('empty')}</p>
-        )}
-      </article>
     </main>
   )
 }
