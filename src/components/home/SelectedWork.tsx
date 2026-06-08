@@ -9,12 +9,20 @@ const DARK_LABEL: Record<string, string> = {
   es: 'Misiones', en: 'Missions', pt: 'Missões', qu: 'Misiones', zh: '使命',
 }
 
-const EXPLORE_LABEL: Record<string, string> = {
-  es: 'Explorar misión', en: 'Explore mission', pt: 'Explorar missão', qu: 'Explorar misión', zh: '探索使命',
+const EXPLORE_LABEL: Record<string, { dark: string; light: string }> = {
+  es: { dark: 'Explorar misión', light: 'Ver proyecto' },
+  en: { dark: 'Explore mission', light: 'See project'  },
+  pt: { dark: 'Explorar missão', light: 'Ver projeto'  },
+  qu: { dark: 'Explorar misión', light: 'Ver proyecto' },
+  zh: { dark: '探索使命',         light: '查看项目'       },
 }
 
-const VIEW_ALL_LABEL: Record<string, string> = {
-  es: 'Ver todos', en: 'View all', pt: 'Ver todos', qu: 'Ver todos', zh: '查看全部',
+const VIEW_ALL_LABEL: Record<string, { dark: string; light: string }> = {
+  es: { dark: 'Ver todos', light: 'Ver todos' },
+  en: { dark: 'View all',  light: 'View all'  },
+  pt: { dark: 'Ver todos', light: 'Ver todos' },
+  qu: { dark: 'Ver todos', light: 'Ver todos' },
+  zh: { dark: '查看全部',    light: '查看全部'   },
 }
 
 type Props = { projects: ProjectSummary[]; settings?: SiteSettings | null }
@@ -39,7 +47,7 @@ export async function SelectedWork({ projects, settings }: Props) {
   const sectionDesc  = lbl(h?.projectsDesc,  locale, PROJECTS_DESC_FALLBACK[locale] ?? PROJECTS_DESC_FALLBACK.en)
   const darkLabel    = DARK_LABEL[locale]    ?? DARK_LABEL.en
   const exploreLabel = EXPLORE_LABEL[locale] ?? EXPLORE_LABEL.en
-  const viewAllLabel = VIEW_ALL_LABEL[locale] ?? VIEW_ALL_LABEL.en
+  const viewAll      = VIEW_ALL_LABEL[locale] ?? VIEW_ALL_LABEL.en
 
   return (
     <section
@@ -59,7 +67,11 @@ export async function SelectedWork({ projects, settings }: Props) {
           <div className="section-cols-rule" />
           <p className="section-cols-desc">{sectionDesc}</p>
           <Link href={{ pathname: '/work' }} className="section-cols-cta link-accent">
-            {viewAllLabel} →
+            <span className="n-slot">
+              <span className="n-d">{viewAll.dark}</span>
+              <span className="n-l">{viewAll.light}</span>
+            </span>
+            {' →'}
           </Link>
         </div>
 
@@ -84,7 +96,11 @@ export async function SelectedWork({ projects, settings }: Props) {
                     {detail && <p className="project-row-detail">{detail}</p>}
                   </div>
                   <span className="project-row-cta">
-                    {exploreLabel} <span className="project-row-cta-arrow">→</span>
+                    <span className="n-slot">
+                      <span className="n-d">{exploreLabel.dark}</span>
+                      <span className="n-l">{exploreLabel.light}</span>
+                    </span>
+                    {' '}<span className="project-row-cta-arrow">→</span>
                   </span>
                 </div>
               </Link>
