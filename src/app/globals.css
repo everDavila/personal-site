@@ -702,7 +702,7 @@ body {
 /* Headline editorial — el enunciado del problema */
 .project-row-headline {
   font-family: var(--font-serif);
-  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
   font-weight: 400;
   line-height: 1.25;
   letter-spacing: -0.025em;
@@ -765,7 +765,7 @@ body {
 
 @media (max-width: 600px) {
   .project-row-headline {
-    font-size: clamp(1.1rem, 5vw, 1.35rem);
+    font-size: clamp(0.95rem, 4vw, 1.1rem);
   }
   .projects-list .project-row:first-child .project-row-headline {
     font-size: clamp(1.3rem, 6vw, 1.75rem);
