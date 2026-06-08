@@ -128,44 +128,10 @@ export default async function PostPage({ params }: Props) {
         ← {t('back')}
       </Link>
 
-      {/* Cover image — real from Sanity or generated from title */}
-      {(() => {
-        const imageSrc = post.mainImage?.asset?.url
-          ?? `/api/og?title=${encodeURIComponent(title.value || '')}&date=${encodeURIComponent(date)}`
-        const imageAlt = post.mainImage
-          ? (post.mainImage.alt?.[currentLocale] ?? post.mainImage.alt?.[post.originalLanguage as Locale] ?? title.value ?? '')
-          : (title.value ?? '')
-        return (
-          <div style={{
-            marginInline: 'calc(-1 * var(--spacing-container))',
-            aspectRatio: '1200 / 630',
-            overflow: 'hidden',
-            marginBottom: '3rem',
-            backgroundColor: '#0F0F0D',
-          }}>
-            <img
-              src={imageSrc}
-              alt={imageAlt}
-              width={1200}
-              height={630}
-              style={{
-                width: '100%',
-                height: '100%',
-                objectFit: 'cover',
-                display: 'block',
-                filter: post.mainImage
-                  ? 'grayscale(100%) brightness(0.97) contrast(1.05)'
-                  : 'none',
-              }}
-            />
-          </div>
-        )
-      })()}
-
       <article style={{ maxWidth: '64ch' }}>
 
-        {/* Header */}
-        <header style={{ marginBottom: '3rem' }}>
+        {/* Header: título + meta */}
+        <header style={{ marginBottom: '2.5rem' }}>
           <h1 style={{
             fontFamily: 'var(--font-serif)',
             fontSize: 'clamp(1.875rem, 4vw, 2.75rem)',
@@ -181,12 +147,10 @@ export default async function PostPage({ params }: Props) {
             )}
           </h1>
 
-          {/* Meta row */}
           <div style={{
             display: 'flex',
             alignItems: 'center',
             gap: '1.25rem',
-            paddingTop: '1.25rem',
             flexWrap: 'wrap',
           }}>
             <time style={{
@@ -212,14 +176,8 @@ export default async function PostPage({ params }: Props) {
               </>
             )}
 
-            {/* Language switcher */}
             {availableLocales.length > 0 && (
-              <div style={{
-                display: 'flex',
-                alignItems: 'center',
-                gap: '0.75rem',
-                marginLeft: 'auto',
-              }}>
+              <div style={{ display: 'flex', alignItems: 'center', gap: '0.75rem', marginLeft: 'auto' }}>
                 {availableLocales.map(l => (
                   <Link
                     key={l}
@@ -242,6 +200,23 @@ export default async function PostPage({ params }: Props) {
             )}
           </div>
         </header>
+
+        {/* Imagen — solo si existe en Sanity, máx 600px */}
+        {post.mainImage?.asset?.url && (
+          <div style={{ marginBottom: '3rem' }}>
+            <img
+              src={post.mainImage.asset.url}
+              alt={post.mainImage.alt?.[currentLocale] ?? post.mainImage.alt?.[post.originalLanguage as Locale] ?? title.value ?? ''}
+              style={{
+                display: 'block',
+                width: '100%',
+                maxWidth: '600px',
+                height: 'auto',
+                filter: 'grayscale(100%) brightness(0.97) contrast(1.05)',
+              }}
+            />
+          </div>
+        )}
 
         {/* Body */}
         {bodyValue?.length ? (
