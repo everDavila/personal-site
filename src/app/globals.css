@@ -405,8 +405,11 @@ body {
   color: inherit;
   transition: opacity var(--transition);
 }
+.lab-row:first-child {
+  border-top: none;
+}
 .lab-row:last-child {
-  border-bottom: var(--border-width) solid var(--color-border);
+  border-bottom: none;
 }
 .lab-row:hover {
   opacity: 0.65;
