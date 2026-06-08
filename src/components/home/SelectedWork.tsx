@@ -10,7 +10,7 @@ const DARK_LABEL: Record<string, string> = {
 }
 
 const EXPLORE_LABEL: Record<string, string> = {
-  es: 'Explorar caso', en: 'Explore case', pt: 'Explorar caso', qu: 'Explorar caso', zh: '探索案例',
+  es: 'Explorar misión', en: 'Explore mission', pt: 'Explorar missão', qu: 'Explorar misión', zh: '探索使命',
 }
 
 const VIEW_ALL_LABEL: Record<string, string> = {
