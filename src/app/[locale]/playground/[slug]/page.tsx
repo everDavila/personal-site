@@ -1,5 +1,5 @@
 import { notFound }                   from 'next/navigation'
-import { setRequestLocale }            from 'next-intl/server'
+import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { Link }                        from '@/i18n/navigation'
 import { getPlaygroundItemBySlug }     from '@/sanity/queries/playground'
 import { localized }                   from '@/lib/i18n'
@@ -10,12 +10,6 @@ export const dynamic = 'force-dynamic'
 
 type Props = { params: Promise<{ slug: string; locale: string }> }
 
-const STATUS_LABEL: Record<string, string> = {
-  en_proceso: 'En proceso',
-  prototipo:  'Prototipo',
-  archivado:  'Archivado',
-  fallido:    'Fallido',
-}
 
 const STATUS_COLOR: Record<string, string> = {
   en_proceso: 'var(--color-accent)',
@@ -28,7 +22,11 @@ export default async function LabDetailPage({ params }: Props) {
   const { slug, locale } = await params
   setRequestLocale(locale)
 
-  const item = await getPlaygroundItemBySlug(slug, locale as Locale)
+  const [item, t, tp] = await Promise.all([
+    getPlaygroundItemBySlug(slug, locale as Locale),
+    getTranslations('lab'),
+    getTranslations('playground'),
+  ])
   if (!item) notFound()
 
   const loc   = locale as Locale
@@ -55,7 +53,7 @@ export default async function LabDetailPage({ params }: Props) {
         }}
         className="link-muted"
       >
-        ← Lab
+        {t('back')}
       </Link>
 
       {/* ── Header ── */}
@@ -66,7 +64,7 @@ export default async function LabDetailPage({ params }: Props) {
           </span>
           <span style={{ color: 'var(--color-border)' }}>·</span>
           <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: '0.625rem', letterSpacing: '0.1em', color: STATUS_COLOR[item.status] ?? 'var(--color-muted)', textTransform: 'uppercase' }}>
-            {STATUS_LABEL[item.status] ?? item.status}
+            {tp(`status.${item.status}` as Parameters<typeof tp>[0]) ?? item.status}
           </span>
           <span style={{ color: 'var(--color-border)' }}>·</span>
           <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: '0.625rem', letterSpacing: '0.1em', color: 'var(--color-muted)' }}>
@@ -121,7 +119,7 @@ export default async function LabDetailPage({ params }: Props) {
         <section className="lab-section">
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.25rem', marginBottom: '1.75rem' }}>
             <span className="lab-section-num">01</span>
-            <h2 className="lab-section-title">La Idea</h2>
+            <h2 className="lab-section-title">{t('section_idea')}</h2>
           </div>
           <p style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--color-text)', opacity: 0.8, margin: 0 }}>
             {idea}
@@ -134,7 +132,7 @@ export default async function LabDetailPage({ params }: Props) {
         <section className="lab-section">
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.25rem', marginBottom: '1.75rem' }}>
             <span className="lab-section-num">02</span>
-            <h2 className="lab-section-title">El Porqué</h2>
+            <h2 className="lab-section-title">{t('section_why')}</h2>
           </div>
           <p style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--color-text)', opacity: 0.8, margin: 0 }}>
             {why}
@@ -153,7 +151,7 @@ export default async function LabDetailPage({ params }: Props) {
       <section className="lab-section" style={{ borderBottom: 'none' }}>
         <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.25rem', marginBottom: '1.25rem' }}>
           <span className="lab-section-num">04</span>
-          <h2 className="lab-section-title">Estado actual</h2>
+          <h2 className="lab-section-title">{t('section_status')}</h2>
         </div>
         <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'space-between', flexWrap: 'wrap', gap: '1rem' }}>
           <span style={{
@@ -166,7 +164,7 @@ export default async function LabDetailPage({ params }: Props) {
             border: 'var(--border-width) solid var(--color-border)',
             color: STATUS_COLOR[item.status] ?? 'var(--color-muted)',
           }}>
-            {STATUS_LABEL[item.status] ?? item.status}
+            {tp(`status.${item.status}` as Parameters<typeof tp>[0]) ?? item.status}
           </span>
           {(item.repoUrl || item.demoUrl) && (
             <div style={{ display: 'flex', gap: '1.25rem' }}>

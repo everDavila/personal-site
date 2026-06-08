@@ -114,7 +114,10 @@ async function seedNimbus(tagIds) {
         time: '09:14',
         dimension: 'lightbulb',
         tag: ref('hipotesis'),
-        description: { es: '¿Y si el clima tuviera personalidad? La hipótesis inicial surge al observar que las aplicaciones meteorológicas parecen diseñadas para estaciones meteorológicas y no para personas.' },
+        description: {
+          es: '¿Y si el clima tuviera personalidad? La hipótesis inicial surge al observar que las aplicaciones meteorológicas parecen diseñadas para estaciones meteorológicas y no para personas.',
+          en: 'What if weather had personality? The initial hypothesis emerged from noticing that weather apps seem designed for meteorological stations, not for people.',
+        },
       },
       {
         _key: 'entry-2',
@@ -122,7 +125,10 @@ async function seedNimbus(tagIds) {
         time: '11:40',
         dimension: 'target',
         tag: ref('decision'),
-        description: { es: 'Definí los primeros modos de personalidad para interpretar el mismo clima. Geek. Filosófico. Noctámbulo. Gamer. Team Frío. Team Calor. La misma temperatura. Narrativas distintas.' },
+        description: {
+          es: 'Definí los primeros modos de personalidad para interpretar el mismo clima. Geek. Filosófico. Noctámbulo. Gamer. Team Frío. Team Calor. La misma temperatura. Narrativas distintas.',
+          en: 'Defined the first personality modes for interpreting the same weather. Geek. Philosophical. Night owl. Gamer. Team Cold. Team Heat. Same temperature. Different narratives.',
+        },
       },
       {
         _key: 'entry-3',
@@ -130,7 +136,10 @@ async function seedNimbus(tagIds) {
         time: '15:22',
         dimension: 'layers',
         tag: ref('exploracion'),
-        description: { es: 'Primeras exploraciones visuales para la mascota. Descarté enfoques demasiado caricaturescos. Busco algo que transmita carácter sin sentirse infantil.' },
+        description: {
+          es: 'Primeras exploraciones visuales para la mascota. Descarté enfoques demasiado caricaturescos. Busco algo que transmita carácter sin sentirse infantil.',
+          en: 'First visual explorations for the mascot. Discarded overly cartoonish approaches. Looking for something that conveys character without feeling childish.',
+        },
       },
       {
         _key: 'entry-4',
@@ -138,7 +147,10 @@ async function seedNimbus(tagIds) {
         time: '22:07',
         dimension: 'code-2',
         tag: ref('avance'),
-        description: { es: 'Integración inicial con OpenWeather. Generación dinámica de mensajes basada en temperatura, condición climática y hora del día.' },
+        description: {
+          es: 'Integración inicial con OpenWeather. Generación dinámica de mensajes basada en temperatura, condición climática y hora del día.',
+          en: 'Initial integration with OpenWeather. Dynamic message generation based on temperature, weather condition, and time of day.',
+        },
       },
       {
         _key: 'entry-5',
@@ -146,7 +158,10 @@ async function seedNimbus(tagIds) {
         time: '10:55',
         dimension: 'cloud',
         tag: ref('completado'),
-        description: { es: 'Firebase Auth. Login con Google. Persistencia de sesión. El objetivo no era el acceso, era conservar preferencias y personalidad entre dispositivos.' },
+        description: {
+          es: 'Firebase Auth. Login con Google. Persistencia de sesión. El objetivo no era el acceso, era conservar preferencias y personalidad entre dispositivos.',
+          en: 'Firebase Auth. Google login. Session persistence. The goal was not access control — it was preserving preferences and personality across devices.',
+        },
       },
       {
         _key: 'entry-6',
@@ -154,7 +169,10 @@ async function seedNimbus(tagIds) {
         time: '23:48',
         dimension: 'book-open',
         tag: ref('leccion'),
-        description: { es: 'La sesión se perdía al recargar la aplicación. El problema no era Firebase. Era el orden en que el listener de autenticación actualizaba el estado inicial.' },
+        description: {
+          es: 'La sesión se perdía al recargar la aplicación. El problema no era Firebase. Era el orden en que el listener de autenticación actualizaba el estado inicial.',
+          en: 'The session was lost on page reload. The problem was not Firebase. It was the order in which the auth listener was updating the initial state.',
+        },
       },
       {
         _key: 'entry-7',
@@ -162,7 +180,10 @@ async function seedNimbus(tagIds) {
         time: '18:30',
         dimension: 'zap',
         tag: ref('hito'),
-        description: { es: 'Primer MVP funcional desplegado. Nimbus ya puede obtener el clima, interpretar el contexto y generar respuestas personalizadas.' },
+        description: {
+          es: 'Primer MVP funcional desplegado. Nimbus ya puede obtener el clima, interpretar el contexto y generar respuestas personalizadas.',
+          en: 'First functional MVP deployed. Nimbus can now fetch the weather, interpret the context, and generate personalized responses.',
+        },
       },
     ],
     repoUrl:  null,

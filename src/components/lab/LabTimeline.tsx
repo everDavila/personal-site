@@ -3,7 +3,8 @@
 import { useState, useEffect, useCallback } from 'react'
 import type { LogEntry } from '@/sanity/queries/playground'
 import type { Locale } from '@/lib/i18n'
-import { DimensionIcon, DIMENSION_LABELS } from './DimensionIcon'
+import { useTranslations } from 'next-intl'
+import { DimensionIcon, DIMENSION_MSG_KEY } from './DimensionIcon'
 
 type LightboxImage = { src: string; caption: string }
 type LightboxState = { open: boolean; images: LightboxImage[]; index: number }
@@ -28,6 +29,7 @@ export function LabTimeline({ entries, locale, totalLabel }: {
   locale: Locale
   totalLabel?: string
 }) {
+  const t = useTranslations('lab')
   const [activeFilter, setActiveFilter] = useState<string>('all')
   const [sortOrder, setSortOrder]       = useState<'asc' | 'desc'>('asc')
   const [lb, setLb] = useState<LightboxState>({ open: false, images: [], index: 0 })
@@ -85,17 +87,17 @@ export function LabTimeline({ entries, locale, totalLabel }: {
       <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem', marginBottom: '1.75rem', flexWrap: 'wrap' }}>
         {/* Zona izquierda: número, título, orden */}
         <span className="lab-section-num">03</span>
-        <h2 className="lab-section-title">Bitácora</h2>
+        <h2 className="lab-section-title">{t('section_log')}</h2>
         <select
           className="lab-filter-select"
           value={sortOrder}
           onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
         >
-          <option value="asc">Más antiguo</option>
-          <option value="desc">Más reciente</option>
+          <option value="asc">{t('sort_oldest')}</option>
+          <option value="desc">{t('sort_newest')}</option>
         </select>
         <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: '0.625rem', color: 'var(--color-muted)', opacity: 0.5, letterSpacing: '0.08em' }}>
-          {totalLabel ?? `${entries.length} entradas`}
+          {totalLabel ?? t('entries', { count: entries.length })}
         </span>
 
         {/* Zona derecha: filtro por etiqueta */}
@@ -106,7 +108,7 @@ export function LabTimeline({ entries, locale, totalLabel }: {
             onChange={e => setActiveFilter(e.target.value)}
             style={{ marginLeft: 'auto' }}
           >
-            <option value="all">Todo</option>
+            <option value="all">{t('filter_all')}</option>
             {tags.map(tag => (
               <option key={tag.slug} value={tag.slug}>{tag.name}</option>
             ))}
@@ -118,7 +120,7 @@ export function LabTimeline({ entries, locale, totalLabel }: {
       <div className="lab-timeline">
         {filtered.map(entry => {
           const desc     = entry.description?.[locale] ?? entry.description?.es ?? null
-          const dimLabel = DIMENSION_LABELS[entry.dimension] ?? entry.dimension
+          const dimLabel = t(DIMENSION_MSG_KEY[entry.dimension] ?? 'dim_lightbulb')
           const tagName  = entry.tag?.name[locale] ?? entry.tag?.name.es ?? null
           const colorKey = entry.tag?.colorKey ?? null
           const isHito   = entry.dimension === 'zap'
