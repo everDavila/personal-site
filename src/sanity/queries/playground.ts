@@ -36,6 +36,14 @@ const ITEM_FIELDS = `
   repoUrl, demoUrl
 `
 
+export async function getFeaturedPlaygroundItems(): Promise<PlaygroundItem[]> {
+  return client.fetch(
+    `*[_type == "playgroundItem" && hidden != true] | order(year desc, _createdAt desc) [0...3] { ${ITEM_FIELDS} }`,
+    {},
+    { next: { tags: ['playgroundItem'] } }
+  )
+}
+
 export async function getAllPlaygroundItems(): Promise<PlaygroundItem[]> {
   return client.fetch(
     `*[_type == "playgroundItem" && hidden != true] | order(year desc, _createdAt desc) { ${ITEM_FIELDS} }`,

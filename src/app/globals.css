@@ -714,6 +714,14 @@ body {
   max-width: 42ch;
 }
 
+/* Descripción corta bajo el headline (usado en lab home) */
+.project-row-desc {
+  font-size: var(--text-small);
+  color: var(--color-muted);
+  line-height: 1.5;
+  margin: 0.35rem 0 0;
+}
+
 /* Footer: meta izq, CTA der */
 .project-row-footer {
   display: flex;
