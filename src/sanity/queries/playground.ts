@@ -36,10 +36,10 @@ const ITEM_FIELDS = `
   repoUrl, demoUrl
 `
 
-export async function getFeaturedPlaygroundItems(): Promise<PlaygroundItem[]> {
+export async function getFeaturedPlaygroundItems(count = 3): Promise<PlaygroundItem[]> {
   return client.fetch(
-    `*[_type == "playgroundItem" && hidden != true] | order(year desc, _createdAt desc) [0...3] { ${ITEM_FIELDS} }`,
-    {},
+    `*[_type == "playgroundItem" && hidden != true] | order(year desc, _createdAt desc) [0...$count] { ${ITEM_FIELDS} }`,
+    { count },
     { next: { tags: ['playgroundItem'] } }
   )
 }

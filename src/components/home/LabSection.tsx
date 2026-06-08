@@ -73,7 +73,7 @@ export async function LabSection({ items }: Props) {
                 </span>
 
                 <div>
-                  <p className="project-row-headline" style={{ margin: 0, fontFamily: 'var(--font-sans)', fontWeight: 600, letterSpacing: 0 }}>
+                  <p className="project-row-headline" style={{ margin: 0 }}>
                     {title.value || '—'}
                   </p>
                   {desc?.value && (

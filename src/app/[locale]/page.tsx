@@ -20,10 +20,11 @@ export default async function Home() {
   const locale = await getLocale() as Locale
   const mode   = await getMode()
 
-  const [settings, projects, labItems, posts, homeSubtitleData] = await Promise.all([
-    getSiteSettings(),
+  const settings = await getSiteSettings()
+
+  const [projects, labItems, posts, homeSubtitleData] = await Promise.all([
     getFeaturedProjects(),
-    getFeaturedPlaygroundItems(),
+    getFeaturedPlaygroundItems(settings?.labCount ?? 3),
     getLatestPosts(locale),
     getPageSubtitleData('home', locale, mode),
   ])
@@ -40,9 +41,7 @@ export default async function Home() {
       <Hero settings={settings} initialSub={homeSubtitleData.initial} subtitlePool={homeSubtitleData.pool} />
       <SelectedWork projects={projects} settings={settings} />
       <LabSection items={labItems} />
-      {(philosophyDark || philosophyLight) && (
-        <Philosophy dark={philosophyDark ?? ''} light={philosophyLight ?? ''} />
-      )}
+      {/* Philosophy oculta temporalmente */}
       <Writing posts={displayPosts} displayLocale={postsDisplayLocale} settings={settings} />
       <AboutSection settings={settings} mode={mode} />
     </>

@@ -711,7 +711,6 @@ body {
   letter-spacing: -0.025em;
   color: var(--color-text);
   margin: 0 0 1rem;
-  max-width: 42ch;
 }
 
 /* Descripción corta bajo el headline (usado en lab home) */

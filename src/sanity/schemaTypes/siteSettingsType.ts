@@ -52,6 +52,16 @@ export const siteSettingsType = defineType({
     }),
 
     defineField({
+      name: 'labCount',
+      title: 'Lab — experimentos visibles en home',
+      type: 'number',
+      group: 'home',
+      description: 'Cuántos experimentos se muestran en la sección Lab del home (por defecto: 3).',
+      initialValue: 3,
+      validation: r => r.min(1).max(10).integer(),
+    }),
+
+    defineField({
       name: 'seoHome',
       title: 'SEO — Home',
       type: 'object',

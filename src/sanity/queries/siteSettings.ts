@@ -128,6 +128,7 @@ export type SiteSettings = {
     blog?:       PageImageSet | null
   } | null
   cvUrl?:       string | null
+  labCount?:    number | null
   philosophy?:  NarrativeModes | null
   homeAbout?:   NarrativeModes | null
   contactIntro?: NarrativeModes | null
@@ -266,6 +267,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
         lab        { title, description },
       },
       cvUrl,
+      labCount,
       philosophy { dark, light },
       homeAbout { dark, light },
       contactIntro { dark, light },
