@@ -13,6 +13,10 @@ const EXPLORE_LABEL: Record<string, string> = {
   es: 'Explorar caso', en: 'Explore case', pt: 'Explorar caso', qu: 'Explorar caso', zh: '探索案例',
 }
 
+const VIEW_ALL_LABEL: Record<string, string> = {
+  es: 'Ver todos', en: 'View all', pt: 'Ver todos', qu: 'Ver todos', zh: '查看全部',
+}
+
 type Props = { projects: ProjectSummary[]; settings?: SiteSettings | null }
 
 export async function SelectedWork({ projects, settings }: Props) {
@@ -31,56 +35,63 @@ export async function SelectedWork({ projects, settings }: Props) {
     zh: '真实系统中的 UX/UI 设计项目，包括政府机构和复杂数字产品。',
   }
 
-  const sectionLabel  = lbl(h?.projectsLabel, locale, t('projects_label'))
-  const sectionDesc   = lbl(h?.projectsDesc,  locale, PROJECTS_DESC_FALLBACK[locale] ?? PROJECTS_DESC_FALLBACK.en)
-  const darkLabel     = DARK_LABEL[locale]    ?? DARK_LABEL.en
-  const exploreLabel  = EXPLORE_LABEL[locale] ?? EXPLORE_LABEL.en
+  const sectionLabel = lbl(h?.projectsLabel, locale, t('projects_label'))
+  const sectionDesc  = lbl(h?.projectsDesc,  locale, PROJECTS_DESC_FALLBACK[locale] ?? PROJECTS_DESC_FALLBACK.en)
+  const darkLabel    = DARK_LABEL[locale]    ?? DARK_LABEL.en
+  const exploreLabel = EXPLORE_LABEL[locale] ?? EXPLORE_LABEL.en
+  const viewAllLabel = VIEW_ALL_LABEL[locale] ?? VIEW_ALL_LABEL.en
 
   return (
     <section
       className="container section-inner"
       style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
     >
-      <div className="missions-header">
-        <p className="text-label" style={{ margin: 0 }}>
-          <span className="n-slot">
-            <span className="n-d">{darkLabel}</span>
-            <span className="n-l">{sectionLabel}</span>
-          </span>
-        </p>
-        <p className="missions-desc">
-          {sectionDesc}
-        </p>
-      </div>
+      <div className="section-cols">
 
-      <div className="projects-list">
-        {projects.map((project, idx) => {
-          const summary = project.summary?.[locale] || project.summary?.es || project.summary?.en || ''
-          const role    = project.role?.[locale]    || project.role?.es    || project.role?.en    || ''
-          const detail  = [role, project.year].filter(Boolean).join(' · ')
+        {/* Sidebar izquierda */}
+        <div className="section-cols-sidebar">
+          <p className="text-label" style={{ margin: 0 }}>
+            <span className="n-slot">
+              <span className="n-d">{darkLabel}</span>
+              <span className="n-l">{sectionLabel}</span>
+            </span>
+          </p>
+          <div className="section-cols-rule" />
+          <p className="section-cols-desc">{sectionDesc}</p>
+          <Link href={{ pathname: '/work' }} className="section-cols-cta link-accent">
+            {viewAllLabel} →
+          </Link>
+        </div>
 
-          return (
-            <Link
-              key={project._id}
-              href={{ pathname: '/work/[slug]', params: { slug: project.slug } }}
-              className="project-row"
-            >
-              <p className="project-row-headline">
-                {summary}
-              </p>
+        {/* Lista de proyectos */}
+        <div className="projects-list">
+          {projects.map((project) => {
+            const summary = project.summary?.[locale] || project.summary?.es || project.summary?.en || ''
+            const role    = project.role?.[locale]    || project.role?.es    || project.role?.en    || ''
+            const detail  = [role, project.year].filter(Boolean).join(' · ')
 
-              <div className="project-row-footer">
-                <div className="project-row-meta-left">
-                  <p className="project-row-client">{project.client}</p>
-                  {detail && <p className="project-row-detail">{detail}</p>}
+            return (
+              <Link
+                key={project._id}
+                href={{ pathname: '/work/[slug]', params: { slug: project.slug } }}
+                className="project-row"
+              >
+                <p className="project-row-headline">{summary}</p>
+
+                <div className="project-row-footer">
+                  <div className="project-row-meta-left">
+                    <p className="project-row-client">{project.client}</p>
+                    {detail && <p className="project-row-detail">{detail}</p>}
+                  </div>
+                  <span className="project-row-cta">
+                    {exploreLabel} <span className="project-row-cta-arrow">→</span>
+                  </span>
                 </div>
-                <span className="project-row-cta">
-                  {exploreLabel} <span className="project-row-cta-arrow">→</span>
-                </span>
-              </div>
-            </Link>
-          )
-        })}
+              </Link>
+            )
+          })}
+        </div>
+
       </div>
     </section>
   )

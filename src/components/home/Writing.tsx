@@ -14,6 +14,10 @@ const CTA_LABEL: Record<string, { dark: string; light: string }> = {
   zh: { dark: '查看所有日志',             light: '查看所有笔记'             },
 }
 
+const DARK_LABEL: Record<string, string> = {
+  es: 'Apuntes', en: 'Logs', pt: 'Registros', qu: 'Bitácora', zh: '日志',
+}
+
 type Props = { posts: PostSummary[]; displayLocale?: Locale; settings?: SiteSettings | null }
 
 export async function Writing({ posts, displayLocale, settings }: Props) {
@@ -21,7 +25,6 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
 
   const locale = (displayLocale ?? await getLocale()) as Locale
   const tn = await getTranslations('nav')
-  const tb = await getTranslations('blog')
 
   const POSTS_DESC_FALLBACK: Record<string, string> = {
     es: 'Reflexiones sobre diseño, sistemas y todo lo que no cabe en un brief.',
@@ -32,25 +35,29 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
   }
 
   const n = settings?.labels?.nav
-  const b = settings?.labels?.blog
-  const sectionLabel = lbl(n?.blog,  locale, tn('blog'))
+  const sectionLabel = lbl(n?.blog, locale, tn('blog'))
   const sectionDesc  = lbl(settings?.labels?.home?.postsDesc, locale, POSTS_DESC_FALLBACK[locale] ?? POSTS_DESC_FALLBACK.en)
-  const blogTitle    = lbl(b?.title, locale, tb('title'))
-  const cta      = CTA_LABEL[locale] ?? CTA_LABEL.en
+  const darkLabel    = DARK_LABEL[locale] ?? DARK_LABEL.en
+  const cta          = CTA_LABEL[locale]  ?? CTA_LABEL.en
 
   return (
     <section
       className="container section-inner"
       style={{ borderTop: 'var(--border-width) solid var(--color-border)' }}
     >
-      <div style={{ marginBottom: '2rem' }}>
-        <div style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'baseline', marginBottom: '0.75rem' }}>
-          <p className="text-label" style={{ margin: 0 }}>{sectionLabel}</p>
-          <Link
-            href={{ pathname: '/blog' }}
-            className="link-accent"
-            style={{ fontSize: 'var(--text-label)', color: 'var(--color-muted)', textDecoration: 'none', letterSpacing: '0.08em', textTransform: 'uppercase' }}
-          >
+      <div className="section-cols">
+
+        {/* Sidebar izquierda */}
+        <div className="section-cols-sidebar">
+          <p className="text-label" style={{ margin: 0 }}>
+            <span className="n-slot">
+              <span className="n-d">{darkLabel}</span>
+              <span className="n-l">{sectionLabel}</span>
+            </span>
+          </p>
+          <div className="section-cols-rule" />
+          <p className="section-cols-desc">{sectionDesc}</p>
+          <Link href={{ pathname: '/blog' }} className="section-cols-cta link-accent">
             <span className="n-slot">
               <span className="n-d">{cta.dark}</span>
               <span className="n-l">{cta.light}</span>
@@ -58,15 +65,14 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
             {' →'}
           </Link>
         </div>
-        <p style={{ fontSize: 'var(--text-body)', color: 'var(--color-muted)', margin: 0, maxWidth: '52ch', lineHeight: 1.6 }}>
-          {sectionDesc}
-        </p>
-      </div>
 
-      <div>
-        {posts.map(post => (
-          <PostCard key={post._id} post={post} locale={locale} />
-        ))}
+        {/* Lista de posts */}
+        <div>
+          {posts.map(post => (
+            <PostCard key={post._id} post={post} locale={locale} />
+          ))}
+        </div>
+
       </div>
     </section>
   )
