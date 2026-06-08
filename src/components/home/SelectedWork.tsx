@@ -9,10 +9,6 @@ const DARK_LABEL: Record<string, string> = {
   es: 'Misiones', en: 'Missions', pt: 'Missões', qu: 'Misiones', zh: '使命',
 }
 
-const MISSION_LABEL: Record<string, string> = {
-  es: 'Misión', en: 'Mission', pt: 'Missão', qu: 'Misión', zh: '使命',
-}
-
 const EXPLORE_LABEL: Record<string, string> = {
   es: 'Explorar caso', en: 'Explore case', pt: 'Explorar caso', qu: 'Explorar caso', zh: '探索案例',
 }
@@ -38,7 +34,6 @@ export async function SelectedWork({ projects, settings }: Props) {
   const sectionLabel  = lbl(h?.projectsLabel, locale, t('projects_label'))
   const sectionDesc   = lbl(h?.projectsDesc,  locale, PROJECTS_DESC_FALLBACK[locale] ?? PROJECTS_DESC_FALLBACK.en)
   const darkLabel     = DARK_LABEL[locale]    ?? DARK_LABEL.en
-  const missionLabel  = MISSION_LABEL[locale] ?? MISSION_LABEL.en
   const exploreLabel  = EXPLORE_LABEL[locale] ?? EXPLORE_LABEL.en
 
   return (
@@ -70,10 +65,6 @@ export async function SelectedWork({ projects, settings }: Props) {
               href={{ pathname: '/work/[slug]', params: { slug: project.slug } }}
               className="project-row"
             >
-              <p className="project-row-index">
-                {missionLabel} {String(idx + 1).padStart(2, '0')}
-              </p>
-
               <p className="project-row-headline">
                 {summary}
               </p>
