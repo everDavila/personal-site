@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback, useRef } from 'react'
+import { useState, useEffect, useCallback } from 'react'
 import type { LogEntry } from '@/sanity/queries/playground'
 import type { Locale } from '@/lib/i18n'
 import { DimensionIcon, DIMENSION_LABELS } from './DimensionIcon'
@@ -14,15 +14,18 @@ function formatDate(dateStr: string): string {
     .replace('.', '')
 }
 
+function formatTime(timeStr: string): string {
+  const [h, m] = timeStr.split(':')
+  return `${h.padStart(2, '0')}:${(m ?? '00').padStart(2, '0')}`
+}
+
 export function LabTimeline({ entries, locale, totalLabel }: {
   entries: LogEntry[]
   locale: Locale
   totalLabel?: string
 }) {
-  const [activeFilter, setActiveFilter] = useState<string | null>(null)
-  const [panelOpen, setPanelOpen]       = useState(false)
+  const [activeFilter, setActiveFilter] = useState<string>('all')
   const [lb, setLb] = useState<LightboxState>({ open: false, images: [], index: 0 })
-  const panelRef = useRef<HTMLDivElement>(null)
 
   // Unique tags from entries
   const tags = Array.from(
@@ -33,19 +36,7 @@ export function LabTimeline({ entries, locale, totalLabel }: {
     ).values()
   )
 
-  const filtered = activeFilter ? entries.filter(e => e.tag?.slug === activeFilter) : entries
-
-  // Close panel on outside click
-  useEffect(() => {
-    if (!panelOpen) return
-    const handler = (e: MouseEvent) => {
-      if (panelRef.current && !panelRef.current.contains(e.target as Node)) {
-        setPanelOpen(false)
-      }
-    }
-    document.addEventListener('mousedown', handler)
-    return () => document.removeEventListener('mousedown', handler)
-  }, [panelOpen])
+  const filtered = activeFilter === 'all' ? entries : entries.filter(e => e.tag?.slug === activeFilter)
 
   // Lightbox keyboard nav
   useEffect(() => {
@@ -88,33 +79,19 @@ export function LabTimeline({ entries, locale, totalLabel }: {
         <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: '0.625rem', color: 'var(--color-muted)', opacity: 0.5, letterSpacing: '0.08em' }}>
           {totalLabel ?? `${entries.length} entradas`}
         </span>
-        <div ref={panelRef} style={{ marginLeft: 'auto', position: 'relative' }}>
-          <button
-            className={`lab-filter-btn${activeFilter ? ' active' : ''}`}
-            onClick={() => setPanelOpen(p => !p)}
+        {tags.length > 0 && (
+          <select
+            className="lab-filter-select"
+            value={activeFilter}
+            onChange={e => setActiveFilter(e.target.value)}
+            style={{ marginLeft: 'auto' }}
           >
-            {activeFilter ? `${activeTag?.name} ✕` : 'Filtrar ▾'}
-          </button>
-          {panelOpen && (
-            <div className="lab-filter-panel">
-              <button
-                className={`lab-filter-pill${!activeFilter ? ' selected' : ''}`}
-                onClick={() => { setActiveFilter(null); setPanelOpen(false) }}
-              >
-                Todas
-              </button>
-              {tags.map(tag => (
-                <button
-                  key={tag.slug}
-                  className={`lab-filter-pill${activeFilter === tag.slug ? ' selected' : ''}`}
-                  onClick={() => { setActiveFilter(tag.slug); setPanelOpen(false) }}
-                >
-                  {tag.name}
-                </button>
-              ))}
-            </div>
-          )}
-        </div>
+            <option value="all">Todas las etiquetas</option>
+            {tags.map(tag => (
+              <option key={tag.slug} value={tag.slug}>{tag.name}</option>
+            ))}
+          </select>
+        )}
       </div>
 
       {/* ── Timeline ── */}
@@ -136,6 +113,11 @@ export function LabTimeline({ entries, locale, totalLabel }: {
                 <span className="lab-entry-date-text">
                   {entry.date ? formatDate(entry.date) : '—'}
                 </span>
+                {entry.time && (
+                  <span className="lab-entry-time-text">
+                    {formatTime(entry.time)}
+                  </span>
+                )}
               </div>
 
               {/* Línea vertical */}

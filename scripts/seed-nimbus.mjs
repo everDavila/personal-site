@@ -111,6 +111,7 @@ async function seedNimbus(tagIds) {
       {
         _key: 'entry-1',
         date: '2026-06-04',
+        time: '09:14',
         dimension: 'lightbulb',
         tag: ref('hipotesis'),
         description: { es: '¿Y si el clima tuviera personalidad? La hipótesis inicial surge al observar que las aplicaciones meteorológicas parecen diseñadas para estaciones meteorológicas y no para personas.' },
@@ -118,6 +119,7 @@ async function seedNimbus(tagIds) {
       {
         _key: 'entry-2',
         date: '2026-06-08',
+        time: '11:40',
         dimension: 'target',
         tag: ref('decision'),
         description: { es: 'Definí los primeros modos de personalidad para interpretar el mismo clima. Geek. Filosófico. Noctámbulo. Gamer. Team Frío. Team Calor. La misma temperatura. Narrativas distintas.' },
@@ -125,6 +127,7 @@ async function seedNimbus(tagIds) {
       {
         _key: 'entry-3',
         date: '2026-06-12',
+        time: '15:22',
         dimension: 'layers',
         tag: ref('exploracion'),
         description: { es: 'Primeras exploraciones visuales para la mascota. Descarté enfoques demasiado caricaturescos. Busco algo que transmita carácter sin sentirse infantil.' },
@@ -132,6 +135,7 @@ async function seedNimbus(tagIds) {
       {
         _key: 'entry-4',
         date: '2026-06-18',
+        time: '22:07',
         dimension: 'code-2',
         tag: ref('avance'),
         description: { es: 'Integración inicial con OpenWeather. Generación dinámica de mensajes basada en temperatura, condición climática y hora del día.' },
@@ -139,6 +143,7 @@ async function seedNimbus(tagIds) {
       {
         _key: 'entry-5',
         date: '2026-06-20',
+        time: '10:55',
         dimension: 'cloud',
         tag: ref('completado'),
         description: { es: 'Firebase Auth. Login con Google. Persistencia de sesión. El objetivo no era el acceso, era conservar preferencias y personalidad entre dispositivos.' },
@@ -146,6 +151,7 @@ async function seedNimbus(tagIds) {
       {
         _key: 'entry-6',
         date: '2026-06-21',
+        time: '23:48',
         dimension: 'book-open',
         tag: ref('leccion'),
         description: { es: 'La sesión se perdía al recargar la aplicación. El problema no era Firebase. Era el orden en que el listener de autenticación actualizaba el estado inicial.' },
@@ -153,6 +159,7 @@ async function seedNimbus(tagIds) {
       {
         _key: 'entry-7',
         date: '2026-06-25',
+        time: '18:30',
         dimension: 'zap',
         tag: ref('hito'),
         description: { es: 'Primer MVP funcional desplegado. Nimbus ya puede obtener el clima, interpretar el contexto y generar respuestas personalizadas.' },

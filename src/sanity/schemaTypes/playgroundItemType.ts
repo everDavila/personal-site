@@ -152,6 +152,12 @@ export const playgroundItemType = defineType({
               validation: r => r.required(),
             }),
             defineField({
+              name: 'time',
+              title: 'Hora (HH:MM, 24h)',
+              type: 'string',
+              placeholder: '14:30',
+            }),
+            defineField({
               name: 'dimension',
               title: 'Dimensión',
               description: 'Área del proyecto en la que ocurrió este momento.',
