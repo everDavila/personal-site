@@ -3,6 +3,7 @@ import { Hero } from '@/components/home/Hero'
 import { SelectedWork } from '@/components/home/SelectedWork'
 import { Philosophy } from '@/components/home/Philosophy'
 import { Writing } from '@/components/home/Writing'
+import { AboutSection } from '@/components/home/AboutSection'
 import { getSiteSettings, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { getFeaturedProjects } from '@/sanity/queries/projects'
 import { getLatestPosts } from '@/sanity/queries/posts'
@@ -39,6 +40,7 @@ export default async function Home() {
         <Philosophy dark={philosophyDark ?? ''} light={philosophyLight ?? ''} />
       )}
       <Writing posts={displayPosts} displayLocale={postsDisplayLocale} settings={settings} />
+      <AboutSection settings={settings} mode={mode} />
     </>
   )
 }

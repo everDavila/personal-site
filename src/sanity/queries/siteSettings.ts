@@ -129,6 +129,7 @@ export type SiteSettings = {
   } | null
   cvUrl?:       string | null
   philosophy?:  NarrativeModes | null
+  homeAbout?:   NarrativeModes | null
   contactIntro?: NarrativeModes | null
   footerText?:  LocalizedString | null
   competencies: Competency[]
@@ -172,6 +173,10 @@ export const NARRATIVE_FALLBACK = {
       es: 'Soy ese tipo que se pregunta por qué los trámites del Estado son tan confusos. Entonces los diseño mejor. Trabajo con datos, personas, burocracia y, a veces, mucha cafeína. Me apasiona hacer que cosas complicadas sean fáciles de usar.',
       en: 'I\'m the kind of person who wonders why government processes are so confusing — then designs them better. I work with data, people, bureaucracy, and sometimes a lot of caffeine.',
     } as LocalizedString,
+    homeAbout: {
+      es: 'Soy ese tipo que se pregunta por qué los trámites del Estado son tan confusos. Entonces los diseño mejor. 10+ años trabajando en sistemas digitales para entidades públicas peruanas.',
+      en: 'I\'m the kind of person who wonders why government processes are so confusing — then designs them better. 10+ years building digital systems for Peruvian public institutions.',
+    } as LocalizedString,
     contactIntro: {
       es: '¿Tienes un proyecto interesante? Cuéntame. Me gustan los desafíos raros, las conversaciones honestas y los problemas que valen la pena resolver.',
       en: 'Have an interesting project? Tell me about it. I like unusual challenges, honest conversations, and problems worth solving.',
@@ -197,6 +202,10 @@ export const NARRATIVE_FALLBACK = {
     } as LocalizedString,
     about: {
       es: 'Diseñador UX/UI con enfoque en sistemas digitales complejos para el sector público peruano. He trabajado en la intersección del diseño centrado en el usuario y la política pública digital, buscando que los servicios del Estado sean accesibles para todos.',
+      en: 'UX/UI designer focused on complex digital systems for the Peruvian public sector, working at the intersection of user-centered design and digital public policy.',
+    } as LocalizedString,
+    homeAbout: {
+      es: 'Diseñador UX/UI con enfoque en sistemas digitales complejos para el sector público peruano. He trabajado en la intersección del diseño centrado en el usuario y la política pública digital.',
       en: 'UX/UI designer focused on complex digital systems for the Peruvian public sector, working at the intersection of user-centered design and digital public policy.',
     } as LocalizedString,
     contactIntro: {
@@ -258,6 +267,7 @@ export async function getSiteSettings(): Promise<SiteSettings | null> {
       },
       cvUrl,
       philosophy { dark, light },
+      homeAbout { dark, light },
       contactIntro { dark, light },
       footerText,
       competencies[] { title, description },

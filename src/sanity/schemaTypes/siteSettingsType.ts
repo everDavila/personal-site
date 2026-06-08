@@ -44,6 +44,14 @@ export const siteSettingsType = defineType({
     }),
 
     defineField({
+      name: 'homeAbout',
+      title: 'Sobre mí (sección home)',
+      type: 'narrativeModesText',
+      group: 'home',
+      description: 'Texto del bloque "Sobre mí" en el home. Una versión por modo narrativo.',
+    }),
+
+    defineField({
       name: 'seoHome',
       title: 'SEO — Home',
       type: 'object',
