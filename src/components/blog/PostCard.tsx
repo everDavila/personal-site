@@ -24,6 +24,7 @@ const LABELS = {
   new:   { es: 'Nuevo',          en: 'New',        pt: 'Novo',           qu: 'Musuq',    zh: '最新'     },
   field: { es: 'Notas de campo', en: 'Field Notes', pt: 'Notas de campo', qu: 'Willakuy', zh: '田野笔记' },
   min:   { es: 'min',            en: 'min',         pt: 'min',            qu: 'min',      zh: '分钟'     },
+  read:  { es: 'Leer apunte',    en: 'Read log',    pt: 'Ler registro',   qu: 'Leer',     zh: '阅读'     },
 } as const
 
 type LabelKey = keyof typeof LABELS
@@ -111,9 +112,9 @@ export function PostCard({ post, locale, featured = false }: Props) {
             <FallbackBadge fallbackLocale={title.fallbackLocale} />
           )}
         </h2>
-        {excerpt.value && (
-          <p className="lab-row-desc">{excerpt.value}</p>
-        )}
+        <span className="project-row-cta" style={{ marginTop: '0.5rem' }}>
+          {lbl('read', locale)} <span className="project-row-cta-arrow">→</span>
+        </span>
       </div>
     </Link>
   )
