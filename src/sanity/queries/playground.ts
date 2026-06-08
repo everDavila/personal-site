@@ -60,20 +60,35 @@ const ITEM_FIELDS = `
   repoUrl, demoUrl
 `
 
-export async function getFeaturedPlaygroundItems(count = 3): Promise<PlaygroundItem[]> {
-  return client.fetch(
-    `*[_type == "playgroundItem" && hidden != true] | order(year desc, _createdAt desc) [0...$count] { ${ITEM_FIELDS} }`,
-    { count },
-    { next: { tags: ['playgroundItem'] } }
-  )
+type WithSortDate = PlaygroundItem & { _sortDate: string }
+
+function sortByActivity(raw: WithSortDate[]): PlaygroundItem[] {
+  return raw
+    .sort((a, b) => b._sortDate.localeCompare(a._sortDate))
+    .map(({ _sortDate: _sd, ...item }) => item as PlaygroundItem)
 }
 
-export async function getAllPlaygroundItems(): Promise<PlaygroundItem[]> {
-  return client.fetch(
-    `*[_type == "playgroundItem" && hidden != true] | order(year desc, _createdAt desc) { ${ITEM_FIELDS} }`,
+const ITEM_FIELDS_WITH_SORT = `
+  ${ITEM_FIELDS},
+  "_sortDate": coalesce((logEntries | order(date desc))[0].date, _createdAt)
+`
+
+export async function getFeaturedPlaygroundItems(count = 3): Promise<PlaygroundItem[]> {
+  const raw = await client.fetch(
+    `*[_type == "playgroundItem" && hidden != true] { ${ITEM_FIELDS_WITH_SORT} }`,
     {},
     { next: { tags: ['playgroundItem'] } }
   )
+  return sortByActivity(raw).slice(0, count)
+}
+
+export async function getAllPlaygroundItems(): Promise<PlaygroundItem[]> {
+  const raw = await client.fetch(
+    `*[_type == "playgroundItem" && hidden != true] { ${ITEM_FIELDS_WITH_SORT} }`,
+    {},
+    { next: { tags: ['playgroundItem'] } }
+  )
+  return sortByActivity(raw)
 }
 
 const LOG_ENTRY_FIELDS = `
