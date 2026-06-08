@@ -13,7 +13,7 @@ type Props = { params: Promise<{ slug: string; locale: string }> }
 
 const STATUS_COLOR: Record<string, string> = {
   en_proceso: 'var(--color-accent)',
-  prototipo:  'var(--color-text)',
+  completado: 'var(--color-accent)',
   archivado:  'var(--color-muted)',
   fallido:    'var(--color-muted)',
 }

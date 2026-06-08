@@ -48,7 +48,7 @@ export default async function PlaygroundPage() {
     empty:        lbl(pg?.empty,       locale, t('empty')),
     status: {
       en_proceso: t('status.en_proceso'),
-      prototipo:  t('status.prototipo'),
+      completado: t('status.completado'),
       archivado:  t('status.archivado'),
       fallido:    t('status.fallido'),
     },
