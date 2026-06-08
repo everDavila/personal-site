@@ -1,6 +1,22 @@
 import { RocketIcon } from '@sanity/icons'
 import { defineArrayMember, defineField, defineType } from 'sanity'
 
+const DIMENSIONS = [
+  { title: 'Idea',              value: 'lightbulb'     },
+  { title: 'Producto',          value: 'target'        },
+  { title: 'Interfaz',          value: 'layers'        },
+  { title: 'Implementación',    value: 'code-2'        },
+  { title: 'Infraestructura',   value: 'cloud'         },
+  { title: 'Aprendizaje',       value: 'book-open'     },
+  { title: 'Hito',              value: 'zap'           },
+  { title: 'Investigación',     value: 'compass'       },
+  { title: 'Testing',           value: 'flask-conical' },
+  { title: 'Contenido',         value: 'pen-line'      },
+  { title: 'Datos',             value: 'activity'      },
+  { title: 'Diseño de sistema', value: 'layout-grid'   },
+  { title: 'Accesibilidad',     value: 'eye'           },
+]
+
 const CATEGORIES = [
   { title: 'Interfaces', value: 'interfaces' },
   { title: 'Motion', value: 'motion' },
@@ -100,9 +116,104 @@ export const playgroundItemType = defineType({
     }),
     defineField({
       name: 'body',
-      title: 'Descripción completa',
+      title: 'Descripción completa (legacy)',
+      description: 'Campo original — reemplazado por Idea, Porqué y Bitácora. Mantener para compatibilidad.',
       type: 'localizedBlockContent',
     }),
+
+    // ── Secciones de detalle ─────────────────────────────────
+    defineField({
+      name: 'idea',
+      title: '01 — La Idea',
+      type: 'localizedText',
+      description: 'Qué es y de dónde surge el experimento.',
+    }),
+    defineField({
+      name: 'why',
+      title: '02 — El Porqué',
+      type: 'localizedText',
+      description: 'Motivación, contexto, problema que busca resolver.',
+    }),
+
+    // ── Bitácora ─────────────────────────────────────────────
+    defineField({
+      name: 'logEntries',
+      title: '03 — Bitácora',
+      type: 'array',
+      description: 'Línea de tiempo del experimento. Ordenar de más antiguo a más reciente.',
+      of: [
+        defineArrayMember({
+          type: 'object',
+          fields: [
+            defineField({
+              name: 'date',
+              title: 'Fecha',
+              type: 'date',
+              validation: r => r.required(),
+            }),
+            defineField({
+              name: 'time',
+              title: 'Hora (HH:MM, 24h)',
+              type: 'string',
+              placeholder: '14:30',
+            }),
+            defineField({
+              name: 'dimension',
+              title: 'Dimensión',
+              description: 'Área del proyecto en la que ocurrió este momento.',
+              type: 'string',
+              options: { list: DIMENSIONS, layout: 'radio' },
+              validation: r => r.required(),
+            }),
+            defineField({
+              name: 'tag',
+              title: 'Tag (tipo de momento)',
+              description: 'Qué tipo de momento fue — Decisión, Fallo, Hito, etc.',
+              type: 'reference',
+              to: [{ type: 'logTag' }],
+            }),
+            defineField({
+              name: 'description',
+              title: 'Descripción',
+              type: 'localizedText',
+            }),
+            defineField({
+              name: 'images',
+              title: 'Imágenes',
+              type: 'array',
+              of: [
+                defineArrayMember({
+                  type: 'image',
+                  options: { hotspot: true },
+                  fields: [
+                    defineField({
+                      name: 'caption',
+                      title: 'Caption',
+                      type: 'localizedString',
+                    }),
+                  ],
+                }),
+              ],
+            }),
+          ],
+          preview: {
+            select: {
+              date:      'date',
+              dimension: 'dimension',
+              tagName:   'tag.name.es',
+            },
+            prepare({ date, dimension, tagName }) {
+              const dim = DIMENSIONS.find(d => d.value === dimension)?.title ?? dimension ?? '—'
+              return {
+                title:    `${dim}${tagName ? ` · ${tagName}` : ''}`,
+                subtitle: date ?? '',
+              }
+            },
+          },
+        }),
+      ],
+    }),
+
     defineField({
       name: 'repoUrl',
       title: 'URL del repositorio',

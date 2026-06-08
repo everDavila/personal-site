@@ -34,6 +34,12 @@ const STATUS_COLORS: Record<StatusKey, string> = {
 
 const STATUS_COUNTS: StatusKey[] = ['en_proceso', 'prototipo', 'archivado', 'fallido']
 
+function formatShortDate(dateStr: string, locale: string): string {
+  const d = new Date(dateStr.slice(0, 10) + 'T00:00:00')
+  return d.toLocaleDateString(locale === 'en' ? 'en-GB' : 'es-PE', { day: '2-digit', month: 'short' })
+    .replace('.', '')
+}
+
 const STATUS_ICONS: Record<StatusKey, string> = {
   en_proceso: '◌',
   prototipo:  '◻',
@@ -175,6 +181,17 @@ function PlaygroundCard({ item, locale, t }: { item: PlaygroundItem; locale: Loc
           <span style={{ color: 'var(--color-muted)' }}>
             {t.category[item.category] ?? item.category}
           </span>
+          {item.lastEntryDate && (
+            <span style={{
+              fontFamily: 'ui-monospace,monospace',
+              fontSize: '0.625rem',
+              color: 'var(--color-muted)',
+              opacity: 0.6,
+              marginLeft: 'auto',
+            }}>
+              {formatShortDate(item.lastEntryDate, locale)}
+            </span>
+          )}
         </div>
 
         <h3 className="lab-row-title">{title.value || '—'}</h3>

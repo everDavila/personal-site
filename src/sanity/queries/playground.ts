@@ -3,6 +3,27 @@ import type { Locale } from '@/lib/i18n'
 
 type LocalizedString = Partial<Record<Locale, string>>
 
+export type LogTag = {
+  _id:      string
+  name:     LocalizedString
+  slug:     string
+  colorKey: string
+}
+
+export type LogEntry = {
+  _key:      string
+  date:      string
+  time:      string | null
+  dimension: string
+  tag:       LogTag | null
+  description: LocalizedString | null
+  images: Array<{
+    _key:    string
+    asset:   { url: string }
+    caption: LocalizedString | null
+  }> | null
+}
+
 export type PlaygroundItem = {
   _id: string
   slugs: { es: string; en: string }
@@ -14,10 +35,14 @@ export type PlaygroundItem = {
   image: { asset: { url: string }; alt: LocalizedString } | null
   repoUrl: string | null
   demoUrl: string | null
+  lastEntryDate: string | null
 }
 
 export type PlaygroundItemFull = PlaygroundItem & {
-  body: Partial<Record<Locale, unknown[]>> | null
+  body:       Partial<Record<Locale, unknown[]>> | null
+  idea:       LocalizedString | null
+  why:        LocalizedString | null
+  logEntries: LogEntry[] | null
 }
 
 // en → localizedSlug.en, everything else → es
@@ -36,21 +61,40 @@ const ITEM_FIELDS = `
   repoUrl, demoUrl
 `
 
-export async function getFeaturedPlaygroundItems(count = 3): Promise<PlaygroundItem[]> {
-  return client.fetch(
-    `*[_type == "playgroundItem" && hidden != true] | order(year desc, _createdAt desc) [0...$count] { ${ITEM_FIELDS} }`,
-    { count },
-    { next: { tags: ['playgroundItem'] } }
+function sortByActivity(raw: PlaygroundItem[]): PlaygroundItem[] {
+  return raw.sort((a, b) =>
+    (b.lastEntryDate ?? '').localeCompare(a.lastEntryDate ?? '')
   )
 }
 
-export async function getAllPlaygroundItems(): Promise<PlaygroundItem[]> {
-  return client.fetch(
-    `*[_type == "playgroundItem" && hidden != true] | order(year desc, _createdAt desc) { ${ITEM_FIELDS} }`,
+const ITEM_FIELDS_WITH_SORT = `
+  ${ITEM_FIELDS},
+  "lastEntryDate": (logEntries | order(date desc))[0].date
+`
+
+export async function getFeaturedPlaygroundItems(count = 3): Promise<PlaygroundItem[]> {
+  const raw = await client.fetch(
+    `*[_type == "playgroundItem" && hidden != true] { ${ITEM_FIELDS_WITH_SORT} }`,
     {},
     { next: { tags: ['playgroundItem'] } }
   )
+  return sortByActivity(raw).slice(0, count)
 }
+
+export async function getAllPlaygroundItems(): Promise<PlaygroundItem[]> {
+  const raw = await client.fetch(
+    `*[_type == "playgroundItem" && hidden != true] { ${ITEM_FIELDS_WITH_SORT} }`,
+    {},
+    { next: { tags: ['playgroundItem'] } }
+  )
+  return sortByActivity(raw)
+}
+
+const LOG_ENTRY_FIELDS = `
+  _key, date, time, dimension, description,
+  tag->{ _id, name, "slug": slug.current, colorKey },
+  images[]{ _key, asset->{ url }, caption }
+`
 
 export async function getPlaygroundItemBySlug(slug: string, locale: Locale): Promise<PlaygroundItemFull | null> {
   const effectiveLocale = locale === 'en' ? 'en' : 'es'
@@ -58,9 +102,14 @@ export async function getPlaygroundItemBySlug(slug: string, locale: Locale): Pro
     `*[_type == "playgroundItem" && hidden != true && (
       localizedSlug[$effectiveLocale].current == $slug ||
       slug.current == $slug
-    )][0] { ${ITEM_FIELDS}, body }`,
+    )][0] {
+      ${ITEM_FIELDS},
+      body,
+      idea, why,
+      logEntries[]{ ${LOG_ENTRY_FIELDS} }
+    }`,
     { slug, effectiveLocale },
-    { next: { tags: ['playgroundItem'] } }
+    { next: { tags: ['playgroundItem', 'logTag'] } }
   )
 }
 
