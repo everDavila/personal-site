@@ -20,8 +20,14 @@ export function LocaleSwitcher() {
   const router = useRouter()
 
   function handleChange(e: React.ChangeEvent<HTMLSelectElement>) {
+    const newLocale = e.target.value
+    const segments = pathname.split('/').filter(Boolean)
+    // On detail pages (/blog/slug, /work/slug, /playground/slug) fall back to parent listing
+    const detailRoots = ['blog', 'work', 'playground']
+    const isDetail = segments.length >= 2 && detailRoots.includes(segments[0])
+    const target = isDetail ? `/${segments[0]}` : pathname
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    router.replace(pathname as any, { locale: e.target.value })
+    router.replace(target as any, { locale: newLocale })
   }
 
   return (
