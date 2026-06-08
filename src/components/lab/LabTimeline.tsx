@@ -19,24 +19,35 @@ function formatTime(timeStr: string): string {
   return `${h.padStart(2, '0')}:${(m ?? '00').padStart(2, '0')}`
 }
 
+function sortKey(e: LogEntry): string {
+  return `${e.date ?? '0000-00-00'}T${e.time ?? '00:00'}`
+}
+
 export function LabTimeline({ entries, locale, totalLabel }: {
   entries: LogEntry[]
   locale: Locale
   totalLabel?: string
 }) {
   const [activeFilter, setActiveFilter] = useState<string>('all')
+  const [sortOrder, setSortOrder]       = useState<'asc' | 'desc'>('asc')
   const [lb, setLb] = useState<LightboxState>({ open: false, images: [], index: 0 })
 
-  // Unique tags from entries
+  // Unique tags sorted by first appearance (ascending)
   const tags = Array.from(
     new Map(
-      entries
+      [...entries]
+        .sort((a, b) => sortKey(a).localeCompare(sortKey(b)))
         .filter(e => e.tag)
         .map(e => [e.tag!.slug, { slug: e.tag!.slug, name: e.tag!.name[locale] ?? e.tag!.name.es ?? e.tag!.slug }])
     ).values()
   )
 
-  const filtered = activeFilter === 'all' ? entries : entries.filter(e => e.tag?.slug === activeFilter)
+  const sorted = [...entries].sort((a, b) => {
+    const cmp = sortKey(a).localeCompare(sortKey(b))
+    return sortOrder === 'asc' ? cmp : -cmp
+  })
+
+  const filtered = activeFilter === 'all' ? sorted : sorted.filter(e => e.tag?.slug === activeFilter)
 
   // Lightbox keyboard nav
   useEffect(() => {
@@ -68,17 +79,26 @@ export function LabTimeline({ entries, locale, totalLabel }: {
 
   const closeLightbox = () => setLb(p => ({ ...p, open: false }))
 
-  const activeTag = tags.find(t => t.slug === activeFilter)
-
   return (
     <>
-      {/* ── Header con contador y filtro ── */}
-      <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.25rem', marginBottom: '1.75rem' }}>
+      {/* ── Header con contador, orden y filtro ── */}
+      <div style={{ display: 'flex', alignItems: 'baseline', gap: '1rem', marginBottom: '1.75rem', flexWrap: 'wrap' }}>
+        {/* Zona izquierda: número, título, orden */}
         <span className="lab-section-num">03</span>
         <h2 className="lab-section-title">Bitácora</h2>
+        <select
+          className="lab-filter-select"
+          value={sortOrder}
+          onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
+        >
+          <option value="asc">Más antiguo</option>
+          <option value="desc">Más reciente</option>
+        </select>
         <span style={{ fontFamily: 'ui-monospace,monospace', fontSize: '0.625rem', color: 'var(--color-muted)', opacity: 0.5, letterSpacing: '0.08em' }}>
           {totalLabel ?? `${entries.length} entradas`}
         </span>
+
+        {/* Zona derecha: filtro por etiqueta */}
         {tags.length > 0 && (
           <select
             className="lab-filter-select"
@@ -86,7 +106,7 @@ export function LabTimeline({ entries, locale, totalLabel }: {
             onChange={e => setActiveFilter(e.target.value)}
             style={{ marginLeft: 'auto' }}
           >
-            <option value="all">Todas las etiquetas</option>
+            <option value="all">Todo</option>
             {tags.map(tag => (
               <option key={tag.slug} value={tag.slug}>{tag.name}</option>
             ))}
@@ -97,7 +117,7 @@ export function LabTimeline({ entries, locale, totalLabel }: {
       {/* ── Timeline ── */}
       <div className="lab-timeline">
         {filtered.map(entry => {
-          const desc   = entry.description?.[locale] ?? entry.description?.es ?? null
+          const desc     = entry.description?.[locale] ?? entry.description?.es ?? null
           const dimLabel = DIMENSION_LABELS[entry.dimension] ?? entry.dimension
           const tagName  = entry.tag?.name[locale] ?? entry.tag?.name.es ?? null
           const colorKey = entry.tag?.colorKey ?? null

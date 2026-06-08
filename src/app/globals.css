@@ -1252,7 +1252,23 @@ body::after {
 
 .lab-img-link:hover { color: var(--color-text); }
 
-/* ── Filter ── */
+/* ── Sort + Filter ── */
+.lab-sort-btn {
+  font-family: ui-monospace, monospace;
+  font-size: 0.5625rem;
+  letter-spacing: 0.06em;
+  color: var(--color-muted);
+  background: none;
+  border: var(--border-width) solid var(--color-border);
+  border-radius: 2px;
+  padding: 0.25rem 0.6rem;
+  cursor: pointer;
+  transition: color var(--transition), border-color var(--transition);
+  white-space: nowrap;
+}
+
+.lab-sort-btn:hover { color: var(--color-text); border-color: var(--color-muted); }
+
 .lab-filter-select {
   font-family: ui-monospace, monospace;
   font-size: 0.6875rem;
