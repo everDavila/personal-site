@@ -7,7 +7,7 @@ import type { PlaygroundItem } from '@/sanity/queries/playground'
 import type { Locale } from '@/lib/i18n'
 import { localized } from '@/lib/i18n'
 
-type StatusKey = 'en_proceso' | 'prototipo' | 'archivado' | 'fallido'
+type StatusKey = 'en_proceso' | 'completado' | 'archivado' | 'fallido'
 
 type Translations = {
   filter_all: string
@@ -27,12 +27,12 @@ type Props = {
 
 const STATUS_COLORS: Record<StatusKey, string> = {
   en_proceso:  'var(--color-accent)',
-  prototipo:   'var(--color-text)',
+  completado:  'var(--color-accent)',
   archivado:   'var(--color-muted)',
   fallido:     'var(--color-muted)',
 }
 
-const STATUS_COUNTS: StatusKey[] = ['en_proceso', 'prototipo', 'archivado', 'fallido']
+const STATUS_COUNTS: StatusKey[] = ['en_proceso', 'completado', 'archivado', 'fallido']
 
 function formatShortDate(dateStr: string, locale: string): string {
   const d = new Date(dateStr.slice(0, 10) + 'T00:00:00')
@@ -42,7 +42,7 @@ function formatShortDate(dateStr: string, locale: string): string {
 
 const STATUS_ICONS: Record<StatusKey, string> = {
   en_proceso: '◌',
-  prototipo:  '◻',
+  completado: '◉',
   archivado:  '◫',
   fallido:    '◪',
 }

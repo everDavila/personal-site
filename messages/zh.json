@@ -41,7 +41,7 @@
     "empty": "暂无实验项目。",
     "status": {
       "en_proceso": "进行中",
-      "prototipo": "原型",
+      "completado": "已完成",
       "archivado": "已归档",
       "fallido": "已失败"
     },

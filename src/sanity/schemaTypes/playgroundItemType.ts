@@ -27,10 +27,10 @@ const CATEGORIES = [
 ]
 
 const STATUSES = [
-  { title: 'En proceso', value: 'en_proceso' },
-  { title: 'Prototipo', value: 'prototipo' },
-  { title: 'Archivado', value: 'archivado' },
-  { title: 'Fallido', value: 'fallido' },
+  { title: 'En proceso',  value: 'en_proceso' },
+  { title: 'Completado',  value: 'completado' },
+  { title: 'Archivado',   value: 'archivado'  },
+  { title: 'Fallido',     value: 'fallido'    },
 ]
 
 export const playgroundItemType = defineType({

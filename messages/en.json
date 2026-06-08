@@ -41,7 +41,7 @@
     "empty": "No experiments here yet.",
     "status": {
       "en_proceso": "In progress",
-      "prototipo": "Prototype",
+      "completado": "Completed",
       "archivado": "Archived",
       "fallido": "Failed"
     },
