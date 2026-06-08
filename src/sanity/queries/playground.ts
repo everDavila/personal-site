@@ -35,6 +35,7 @@ export type PlaygroundItem = {
   image: { asset: { url: string }; alt: LocalizedString } | null
   repoUrl: string | null
   demoUrl: string | null
+  lastEntryDate: string | null
 }
 
 export type PlaygroundItemFull = PlaygroundItem & {
@@ -60,17 +61,15 @@ const ITEM_FIELDS = `
   repoUrl, demoUrl
 `
 
-type WithSortDate = PlaygroundItem & { _sortDate: string }
-
-function sortByActivity(raw: WithSortDate[]): PlaygroundItem[] {
-  return raw
-    .sort((a, b) => b._sortDate.localeCompare(a._sortDate))
-    .map(({ _sortDate: _sd, ...item }) => item as PlaygroundItem)
+function sortByActivity(raw: PlaygroundItem[]): PlaygroundItem[] {
+  return raw.sort((a, b) =>
+    (b.lastEntryDate ?? '').localeCompare(a.lastEntryDate ?? '')
+  )
 }
 
 const ITEM_FIELDS_WITH_SORT = `
   ${ITEM_FIELDS},
-  "_sortDate": coalesce((logEntries | order(date desc))[0].date, _createdAt)
+  "lastEntryDate": (logEntries | order(date desc))[0].date
 `
 
 export async function getFeaturedPlaygroundItems(count = 3): Promise<PlaygroundItem[]> {
