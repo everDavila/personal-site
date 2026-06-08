@@ -3,6 +3,26 @@ import type { Locale } from '@/lib/i18n'
 
 type LocalizedString = Partial<Record<Locale, string>>
 
+export type LogTag = {
+  _id:      string
+  name:     LocalizedString
+  slug:     string
+  colorKey: string
+}
+
+export type LogEntry = {
+  _key:      string
+  date:      string
+  dimension: string
+  tag:       LogTag | null
+  description: LocalizedString | null
+  images: Array<{
+    _key:    string
+    asset:   { url: string }
+    caption: LocalizedString | null
+  }> | null
+}
+
 export type PlaygroundItem = {
   _id: string
   slugs: { es: string; en: string }
@@ -17,7 +37,10 @@ export type PlaygroundItem = {
 }
 
 export type PlaygroundItemFull = PlaygroundItem & {
-  body: Partial<Record<Locale, unknown[]>> | null
+  body:       Partial<Record<Locale, unknown[]>> | null
+  idea:       LocalizedString | null
+  why:        LocalizedString | null
+  logEntries: LogEntry[] | null
 }
 
 // en → localizedSlug.en, everything else → es
@@ -52,15 +75,26 @@ export async function getAllPlaygroundItems(): Promise<PlaygroundItem[]> {
   )
 }
 
+const LOG_ENTRY_FIELDS = `
+  _key, date, dimension, description,
+  tag->{ _id, name, "slug": slug.current, colorKey },
+  images[]{ _key, asset->{ url }, caption }
+`
+
 export async function getPlaygroundItemBySlug(slug: string, locale: Locale): Promise<PlaygroundItemFull | null> {
   const effectiveLocale = locale === 'en' ? 'en' : 'es'
   return client.fetch(
     `*[_type == "playgroundItem" && hidden != true && (
       localizedSlug[$effectiveLocale].current == $slug ||
       slug.current == $slug
-    )][0] { ${ITEM_FIELDS}, body }`,
+    )][0] {
+      ${ITEM_FIELDS},
+      body,
+      idea, why,
+      logEntries[]{ ${LOG_ENTRY_FIELDS} }
+    }`,
     { slug, effectiveLocale },
-    { next: { tags: ['playgroundItem'] } }
+    { next: { tags: ['playgroundItem', 'logTag'] } }
   )
 }
 
