@@ -7,6 +7,7 @@
   <link rel="preconnect" href="https://fonts.googleapis.com" />
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
   <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://unpkg.com/lucide@latest/dist/umd/lucide.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -132,6 +133,21 @@
       display: inline-block;
     }
     .meta-sep { opacity: 0.3; }
+    .detail-links {
+      display: flex;
+      gap: 1.5rem;
+      margin-top: 1rem;
+    }
+    .detail-link {
+      font-family: var(--mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      color: var(--accent);
+      text-decoration: none;
+      transition: opacity 200ms;
+    }
+    .detail-link:hover { opacity: 0.65; }
+
     .detail-image {
       border-radius: 4px;
       overflow: hidden;
@@ -177,9 +193,6 @@
       font-weight: 400;
       letter-spacing: -0.02em;
     }
-    .section-body {
-      max-width: 62ch;
-    }
     .section-body p {
       font-size: 1rem;
       line-height: 1.75;
@@ -189,19 +202,15 @@
     .section-body p:last-child { margin-bottom: 0; }
 
     /* ── Bitácora (timeline) ── */
-    .bitacora-header {
-      display: flex;
-      align-items: baseline;
-      justify-content: space-between;
-      margin-bottom: 0.5rem;
-    }
-    .bitacora-subtitle {
+    .bitacora-count {
       font-family: var(--mono);
-      font-size: 0.6875rem;
-      color: var(--muted);
-      letter-spacing: 0.04em;
-      margin-bottom: 2.5rem;
+      font-size: 0.625rem;
+      color: rgba(232,229,223,0.22);
+      letter-spacing: 0.08em;
+      margin-left: 0.25rem;
+      align-self: center;
     }
+    .filter-wrap { position: relative; }
     .filter-btn {
       font-family: var(--mono);
       font-size: 0.6875rem;
@@ -210,10 +219,158 @@
       background: none;
       border: none;
       cursor: pointer;
-      display: flex;
-      align-items: center;
+      transition: color 150ms;
+    }
+    .filter-btn:hover { color: var(--text); }
+    .filter-btn.active { color: var(--accent); }
+    .filter-panel {
+      display: none;
+      position: absolute;
+      top: calc(100% + 0.6rem);
+      right: 0;
+      background: #1C1C19;
+      border: 1px solid var(--border);
+      border-radius: 4px;
+      padding: 0.75rem;
+      width: 18rem;
+      z-index: 20;
+      display: none;
+      flex-wrap: wrap;
       gap: 0.4rem;
     }
+    .filter-panel.open { display: flex; }
+    .filter-pill {
+      font-family: var(--mono);
+      font-size: 0.5625rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.65rem;
+      border-radius: 2px;
+      border: 1px solid rgba(232,229,223,0.1);
+      background: none;
+      color: var(--muted);
+      cursor: pointer;
+      transition: color 150ms, border-color 150ms, background 150ms;
+    }
+    .filter-pill:hover { color: var(--text); border-color: rgba(232,229,223,0.25); }
+    .filter-pill.selected { color: var(--accent); border-color: var(--accent); background: rgba(90,124,148,0.08); }
+
+    /* Timeline entry transition for filtering */
+    .timeline-entry {
+      transition: opacity 200ms, max-height 300ms;
+    }
+    .timeline-entry.hidden {
+      display: none;
+    }
+    .timeline-entry[data-category="hito"] .tl-dot {
+      width: 10px;
+      height: 10px;
+      background: rgba(225,130,140,0.55);
+      box-shadow: 0 0 8px rgba(225,130,140,0.25);
+    }
+
+    /* ── Imágenes inline en bitácora ── */
+    /* Links de imagen en timeline */
+    .tl-img-links {
+      display: flex;
+      flex-direction: column;
+      gap: 0.3rem;
+      margin-top: 0.6rem;
+      margin-left: calc(2rem + 0.75rem);
+    }
+    .tl-img-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      font-family: var(--mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      cursor: pointer;
+      background: none;
+      border: none;
+      padding: 0;
+      text-align: left;
+      transition: color 200ms;
+    }
+    .tl-img-link:hover { color: var(--text); }
+
+    /* ── Lightbox ── */
+    .lightbox {
+      display: none;
+      position: fixed;
+      inset: 0;
+      z-index: 100;
+      background: rgba(10,10,8,0.92);
+      backdrop-filter: blur(4px);
+      align-items: center;
+      justify-content: center;
+      flex-direction: column;
+      gap: 1rem;
+      padding: 2rem;
+    }
+    .lightbox.open { display: flex; }
+    .lightbox-close {
+      position: fixed;
+      top: 1.5rem;
+      right: 1.5rem;
+      background: none;
+      border: 1px solid var(--border);
+      color: var(--muted);
+      font-size: 0.875rem;
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 200ms, border-color 200ms;
+    }
+    .lightbox-close:hover { color: var(--text); border-color: rgba(232,229,223,0.3); }
+    .lightbox-img {
+      max-width: 90vw;
+      max-height: 80vh;
+      object-fit: contain;
+      border-radius: 4px;
+    }
+    .lightbox-caption {
+      font-family: var(--mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      text-align: center;
+    }
+    .lightbox-counter {
+      margin-top: 0.35rem;
+      font-family: var(--mono);
+      font-size: 0.6rem;
+      color: rgba(232,229,223,0.22);
+      letter-spacing: 0.08em;
+      text-align: center;
+    }
+    .lightbox-nav {
+      position: fixed;
+      top: 50%;
+      transform: translateY(-50%);
+      background: none;
+      border: 1px solid rgba(232,229,223,0.12);
+      color: rgba(232,229,223,0.4);
+      font-size: 1rem;
+      width: 2.25rem;
+      height: 2.25rem;
+      border-radius: 50%;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: color 150ms, border-color 150ms;
+      z-index: 1001;
+    }
+    .lightbox-nav:hover { color: var(--text); border-color: rgba(232,229,223,0.3); }
+    .lightbox-nav:disabled { opacity: 0.12; cursor: default; pointer-events: none; }
+    .lightbox-prev { left: 1.5rem; }
+    .lightbox-next { right: 1.5rem; }
 
     /* Timeline layout */
     .timeline {
@@ -284,14 +441,15 @@
       width: 2rem;
       height: 2rem;
       border-radius: 50%;
-      background: rgba(232,229,223,0.06);
+      background: rgba(232,229,223,0.04);
       border: 1px solid var(--border);
       display: flex;
       align-items: center;
       justify-content: center;
-      font-size: 0.875rem;
       flex-shrink: 0;
+      color: var(--muted);
     }
+    .tl-icon svg { display: block; }
     .tl-title {
       font-family: var(--serif);
       font-size: 1.0625rem;
@@ -309,13 +467,13 @@
       white-space: nowrap;
       flex-shrink: 0;
     }
-    .tag-hipotesis { color: #A07DBF; border-color: rgba(160,125,191,0.3); background: rgba(160,125,191,0.07); }
-    .tag-decision  { color: #5A9E6F; border-color: rgba(90,158,111,0.3);  background: rgba(90,158,111,0.07); }
-    .tag-exploracion { color: var(--accent); border-color: rgba(90,124,148,0.3); background: rgba(90,124,148,0.07); }
-    .tag-avance    { color: #C4943A; border-color: rgba(196,148,58,0.3);  background: rgba(196,148,58,0.07); }
-    .tag-completado { color: #5A9E6F; border-color: rgba(90,158,111,0.4); background: rgba(90,158,111,0.1); }
-    .tag-leccion   { color: #C47A3A; border-color: rgba(196,122,58,0.3);  background: rgba(196,122,58,0.07); }
-    .tag-hito      { color: #CF6679; border-color: rgba(207,102,121,0.3); background: rgba(207,102,121,0.07); }
+    .tag-hipotesis  { color: rgba(180,155,215,0.5); border-color: rgba(180,155,215,0.15); background: rgba(180,155,215,0.04); }
+    .tag-decision   { color: rgba(130,200,155,0.5); border-color: rgba(130,200,155,0.15); background: rgba(130,200,155,0.04); }
+    .tag-exploracion{ color: rgba(120,165,210,0.5); border-color: rgba(120,165,210,0.15); background: rgba(120,165,210,0.04); }
+    .tag-avance     { color: rgba(220,185,105,0.5); border-color: rgba(220,185,105,0.15); background: rgba(220,185,105,0.04); }
+    .tag-completado { color: rgba(110,205,175,0.5); border-color: rgba(110,205,175,0.15); background: rgba(110,205,175,0.04); }
+    .tag-leccion    { color: rgba(205,165,95,0.5);  border-color: rgba(205,165,95,0.15);  background: rgba(205,165,95,0.04);  }
+    .tag-hito       { color: rgba(225,130,140,0.5); border-color: rgba(225,130,140,0.15); background: rgba(225,130,140,0.04); }
 
     .tl-desc {
       font-size: 0.9375rem;
@@ -463,6 +621,10 @@
             <span class="meta-sep">·</span>
             <span>Última actualización: 08 Jun 2026</span>
           </div>
+          <div class="detail-links">
+            <a href="#" class="detail-link" target="_blank" rel="noopener">GitHub ↗</a>
+            <a href="#" class="detail-link" target="_blank" rel="noopener">Ver demo ↗</a>
+          </div>
         </div>
         <div class="detail-image">
           <span class="detail-image-placeholder">imagen del experimento</span>
@@ -495,21 +657,29 @@
 
       <!-- 03 Bitácora -->
       <div class="section">
-        <div class="bitacora-header">
-          <div>
-            <div class="section-header" style="margin-bottom: 0.35rem;">
-              <span class="section-num">03</span>
-              <h2 class="section-title">Bitácora</h2>
+        <div class="section-header" style="margin-bottom: 2rem;">
+          <span class="section-num">03</span>
+          <h2 class="section-title">Bitácora</h2>
+          <span class="bitacora-count">13 entradas</span>
+          <div class="filter-wrap" style="margin-left: auto;">
+            <button class="filter-btn" id="filterBtn">Filtrar ▾</button>
+            <div class="filter-panel" id="filterPanel">
+              <button class="filter-pill selected" data-filter="all">Todas</button>
+              <button class="filter-pill" data-filter="hipotesis">Hipótesis</button>
+              <button class="filter-pill" data-filter="decision">Decisión</button>
+              <button class="filter-pill" data-filter="exploracion">Exploración</button>
+              <button class="filter-pill" data-filter="avance">Avance</button>
+              <button class="filter-pill" data-filter="completado">Completado</button>
+              <button class="filter-pill" data-filter="leccion">Lección</button>
+              <button class="filter-pill" data-filter="hito">Hito</button>
             </div>
-            <p class="bitacora-subtitle">La evolución del proyecto</p>
           </div>
-          <button class="filter-btn">Filtrar por categoría ▾</button>
         </div>
 
         <div class="timeline">
 
           <!-- Entry 1 -->
-          <div class="timeline-entry">
+          <div class="timeline-entry" data-category="hipotesis">
             <div class="tl-date">
               <span class="tl-date-text">04 Jun<br>2026</span>
             </div>
@@ -517,7 +687,7 @@
             <div class="tl-content">
               <div class="tl-top">
                 <div class="tl-icon-title">
-                  <div class="tl-icon">💡</div>
+                  <div class="tl-icon"><i data-lucide="lightbulb"></i></div>
                   <span class="tl-title">Idea</span>
                 </div>
                 <span class="tl-tag tag-hipotesis">Hipótesis</span>
@@ -527,7 +697,7 @@
           </div>
 
           <!-- Entry 2 -->
-          <div class="timeline-entry">
+          <div class="timeline-entry" data-category="decision">
             <div class="tl-date">
               <span class="tl-date-text">08 Jun<br>2026</span>
             </div>
@@ -535,7 +705,7 @@
             <div class="tl-content">
               <div class="tl-top">
                 <div class="tl-icon-title">
-                  <div class="tl-icon">🎯</div>
+                  <div class="tl-icon"><i data-lucide="target"></i></div>
                   <span class="tl-title">Producto</span>
                 </div>
                 <span class="tl-tag tag-decision">Decisión</span>
@@ -545,7 +715,7 @@
           </div>
 
           <!-- Entry 3 -->
-          <div class="timeline-entry">
+          <div class="timeline-entry" data-category="exploracion">
             <div class="tl-date">
               <span class="tl-date-text">12 Jun<br>2026</span>
             </div>
@@ -553,17 +723,22 @@
             <div class="tl-content">
               <div class="tl-top">
                 <div class="tl-icon-title">
-                  <div class="tl-icon">🧩</div>
+                  <div class="tl-icon"><i data-lucide="layers"></i></div>
                   <span class="tl-title">Interfaz</span>
                 </div>
                 <span class="tl-tag tag-exploracion">Exploración</span>
               </div>
               <p class="tl-desc">Primeras exploraciones visuales para la mascota. Descarté enfoques demasiado caricaturescos. Busco algo que transmita carácter sin sentirse infantil.</p>
+              <div class="tl-img-links">
+                <button class="tl-img-link" data-src="https://picsum.photos/seed/ui1/400/280" data-caption="Primer sketch — demasiado caricaturesco">↗ Primer sketch — demasiado caricaturesco</button>
+                <button class="tl-img-link" data-src="https://picsum.photos/seed/ui2/400/280" data-caption="Segunda exploración — más abstracta">↗ Segunda exploración — más abstracta</button>
+                <button class="tl-img-link" data-src="https://picsum.photos/seed/ui3/400/280" data-caption="Dirección final — carácter sin infantilismo">↗ Dirección final — carácter sin infantilismo</button>
+              </div>
             </div>
           </div>
 
           <!-- Entry 4 -->
-          <div class="timeline-entry">
+          <div class="timeline-entry" data-category="avance">
             <div class="tl-date">
               <span class="tl-date-text">18 Jun<br>2026</span>
             </div>
@@ -571,17 +746,21 @@
             <div class="tl-content">
               <div class="tl-top">
                 <div class="tl-icon-title">
-                  <div class="tl-icon">&lt;/&gt;</div>
+                  <div class="tl-icon"><i data-lucide="code-2"></i></div>
                   <span class="tl-title">Implementación</span>
                 </div>
                 <span class="tl-tag tag-avance">Avance</span>
               </div>
               <p class="tl-desc">Integración inicial con OpenWeather. Generación dinámica de mensajes basada en temperatura, condición climática y hora del día.</p>
+              <div class="tl-img-links">
+                <button class="tl-img-link" data-src="https://picsum.photos/seed/impl1/400/280" data-caption="Respuesta cruda de la API — primera conexión">↗ Respuesta cruda de la API — primera conexión</button>
+                <button class="tl-img-link" data-src="https://picsum.photos/seed/impl2/400/280" data-caption="Primer mensaje generado con personalidad Geek">↗ Primer mensaje generado con personalidad Geek</button>
+              </div>
             </div>
           </div>
 
           <!-- Entry 5 -->
-          <div class="timeline-entry">
+          <div class="timeline-entry" data-category="completado">
             <div class="tl-date">
               <span class="tl-date-text">20 Jun<br>2026</span>
             </div>
@@ -589,7 +768,7 @@
             <div class="tl-content">
               <div class="tl-top">
                 <div class="tl-icon-title">
-                  <div class="tl-icon">☁️</div>
+                  <div class="tl-icon"><i data-lucide="cloud"></i></div>
                   <span class="tl-title">Infraestructura</span>
                 </div>
                 <span class="tl-tag tag-completado">Completado</span>
@@ -599,7 +778,7 @@
           </div>
 
           <!-- Entry 6 -->
-          <div class="timeline-entry">
+          <div class="timeline-entry" data-category="leccion">
             <div class="tl-date">
               <span class="tl-date-text">21 Jun<br>2026</span>
             </div>
@@ -607,7 +786,7 @@
             <div class="tl-content">
               <div class="tl-top">
                 <div class="tl-icon-title">
-                  <div class="tl-icon">📖</div>
+                  <div class="tl-icon"><i data-lucide="book-open"></i></div>
                   <span class="tl-title">Aprendizaje</span>
                 </div>
                 <span class="tl-tag tag-leccion">Lección</span>
@@ -616,8 +795,116 @@
             </div>
           </div>
 
+          <!-- Entry: Investigación -->
+          <div class="timeline-entry" data-category="exploracion">
+            <div class="tl-date">
+              <span class="tl-date-text">01 Jul<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon"><i data-lucide="compass"></i></div>
+                  <span class="tl-title">Investigación</span>
+                </div>
+                <span class="tl-tag tag-exploracion">Exploración</span>
+              </div>
+              <p class="tl-desc">Benchmark de apps meteorológicas existentes. Patrones de narrativa en productos conversacionales. Referencias: Dark Sky, Mercury Weather, Weathergraph.</p>
+            </div>
+          </div>
+
+          <!-- Entry: Testing -->
+          <div class="timeline-entry" data-category="decision">
+            <div class="tl-date">
+              <span class="tl-date-text">03 Jul<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon"><i data-lucide="flask-conical"></i></div>
+                  <span class="tl-title">Testing</span>
+                </div>
+                <span class="tl-tag tag-decision">Decisión</span>
+              </div>
+              <p class="tl-desc">Primera ronda con 3 usuarios. Todos entendieron el concepto de personalidad del clima en menos de 30 segundos. El modo Filosófico fue el favorito.</p>
+            </div>
+          </div>
+
+          <!-- Entry: Contenido -->
+          <div class="timeline-entry" data-category="avance">
+            <div class="tl-date">
+              <span class="tl-date-text">05 Jul<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon"><i data-lucide="pen-line"></i></div>
+                  <span class="tl-title">Contenido</span>
+                </div>
+                <span class="tl-tag tag-avance">Avance</span>
+              </div>
+              <p class="tl-desc">Primeras 40 frases de respuesta para el modo Geek. Tono calibrado: referencial sin ser pedante. Cada mensaje ≤ 2 líneas.</p>
+            </div>
+          </div>
+
+          <!-- Entry: Datos -->
+          <div class="timeline-entry" data-category="leccion">
+            <div class="tl-date">
+              <span class="tl-date-text">07 Jul<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon"><i data-lucide="activity"></i></div>
+                  <span class="tl-title">Datos</span>
+                </div>
+                <span class="tl-tag tag-leccion">Lección</span>
+              </div>
+              <p class="tl-desc">El 70% de las consultas ocurren entre 7–9am y 6–8pm. El modo Noctámbulo tiene engagement 3× mayor en sesiones nocturnas.</p>
+            </div>
+          </div>
+
+          <!-- Entry: Diseño de sistema -->
+          <div class="timeline-entry" data-category="completado">
+            <div class="tl-date">
+              <span class="tl-date-text">10 Jul<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon"><i data-lucide="layout-grid"></i></div>
+                  <span class="tl-title">Diseño de sistema</span>
+                </div>
+                <span class="tl-tag tag-completado">Completado</span>
+              </div>
+              <p class="tl-desc">Tokens de color por modo de personalidad definidos. Componente de tarjeta de clima extraído como pieza reutilizable.</p>
+            </div>
+          </div>
+
+          <!-- Entry: Accesibilidad -->
+          <div class="timeline-entry" data-category="leccion">
+            <div class="tl-date">
+              <span class="tl-date-text">12 Jul<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon"><i data-lucide="eye"></i></div>
+                  <span class="tl-title">Accesibilidad</span>
+                </div>
+                <span class="tl-tag tag-leccion">Lección</span>
+              </div>
+              <p class="tl-desc">Contraste insuficiente en modo Noctámbulo sobre fondo oscuro. Revisión de ratio en todos los modos. WCAG AA cumplido tras ajuste.</p>
+            </div>
+          </div>
+
           <!-- Entry 7 -->
-          <div class="timeline-entry">
+          <div class="timeline-entry" data-category="hito">
             <div class="tl-date">
               <span class="tl-date-text">25 Jun<br>2026</span>
             </div>
@@ -625,55 +912,52 @@
             <div class="tl-content">
               <div class="tl-top">
                 <div class="tl-icon-title">
-                  <div class="tl-icon">🚀</div>
+                  <div class="tl-icon"><i data-lucide="zap"></i></div>
                   <span class="tl-title">Hito</span>
                 </div>
                 <span class="tl-tag tag-hito">Hito</span>
               </div>
               <p class="tl-desc">Primer MVP funcional desplegado. Nimbus ya puede obtener el clima, interpretar el contexto y generar respuestas personalizadas.</p>
+              <div class="tl-img-links">
+                <button class="tl-img-link" data-src="https://picsum.photos/seed/mvp1/400/280" data-caption="Pantalla principal — modo Noctámbulo, 2am, 14°C">↗ Pantalla principal — modo Noctámbulo, 2am, 14°C</button>
+                <button class="tl-img-link" data-src="https://picsum.photos/seed/mvp2/400/280" data-caption="Modo Filosófico — lluvia en Lima">↗ Modo Filosófico — lluvia en Lima</button>
+                <button class="tl-img-link" data-src="https://picsum.photos/seed/mvp3/400/280" data-caption="Selección de personalidad al primer uso">↗ Selección de personalidad al primer uso</button>
+              </div>
             </div>
           </div>
 
         </div>
       </div>
 
-      <!-- 04 Estado + 05 Próximos + Quote -->
-      <div class="bottom-grid">
 
-        <div>
-          <div class="section-header">
-            <span class="section-num">04</span>
-            <h2 class="bottom-section-title">Estado actual</h2>
-          </div>
+      <!-- 04 Estado actual -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">04</span>
+          <h2 class="section-title">Estado actual</h2>
+        </div>
+        <div style="display: flex; align-items: center; justify-content: space-between;">
           <div class="status-badge">Exploración activa</div>
-          <p class="bottom-body">El MVP funciona y continúa evolucionando en función del aprendizaje y las pruebas con usuarios reales.</p>
-        </div>
-
-        <div>
-          <div class="section-header">
-            <span class="section-num">05</span>
-            <h2 class="bottom-section-title">Próximos experimentos</h2>
-          </div>
-          <ul class="next-list">
-            <li>Memoria de preferencias</li>
-            <li>Personalidades entrenables</li>
-            <li>Notificaciones contextuales</li>
-            <li>Versiones Android e iOS</li>
-            <li>Insulto Climático del Día</li>
-          </ul>
-        </div>
-
-        <div style="display: flex; align-items: center;">
-          <div class="quote-block">
-            <p class="quote-text">"No busco predecir el clima.<br>Busco entender cómo se siente cada momento."</p>
-            <p class="quote-author">— Ever Dávila</p>
+          <div class="detail-links" style="margin-top: 0;">
+            <a href="#" class="detail-link" target="_blank" rel="noopener">GitHub ↗</a>
+            <a href="#" class="detail-link" target="_blank" rel="noopener">Ver demo ↗</a>
           </div>
         </div>
-
+        <p class="bottom-body" style="margin-top: 0.75rem;">El MVP funciona y continúa evolucionando en función del aprendizaje y las pruebas con usuarios reales.</p>
       </div>
 
     </div>
   </main>
+
+  <!-- Lightbox -->
+  <div id="lightbox" class="lightbox">
+    <button class="lightbox-close" id="lightboxClose">✕</button>
+    <button class="lightbox-nav lightbox-prev" id="lightboxPrev">←</button>
+    <button class="lightbox-nav lightbox-next" id="lightboxNext">→</button>
+    <img id="lightboxImg" class="lightbox-img" src="" alt="" />
+    <p id="lightboxCaption" class="lightbox-caption"></p>
+    <p id="lightboxCounter" class="lightbox-counter"></p>
+  </div>
 
   <!-- Footer -->
   <footer>
@@ -685,5 +969,105 @@
     </div>
   </footer>
 
+  <script>
+    lucide.createIcons({ attrs: { width: 15, height: 15, 'stroke-width': 1.5 } })
+
+    // Lightbox
+    const lightbox        = document.getElementById('lightbox')
+    const lightboxImg     = document.getElementById('lightboxImg')
+    const lightboxCaption = document.getElementById('lightboxCaption')
+    const lightboxCounter = document.getElementById('lightboxCounter')
+    const lightboxClose   = document.getElementById('lightboxClose')
+    const lightboxPrev    = document.getElementById('lightboxPrev')
+    const lightboxNext    = document.getElementById('lightboxNext')
+
+    let currentGroup = []
+    let currentIndex = 0
+
+    function showSlide(index) {
+      const slide = currentGroup[index]
+      lightboxImg.src             = slide.src
+      lightboxCaption.textContent = slide.caption
+      lightboxCounter.textContent = currentGroup.length > 1
+        ? `${index + 1} / ${currentGroup.length}`
+        : ''
+      lightboxPrev.disabled = index === 0
+      lightboxNext.disabled = index === currentGroup.length - 1
+    }
+
+    function openLightbox(group, index) {
+      currentGroup = group
+      currentIndex = index
+      showSlide(currentIndex)
+      lightbox.classList.add('open')
+      document.body.style.overflow = 'hidden'
+    }
+
+    function closeLightbox() {
+      lightbox.classList.remove('open')
+      document.body.style.overflow = ''
+      lightboxImg.src = ''
+    }
+
+    // Build group from sibling triggers in the same container
+    function buildGroup(container, selector) {
+      return Array.from(container.querySelectorAll(selector)).map(el => ({
+        src:     el.dataset.src || el.src,
+        caption: el.dataset.caption || '',
+      }))
+    }
+
+    document.querySelectorAll('.tl-img-links').forEach(container => {
+      const group = buildGroup(container, '.tl-img-link')
+      container.querySelectorAll('.tl-img-link').forEach((link, i) => {
+        link.addEventListener('click', () => openLightbox(group, i))
+      })
+    })
+
+    lightboxPrev.addEventListener('click', (e) => {
+      e.stopPropagation()
+      if (currentIndex > 0) { currentIndex--; showSlide(currentIndex) }
+    })
+    lightboxNext.addEventListener('click', (e) => {
+      e.stopPropagation()
+      if (currentIndex < currentGroup.length - 1) { currentIndex++; showSlide(currentIndex) }
+    })
+
+    document.addEventListener('keydown', e => {
+      if (!lightbox.classList.contains('open')) return
+      if (e.key === 'Escape')      closeLightbox()
+      if (e.key === 'ArrowLeft'  && currentIndex > 0)                         { currentIndex--; showSlide(currentIndex) }
+      if (e.key === 'ArrowRight' && currentIndex < currentGroup.length - 1)   { currentIndex++; showSlide(currentIndex) }
+    })
+
+    lightboxClose.addEventListener('click', closeLightbox)
+    lightbox.addEventListener('click', e => { if (e.target === lightbox) closeLightbox() })
+
+    const filterBtn   = document.getElementById('filterBtn')
+    const filterPanel = document.getElementById('filterPanel')
+    const pills       = filterPanel.querySelectorAll('.filter-pill')
+    const entries     = document.querySelectorAll('.timeline-entry')
+
+    filterBtn.addEventListener('click', e => {
+      e.stopPropagation()
+      filterPanel.classList.toggle('open')
+    })
+    document.addEventListener('click', () => filterPanel.classList.remove('open'))
+    filterPanel.addEventListener('click', e => e.stopPropagation())
+
+    pills.forEach(pill => {
+      pill.addEventListener('click', () => {
+        const filter = pill.dataset.filter
+        pills.forEach(p => p.classList.remove('selected'))
+        pill.classList.add('selected')
+        entries.forEach(e => {
+          e.classList.toggle('hidden', filter !== 'all' && e.dataset.category !== filter)
+        })
+        filterBtn.textContent = filter === 'all' ? 'Filtrar ▾' : pill.textContent + ' ✕'
+        filterBtn.classList.toggle('active', filter !== 'all')
+        filterPanel.classList.remove('open')
+      })
+    })
+  </script>
 </body>
 </html>
