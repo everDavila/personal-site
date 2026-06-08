@@ -40,7 +40,7 @@ export function LabTimeline({ entries, locale, totalLabel }: {
       [...entries]
         .sort((a, b) => sortKey(a).localeCompare(sortKey(b)))
         .filter(e => e.tag)
-        .map(e => [e.tag!.slug, { slug: e.tag!.slug, name: e.tag!.name[locale] ?? e.tag!.name.es ?? e.tag!.slug }])
+        .map(e => [e.tag!.slug, { slug: e.tag!.slug, name: e.tag!.name[locale] ?? e.tag!.name.es ?? e.tag!.name.en ?? e.tag!.slug }])
     ).values()
   )
 
@@ -74,7 +74,7 @@ export function LabTimeline({ entries, locale, totalLabel }: {
       index: startIndex,
       images: images.map(img => ({
         src:     img.asset.url,
-        caption: img.caption?.[locale] ?? img.caption?.es ?? '',
+        caption: img.caption?.[locale] ?? img.caption?.es ?? img.caption?.en ?? '',
       })),
     })
   }, [locale])
@@ -119,9 +119,9 @@ export function LabTimeline({ entries, locale, totalLabel }: {
       {/* ── Timeline ── */}
       <div className="lab-timeline">
         {filtered.map(entry => {
-          const desc     = entry.description?.[locale] ?? entry.description?.es ?? null
+          const desc     = entry.description?.[locale] ?? entry.description?.es ?? entry.description?.en ?? null
           const dimLabel = t(DIMENSION_MSG_KEY[entry.dimension] ?? 'dim_lightbulb')
-          const tagName  = entry.tag?.name[locale] ?? entry.tag?.name.es ?? null
+          const tagName  = entry.tag?.name[locale] ?? entry.tag?.name.es ?? entry.tag?.name.en ?? null
           const colorKey = entry.tag?.colorKey ?? null
           const isHito   = entry.dimension === 'zap'
 
@@ -168,7 +168,7 @@ export function LabTimeline({ entries, locale, totalLabel }: {
                 {entry.images && entry.images.length > 0 && (
                   <div className="lab-img-links">
                     {entry.images.map((img, i) => {
-                      const caption = img.caption?.[locale] ?? img.caption?.es ?? `Imagen ${i + 1}`
+                      const caption = img.caption?.[locale] ?? img.caption?.es ?? img.caption?.en ?? `Imagen ${i + 1}`
                       return (
                         <button
                           key={img._key}

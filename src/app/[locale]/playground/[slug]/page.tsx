@@ -32,8 +32,8 @@ export default async function LabDetailPage({ params }: Props) {
   const loc   = locale as Locale
   const title = localized(item.title, loc, 'es')
   const desc  = item.description ? localized(item.description, loc, 'es') : null
-  const idea  = item.idea?.[loc] ?? item.idea?.es ?? null
-  const why   = item.why?.[loc]  ?? item.why?.es  ?? null
+  const idea  = item.idea?.[loc] ?? item.idea?.es ?? item.idea?.en ?? null
+  const why   = item.why?.[loc]  ?? item.why?.es  ?? item.why?.en  ?? null
 
   return (
     <main style={{ maxWidth: 'var(--max-width, 82rem)', margin: '0 auto', padding: '0 var(--space-side, 2rem)' }}>
