@@ -75,17 +75,6 @@ export default async function ProjectPage({ params }: Props) {
             )}
           </h1>
 
-          {summary.value && (
-            <p style={{
-              fontSize: 'var(--text-body)',
-              color: 'var(--color-muted)',
-              lineHeight: 1.6,
-              margin: '0.75rem 0 0',
-            }}>
-              {summary.value}
-            </p>
-          )}
-
           <div style={{
             display: 'grid',
             gridTemplateColumns: 'repeat(auto-fill, minmax(min(10rem, 100%), 1fr))',

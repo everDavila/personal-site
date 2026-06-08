@@ -181,18 +181,6 @@ export default async function PostPage({ params }: Props) {
             )}
           </h1>
 
-          {excerpt.value && (
-            <p style={{
-              fontSize: 'var(--text-body)',
-              color: 'var(--color-muted)',
-              lineHeight: 1.65,
-              margin: '0 0 1.75rem',
-              fontStyle: 'italic',
-            }}>
-              {excerpt.value}
-            </p>
-          )}
-
           {/* Meta row */}
           <div style={{
             display: 'flex',

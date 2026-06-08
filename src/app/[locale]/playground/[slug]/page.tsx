@@ -142,19 +142,6 @@ export default async function PlaygroundItemPage({ params }: Props) {
             </div>
           )}
 
-          {/* Description */}
-          {description?.value && (
-            <p style={{
-              fontSize: 'var(--text-body)',
-              color: 'var(--color-muted)',
-              lineHeight: 1.6,
-              margin: '0 0 1.5rem',
-              maxWidth: '52ch',
-            }}>
-              {description.value}
-            </p>
-          )}
-
           {/* Links */}
           {(item.repoUrl || item.demoUrl) && (
             <div style={{
