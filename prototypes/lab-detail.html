@@ -1,0 +1,689 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Nimbus — Lab · davila.uno</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Source+Serif+4:ital,wght@0,400;0,600;1,400&family=Inter:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0F0F0D;
+      --text:     #E8E5DF;
+      --muted:    rgba(232, 229, 223, 0.45);
+      --dimmer:   rgba(232, 229, 223, 0.25);
+      --accent:   #5A7C94;
+      --border:   rgba(232, 229, 223, 0.08);
+      --serif:    'Source Serif 4', Georgia, serif;
+      --sans:     'Inter', system-ui, sans-serif;
+      --mono:     ui-monospace, 'Cascadia Code', monospace;
+      --max:      82rem;
+      --gutter:   clamp(1.5rem, 5vw, 3rem);
+    }
+
+    html { background: var(--bg); color: var(--text); font-family: var(--sans); font-size: 16px; }
+    body { min-height: 100vh; }
+    a { color: inherit; text-decoration: none; }
+
+    /* ── Container ── */
+    .container {
+      width: 100%;
+      max-width: var(--max);
+      margin-inline: auto;
+      padding-inline: var(--gutter);
+    }
+
+    /* ── Nav ── */
+    nav {
+      position: sticky;
+      top: 0;
+      z-index: 50;
+      background: var(--bg);
+      border-bottom: 1px solid var(--border);
+    }
+    .nav-inner {
+      display: flex;
+      align-items: center;
+      gap: 2.5rem;
+      padding-block: 1rem;
+    }
+    .nav-logo {
+      font-family: var(--mono);
+      font-size: 0.8125rem;
+      letter-spacing: 0.04em;
+      opacity: 0.9;
+      margin-right: auto;
+    }
+    .nav-link {
+      font-family: var(--mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: var(--muted);
+      transition: opacity 200ms;
+    }
+    .nav-link:hover { opacity: 0.65; }
+    .nav-link.active { color: var(--text); border-bottom: 1px solid var(--text); padding-bottom: 2px; }
+    .nav-icon {
+      width: 1.75rem; height: 1.75rem;
+      border: 1px solid var(--border);
+      border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer;
+      color: var(--muted);
+      font-size: 0.75rem;
+    }
+
+    /* ── Back link ── */
+    .back-link {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.08em;
+      color: var(--muted);
+      padding-block: clamp(2rem, 4vw, 3rem) 0;
+      transition: opacity 200ms;
+    }
+    .back-link:hover { opacity: 0.65; }
+
+    /* ── Header ── */
+    .detail-header {
+      display: grid;
+      grid-template-columns: 1fr 380px;
+      gap: clamp(2rem, 5vw, 4rem);
+      align-items: start;
+      padding-block: clamp(2rem, 4vw, 3.5rem);
+      border-bottom: 1px solid var(--border);
+    }
+    .detail-title {
+      font-family: var(--serif);
+      font-size: clamp(3rem, 7vw, 5.5rem);
+      font-weight: 400;
+      line-height: 1.0;
+      letter-spacing: -0.03em;
+    }
+    .detail-subtitle {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: clamp(1.1rem, 2.2vw, 1.5rem);
+      color: var(--accent);
+      margin-top: 0.75rem;
+      line-height: 1.3;
+    }
+    .detail-meta {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      margin-top: 1.5rem;
+      font-family: var(--mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+    }
+    .status-dot {
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #5A9E6F;
+      display: inline-block;
+    }
+    .meta-sep { opacity: 0.3; }
+    .detail-image {
+      border-radius: 4px;
+      overflow: hidden;
+      background: rgba(232,229,223,0.04);
+      aspect-ratio: 4/3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .detail-image img {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+    }
+    .detail-image-placeholder {
+      font-family: var(--mono);
+      font-size: 0.6875rem;
+      color: var(--dimmer);
+      letter-spacing: 0.06em;
+    }
+
+    /* ── Sections ── */
+    .section {
+      padding-block: clamp(3rem, 6vw, 4.5rem);
+      border-bottom: 1px solid var(--border);
+    }
+    .section-header {
+      display: flex;
+      align-items: baseline;
+      gap: 1.25rem;
+      margin-bottom: 1.75rem;
+    }
+    .section-num {
+      font-family: var(--mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.1em;
+      color: var(--accent);
+      opacity: 0.8;
+    }
+    .section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.5rem, 3vw, 2rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+    }
+    .section-body {
+      max-width: 62ch;
+    }
+    .section-body p {
+      font-size: 1rem;
+      line-height: 1.75;
+      color: rgba(232,229,223,0.8);
+      margin-bottom: 1rem;
+    }
+    .section-body p:last-child { margin-bottom: 0; }
+
+    /* ── Bitácora (timeline) ── */
+    .bitacora-header {
+      display: flex;
+      align-items: baseline;
+      justify-content: space-between;
+      margin-bottom: 0.5rem;
+    }
+    .bitacora-subtitle {
+      font-family: var(--mono);
+      font-size: 0.6875rem;
+      color: var(--muted);
+      letter-spacing: 0.04em;
+      margin-bottom: 2.5rem;
+    }
+    .filter-btn {
+      font-family: var(--mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.06em;
+      color: var(--muted);
+      background: none;
+      border: none;
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: 0.4rem;
+    }
+
+    /* Timeline layout */
+    .timeline {
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    .timeline-entry {
+      display: grid;
+      grid-template-columns: 7rem 1px 1fr;
+      gap: 0 1.75rem;
+      position: relative;
+    }
+
+    /* Date column */
+    .tl-date {
+      text-align: right;
+      padding-top: 0.25rem;
+      padding-bottom: 2.5rem;
+    }
+    .tl-date-text {
+      font-family: var(--mono);
+      font-size: 0.6875rem;
+      letter-spacing: 0.04em;
+      color: var(--muted);
+      line-height: 1.5;
+    }
+
+    /* Vertical line */
+    .tl-line {
+      position: relative;
+      background: var(--border);
+      width: 1px;
+    }
+    .tl-dot {
+      position: absolute;
+      top: 0.25rem;
+      left: 50%;
+      transform: translateX(-50%);
+      width: 7px;
+      height: 7px;
+      border-radius: 50%;
+      background: var(--accent);
+      border: 1px solid var(--bg);
+    }
+    .timeline-entry:last-child .tl-line {
+      background: linear-gradient(to bottom, var(--border), transparent);
+    }
+
+    /* Content column */
+    .tl-content {
+      padding-top: 0;
+      padding-bottom: 2.5rem;
+    }
+    .tl-top {
+      display: flex;
+      align-items: flex-start;
+      justify-content: space-between;
+      gap: 1rem;
+      margin-bottom: 0.5rem;
+    }
+    .tl-icon-title {
+      display: flex;
+      align-items: center;
+      gap: 0.75rem;
+    }
+    .tl-icon {
+      width: 2rem;
+      height: 2rem;
+      border-radius: 50%;
+      background: rgba(232,229,223,0.06);
+      border: 1px solid var(--border);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 0.875rem;
+      flex-shrink: 0;
+    }
+    .tl-title {
+      font-family: var(--serif);
+      font-size: 1.0625rem;
+      font-weight: 400;
+      letter-spacing: -0.01em;
+    }
+    .tl-tag {
+      font-family: var(--mono);
+      font-size: 0.5625rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      padding: 0.2rem 0.6rem;
+      border-radius: 2px;
+      border: 1px solid;
+      white-space: nowrap;
+      flex-shrink: 0;
+    }
+    .tag-hipotesis { color: #A07DBF; border-color: rgba(160,125,191,0.3); background: rgba(160,125,191,0.07); }
+    .tag-decision  { color: #5A9E6F; border-color: rgba(90,158,111,0.3);  background: rgba(90,158,111,0.07); }
+    .tag-exploracion { color: var(--accent); border-color: rgba(90,124,148,0.3); background: rgba(90,124,148,0.07); }
+    .tag-avance    { color: #C4943A; border-color: rgba(196,148,58,0.3);  background: rgba(196,148,58,0.07); }
+    .tag-completado { color: #5A9E6F; border-color: rgba(90,158,111,0.4); background: rgba(90,158,111,0.1); }
+    .tag-leccion   { color: #C47A3A; border-color: rgba(196,122,58,0.3);  background: rgba(196,122,58,0.07); }
+    .tag-hito      { color: #CF6679; border-color: rgba(207,102,121,0.3); background: rgba(207,102,121,0.07); }
+
+    .tl-desc {
+      font-size: 0.9375rem;
+      line-height: 1.65;
+      color: rgba(232,229,223,0.65);
+      margin-left: calc(2rem + 0.75rem);
+    }
+
+    /* ── Estado + Próximos (2 cols) ── */
+    .bottom-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr 1fr;
+      gap: clamp(2rem, 4vw, 3rem);
+      padding-block: clamp(3rem, 6vw, 4.5rem);
+      border-bottom: 1px solid var(--border);
+    }
+    .bottom-section-title {
+      font-family: var(--serif);
+      font-size: clamp(1.25rem, 2.5vw, 1.5rem);
+      font-weight: 400;
+      letter-spacing: -0.02em;
+      margin-bottom: 1rem;
+    }
+    .status-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.4rem;
+      font-family: var(--mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.08em;
+      text-transform: uppercase;
+      color: #C4943A;
+      margin-bottom: 0.75rem;
+    }
+    .status-badge::before {
+      content: '';
+      width: 6px; height: 6px;
+      border-radius: 50%;
+      background: #C4943A;
+    }
+    .bottom-body {
+      font-size: 0.9375rem;
+      line-height: 1.7;
+      color: rgba(232,229,223,0.7);
+    }
+    .next-list {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0.5rem;
+      margin-top: 0.25rem;
+    }
+    .next-list li {
+      display: flex;
+      align-items: baseline;
+      gap: 0.6rem;
+      font-size: 0.9375rem;
+      color: rgba(232,229,223,0.7);
+      line-height: 1.5;
+    }
+    .next-list li::before {
+      content: '›';
+      color: var(--accent);
+      font-size: 1rem;
+      flex-shrink: 0;
+    }
+
+    /* Quote block */
+    .quote-block {
+      border-left: 2px solid var(--accent);
+      padding-left: 1.25rem;
+    }
+    .quote-text {
+      font-family: var(--serif);
+      font-style: italic;
+      font-size: 1rem;
+      line-height: 1.7;
+      color: rgba(232,229,223,0.75);
+      margin-bottom: 0.75rem;
+    }
+    .quote-author {
+      font-family: var(--mono);
+      font-size: 0.625rem;
+      letter-spacing: 0.1em;
+      color: var(--muted);
+    }
+
+    /* ── Footer ── */
+    footer {
+      padding-block: 2rem;
+      font-family: var(--mono);
+      font-size: 0.6875rem;
+      color: var(--dimmer);
+      letter-spacing: 0.04em;
+    }
+    .footer-inner {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 768px) {
+      .detail-header { grid-template-columns: 1fr; }
+      .detail-image { order: -1; aspect-ratio: 16/9; }
+      .bottom-grid { grid-template-columns: 1fr; }
+      .timeline-entry { grid-template-columns: 5rem 1px 1fr; gap: 0 1rem; }
+      .tl-date { padding-bottom: 2rem; }
+      .tl-content { padding-bottom: 2rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Nav -->
+  <nav>
+    <div class="container">
+      <div class="nav-inner">
+        <span class="nav-logo">davila.uno</span>
+        <a href="#" class="nav-link">Earth</a>
+        <a href="#" class="nav-link">Orbital</a>
+        <a href="#" class="nav-link active">Lab</a>
+        <a href="#" class="nav-link">Acerca de mí</a>
+        <div class="nav-icon">○</div>
+      </div>
+    </div>
+  </nav>
+
+  <main>
+    <div class="container">
+
+      <!-- Back -->
+      <a href="#" class="back-link">← Volver al Lab</a>
+
+      <!-- Header -->
+      <div class="detail-header">
+        <div>
+          <h1 class="detail-title">Nimbus</h1>
+          <p class="detail-subtitle">¿Y si el clima tuviera personalidad?</p>
+          <div class="detail-meta">
+            <span class="status-dot"></span>
+            <span>Activo</span>
+            <span class="meta-sep">·</span>
+            <span>MVP funcional</span>
+            <span class="meta-sep">·</span>
+            <span>Última actualización: 08 Jun 2026</span>
+          </div>
+        </div>
+        <div class="detail-image">
+          <span class="detail-image-placeholder">imagen del experimento</span>
+        </div>
+      </div>
+
+      <!-- 01 La Idea -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">01</span>
+          <h2 class="section-title">La Idea</h2>
+        </div>
+        <div class="section-body">
+          <p>Nimbus es una aplicación meteorológica experimental que explora cómo la narrativa, la personalidad digital y la inteligencia artificial pueden transformar una utilidad cotidiana en una experiencia más humana.</p>
+        </div>
+      </div>
+
+      <!-- 02 El Porqué -->
+      <div class="section">
+        <div class="section-header">
+          <span class="section-num">02</span>
+          <h2 class="section-title">El Porqué</h2>
+        </div>
+        <div class="section-body">
+          <p>Consultamos el clima constantemente. Antes de salir. Antes de viajar. Antes de decidir qué ponernos.</p>
+          <p>Sin embargo, la mayoría de aplicaciones siguen comunicándose como si hablaran con meteorólogos. Información correcta. Experiencia olvidable.</p>
+          <p>Nimbus nace de una curiosidad: ¿qué ocurriría si el clima tuviera personalidad?</p>
+        </div>
+      </div>
+
+      <!-- 03 Bitácora -->
+      <div class="section">
+        <div class="bitacora-header">
+          <div>
+            <div class="section-header" style="margin-bottom: 0.35rem;">
+              <span class="section-num">03</span>
+              <h2 class="section-title">Bitácora</h2>
+            </div>
+            <p class="bitacora-subtitle">La evolución del proyecto</p>
+          </div>
+          <button class="filter-btn">Filtrar por categoría ▾</button>
+        </div>
+
+        <div class="timeline">
+
+          <!-- Entry 1 -->
+          <div class="timeline-entry">
+            <div class="tl-date">
+              <span class="tl-date-text">04 Jun<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon">💡</div>
+                  <span class="tl-title">Idea</span>
+                </div>
+                <span class="tl-tag tag-hipotesis">Hipótesis</span>
+              </div>
+              <p class="tl-desc">¿Y si el clima tuviera personalidad? La hipótesis inicial surge al observar que las aplicaciones meteorológicas parecen diseñadas para estaciones meteorológicas y no para personas.</p>
+            </div>
+          </div>
+
+          <!-- Entry 2 -->
+          <div class="timeline-entry">
+            <div class="tl-date">
+              <span class="tl-date-text">08 Jun<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon">🎯</div>
+                  <span class="tl-title">Producto</span>
+                </div>
+                <span class="tl-tag tag-decision">Decisión</span>
+              </div>
+              <p class="tl-desc">Definí los primeros modos de personalidad para interpretar el mismo clima. Geek. Filosófico. Noctámbulo. Gamer. Team Frío. Team Calor. La misma temperatura. Narrativas distintas.</p>
+            </div>
+          </div>
+
+          <!-- Entry 3 -->
+          <div class="timeline-entry">
+            <div class="tl-date">
+              <span class="tl-date-text">12 Jun<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon">🧩</div>
+                  <span class="tl-title">Interfaz</span>
+                </div>
+                <span class="tl-tag tag-exploracion">Exploración</span>
+              </div>
+              <p class="tl-desc">Primeras exploraciones visuales para la mascota. Descarté enfoques demasiado caricaturescos. Busco algo que transmita carácter sin sentirse infantil.</p>
+            </div>
+          </div>
+
+          <!-- Entry 4 -->
+          <div class="timeline-entry">
+            <div class="tl-date">
+              <span class="tl-date-text">18 Jun<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon">&lt;/&gt;</div>
+                  <span class="tl-title">Implementación</span>
+                </div>
+                <span class="tl-tag tag-avance">Avance</span>
+              </div>
+              <p class="tl-desc">Integración inicial con OpenWeather. Generación dinámica de mensajes basada en temperatura, condición climática y hora del día.</p>
+            </div>
+          </div>
+
+          <!-- Entry 5 -->
+          <div class="timeline-entry">
+            <div class="tl-date">
+              <span class="tl-date-text">20 Jun<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon">☁️</div>
+                  <span class="tl-title">Infraestructura</span>
+                </div>
+                <span class="tl-tag tag-completado">Completado</span>
+              </div>
+              <p class="tl-desc">Firebase Auth. Login con Google. Persistencia de sesión. El objetivo no era el acceso, era conservar preferencias y personalidad entre dispositivos.</p>
+            </div>
+          </div>
+
+          <!-- Entry 6 -->
+          <div class="timeline-entry">
+            <div class="tl-date">
+              <span class="tl-date-text">21 Jun<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon">📖</div>
+                  <span class="tl-title">Aprendizaje</span>
+                </div>
+                <span class="tl-tag tag-leccion">Lección</span>
+              </div>
+              <p class="tl-desc">La sesión se perdía al recargar la aplicación. El problema no era Firebase. Era el orden en que el listener de autenticación actualizaba el estado inicial.</p>
+            </div>
+          </div>
+
+          <!-- Entry 7 -->
+          <div class="timeline-entry">
+            <div class="tl-date">
+              <span class="tl-date-text">25 Jun<br>2026</span>
+            </div>
+            <div class="tl-line"><div class="tl-dot"></div></div>
+            <div class="tl-content">
+              <div class="tl-top">
+                <div class="tl-icon-title">
+                  <div class="tl-icon">🚀</div>
+                  <span class="tl-title">Hito</span>
+                </div>
+                <span class="tl-tag tag-hito">Hito</span>
+              </div>
+              <p class="tl-desc">Primer MVP funcional desplegado. Nimbus ya puede obtener el clima, interpretar el contexto y generar respuestas personalizadas.</p>
+            </div>
+          </div>
+
+        </div>
+      </div>
+
+      <!-- 04 Estado + 05 Próximos + Quote -->
+      <div class="bottom-grid">
+
+        <div>
+          <div class="section-header">
+            <span class="section-num">04</span>
+            <h2 class="bottom-section-title">Estado actual</h2>
+          </div>
+          <div class="status-badge">Exploración activa</div>
+          <p class="bottom-body">El MVP funciona y continúa evolucionando en función del aprendizaje y las pruebas con usuarios reales.</p>
+        </div>
+
+        <div>
+          <div class="section-header">
+            <span class="section-num">05</span>
+            <h2 class="bottom-section-title">Próximos experimentos</h2>
+          </div>
+          <ul class="next-list">
+            <li>Memoria de preferencias</li>
+            <li>Personalidades entrenables</li>
+            <li>Notificaciones contextuales</li>
+            <li>Versiones Android e iOS</li>
+            <li>Insulto Climático del Día</li>
+          </ul>
+        </div>
+
+        <div style="display: flex; align-items: center;">
+          <div class="quote-block">
+            <p class="quote-text">"No busco predecir el clima.<br>Busco entender cómo se siente cada momento."</p>
+            <p class="quote-author">— Ever Dávila</p>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer>
+    <div class="container">
+      <div class="footer-inner">
+        <span>© 2026 Ever Dávila</span>
+        <span>davila.uno · Lab</span>
+      </div>
+    </div>
+  </footer>
+
+</body>
+</html>
