@@ -405,8 +405,11 @@ body {
   color: inherit;
   transition: opacity var(--transition);
 }
+.lab-row:first-child {
+  border-top: none;
+}
 .lab-row:last-child {
-  border-bottom: var(--border-width) solid var(--color-border);
+  border-bottom: none;
 }
 .lab-row:hover {
   opacity: 0.65;
@@ -577,6 +580,60 @@ body {
 
 
 /* ─────────────────────────────────────────
+   TWO-COLUMN SECTION LAYOUT (sidebar + content)
+───────────────────────────────────────── */
+.section-cols {
+  display: grid;
+  grid-template-columns: 11rem 1fr;
+  gap: clamp(2rem, 5vw, 4rem);
+  align-items: start;
+}
+.section-cols-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+  position: sticky;
+  top: 5rem;
+}
+.section-cols-rule {
+  width: 1.5rem;
+  height: var(--border-width);
+  background: var(--color-border);
+}
+.section-cols-desc {
+  font-size: var(--text-small);
+  color: var(--color-muted);
+  line-height: 1.6;
+  margin: 0;
+}
+.section-cols-cta {
+  font-size: var(--text-label);
+  color: var(--color-muted);
+  text-decoration: none;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-top: 0.25rem;
+  transition: color var(--transition);
+}
+.section-cols-cta:hover { opacity: 0.65; }
+@media (max-width: 640px) {
+  .section-cols {
+    grid-template-columns: 1fr;
+  }
+  .section-cols-sidebar {
+    position: static;
+    flex-direction: row;
+    align-items: baseline;
+    flex-wrap: wrap;
+    gap: 0.5rem 1.5rem;
+  }
+  .section-cols-rule { display: none; }
+}
+
+/* ─────────────────────────────────────────
    SELECTED WORK — editorial list
 ───────────────────────────────────────── */
 /* ─── Misiones — header ─── */
@@ -648,13 +705,20 @@ body {
 /* Headline editorial — el enunciado del problema */
 .project-row-headline {
   font-family: var(--font-serif);
-  font-size: clamp(1.25rem, 2.5vw, 2rem);
+  font-size: clamp(1rem, 1.8vw, 1.35rem);
   font-weight: 400;
   line-height: 1.25;
   letter-spacing: -0.025em;
   color: var(--color-text);
   margin: 0 0 1rem;
-  max-width: 42ch;
+}
+
+/* Descripción corta bajo el headline (usado en lab home) */
+.project-row-desc {
+  font-size: var(--text-small);
+  color: var(--color-muted);
+  line-height: 1.5;
+  margin: 0.35rem 0 0;
 }
 
 /* Footer: meta izq, CTA der */
@@ -711,7 +775,7 @@ body {
 
 @media (max-width: 600px) {
   .project-row-headline {
-    font-size: clamp(1.1rem, 5vw, 1.35rem);
+    font-size: clamp(0.95rem, 4vw, 1.1rem);
   }
   .projects-list .project-row:first-child .project-row-headline {
     font-size: clamp(1.3rem, 6vw, 1.75rem);

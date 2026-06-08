@@ -24,6 +24,8 @@ const LABELS = {
   new:   { es: 'Nuevo',          en: 'New',        pt: 'Novo',           qu: 'Musuq',    zh: '最新'     },
   field: { es: 'Notas de campo', en: 'Field Notes', pt: 'Notas de campo', qu: 'Willakuy', zh: '田野笔记' },
   min:   { es: 'min',            en: 'min',         pt: 'min',            qu: 'min',      zh: '分钟'     },
+  read:  { es: 'Leer apunte',    en: 'Read log',    pt: 'Ler registro',   qu: 'Leer',     zh: '阅读'     },
+  readL: { es: 'Leer nota',      en: 'Read note',   pt: 'Ler nota',       qu: 'Leer',     zh: '阅读笔记'  },
 } as const
 
 type LabelKey = keyof typeof LABELS
@@ -105,15 +107,21 @@ export function PostCard({ post, locale, featured = false }: Props) {
             <span style={{ color: 'var(--color-accent)', textTransform: 'uppercase' }}>{elabel}</span>
           )}
         </div>
-        <h2 className="lab-row-title">
-          {title.value || '—'}
-          {title.isFallback && title.fallbackLocale && (
-            <FallbackBadge fallbackLocale={title.fallbackLocale} />
-          )}
-        </h2>
-        {excerpt.value && (
-          <p className="lab-row-desc">{excerpt.value}</p>
-        )}
+        <div style={{ display: 'flex', alignItems: 'baseline', justifyContent: 'space-between', gap: '1rem' }}>
+          <h2 className="lab-row-title">
+            {title.value || '—'}
+            {title.isFallback && title.fallbackLocale && (
+              <FallbackBadge fallbackLocale={title.fallbackLocale} />
+            )}
+          </h2>
+          <span className="project-row-cta" style={{ flexShrink: 0 }}>
+            <span className="n-slot">
+              <span className="n-d">{lbl('read', locale)}</span>
+              <span className="n-l">{lbl('readL', locale)}</span>
+            </span>
+            {' '}<span className="project-row-cta-arrow">→</span>
+          </span>
+        </div>
       </div>
     </Link>
   )

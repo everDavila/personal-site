@@ -3,9 +3,12 @@ import { Hero } from '@/components/home/Hero'
 import { SelectedWork } from '@/components/home/SelectedWork'
 import { Philosophy } from '@/components/home/Philosophy'
 import { Writing } from '@/components/home/Writing'
+import { AboutSection } from '@/components/home/AboutSection'
+import { LabSection } from '@/components/home/LabSection'
 import { getSiteSettings, narrativeText, NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { getFeaturedProjects } from '@/sanity/queries/projects'
 import { getLatestPosts } from '@/sanity/queries/posts'
+import { getFeaturedPlaygroundItems } from '@/sanity/queries/playground'
 import { getPageSubtitleData } from '@/sanity/queries/editorialSubtitle'
 import { getMode } from '@/lib/mode'
 import type { Locale } from '@/lib/i18n'
@@ -17,9 +20,11 @@ export default async function Home() {
   const locale = await getLocale() as Locale
   const mode   = await getMode()
 
-  const [settings, projects, posts, homeSubtitleData] = await Promise.all([
-    getSiteSettings(),
+  const settings = await getSiteSettings()
+
+  const [projects, labItems, posts, homeSubtitleData] = await Promise.all([
     getFeaturedProjects(),
+    getFeaturedPlaygroundItems(settings?.labCount ?? 3),
     getLatestPosts(locale),
     getPageSubtitleData('home', locale, mode),
   ])
@@ -35,10 +40,10 @@ export default async function Home() {
     <>
       <Hero settings={settings} initialSub={homeSubtitleData.initial} subtitlePool={homeSubtitleData.pool} />
       <SelectedWork projects={projects} settings={settings} />
-      {(philosophyDark || philosophyLight) && (
-        <Philosophy dark={philosophyDark ?? ''} light={philosophyLight ?? ''} />
-      )}
+      <LabSection items={labItems} />
+      {/* Philosophy oculta temporalmente */}
       <Writing posts={displayPosts} displayLocale={postsDisplayLocale} settings={settings} />
+      <AboutSection settings={settings} mode={mode} />
     </>
   )
 }
