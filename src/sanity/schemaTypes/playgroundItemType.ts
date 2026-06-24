@@ -1,40 +1,6 @@
 import { RocketIcon } from '@sanity/icons'
 import { defineArrayMember, defineField, defineType } from 'sanity'
 
-const DIMENSIONS = [
-  { title: 'Idea',              value: 'lightbulb'     },
-  { title: 'Producto',          value: 'target'        },
-  { title: 'Interfaz',          value: 'layers'        },
-  { title: 'Implementación',    value: 'code-2'        },
-  { title: 'Infraestructura',   value: 'cloud'         },
-  { title: 'Aprendizaje',       value: 'book-open'     },
-  { title: 'Hito',              value: 'zap'           },
-  { title: 'Investigación',     value: 'compass'       },
-  { title: 'Testing',           value: 'flask-conical' },
-  { title: 'Contenido',         value: 'pen-line'      },
-  { title: 'Datos',             value: 'activity'      },
-  { title: 'Diseño de sistema', value: 'layout-grid'   },
-  { title: 'Accesibilidad',     value: 'eye'           },
-  { title: 'Proceso',           value: 'route'         },
-]
-
-// Misma lista con "cuándo usar" en el título — visible en el dropdown del Studio
-const DIMENSION_OPTIONS = [
-  { title: 'Idea — el concepto original, el "¿y si…?"',                              value: 'lightbulb'     },
-  { title: 'Investigación — benchmarks, referencias, análisis previo a diseñar',      value: 'compass'       },
-  { title: 'Proceso — metodología, flujo de trabajo, cómo estás abordando',          value: 'route'         },
-  { title: 'Producto — decisiones de alcance, dirección, estrategia',                 value: 'target'        },
-  { title: 'Interfaz — diseño visual, interacción, pantallas',                        value: 'layers'        },
-  { title: 'Contenido — UX writing, copy, naming, voz del producto',                 value: 'pen-line'      },
-  { title: 'Diseño de sistema — tokens, componentes, patrones reutilizables',         value: 'layout-grid'   },
-  { title: 'Implementación — código, lógica, features',                               value: 'code-2'        },
-  { title: 'Infraestructura — deploy, auth, base de datos, servicios externos',       value: 'cloud'         },
-  { title: 'Testing — pruebas con usuarios, validación, QA',                          value: 'flask-conical' },
-  { title: 'Datos — métricas, analytics, números que informaron decisiones',          value: 'activity'      },
-  { title: 'Accesibilidad — contraste, a11y, lectores de pantalla',                   value: 'eye'           },
-  { title: 'Aprendizaje — reflexión técnica o de proceso',                            value: 'book-open'     },
-  { title: 'Hito — momento importante que merece destacarse visualmente',             value: 'zap'           },
-]
 
 const CATEGORIES = [
   { title: 'Interfaces', value: 'interfaces' },
@@ -180,8 +146,8 @@ export const playgroundItemType = defineType({
               name: 'dimension',
               title: 'Dimensión',
               description: '¿En qué área del proyecto ocurrió este momento?',
-              type: 'string',
-              options: { list: DIMENSION_OPTIONS },
+              type: 'reference',
+              to: [{ type: 'dimension' }],
               validation: r => r.required(),
             }),
             defineField({
@@ -217,14 +183,13 @@ export const playgroundItemType = defineType({
           ],
           preview: {
             select: {
-              date:      'date',
-              dimension: 'dimension',
-              tagName:   'tag.name.es',
+              date:    'date',
+              dimName: 'dimension.name.es',
+              tagName: 'tag.name.es',
             },
-            prepare({ date, dimension, tagName }) {
-              const dim = DIMENSIONS.find(d => d.value === dimension)?.title ?? dimension ?? '—'
+            prepare({ date, dimName, tagName }) {
               return {
-                title:    `${dim}${tagName ? ` · ${tagName}` : ''}`,
+                title:    `${dimName ?? '—'}${tagName ? ` · ${tagName}` : ''}`,
                 subtitle: date ?? '',
               }
             },

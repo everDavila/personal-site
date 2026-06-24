@@ -4,7 +4,7 @@ import { useState, useEffect, useCallback } from 'react'
 import type { LogEntry } from '@/sanity/queries/playground'
 import type { Locale } from '@/lib/i18n'
 import { useTranslations } from 'next-intl'
-import { DimensionIcon, DIMENSION_MSG_KEY } from './DimensionIcon'
+import { DimensionIcon } from './DimensionIcon'
 
 type LightboxImage = { src: string; caption: string }
 type LightboxState = { open: boolean; images: LightboxImage[]; index: number }
@@ -120,10 +120,10 @@ export function LabTimeline({ entries, locale, totalLabel }: {
       <div className="lab-timeline">
         {filtered.map(entry => {
           const desc     = entry.description?.[locale] ?? entry.description?.es ?? entry.description?.en ?? null
-          const dimLabel = t(DIMENSION_MSG_KEY[entry.dimension] ?? 'dim_lightbulb')
+          const dimLabel = entry.dimension?.name[locale] ?? entry.dimension?.name.es ?? entry.dimension?.name.en ?? ''
           const tagName  = entry.tag?.name[locale] ?? entry.tag?.name.es ?? entry.tag?.name.en ?? null
           const colorKey = entry.tag?.colorKey ?? null
-          const isHito   = entry.dimension === 'zap'
+          const isHito   = entry.dimension?.slug === 'hito'
 
           return (
             <div
@@ -152,7 +152,7 @@ export function LabTimeline({ entries, locale, totalLabel }: {
                 <div className="lab-entry-top">
                   <div className="lab-entry-dim">
                     <div className="lab-dim-icon">
-                      <DimensionIcon dimension={entry.dimension} size={15} />
+                      <DimensionIcon icon={entry.dimension?.icon ?? 'lightbulb'} size={15} />
                     </div>
                     <span className="lab-entry-dim-label">{dimLabel}</span>
                   </div>

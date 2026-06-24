@@ -11,6 +11,7 @@ import { siteSettingsType } from './siteSettingsType'
 import { experienceType } from './experienceType'
 import { playgroundItemType } from './playgroundItemType'
 import { logTagType } from './logTagType'
+import { dimensionType } from './dimensionType'
 import { editorialSubtitleType } from './editorialSubtitleType'
 import { page404Type } from './page404Type'
 
@@ -31,6 +32,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     authorType,
     playgroundItemType,
     logTagType,
+    dimensionType,
     editorialSubtitleType,
     page404Type,
   ],

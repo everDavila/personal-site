@@ -21,24 +21,7 @@ const ICONS: Record<string, LucideIcon> = {
   'route':         Route,
 }
 
-export const DIMENSION_MSG_KEY: Record<string, string> = {
-  'lightbulb':     'dim_lightbulb',
-  'target':        'dim_target',
-  'layers':        'dim_layers',
-  'code-2':        'dim_code',
-  'cloud':         'dim_cloud',
-  'book-open':     'dim_book',
-  'zap':           'dim_zap',
-  'compass':       'dim_compass',
-  'flask-conical': 'dim_flask',
-  'pen-line':      'dim_pen',
-  'activity':      'dim_activity',
-  'layout-grid':   'dim_grid',
-  'eye':           'dim_eye',
-  'route':         'dim_route',
-}
-
-export function DimensionIcon({ dimension, size = 15 }: { dimension: string; size?: number }) {
-  const Icon = ICONS[dimension] ?? Lightbulb
+export function DimensionIcon({ icon, size = 15 }: { icon: string; size?: number }) {
+  const Icon = ICONS[icon] ?? Lightbulb
   return <Icon size={size} strokeWidth={1.5} />
 }
