@@ -18,22 +18,22 @@ const DIMENSIONS = [
   { title: 'Proceso',           value: 'route'         },
 ]
 
-// Misma lista con descripción de "cuándo usar" — se muestra en Studio bajo cada opción
+// Misma lista con "cuándo usar" en el título — visible en el dropdown del Studio
 const DIMENSION_OPTIONS = [
-  { title: 'Idea',              value: 'lightbulb',     description: 'El concepto original, el "¿y si…?"'                           },
-  { title: 'Investigación',     value: 'compass',       description: 'Benchmarks, referencias, análisis previo a diseñar'           },
-  { title: 'Proceso',           value: 'route',         description: 'Metodología, flujo de trabajo, cómo estás abordando el proyecto' },
-  { title: 'Producto',          value: 'target',        description: 'Decisiones de alcance, dirección, estrategia'                 },
-  { title: 'Interfaz',          value: 'layers',        description: 'Diseño visual, interacción, pantallas'                        },
-  { title: 'Contenido',         value: 'pen-line',      description: 'UX writing, copy, naming, voz del producto'                  },
-  { title: 'Diseño de sistema', value: 'layout-grid',   description: 'Tokens, componentes, patrones reutilizables'                 },
-  { title: 'Implementación',    value: 'code-2',        description: 'Código, lógica, features'                                    },
-  { title: 'Infraestructura',   value: 'cloud',         description: 'Deploy, auth, base de datos, servicios externos'             },
-  { title: 'Testing',           value: 'flask-conical', description: 'Pruebas con usuarios, validación, QA'                        },
-  { title: 'Datos',             value: 'activity',      description: 'Métricas, analytics, números que informaron decisiones'      },
-  { title: 'Accesibilidad',     value: 'eye',           description: 'Contraste, a11y, lectores de pantalla'                       },
-  { title: 'Aprendizaje',       value: 'book-open',     description: 'Reflexión técnica o de proceso'                              },
-  { title: 'Hito',              value: 'zap',           description: 'Momento importante que merece destacarse visualmente'        },
+  { title: 'Idea — el concepto original, el "¿y si…?"',                              value: 'lightbulb'     },
+  { title: 'Investigación — benchmarks, referencias, análisis previo a diseñar',      value: 'compass'       },
+  { title: 'Proceso — metodología, flujo de trabajo, cómo estás abordando',          value: 'route'         },
+  { title: 'Producto — decisiones de alcance, dirección, estrategia',                 value: 'target'        },
+  { title: 'Interfaz — diseño visual, interacción, pantallas',                        value: 'layers'        },
+  { title: 'Contenido — UX writing, copy, naming, voz del producto',                 value: 'pen-line'      },
+  { title: 'Diseño de sistema — tokens, componentes, patrones reutilizables',         value: 'layout-grid'   },
+  { title: 'Implementación — código, lógica, features',                               value: 'code-2'        },
+  { title: 'Infraestructura — deploy, auth, base de datos, servicios externos',       value: 'cloud'         },
+  { title: 'Testing — pruebas con usuarios, validación, QA',                          value: 'flask-conical' },
+  { title: 'Datos — métricas, analytics, números que informaron decisiones',          value: 'activity'      },
+  { title: 'Accesibilidad — contraste, a11y, lectores de pantalla',                   value: 'eye'           },
+  { title: 'Aprendizaje — reflexión técnica o de proceso',                            value: 'book-open'     },
+  { title: 'Hito — momento importante que merece destacarse visualmente',             value: 'zap'           },
 ]
 
 const CATEGORIES = [
