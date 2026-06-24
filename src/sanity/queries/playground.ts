@@ -44,6 +44,7 @@ export type PlaygroundItem = {
   repoUrl: string | null
   demoUrl: string | null
   lastEntryDate: string | null
+  lastEntryTime: string | null
 }
 
 export type PlaygroundItemFull = PlaygroundItem & {
@@ -70,14 +71,17 @@ const ITEM_FIELDS = `
 `
 
 function sortByActivity(raw: PlaygroundItem[]): PlaygroundItem[] {
-  return raw.sort((a, b) =>
-    (b.lastEntryDate ?? '').localeCompare(a.lastEntryDate ?? '')
-  )
+  return raw.sort((a, b) => {
+    const aKey = `${a.lastEntryDate ?? ''}T${a.lastEntryTime ?? '00:00'}`
+    const bKey = `${b.lastEntryDate ?? ''}T${b.lastEntryTime ?? '00:00'}`
+    return bKey.localeCompare(aKey)
+  })
 }
 
 const ITEM_FIELDS_WITH_SORT = `
   ${ITEM_FIELDS},
-  "lastEntryDate": (logEntries | order(date desc))[0].date
+  "lastEntryDate": (logEntries | order(date desc, time desc))[0].date,
+  "lastEntryTime": (logEntries | order(date desc, time desc))[0].time
 `
 
 export async function getFeaturedPlaygroundItems(count = 3): Promise<PlaygroundItem[]> {
