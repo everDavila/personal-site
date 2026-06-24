@@ -181,7 +181,7 @@ export const playgroundItemType = defineType({
               title: 'Dimensión',
               description: '¿En qué área del proyecto ocurrió este momento?',
               type: 'string',
-              options: { list: DIMENSION_OPTIONS, layout: 'radio' },
+              options: { list: DIMENSION_OPTIONS },
               validation: r => r.required(),
             }),
             defineField({
