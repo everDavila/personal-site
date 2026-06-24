@@ -125,13 +125,13 @@ export const playgroundItemType = defineType({
     defineField({
       name: 'idea',
       title: '01 — La Idea',
-      type: 'localizedText',
+      type: 'localizedBlockContent',
       description: 'Qué es y de dónde surge el experimento.',
     }),
     defineField({
       name: 'why',
       title: '02 — El Porqué',
-      type: 'localizedText',
+      type: 'localizedBlockContent',
       description: 'Motivación, contexto, problema que busca resolver.',
     }),
 

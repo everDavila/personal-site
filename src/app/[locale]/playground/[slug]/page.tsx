@@ -4,7 +4,9 @@ import { Link }                        from '@/i18n/navigation'
 import { getPlaygroundItemBySlug }     from '@/sanity/queries/playground'
 import { localized }                   from '@/lib/i18n'
 import { LabTimeline }                 from '@/components/lab/LabTimeline'
+import { LabRichText }                 from '@/components/lab/LabRichText'
 import type { Locale }                 from '@/lib/i18n'
+import type { PortableTextBlock }      from '@portabletext/types'
 
 export const dynamic = 'force-dynamic'
 
@@ -32,8 +34,8 @@ export default async function LabDetailPage({ params }: Props) {
   const loc   = locale as Locale
   const title = localized(item.title, loc, 'es')
   const desc  = item.description ? localized(item.description, loc, 'es') : null
-  const idea  = item.idea?.[loc] ?? item.idea?.es ?? item.idea?.en ?? null
-  const why   = item.why?.[loc]  ?? item.why?.es  ?? item.why?.en  ?? null
+  const idea  = (item.idea?.[loc] ?? item.idea?.es ?? item.idea?.en ?? null) as PortableTextBlock[] | null
+  const why   = (item.why?.[loc]  ?? item.why?.es  ?? item.why?.en  ?? null) as PortableTextBlock[] | null
 
   return (
     <main style={{ maxWidth: 'var(--max-width, 82rem)', margin: '0 auto', padding: '0 var(--space-side, 2rem)' }}>
@@ -115,28 +117,24 @@ export default async function LabDetailPage({ params }: Props) {
       </header>
 
       {/* ── 01 La Idea ── */}
-      {idea && (
+      {idea && idea.length > 0 && (
         <section className="lab-section">
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.25rem', marginBottom: '1.75rem' }}>
             <span className="lab-section-num">01</span>
             <h2 className="lab-section-title">{t('section_idea')}</h2>
           </div>
-          <p style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--color-text)', opacity: 0.8, margin: 0 }}>
-            {idea}
-          </p>
+          <LabRichText value={idea} />
         </section>
       )}
 
       {/* ── 02 El Porqué ── */}
-      {why && (
+      {why && why.length > 0 && (
         <section className="lab-section">
           <div style={{ display: 'flex', alignItems: 'baseline', gap: '1.25rem', marginBottom: '1.75rem' }}>
             <span className="lab-section-num">02</span>
             <h2 className="lab-section-title">{t('section_why')}</h2>
           </div>
-          <p style={{ fontSize: '1rem', lineHeight: 1.75, color: 'var(--color-text)', opacity: 0.8, margin: 0 }}>
-            {why}
-          </p>
+          <LabRichText value={why} />
         </section>
       )}
 

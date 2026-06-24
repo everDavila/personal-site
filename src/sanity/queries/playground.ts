@@ -40,8 +40,8 @@ export type PlaygroundItem = {
 
 export type PlaygroundItemFull = PlaygroundItem & {
   body:       Partial<Record<Locale, unknown[]>> | null
-  idea:       LocalizedString | null
-  why:        LocalizedString | null
+  idea:       Partial<Record<Locale, unknown[]>> | null
+  why:        Partial<Record<Locale, unknown[]>> | null
   logEntries: LogEntry[] | null
 }
 
