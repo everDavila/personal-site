@@ -10,11 +10,19 @@ export type LogTag = {
   colorKey: string
 }
 
+export type Dimension = {
+  _id:       string
+  name:      LocalizedString
+  slug:      string
+  icon:      string
+  whenToUse: string | null
+}
+
 export type LogEntry = {
   _key:      string
   date:      string
   time:      string | null
-  dimension: string
+  dimension: Dimension | null
   tag:       LogTag | null
   description: LocalizedString | null
   images: Array<{
@@ -91,7 +99,8 @@ export async function getAllPlaygroundItems(): Promise<PlaygroundItem[]> {
 }
 
 const LOG_ENTRY_FIELDS = `
-  _key, date, time, dimension, description,
+  _key, date, time, description,
+  dimension->{ _id, name, "slug": slug.current, icon, whenToUse },
   tag->{ _id, name, "slug": slug.current, colorKey },
   images[]{ _key, asset->{ url }, caption }
 `

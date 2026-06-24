@@ -33,7 +33,8 @@
       "Bash(node scripts/seed-full.mjs)",
       "Bash(node scripts/inspect.mjs)",
       "Bash(node scripts/fix-singleton.mjs)",
-      "Bash(node scripts/rm-twitter.mjs)"
+      "Bash(node scripts/rm-twitter.mjs)",
+      "Bash(node scripts/seed-dimensions.mjs)"
     ],
     "additionalDirectories": [
       "d:\\reposGIT\\personalPage\\src\\app\\[locale]\\work"
