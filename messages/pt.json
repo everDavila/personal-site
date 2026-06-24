@@ -95,7 +95,8 @@
     "dim_pen": "Conteúdo",
     "dim_activity": "Dados",
     "dim_grid": "Design de sistema",
-    "dim_eye": "Acessibilidade"
+    "dim_eye": "Acessibilidade",
+    "dim_route": "Processo"
   },
   "blog": {
     "title": "Notas",

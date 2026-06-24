@@ -15,6 +15,25 @@ const DIMENSIONS = [
   { title: 'Datos',             value: 'activity'      },
   { title: 'Diseño de sistema', value: 'layout-grid'   },
   { title: 'Accesibilidad',     value: 'eye'           },
+  { title: 'Proceso',           value: 'route'         },
+]
+
+// Misma lista con descripción de "cuándo usar" — se muestra en Studio bajo cada opción
+const DIMENSION_OPTIONS = [
+  { title: 'Idea',              value: 'lightbulb',     description: 'El concepto original, el "¿y si…?"'                           },
+  { title: 'Investigación',     value: 'compass',       description: 'Benchmarks, referencias, análisis previo a diseñar'           },
+  { title: 'Proceso',           value: 'route',         description: 'Metodología, flujo de trabajo, cómo estás abordando el proyecto' },
+  { title: 'Producto',          value: 'target',        description: 'Decisiones de alcance, dirección, estrategia'                 },
+  { title: 'Interfaz',          value: 'layers',        description: 'Diseño visual, interacción, pantallas'                        },
+  { title: 'Contenido',         value: 'pen-line',      description: 'UX writing, copy, naming, voz del producto'                  },
+  { title: 'Diseño de sistema', value: 'layout-grid',   description: 'Tokens, componentes, patrones reutilizables'                 },
+  { title: 'Implementación',    value: 'code-2',        description: 'Código, lógica, features'                                    },
+  { title: 'Infraestructura',   value: 'cloud',         description: 'Deploy, auth, base de datos, servicios externos'             },
+  { title: 'Testing',           value: 'flask-conical', description: 'Pruebas con usuarios, validación, QA'                        },
+  { title: 'Datos',             value: 'activity',      description: 'Métricas, analytics, números que informaron decisiones'      },
+  { title: 'Accesibilidad',     value: 'eye',           description: 'Contraste, a11y, lectores de pantalla'                       },
+  { title: 'Aprendizaje',       value: 'book-open',     description: 'Reflexión técnica o de proceso'                              },
+  { title: 'Hito',              value: 'zap',           description: 'Momento importante que merece destacarse visualmente'        },
 ]
 
 const CATEGORIES = [
@@ -160,9 +179,9 @@ export const playgroundItemType = defineType({
             defineField({
               name: 'dimension',
               title: 'Dimensión',
-              description: 'Área del proyecto en la que ocurrió este momento.',
+              description: '¿En qué área del proyecto ocurrió este momento?',
               type: 'string',
-              options: { list: DIMENSIONS, layout: 'radio' },
+              options: { list: DIMENSION_OPTIONS, layout: 'radio' },
               validation: r => r.required(),
             }),
             defineField({

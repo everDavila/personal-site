@@ -1,6 +1,6 @@
 import {
   Lightbulb, Target, Layers, Code2, Cloud, BookOpen, Zap,
-  Compass, FlaskConical, PenLine, Activity, LayoutGrid, Eye,
+  Compass, FlaskConical, PenLine, Activity, LayoutGrid, Eye, Route,
 } from 'lucide-react'
 import type { LucideIcon } from 'lucide-react'
 
@@ -18,6 +18,7 @@ const ICONS: Record<string, LucideIcon> = {
   'activity':      Activity,
   'layout-grid':   LayoutGrid,
   'eye':           Eye,
+  'route':         Route,
 }
 
 export const DIMENSION_MSG_KEY: Record<string, string> = {
@@ -34,6 +35,7 @@ export const DIMENSION_MSG_KEY: Record<string, string> = {
   'activity':      'dim_activity',
   'layout-grid':   'dim_grid',
   'eye':           'dim_eye',
+  'route':         'dim_route',
 }
 
 export function DimensionIcon({ dimension, size = 15 }: { dimension: string; size?: number }) {

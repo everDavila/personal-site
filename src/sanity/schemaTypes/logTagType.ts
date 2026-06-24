@@ -45,11 +45,17 @@ export const logTagType = defineType({
       options: { list: COLOR_KEYS, layout: 'radio' },
       validation: r => r.required(),
     }),
+    defineField({
+      name: 'whenToUse',
+      title: 'Cuándo usar',
+      type: 'string',
+      description: 'Se muestra como ayuda al elegir el tag en la bitácora.',
+    }),
   ],
   preview: {
-    select: { title: 'name.es', subtitle: 'colorKey' },
+    select: { title: 'name.es', subtitle: 'whenToUse' },
     prepare({ title, subtitle }) {
-      return { title: title ?? 'Sin nombre', subtitle }
+      return { title: title ?? 'Sin nombre', subtitle: subtitle ?? '' }
     },
   },
 })
