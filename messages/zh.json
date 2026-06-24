@@ -95,7 +95,8 @@
     "dim_pen": "内容",
     "dim_activity": "数据",
     "dim_grid": "设计系统",
-    "dim_eye": "无障碍"
+    "dim_eye": "无障碍",
+    "dim_route": "过程"
   },
   "blog": {
     "title": "手记",

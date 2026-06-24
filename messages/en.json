@@ -103,7 +103,8 @@
     "dim_pen": "Content",
     "dim_activity": "Data",
     "dim_grid": "Design system",
-    "dim_eye": "Accessibility"
+    "dim_eye": "Accessibility",
+    "dim_route": "Process"
   },
   "blog": {
     "title": "Notes",
