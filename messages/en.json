@@ -81,6 +81,12 @@
     "lightDesc":  "Experience, projects, and problems solved.",
     "footer":     "You can switch it anytime."
   },
+  "modeToast": {
+    "orbitalTitle": "Switching to Orbital.",
+    "orbitalDesc":  "Things get slightly less sensible from here.",
+    "earthTitle":   "Switching to Earth.",
+    "earthDesc":    "Things get slightly more responsible from here."
+  },
   "lab": {
     "back": "← Lab",
     "section_idea": "The Idea",
