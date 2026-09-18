@@ -6,8 +6,8 @@ import type { Locale } from '@/lib/i18n'
 import { useTranslations } from 'next-intl'
 import { DimensionIcon } from './DimensionIcon'
 
-type LightboxImage = { src: string; caption: string }
-type LightboxState = { open: boolean; images: LightboxImage[]; index: number }
+type LightboxItem = { src: string; caption: string; isVideo: boolean; mimeType: string | null }
+type LightboxState = { open: boolean; items: LightboxItem[]; index: number }
 
 function formatDate(dateStr: string): string {
   const d = new Date(dateStr + 'T00:00:00')
@@ -32,7 +32,7 @@ export function LabTimeline({ entries, locale, totalLabel }: {
   const t = useTranslations('lab')
   const [activeFilter, setActiveFilter] = useState<string>('all')
   const [sortOrder, setSortOrder]       = useState<'asc' | 'desc'>('asc')
-  const [lb, setLb] = useState<LightboxState>({ open: false, images: [], index: 0 })
+  const [lb, setLb] = useState<LightboxState>({ open: false, items: [], index: 0 })
 
   // Unique tags sorted by first appearance (ascending)
   const tags = Array.from(
@@ -57,7 +57,7 @@ export function LabTimeline({ entries, locale, totalLabel }: {
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape')     setLb(p => ({ ...p, open: false }))
       if (e.key === 'ArrowLeft')  setLb(p => ({ ...p, index: Math.max(0, p.index - 1) }))
-      if (e.key === 'ArrowRight') setLb(p => ({ ...p, index: Math.min(p.images.length - 1, p.index + 1) }))
+      if (e.key === 'ArrowRight') setLb(p => ({ ...p, index: Math.min(p.items.length - 1, p.index + 1) }))
     }
     document.body.style.overflow = 'hidden'
     window.addEventListener('keydown', handler)
@@ -72,9 +72,11 @@ export function LabTimeline({ entries, locale, totalLabel }: {
     setLb({
       open: true,
       index: startIndex,
-      images: images.map(img => ({
-        src:     img.asset.url,
-        caption: img.caption?.[locale] ?? img.caption?.es ?? img.caption?.en ?? '',
+      items: images.map(img => ({
+        src:      img.asset.url,
+        caption:  img.caption?.[locale] ?? img.caption?.es ?? img.caption?.en ?? '',
+        isVideo:  img._type === 'file',
+        mimeType: img.asset.mimeType,
       })),
     })
   }, [locale])
@@ -168,14 +170,15 @@ export function LabTimeline({ entries, locale, totalLabel }: {
                 {entry.images && entry.images.length > 0 && (
                   <div className="lab-img-links">
                     {entry.images.map((img, i) => {
-                      const caption = img.caption?.[locale] ?? img.caption?.es ?? img.caption?.en ?? `Imagen ${i + 1}`
+                      const isVideo = img._type === 'file'
+                      const caption = img.caption?.[locale] ?? img.caption?.es ?? img.caption?.en ?? (isVideo ? `Video ${i + 1}` : `Imagen ${i + 1}`)
                       return (
                         <button
                           key={img._key}
                           className="lab-img-link"
                           onClick={() => openLightbox(entry.images, i)}
                         >
-                          ↗ {caption}
+                          {isVideo ? '▶' : '↗'} {caption}
                         </button>
                       )
                     })}
@@ -195,22 +198,33 @@ export function LabTimeline({ entries, locale, totalLabel }: {
           {lb.index > 0 && (
             <button className="lab-lightbox-nav lab-lightbox-prev" onClick={e => { e.stopPropagation(); setLb(p => ({ ...p, index: p.index - 1 })) }}>←</button>
           )}
-          {lb.index < lb.images.length - 1 && (
+          {lb.index < lb.items.length - 1 && (
             <button className="lab-lightbox-nav lab-lightbox-next" onClick={e => { e.stopPropagation(); setLb(p => ({ ...p, index: p.index + 1 })) }}>→</button>
           )}
 
           <div className="lab-lightbox-inner" onClick={e => e.stopPropagation()}>
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={lb.images[lb.index].src}
-              alt={lb.images[lb.index].caption}
-              className="lab-lightbox-img"
-            />
-            {lb.images[lb.index].caption && (
-              <p className="lab-lightbox-caption">{lb.images[lb.index].caption}</p>
+            {lb.items[lb.index].isVideo ? (
+              <video
+                key={lb.items[lb.index].src}
+                className="lab-lightbox-img"
+                controls
+                autoPlay
+              >
+                <source src={lb.items[lb.index].src} type={lb.items[lb.index].mimeType ?? undefined} />
+              </video>
+            ) : (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={lb.items[lb.index].src}
+                alt={lb.items[lb.index].caption}
+                className="lab-lightbox-img"
+              />
             )}
-            {lb.images.length > 1 && (
-              <p className="lab-lightbox-counter">{lb.index + 1} / {lb.images.length}</p>
+            {lb.items[lb.index].caption && (
+              <p className="lab-lightbox-caption">{lb.items[lb.index].caption}</p>
+            )}
+            {lb.items.length > 1 && (
+              <p className="lab-lightbox-counter">{lb.index + 1} / {lb.items.length}</p>
             )}
           </div>
         </div>

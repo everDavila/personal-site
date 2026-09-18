@@ -27,7 +27,8 @@ export type LogEntry = {
   description: LocalizedString | null
   images: Array<{
     _key:    string
-    asset:   { url: string }
+    _type:   'image' | 'file'
+    asset:   { url: string; mimeType: string | null }
     caption: LocalizedString | null
   }> | null
 }
@@ -106,7 +107,7 @@ const LOG_ENTRY_FIELDS = `
   _key, date, time, description,
   dimension->{ _id, name, "slug": slug.current, icon, whenToUse },
   tag->{ _id, name, "slug": slug.current, colorKey },
-  images[]{ _key, asset->{ url }, caption }
+  images[]{ _key, _type, asset->{ url, mimeType }, caption }
 `
 
 export async function getPlaygroundItemBySlug(slug: string, locale: Locale): Promise<PlaygroundItemFull | null> {
