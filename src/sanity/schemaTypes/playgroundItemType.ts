@@ -164,12 +164,24 @@ export const playgroundItemType = defineType({
             }),
             defineField({
               name: 'images',
-              title: 'Imágenes',
+              title: 'Imágenes y videos',
               type: 'array',
               of: [
                 defineArrayMember({
                   type: 'image',
                   options: { hotspot: true },
+                  fields: [
+                    defineField({
+                      name: 'caption',
+                      title: 'Caption',
+                      type: 'localizedString',
+                    }),
+                  ],
+                }),
+                defineArrayMember({
+                  type: 'file',
+                  title: 'Video',
+                  options: { accept: 'video/*' },
                   fields: [
                     defineField({
                       name: 'caption',
