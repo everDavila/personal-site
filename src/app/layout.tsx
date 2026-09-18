@@ -32,8 +32,7 @@ export const metadata: Metadata = {
 export default async function RootLayout({ children }: { children: React.ReactNode }) {
   const jar = await cookies()
   const cookieVal = jar.get('narrative-mode')?.value
-  const mode = cookieVal === 'light' ? 'light' : 'dark'
-  const hasMode = !!cookieVal
+  const mode = cookieVal === 'dark' ? 'dark' : 'light'
 
   return (
     <html

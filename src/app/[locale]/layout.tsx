@@ -1,12 +1,10 @@
 import type { Metadata } from 'next'
 import { NextIntlClientProvider } from 'next-intl'
-import { getMessages, setRequestLocale, getTranslations } from 'next-intl/server'
-import { cookies } from 'next/headers'
+import { getMessages, setRequestLocale } from 'next-intl/server'
 import { routing } from '@/i18n/routing'
 import { notFound } from 'next/navigation'
 import { Nav } from '@/components/nav/Nav'
 import { Footer } from '@/components/layout/Footer'
-import { ModeChooser } from '@/components/ui/ModeChooser'
 import { getSiteSettings, resolveSeo } from '@/sanity/queries/siteSettings'
 
 const BASE = 'https://davila.uno'
@@ -74,25 +72,10 @@ export default async function LocaleLayout({
 
   setRequestLocale(locale)
 
-  const [messages, t, jar] = await Promise.all([
-    getMessages(),
-    getTranslations('modeChooser'),
-    cookies(),
-  ])
-
-  const hasMode = !!jar.get('narrative-mode')?.value
+  const messages = await getMessages()
 
   return (
     <NextIntlClientProvider messages={messages}>
-      <ModeChooser
-        hasMode={hasMode}
-        question={t('question')}
-        darkLabel={t('darkLabel')}
-        darkDesc={t('darkDesc')}
-        lightLabel={t('lightLabel')}
-        lightDesc={t('lightDesc')}
-        footer={t('footer')}
-      />
       <Nav />
       <main style={{ flex: 1, paddingTop: '3.5rem' }}>
         {children}
