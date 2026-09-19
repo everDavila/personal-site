@@ -141,7 +141,11 @@ export default async function LabDetailPage({ params }: Props) {
       {/* ── 03 Bitácora ── */}
       {item.logEntries && item.logEntries.length > 0 && (
         <section className="lab-section">
-          <LabTimeline entries={item.logEntries} locale={loc} />
+          <LabTimeline
+            entries={item.logEntries}
+            locale={loc}
+            defaultOrder={item.status === 'en_proceso' ? 'desc' : 'asc'}
+          />
         </section>
       )}
 

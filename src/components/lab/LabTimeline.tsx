@@ -24,14 +24,15 @@ function sortKey(e: LogEntry): string {
   return `${e.date ?? '0000-00-00'}T${e.time ?? '00:00'}`
 }
 
-export function LabTimeline({ entries, locale, totalLabel }: {
+export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' }: {
   entries: LogEntry[]
   locale: Locale
   totalLabel?: string
+  defaultOrder?: 'asc' | 'desc'
 }) {
   const t = useTranslations('lab')
   const [activeFilter, setActiveFilter] = useState<string>('all')
-  const [sortOrder, setSortOrder]       = useState<'asc' | 'desc'>('asc')
+  const [sortOrder, setSortOrder]       = useState<'asc' | 'desc'>(defaultOrder)
   const [lb, setLb] = useState<LightboxState>({ open: false, items: [], index: 0 })
 
   // Unique tags sorted by first appearance (ascending)
