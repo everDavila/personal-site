@@ -1,6 +1,7 @@
 import type { Metadata } from 'next'
 import { Inter, Manrope, Source_Serif_4 } from 'next/font/google'
 import { cookies } from 'next/headers'
+import { getLocale } from 'next-intl/server'
 import './globals.css'
 
 const inter = Inter({
@@ -33,9 +34,11 @@ export default async function RootLayout({ children }: { children: React.ReactNo
   const jar = await cookies()
   const cookieVal = jar.get('narrative-mode')?.value
   const mode = cookieVal === 'dark' ? 'dark' : 'light'
+  const locale = await getLocale()
 
   return (
     <html
+      lang={locale}
       data-mode={mode}
       className={`${inter.variable} ${manrope.variable} ${sourceSerif4.variable}`}
       suppressHydrationWarning

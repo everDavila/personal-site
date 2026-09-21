@@ -1,6 +1,6 @@
 'use client'
 
-import { useState, useEffect, useCallback } from 'react'
+import { useState, useEffect, useCallback, useRef } from 'react'
 import type { LogEntry } from '@/sanity/queries/playground'
 import type { Locale } from '@/lib/i18n'
 import { useTranslations } from 'next-intl'
@@ -52,24 +52,40 @@ export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' 
 
   const filtered = activeFilter === 'all' ? sorted : sorted.filter(e => e.tag?.slug === activeFilter)
 
-  // Lightbox keyboard nav
+  const dialogRef  = useRef<HTMLDivElement>(null)
+  const closeRef   = useRef<HTMLButtonElement>(null)
+  const triggerRef = useRef<HTMLElement | null>(null)
+
+  // Lightbox: keyboard nav, focus trap, restore focus on close
   useEffect(() => {
     if (!lb.open) return
     const handler = (e: KeyboardEvent) => {
       if (e.key === 'Escape')     setLb(p => ({ ...p, open: false }))
       if (e.key === 'ArrowLeft')  setLb(p => ({ ...p, index: Math.max(0, p.index - 1) }))
       if (e.key === 'ArrowRight') setLb(p => ({ ...p, index: Math.min(p.items.length - 1, p.index + 1) }))
+      if (e.key === 'Tab' && dialogRef.current) {
+        const focusables = dialogRef.current.querySelectorAll<HTMLElement>('button, video[controls]')
+        if (!focusables.length) return
+        const first = focusables[0]
+        const last  = focusables[focusables.length - 1]
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus() }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus() }
+      }
     }
     document.body.style.overflow = 'hidden'
+    closeRef.current?.focus()
     window.addEventListener('keydown', handler)
+    const trigger = triggerRef.current
     return () => {
       document.body.style.overflow = ''
       window.removeEventListener('keydown', handler)
+      trigger?.focus()
     }
   }, [lb.open])
 
   const openLightbox = useCallback((images: LogEntry['images'], startIndex: number) => {
     if (!images?.length) return
+    triggerRef.current = document.activeElement as HTMLElement | null
     setLb({
       open: true,
       index: startIndex,
@@ -165,14 +181,18 @@ export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' 
                 </div>
 
                 {desc && (
-                  <p className="lab-entry-desc">{desc}</p>
+                  <div className="lab-entry-desc">
+                    {desc.split(/\n{2,}/).map((para, i) => (
+                      <p key={i}>{para}</p>
+                    ))}
+                  </div>
                 )}
 
                 {entry.images && entry.images.length > 0 && (
                   <div className="lab-img-links">
                     {entry.images.map((img, i) => {
                       const isVideo = img._type === 'file'
-                      const caption = img.caption?.[locale] ?? img.caption?.es ?? img.caption?.en ?? (isVideo ? `Video ${i + 1}` : `Imagen ${i + 1}`)
+                      const caption = img.caption?.[locale] ?? img.caption?.es ?? img.caption?.en ?? `${isVideo ? t('media_video') : t('media_image')} ${i + 1}`
                       return (
                         <button
                           key={img._key}
@@ -193,14 +213,21 @@ export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' 
 
       {/* ── Lightbox ── */}
       {lb.open && (
-        <div className="lab-lightbox" onClick={closeLightbox}>
-          <button className="lab-lightbox-close" onClick={closeLightbox}>✕</button>
+        <div
+          ref={dialogRef}
+          className="lab-lightbox"
+          role="dialog"
+          aria-modal="true"
+          aria-label={t('lightbox_label')}
+          onClick={closeLightbox}
+        >
+          <button ref={closeRef} className="lab-lightbox-close" aria-label={t('lightbox_close')} onClick={closeLightbox}>✕</button>
 
           {lb.index > 0 && (
-            <button className="lab-lightbox-nav lab-lightbox-prev" onClick={e => { e.stopPropagation(); setLb(p => ({ ...p, index: p.index - 1 })) }}>←</button>
+            <button className="lab-lightbox-nav lab-lightbox-prev" aria-label={t('lightbox_prev')} onClick={e => { e.stopPropagation(); setLb(p => ({ ...p, index: p.index - 1 })) }}>←</button>
           )}
           {lb.index < lb.items.length - 1 && (
-            <button className="lab-lightbox-nav lab-lightbox-next" onClick={e => { e.stopPropagation(); setLb(p => ({ ...p, index: p.index + 1 })) }}>→</button>
+            <button className="lab-lightbox-nav lab-lightbox-next" aria-label={t('lightbox_next')} onClick={e => { e.stopPropagation(); setLb(p => ({ ...p, index: p.index + 1 })) }}>→</button>
           )}
 
           <div className="lab-lightbox-inner" onClick={e => e.stopPropagation()}>
@@ -209,7 +236,7 @@ export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' 
                 key={lb.items[lb.index].src}
                 className="lab-lightbox-img"
                 controls
-                autoPlay
+                playsInline
               >
                 <source src={lb.items[lb.index].src} type={lb.items[lb.index].mimeType ?? undefined} />
               </video>
@@ -217,7 +244,7 @@ export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' 
               // eslint-disable-next-line @next/next/no-img-element
               <img
                 src={lb.items[lb.index].src}
-                alt={lb.items[lb.index].caption}
+                alt={lb.items[lb.index].caption || `${t('media_image')} ${lb.index + 1}`}
                 className="lab-lightbox-img"
               />
             )}

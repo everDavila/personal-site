@@ -85,7 +85,12 @@
     "orbitalTitle": "Cambiando a Orbital.",
     "orbitalDesc":  "De aquí en adelante, todo es un poco menos sensato.",
     "earthTitle":   "Cambiando a Tierra.",
-    "earthDesc":    "De aquí en adelante, todo es un poco más responsable."
+    "earthDesc":    "De aquí en adelante, todo es un poco más responsable.",
+    "earthName":    "Tierra",
+    "orbitalName":  "Orbital",
+    "switchToEarth":   "Cambiar a Tierra",
+    "switchToOrbital": "Cambiar a Orbital",
+    "close":        "Cerrar"
   },
   "lab": {
     "back": "← Lab",
@@ -97,6 +102,12 @@
     "sort_newest": "Más reciente",
     "filter_all": "Todo",
     "entries": "{count, plural, one {# entrada} other {# entradas}}",
+    "lightbox_label": "Visor de imágenes y videos",
+    "lightbox_close": "Cerrar",
+    "lightbox_prev": "Anterior",
+    "lightbox_next": "Siguiente",
+    "media_image": "Imagen",
+    "media_video": "Video",
     "dim_lightbulb": "Idea",
     "dim_target": "Producto",
     "dim_layers": "Interfaz",

@@ -45,8 +45,8 @@
   --color-surface:      #181715;
   --color-border:       #272522;
   --color-text:         #F0EFEC;
-  --color-muted:        #7A7975;
-  --color-accent:       #5A7C94;
+  --color-muted:        #8A8985;
+  --color-accent:       #6B8DA6;
   --color-accent-hover: #8FD3FF;
 }
 
@@ -59,8 +59,8 @@
   --color-surface:      #DEDAD3;
   --color-border:       #C8C4BC;
   --color-text:         #111110;
-  --color-muted:        #6A6A67;
-  --color-accent:       #3D6E5E;
+  --color-muted:        #5C5C59;
+  --color-accent:       #356456;
   --color-accent-hover: #1E4D3C;
 
   /* Tipografía levemente más abierta — refuerza el tono lúdico */
@@ -1147,8 +1147,7 @@ body::after {
 .lab-entry-dot--hito {
   width: 10px;
   height: 10px;
-  background: rgba(225,130,140,0.6);
-  box-shadow: 0 0 8px rgba(225,130,140,0.25);
+  background: var(--color-accent);
 }
 
 .lab-entry-top {
@@ -1189,6 +1188,13 @@ body::after {
   opacity: 0.65;
   margin: 0;
   margin-left: calc(2rem + 0.75rem);
+}
+.lab-entry-desc p {
+  margin: 0;
+  white-space: pre-line;
+}
+.lab-entry-desc p + p {
+  margin-top: 0.9rem;
 }
 
 /* ── Tags ── */
@@ -1386,6 +1392,32 @@ body::after {
 .lab-lightbox-next { right: 1.5rem; }
 
 @media (max-width: 640px) {
-  .lab-entry { grid-template-columns: 4.5rem 1px 1fr; gap: 0 1rem; }
-  .lab-entry-date-text { font-size: 0.5625rem; }
+  .lab-entry {
+    grid-template-columns: 1px 1fr;
+    grid-template-areas: "line date" "line content";
+    gap: 0 1rem;
+  }
+  .lab-entry-line    { grid-area: line; }
+  .lab-entry-date    { grid-area: date; flex-direction: row; align-items: baseline; gap: 0.6rem; text-align: left; padding-top: 0; padding-bottom: 0.5rem; }
+  .lab-entry-content { grid-area: content; }
+  .lab-entry-date-text { font-size: 0.6875rem; }
+  .lab-entry-time-text { font-size: 0.625rem; }
+  .lab-entry-desc,
+  .lab-img-links { margin-left: 0; }
+}
+
+/* ─────────────────────────────────────────
+   ACCESIBILIDAD — foco y movimiento reducido
+───────────────────────────────────────── */
+:focus-visible {
+  outline: 2px solid var(--color-accent-hover);
+  outline-offset: 2px;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  *, *::before, *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
 }

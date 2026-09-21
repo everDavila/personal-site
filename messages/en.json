@@ -85,7 +85,12 @@
     "orbitalTitle": "Switching to Orbital.",
     "orbitalDesc":  "Things get slightly less sensible from here.",
     "earthTitle":   "Switching to Earth.",
-    "earthDesc":    "Things get slightly more responsible from here."
+    "earthDesc":    "Things get slightly more responsible from here.",
+    "earthName":    "Earth",
+    "orbitalName":  "Orbital",
+    "switchToEarth":   "Switch to Earth",
+    "switchToOrbital": "Switch to Orbital",
+    "close":        "Close"
   },
   "lab": {
     "back": "← Lab",
@@ -97,6 +102,12 @@
     "sort_newest": "Newest first",
     "filter_all": "All",
     "entries": "{count, plural, one {# entry} other {# entries}}",
+    "lightbox_label": "Image and video viewer",
+    "lightbox_close": "Close",
+    "lightbox_prev": "Previous",
+    "lightbox_next": "Next",
+    "media_image": "Image",
+    "media_video": "Video",
     "dim_lightbulb": "Idea",
     "dim_target": "Product",
     "dim_layers": "Interface",
