@@ -73,6 +73,17 @@
     "title": "Contato",
     "email_label": "Email"
   },
+  "modeToast": {
+    "orbitalTitle": "Mudando para Orbital.",
+    "orbitalDesc":  "A partir daqui, as coisas ficam um pouco menos sensatas.",
+    "earthTitle":   "Mudando para Terra.",
+    "earthDesc":    "A partir daqui, as coisas ficam um pouco mais responsáveis.",
+    "earthName":    "Terra",
+    "orbitalName":  "Orbital",
+    "switchToEarth":   "Mudar para Terra",
+    "switchToOrbital": "Mudar para Orbital",
+    "close":        "Fechar"
+  },
   "lab": {
     "back": "← Lab",
     "section_idea": "A Ideia",
@@ -83,6 +94,12 @@
     "sort_newest": "Mais recente",
     "filter_all": "Tudo",
     "entries": "{count, plural, one {# entrada} other {# entradas}}",
+    "lightbox_label": "Visualizador de imagens e vídeos",
+    "lightbox_close": "Fechar",
+    "lightbox_prev": "Anterior",
+    "lightbox_next": "Seguinte",
+    "media_image": "Imagem",
+    "media_video": "Vídeo",
     "dim_lightbulb": "Ideia",
     "dim_target": "Produto",
     "dim_layers": "Interface",

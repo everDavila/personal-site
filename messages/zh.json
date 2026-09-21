@@ -73,6 +73,17 @@
     "title": "联系",
     "email_label": "邮箱"
   },
+  "modeToast": {
+    "orbitalTitle": "切换到轨道模式。",
+    "orbitalDesc":  "从这里开始，事情会变得稍微不那么理智。",
+    "earthTitle":   "切换到地球模式。",
+    "earthDesc":    "从这里开始，事情会变得稍微更负责任一些。",
+    "earthName":    "地球",
+    "orbitalName":  "轨道",
+    "switchToEarth":   "切换到地球",
+    "switchToOrbital": "切换到轨道",
+    "close":        "关闭"
+  },
   "lab": {
     "back": "← 实验室",
     "section_idea": "想法",
@@ -83,6 +94,12 @@
     "sort_newest": "从最新",
     "filter_all": "全部",
     "entries": "{count} 条记录",
+    "lightbox_label": "图片和视频查看器",
+    "lightbox_close": "关闭",
+    "lightbox_prev": "上一个",
+    "lightbox_next": "下一个",
+    "media_image": "图片",
+    "media_video": "视频",
     "dim_lightbulb": "想法",
     "dim_target": "产品",
     "dim_layers": "界面",

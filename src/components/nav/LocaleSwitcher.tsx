@@ -44,7 +44,6 @@ export function LocaleSwitcher() {
         fontFamily: 'var(--font-sans)',
         padding: '0.25rem',
         transition: 'color var(--transition)',
-        outline: 'none',
         appearance: 'none',
       }}
     >

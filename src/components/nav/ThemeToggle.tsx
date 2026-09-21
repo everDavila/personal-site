@@ -52,8 +52,8 @@ export function ThemeToggle() {
     <div style={{ position: 'relative' }}>
       <button
         onClick={toggle}
-        aria-label={isDark ? 'Cambiar a Tierra' : 'Cambiar a Orbital'}
-        title={isDark ? 'Tierra' : 'Orbital'}
+        aria-label={isDark ? t('switchToEarth') : t('switchToOrbital')}
+        title={isDark ? t('earthName') : t('orbitalName')}
         style={{
           position: 'relative',
           width: 60,
@@ -118,7 +118,6 @@ export function ThemeToggle() {
             borderRadius: 'var(--radius)',
             background: 'var(--color-surface)',
             border: '1px solid var(--color-border)',
-            boxShadow: '0 8px 24px rgba(0,0,0,0.16)',
           }}
         >
           <span style={{ color: 'var(--color-accent)', flexShrink: 0, marginTop: '0.125rem' }}>
@@ -147,7 +146,7 @@ export function ThemeToggle() {
 
           <button
             onClick={closeToast}
-            aria-label="Cerrar"
+            aria-label={t('close')}
             style={{
               background: 'none',
               border: 'none',
