@@ -32,6 +32,7 @@ export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' 
 }) {
   const t = useTranslations('lab')
   const [activeFilter, setActiveFilter] = useState<string>('all')
+  const [dimFilter, setDimFilter]       = useState<string>('all')
   const [sortOrder, setSortOrder]       = useState<'asc' | 'desc'>(defaultOrder)
   const [lb, setLb] = useState<LightboxState>({ open: false, items: [], index: 0 })
 
@@ -45,12 +46,25 @@ export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' 
     ).values()
   )
 
+  // Unique dimensions sorted by first appearance (ascending) — el otro eje: área del proyecto
+  const dimensions = Array.from(
+    new Map(
+      [...entries]
+        .sort((a, b) => sortKey(a).localeCompare(sortKey(b)))
+        .filter(e => e.dimension)
+        .map(e => [e.dimension!.slug, { slug: e.dimension!.slug, name: e.dimension!.name[locale] ?? e.dimension!.name.es ?? e.dimension!.name.en ?? e.dimension!.slug }])
+    ).values()
+  )
+
   const sorted = [...entries].sort((a, b) => {
     const cmp = sortKey(a).localeCompare(sortKey(b))
     return sortOrder === 'asc' ? cmp : -cmp
   })
 
-  const filtered = activeFilter === 'all' ? sorted : sorted.filter(e => e.tag?.slug === activeFilter)
+  const filtered = sorted.filter(e =>
+    (activeFilter === 'all' || e.tag?.slug === activeFilter) &&
+    (dimFilter === 'all' || e.dimension?.slug === dimFilter)
+  )
 
   const dialogRef  = useRef<HTMLDivElement>(null)
   const closeRef   = useRef<HTMLButtonElement>(null)
@@ -109,6 +123,7 @@ export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' 
         <h2 className="lab-section-title">{t('section_log')}</h2>
         <select
           className="lab-filter-select"
+          aria-label={t('sort_label')}
           value={sortOrder}
           onChange={e => setSortOrder(e.target.value as 'asc' | 'desc')}
         >
@@ -119,13 +134,28 @@ export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' 
           {totalLabel ?? t('entries', { count: entries.length })}
         </span>
 
-        {/* Zona derecha: filtro por etiqueta */}
+        {/* Zona derecha: filtro por área (dimensión) y por tipo de momento (tag) */}
+        {dimensions.length > 0 && (
+          <select
+            className="lab-filter-select"
+            aria-label={t('filter_dimension_label')}
+            value={dimFilter}
+            onChange={e => setDimFilter(e.target.value)}
+            style={{ marginLeft: 'auto' }}
+          >
+            <option value="all">{t('filter_all')}</option>
+            {dimensions.map(dim => (
+              <option key={dim.slug} value={dim.slug}>{dim.name}</option>
+            ))}
+          </select>
+        )}
         {tags.length > 0 && (
           <select
             className="lab-filter-select"
+            aria-label={t('filter_tag_label')}
             value={activeFilter}
             onChange={e => setActiveFilter(e.target.value)}
-            style={{ marginLeft: 'auto' }}
+            style={dimensions.length > 0 ? undefined : { marginLeft: 'auto' }}
           >
             <option value="all">{t('filter_all')}</option>
             {tags.map(tag => (
