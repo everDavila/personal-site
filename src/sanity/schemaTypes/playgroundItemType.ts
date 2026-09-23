@@ -145,9 +145,10 @@ export const playgroundItemType = defineType({
             defineField({
               name: 'dimension',
               title: 'Dimensión',
-              description: '¿En qué área del proyecto ocurrió este momento?',
+              description: '¿En qué área del proyecto ocurrió este momento? "Hito" no aparece aquí: un hito real ya tiene su propio tag y va con la dimensión del área donde ocurrió.',
               type: 'reference',
               to: [{ type: 'dimension' }],
+              options: { filter: '_id != "dim-zap"' },
               validation: r => r.required(),
             }),
             defineField({
