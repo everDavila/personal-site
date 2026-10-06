@@ -52,6 +52,7 @@ export function ThemeToggle() {
     <div style={{ position: 'relative' }}>
       <button
         onClick={toggle}
+        className="tap-target"
         aria-label={isDark ? t('switchToEarth') : t('switchToOrbital')}
         title={isDark ? t('earthName') : t('orbitalName')}
         style={{

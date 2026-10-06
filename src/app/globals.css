@@ -1421,3 +1421,14 @@ body::after {
     transition-duration: 0.01ms !important;
   }
 }
+
+/* ─────────────────────────────────────────
+   ACCESIBILIDAD — área táctil y hover del menú mobile
+───────────────────────────────────────── */
+/* Amplía el área pulsable a 44px sin cambiar el tamaño visual */
+.tap-target::before {
+  content: '';
+  position: absolute;
+  inset: -10px -4px;
+}
+.mobile-menu-link:hover { opacity: 0.65; }
