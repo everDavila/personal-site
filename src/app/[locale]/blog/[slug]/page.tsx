@@ -29,8 +29,10 @@ export async function generateMetadata(
   )
 
   const base = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://davila.uno'
+  // Recorte 1200×630 en JPG: WhatsApp y otros ignoran imágenes pesadas (>~300 KB)
   const ogImage = post.mainImage?.asset?.url
-    ?? `${base}/api/og?title=${encodeURIComponent(title.value ?? '')}&date=${encodeURIComponent(date)}`
+    ? `${post.mainImage.asset.url}?w=1200&h=630&fit=crop&fm=jpg&q=80`
+    :`${base}/api/og?title=${encodeURIComponent(title.value ?? '')}&date=${encodeURIComponent(date)}`
 
   return {
     title: title.value ?? undefined,
