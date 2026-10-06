@@ -1,3 +1,4 @@
+import { getSiteSettings } from '@/sanity/queries/siteSettings'
 import type { Metadata } from 'next'
 import { pageMetadata, ogImageUrl } from '@/lib/seo'
 import { notFound }                   from 'next/navigation'
@@ -17,7 +18,7 @@ type Props = { params: Promise<{ slug: string; locale: string }> }
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params
   const loc  = locale as Locale
-  const item = await getPlaygroundItemBySlug(slug, loc)
+  const [item, settings] = await Promise.all([getPlaygroundItemBySlug(slug, loc), getSiteSettings()])
   if (!item) return {}
 
   const title = localized(item.title, loc, 'es').value
@@ -28,7 +29,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     href:        l => ({ pathname: '/playground/[slug]', params: { slug: l === 'en' ? item.slugs.en : item.slugs.es } }),
     title:       `${title} — Ever Davila`,
     description: desc || undefined,
-    image:       ogImageUrl(item.image?.asset?.url),
+    image:       ogImageUrl(item.image?.asset?.url) ?? ogImageUrl(settings?.ogImage?.asset?.url),
   })
 }
 

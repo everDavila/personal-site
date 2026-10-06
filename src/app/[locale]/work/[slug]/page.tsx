@@ -1,3 +1,4 @@
+import { getSiteSettings } from '@/sanity/queries/siteSettings'
 import type { Metadata } from 'next'
 import { pageMetadata, ogImageUrl } from '@/lib/seo'
 import { notFound } from 'next/navigation'
@@ -14,7 +15,7 @@ type Props = { params: Promise<{ slug: string; locale: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug, locale } = await params
-  const project = await getProjectBySlug(slug)
+  const [project, settings] = await Promise.all([getProjectBySlug(slug), getSiteSettings()])
   if (!project) return {}
 
   const loc     = locale as Locale
@@ -25,7 +26,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     href:        { pathname: '/work/[slug]', params: { slug } },
     title:       `${title} — Ever Davila`,
     description: summary || undefined,
-    image:       ogImageUrl(project.mainImage?.asset?.url),
+    image:       ogImageUrl(project.mainImage?.asset?.url) ?? ogImageUrl(settings?.ogImage?.asset?.url),
   })
 }
 
