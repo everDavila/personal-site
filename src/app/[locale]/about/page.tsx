@@ -1,3 +1,4 @@
+import { pageMetadata, ogImageUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { getLocale, getTranslations } from 'next-intl/server'
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: 'Enfoque — Ever Davila',
     description: 'UX/UI Designer especializado en sistemas digitales complejos para el sector público peruano.',
   })
-  return { title, description, openGraph: { title, description }, twitter: { title, description } }
+  return pageMetadata({ locale: locale as Locale, href: '/about', title, description, image: ogImageUrl(settings?.ogImage?.asset?.url) })
 }
 
 export default async function AboutPage() {
@@ -43,7 +44,7 @@ export default async function AboutPage() {
   }
 
   return (
-    <main className="container section-page">
+    <div className="container section-page">
       <PageHeader imageSet={imageSet}>
         <h1 className="page-title n-slot" style={{ marginBottom: '0.25rem' }}>
           <span className="n-d">{titleDark}</span>
@@ -89,6 +90,6 @@ export default async function AboutPage() {
           {seeExp} →
         </Link>
       </div>
-    </main>
+    </div>
   )
 }

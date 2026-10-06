@@ -3,19 +3,19 @@ import { Link } from '@/i18n/navigation'
 
 type Props = { dark: string; light: string }
 
+function Paragraphs({ text, className }: { text: string; className: string }) {
+  const paras = text.split(/\n\n+/).filter(Boolean)
+  return (
+    <div className={className}>
+      {paras.map((para, i) => (
+        <p key={i} className="philosophy-para" style={{ whiteSpace: 'pre-line' }}>{para}</p>
+      ))}
+    </div>
+  )
+}
+
 export async function Philosophy({ dark, light }: Props) {
   const t = await getTranslations('home')
-
-  function Paragraphs({ text, className }: { text: string; className: string }) {
-    const paras = text.split(/\n\n+/).filter(Boolean)
-    return (
-      <div className={className}>
-        {paras.map((para, i) => (
-          <p key={i} className="philosophy-para" style={{ whiteSpace: 'pre-line' }}>{para}</p>
-        ))}
-      </div>
-    )
-  }
 
   return (
     <Link href={{ pathname: '/about' }} className="philosophy-link">

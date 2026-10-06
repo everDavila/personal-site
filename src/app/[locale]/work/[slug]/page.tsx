@@ -1,3 +1,6 @@
+import { getSiteSettings } from '@/sanity/queries/siteSettings'
+import type { Metadata } from 'next'
+import { pageMetadata, ogImageUrl } from '@/lib/seo'
 import { notFound } from 'next/navigation'
 import { getProjectBySlug } from '@/sanity/queries/projects'
 import { PostBody } from '@/components/blog/PostBody'
@@ -10,6 +13,22 @@ import type { PortableTextBlock } from '@portabletext/types'
 
 type Props = { params: Promise<{ slug: string; locale: string }> }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug, locale } = await params
+  const [project, settings] = await Promise.all([getProjectBySlug(slug), getSiteSettings()])
+  if (!project) return {}
+
+  const loc     = locale as Locale
+  const title   = localized(project.title,   loc, 'es').value
+  const summary = localized(project.summary, loc, 'es').value
+  return pageMetadata({
+    locale:      loc,
+    href:        { pathname: '/work/[slug]', params: { slug } },
+    title:       `${title} — Ever Davila`,
+    description: summary || undefined,
+    image:       ogImageUrl(project.mainImage?.asset?.url) ?? ogImageUrl(settings?.ogImage?.asset?.url),
+  })
+}
 
 export default async function ProjectPage({ params }: Props) {
   const { slug, locale } = await params
@@ -26,7 +45,6 @@ export default async function ProjectPage({ params }: Props) {
 
   const title   = localized(project.title,   currentLocale, 'es')
   const role    = localized(project.role,    currentLocale, 'es')
-  const summary = localized(project.summary, currentLocale, 'es')
 
   const availableLocales = locales.filter(l => l !== currentLocale && project.title?.[l])
 
@@ -38,7 +56,7 @@ export default async function ProjectPage({ params }: Props) {
     null
 
   return (
-    <main className="container section">
+    <div className="container section">
       <Link
         href={{ pathname: '/work' }}
         style={{
@@ -119,7 +137,7 @@ export default async function ProjectPage({ params }: Props) {
           )}
         </div>
       </article>
-    </main>
+    </div>
   )
 }
 

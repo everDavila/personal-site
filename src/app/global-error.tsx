@@ -61,6 +61,10 @@ export default function GlobalError({ error, reset }: Props) {
             >
               Try again
             </button>
+            {/* Recarga completa a propósito: tras un error global no hay layout que reutilizar */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
+            {/* Recarga completa a propósito: tras un error global no hay layout que reutilizar */}
+            {/* eslint-disable-next-line @next/next/no-html-link-for-pages */}
             <a href="/" style={{ fontSize: '0.6875rem', color: '#6B6B6B', textDecoration: 'none', textTransform: 'uppercase', letterSpacing: '0.1em' }}>
               ← Home
             </a>

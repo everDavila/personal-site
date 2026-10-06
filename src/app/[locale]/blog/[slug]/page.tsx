@@ -1,3 +1,4 @@
+import { pageMetadata, ogImageUrl, BASE_URL } from '@/lib/seo'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getPostBySlug, getAdjacentPosts } from '@/sanity/queries/posts'
@@ -28,27 +29,18 @@ export async function generateMetadata(
     { year: 'numeric', month: 'long', day: 'numeric' }
   )
 
-  const base = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://davila.uno'
-  const ogImage = post.mainImage?.asset?.url
-    ?? `${base}/api/og?title=${encodeURIComponent(title.value ?? '')}&date=${encodeURIComponent(date)}`
+  const ogImage = ogImageUrl(post.mainImage?.asset?.url)
+    ?? `${BASE_URL}/api/og?title=${encodeURIComponent(title.value)}&date=${encodeURIComponent(date)}`
 
-  return {
-    title: title.value ?? undefined,
-    description: excerpt.value ?? undefined,
-    openGraph: {
-      title:         title.value  ?? undefined,
-      description:   excerpt.value ?? undefined,
-      type:          'article',
-      publishedTime: post.publishedAt,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: title.value ?? '' }],
-    },
-    twitter: {
-      card:        'summary_large_image',
-      title:       title.value  ?? undefined,
-      description: excerpt.value ?? undefined,
-      images:      [ogImage],
-    },
-  }
+  return pageMetadata({
+    locale:        currentLocale,
+    // Cada idioma tiene su propio slug
+    href:          l => ({ pathname: '/blog/[slug]', params: { slug: post.slugs[l] } }),
+    title:         title.value,
+    description:   excerpt.value || undefined,
+    image:         ogImage,
+    publishedTime: post.publishedAt,
+  })
 }
 
 
@@ -85,7 +77,6 @@ export default async function PostPage({ params }: Props) {
 
   const currentLocale = locale as Locale
   const title  = localized(post.title,  currentLocale, post.originalLanguage)
-  const excerpt = localized(post.excerpt, currentLocale, post.originalLanguage)
 
   const locales: Locale[] = ['es', 'en', 'pt', 'qu', 'zh']
   const availableLocales = locales.filter(l => l !== currentLocale && post.title?.[l])
@@ -106,7 +97,7 @@ export default async function PostPage({ params }: Props) {
   const minLabel = MIN_LABEL[currentLocale] ?? 'min read'
 
   return (
-    <main className="container section-page">
+    <div className="container section-page">
 
       {/* Back link */}
       <div style={{ maxWidth: '64ch', marginInline: 'auto' }}>
@@ -302,6 +293,6 @@ export default async function PostPage({ params }: Props) {
         </nav>
       )}
 
-    </main>
+    </div>
   )
 }

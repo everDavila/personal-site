@@ -1,3 +1,4 @@
+import { pageMetadata, ogImageUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 import { getAllProjects } from '@/sanity/queries/projects'
 import { getLocale, getTranslations } from 'next-intl/server'
@@ -17,7 +18,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: 'Proyectos — Ever Davila',
     description: 'Intervenciones de diseño en sistemas complejos del sector público peruano.',
   })
-  return { title, description, openGraph: { title, description }, twitter: { title, description } }
+  return pageMetadata({ locale: locale as Locale, href: '/work', title, description, image: ogImageUrl(settings?.ogImage?.asset?.url) })
 }
 
 export const dynamic = 'force-dynamic'
@@ -43,7 +44,7 @@ export default async function WorkPage() {
   }
 
   return (
-    <main className="container section-page">
+    <div className="container section-page">
       <PageHeader imageSet={imageSet}>
         <h1 className="page-title n-slot" style={{ marginBottom: '0.25rem' }}>
           <span className="n-d">{titleDark}</span>
@@ -97,6 +98,6 @@ export default async function WorkPage() {
           })}
         </div>
       )}
-    </main>
+    </div>
   )
 }

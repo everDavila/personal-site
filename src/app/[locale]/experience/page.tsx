@@ -1,3 +1,4 @@
+import { pageMetadata, ogImageUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 import { getExperience } from '@/sanity/queries/experience'
 import { getLocale, getTranslations } from 'next-intl/server'
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: 'Experiencia — Ever Davila',
     description: 'Trayectoria profesional en diseño UX/UI para el sector público peruano.',
   })
-  return { title, description, openGraph: { title, description }, twitter: { title, description } }
+  return pageMetadata({ locale: locale as Locale, href: '/experience', title, description, image: ogImageUrl(settings?.ogImage?.asset?.url) })
 }
 
 export const dynamic = 'force-dynamic'

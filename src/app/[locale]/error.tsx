@@ -1,6 +1,7 @@
 'use client'
 
 import { useEffect } from 'react'
+import { Link } from '@/i18n/navigation'
 
 type Props = { error: Error & { digest?: string }; reset: () => void }
 
@@ -10,7 +11,7 @@ export default function Error({ error, reset }: Props) {
   }, [error])
 
   return (
-    <main style={{
+    <div style={{
       padding: 'var(--spacing-section) var(--spacing-container)',
       maxWidth: 'var(--max-width)',
       marginInline: 'auto',
@@ -77,7 +78,7 @@ export default function Error({ error, reset }: Props) {
         >
           Try again
         </button>
-        <a
+        <Link
           href="/"
           style={{
             fontSize: 'var(--text-label)',
@@ -88,8 +89,8 @@ export default function Error({ error, reset }: Props) {
           }}
         >
           ← Home
-        </a>
+        </Link>
       </div>
-    </main>
+    </div>
   )
 }
