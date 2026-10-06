@@ -15,7 +15,8 @@ export function HeroSubtitle({ initial, pool, style, className }: Props) {
 
   const poolRef = useRef(pool)
   const currentRef = useRef(initial)
-  currentRef.current = text
+
+  useEffect(() => { currentRef.current = text }, [text])
 
   useEffect(() => {
     if (poolRef.current.length <= 1) return

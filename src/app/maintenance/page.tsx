@@ -38,6 +38,8 @@ export default function MaintenancePage() {
 
   useEffect(() => {
     const detected = navigator.language.toLowerCase().startsWith('es') ? 'es' : 'en'
+    // Valor solo disponible en el navegador: se lee tras montar para no romper la hidratación
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setLang(detected)
   }, [])
 

@@ -10,6 +10,8 @@ export function RotatingNote({ notes }: Props) {
 
   useEffect(() => {
     const initial = Math.floor(Math.random() * Math.max(notes.length, 1))
+    // Valor solo disponible en el navegador: se lee tras montar para no romper la hidratación
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setIndex(initial)
     if (notes.length <= 1) return
     const id = setInterval(() => {

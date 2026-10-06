@@ -18,6 +18,8 @@ export function ThemeToggle() {
 
   useEffect(() => {
     const current = document.documentElement.dataset.mode as NarrativeMode | undefined
+    // Valor solo disponible en el navegador: se lee tras montar para no romper la hidratación
+    // eslint-disable-next-line react-hooks/set-state-in-effect
     setMode(current ?? 'light')
   }, [])
 

@@ -45,7 +45,6 @@ export default async function ProjectPage({ params }: Props) {
 
   const title   = localized(project.title,   currentLocale, 'es')
   const role    = localized(project.role,    currentLocale, 'es')
-  const summary = localized(project.summary, currentLocale, 'es')
 
   const availableLocales = locales.filter(l => l !== currentLocale && project.title?.[l])
 

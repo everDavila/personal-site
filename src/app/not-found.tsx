@@ -1,3 +1,4 @@
+import Link from 'next/link'
 import { headers } from 'next/headers'
 import { getPage404 } from '@/sanity/queries/page404'
 import { RotatingNote } from '@/components/not-found/RotatingNote'
@@ -68,9 +69,9 @@ export default async function RootNotFound() {
             paddingBlock: '1rem',
           }}
         >
-          <a href="/" style={{ color: 'var(--color-text)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
+          <Link href="/" style={{ color: 'var(--color-text)', textDecoration: 'none', display: 'flex', alignItems: 'center' }}>
             <LogoMark />
-          </a>
+          </Link>
           <span style={{ fontSize: '0.6875rem', color: '#3A3835', fontFamily: 'ui-monospace, monospace', letterSpacing: '0.08em' }}>
             SYS://404
           </span>
@@ -121,7 +122,7 @@ export default async function RootNotFound() {
 
           {/* CTAs */}
           <div style={{ display: 'flex', gap: '1.25rem', alignItems: 'center', flexWrap: 'nowrap', marginTop: '0.25rem' }}>
-            <a href="/" style={{
+            <Link href="/" style={{
               fontSize: '0.6875rem', color: '#F0EFEC',
               textTransform: 'uppercase', letterSpacing: '0.1em',
               textDecoration: 'none',
@@ -129,14 +130,14 @@ export default async function RootNotFound() {
               padding: '0.6rem 1.1rem',
             }}>
               ← {c.ctaHome}
-            </a>
-            <a href="/work" style={{
+            </Link>
+            <Link href="/work" style={{
               fontSize: '0.6875rem', color: '#5A5855',
               textTransform: 'uppercase', letterSpacing: '0.1em',
               textDecoration: 'none',
             }}>
               {c.ctaWork} →
-            </a>
+            </Link>
           </div>
 
           <span style={{ fontSize: '0.625rem', color: '#2E2C2A', fontFamily: 'ui-monospace, monospace', letterSpacing: '0.06em' }}>

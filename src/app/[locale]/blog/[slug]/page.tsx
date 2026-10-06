@@ -77,7 +77,6 @@ export default async function PostPage({ params }: Props) {
 
   const currentLocale = locale as Locale
   const title  = localized(post.title,  currentLocale, post.originalLanguage)
-  const excerpt = localized(post.excerpt, currentLocale, post.originalLanguage)
 
   const locales: Locale[] = ['es', 'en', 'pt', 'qu', 'zh']
   const availableLocales = locales.filter(l => l !== currentLocale && post.title?.[l])
