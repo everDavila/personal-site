@@ -1,3 +1,4 @@
+import { pageMetadata, ogImageUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 import { getSiteSettings, lbl, narrativeText, NARRATIVE_FALLBACK, resolveSeo } from '@/sanity/queries/siteSettings'
 import { getLocale, getTranslations } from 'next-intl/server'
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: 'Hablemos — Ever Davila',
     description: 'Disponible para consultas estratégicas y proyectos complejos.',
   })
-  return { title, description, openGraph: { title, description }, twitter: { title, description } }
+  return pageMetadata({ locale: locale as Locale, href: '/contact', title, description, image: ogImageUrl(settings?.ogImage?.asset?.url) })
 }
 
 export default async function ContactPage() {

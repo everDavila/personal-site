@@ -1,3 +1,4 @@
+import { pageMetadata, ogImageUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 import { getAllPosts } from '@/sanity/queries/posts'
 import { PostCard } from '@/components/blog/PostCard'
@@ -16,7 +17,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: 'Apuntes — Ever Davila',
     description: 'Notas sobre diseño, sistemas complejos y tecnología.',
   })
-  return { title, description, openGraph: { title, description }, twitter: { title, description } }
+  return pageMetadata({ locale: locale as Locale, href: '/blog', title, description, image: ogImageUrl(settings?.ogImage?.asset?.url) })
 }
 
 export const dynamic = 'force-dynamic'

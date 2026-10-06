@@ -1,3 +1,4 @@
+import { pageMetadata, ogImageUrl } from '@/lib/seo'
 import type { Metadata } from 'next'
 import { getTranslations, getLocale } from 'next-intl/server'
 import { getAllPlaygroundItems } from '@/sanity/queries/playground'
@@ -15,7 +16,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
     title: 'Laboratorio — Ever Davila',
     description: 'Experimentos de diseño, interfaces y sistemas.',
   })
-  return { title, description, openGraph: { title, description }, twitter: { title, description } }
+  return pageMetadata({ locale: locale as Locale, href: '/playground', title, description, image: ogImageUrl(settings?.ogImage?.asset?.url) })
 }
 
 export const dynamic = 'force-dynamic'

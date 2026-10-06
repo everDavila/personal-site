@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+import { pageMetadata, ogImageUrl } from '@/lib/seo'
 import { notFound } from 'next/navigation'
 import { getProjectBySlug } from '@/sanity/queries/projects'
 import { PostBody } from '@/components/blog/PostBody'
@@ -10,6 +12,22 @@ import type { PortableTextBlock } from '@portabletext/types'
 
 type Props = { params: Promise<{ slug: string; locale: string }> }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug, locale } = await params
+  const project = await getProjectBySlug(slug)
+  if (!project) return {}
+
+  const loc     = locale as Locale
+  const title   = localized(project.title,   loc, 'es').value
+  const summary = localized(project.summary, loc, 'es').value
+  return pageMetadata({
+    locale:      loc,
+    href:        { pathname: '/work/[slug]', params: { slug } },
+    title:       `${title} — Ever Davila`,
+    description: summary || undefined,
+    image:       ogImageUrl(project.mainImage?.asset?.url),
+  })
+}
 
 export default async function ProjectPage({ params }: Props) {
   const { slug, locale } = await params

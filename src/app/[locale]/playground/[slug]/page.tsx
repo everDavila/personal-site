@@ -1,3 +1,5 @@
+import type { Metadata } from 'next'
+import { pageMetadata, ogImageUrl } from '@/lib/seo'
 import { notFound }                   from 'next/navigation'
 import { setRequestLocale, getTranslations } from 'next-intl/server'
 import { Link }                        from '@/i18n/navigation'
@@ -12,6 +14,23 @@ export const dynamic = 'force-dynamic'
 
 type Props = { params: Promise<{ slug: string; locale: string }> }
 
+export async function generateMetadata({ params }: Props): Promise<Metadata> {
+  const { slug, locale } = await params
+  const loc  = locale as Locale
+  const item = await getPlaygroundItemBySlug(slug, loc)
+  if (!item) return {}
+
+  const title = localized(item.title, loc, 'es').value
+  const desc  = item.description ? localized(item.description, loc, 'es').value : ''
+  return pageMetadata({
+    locale:      loc,
+    // Solo hay slug en en/es; el resto de idiomas usa el de es
+    href:        l => ({ pathname: '/playground/[slug]', params: { slug: l === 'en' ? item.slugs.en : item.slugs.es } }),
+    title:       `${title} — Ever Davila`,
+    description: desc || undefined,
+    image:       ogImageUrl(item.image?.asset?.url),
+  })
+}
 
 const STATUS_COLOR: Record<string, string> = {
   en_proceso: 'var(--color-accent)',

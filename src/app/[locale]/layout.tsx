@@ -7,54 +7,22 @@ import { Nav } from '@/components/nav/Nav'
 import { Footer } from '@/components/layout/Footer'
 import { getSiteSettings, resolveSeo } from '@/sanity/queries/siteSettings'
 
-const BASE = 'https://davila.uno'
-
-// Localized home URLs for hreflang — mirrors routing.ts
-const LOCALE_URLS: Record<string, string> = {
-  es: `${BASE}/es`,
-  en: `${BASE}/en`,
-  pt: `${BASE}/pt`,
-  qu: `${BASE}/qu`,
-  zh: `${BASE}/zh`,
-}
+import { pageMetadata, ogImageUrl } from '@/lib/seo'
+import type { Locale } from '@/lib/i18n'
 
 export async function generateMetadata(
   { params }: { params: Promise<{ locale: string }> }
 ): Promise<Metadata> {
   const { locale } = await params
   const settings   = await getSiteSettings()
-  const ogUrl      = settings?.ogImage?.asset?.url ?? null
+  const ogUrl      = ogImageUrl(settings?.ogImage?.asset?.url)
 
   const { title, description } = resolveSeo(settings?.seoHome, locale as 'es' | 'en' | 'pt' | 'qu' | 'zh', {
     title:       'Ever Davila',
     description: 'Diseñador UI/UX y consultor de gobierno. Sistemas digitales para el sector público peruano.',
   })
-  const images = ogUrl ? [{ url: ogUrl, width: 1200, height: 630, alt: title }] : []
-  const canonical   = LOCALE_URLS[locale] ?? `${BASE}/${locale}`
-
-  return {
-    title,
-    description,
-    alternates: {
-      canonical,
-      languages: LOCALE_URLS,
-    },
-    openGraph: {
-      title,
-      description,
-      url:      canonical,
-      siteName: 'Ever Davila',
-      type:     'website',
-      locale:   locale,
-      ...(images.length ? { images } : {}),
-    },
-    twitter: {
-      card:  images.length ? 'summary_large_image' : 'summary',
-      title,
-      description,
-      ...(images.length ? { images: [ogUrl!] } : {}),
-    },
-  }
+  // Valores de la home; cada página interna sobrescribe con su propio pageMetadata()
+  return pageMetadata({ locale: locale as Locale, href: '/', title, description, image: ogUrl })
 }
 
 export default async function LocaleLayout({

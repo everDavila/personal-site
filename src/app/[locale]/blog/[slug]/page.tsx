@@ -1,3 +1,4 @@
+import { pageMetadata, ogImageUrl, BASE_URL } from '@/lib/seo'
 import type { Metadata } from 'next'
 import { notFound } from 'next/navigation'
 import { getPostBySlug, getAdjacentPosts } from '@/sanity/queries/posts'
@@ -28,29 +29,18 @@ export async function generateMetadata(
     { year: 'numeric', month: 'long', day: 'numeric' }
   )
 
-  const base = process.env.NEXT_PUBLIC_BASE_URL ?? 'https://davila.uno'
-  // Recorte 1200×630 en JPG: WhatsApp y otros ignoran imágenes pesadas (>~300 KB)
-  const ogImage = post.mainImage?.asset?.url
-    ? `${post.mainImage.asset.url}?w=1200&h=630&fit=crop&fm=jpg&q=80`
-    :`${base}/api/og?title=${encodeURIComponent(title.value ?? '')}&date=${encodeURIComponent(date)}`
+  const ogImage = ogImageUrl(post.mainImage?.asset?.url)
+    ?? `${BASE_URL}/api/og?title=${encodeURIComponent(title.value)}&date=${encodeURIComponent(date)}`
 
-  return {
-    title: title.value ?? undefined,
-    description: excerpt.value ?? undefined,
-    openGraph: {
-      title:         title.value  ?? undefined,
-      description:   excerpt.value ?? undefined,
-      type:          'article',
-      publishedTime: post.publishedAt,
-      images: [{ url: ogImage, width: 1200, height: 630, alt: title.value ?? '' }],
-    },
-    twitter: {
-      card:        'summary_large_image',
-      title:       title.value  ?? undefined,
-      description: excerpt.value ?? undefined,
-      images:      [ogImage],
-    },
-  }
+  return pageMetadata({
+    locale:        currentLocale,
+    // Cada idioma tiene su propio slug
+    href:          l => ({ pathname: '/blog/[slug]', params: { slug: post.slugs[l] } }),
+    title:         title.value,
+    description:   excerpt.value || undefined,
+    image:         ogImage,
+    publishedTime: post.publishedAt,
+  })
 }
 
 
