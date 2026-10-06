@@ -44,7 +44,7 @@ export default async function AboutPage() {
   }
 
   return (
-    <main className="container section-page">
+    <div className="container section-page">
       <PageHeader imageSet={imageSet}>
         <h1 className="page-title n-slot" style={{ marginBottom: '0.25rem' }}>
           <span className="n-d">{titleDark}</span>
@@ -90,6 +90,6 @@ export default async function AboutPage() {
           {seeExp} →
         </Link>
       </div>
-    </main>
+    </div>
   )
 }

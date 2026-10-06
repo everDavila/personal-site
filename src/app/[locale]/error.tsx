@@ -10,7 +10,7 @@ export default function Error({ error, reset }: Props) {
   }, [error])
 
   return (
-    <main style={{
+    <div style={{
       padding: 'var(--spacing-section) var(--spacing-container)',
       maxWidth: 'var(--max-width)',
       marginInline: 'auto',
@@ -90,6 +90,6 @@ export default function Error({ error, reset }: Props) {
           ← Home
         </a>
       </div>
-    </main>
+    </div>
   )
 }

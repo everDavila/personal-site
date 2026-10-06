@@ -57,7 +57,7 @@ export default async function ProjectPage({ params }: Props) {
     null
 
   return (
-    <main className="container section">
+    <div className="container section">
       <Link
         href={{ pathname: '/work' }}
         style={{
@@ -138,7 +138,7 @@ export default async function ProjectPage({ params }: Props) {
           )}
         </div>
       </article>
-    </main>
+    </div>
   )
 }
 

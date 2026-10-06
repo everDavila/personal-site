@@ -58,7 +58,7 @@ export default async function LabDetailPage({ params }: Props) {
   const why   = (item.why?.[loc]  ?? item.why?.es  ?? item.why?.en  ?? null) as PortableTextBlock[] | null
 
   return (
-    <main style={{ maxWidth: 'var(--max-width, 82rem)', margin: '0 auto', padding: '0 var(--space-side, 2rem)' }}>
+    <div style={{ maxWidth: 'var(--max-width, 82rem)', margin: '0 auto', padding: '0 var(--space-side, 2rem)' }}>
 
       {/* Back */}
       <Link
@@ -207,6 +207,6 @@ export default async function LabDetailPage({ params }: Props) {
         </div>
       </section>
 
-    </main>
+    </div>
   )
 }

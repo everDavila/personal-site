@@ -59,7 +59,7 @@ export default async function PlaygroundPage() {
   const activeCategories = CATEGORIES.filter(c => items.some(i => i.category === c))
 
   return (
-    <main className="container section-page">
+    <div className="container section-page">
       <PageHeader imageSet={imageSet}>
         <h1 className="n-slot page-title" style={{ marginBottom: '0.25rem' }}>
           <span className="n-d">{titleDark}</span>
@@ -84,6 +84,6 @@ export default async function PlaygroundPage() {
         t={translations}
         categories={activeCategories}
       />
-    </main>
+    </div>
   )
 }

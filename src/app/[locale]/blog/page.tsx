@@ -64,7 +64,7 @@ export default async function BlogPage() {
   const countLabel = (COUNT_LABEL[locale] ?? COUNT_LABEL.en)(posts.length)
 
   return (
-    <main className="container section-page">
+    <div className="container section-page">
 
       {/* ── Editorial header ── */}
       <PageHeader imageSet={imageSet}>
@@ -125,6 +125,6 @@ export default async function BlogPage() {
         </div>
       )}
 
-    </main>
+    </div>
   )
 }

@@ -98,7 +98,7 @@ export default async function PostPage({ params }: Props) {
   const minLabel = MIN_LABEL[currentLocale] ?? 'min read'
 
   return (
-    <main className="container section-page">
+    <div className="container section-page">
 
       {/* Back link */}
       <div style={{ maxWidth: '64ch', marginInline: 'auto' }}>
@@ -294,6 +294,6 @@ export default async function PostPage({ params }: Props) {
         </nav>
       )}
 
-    </main>
+    </div>
   )
 }
