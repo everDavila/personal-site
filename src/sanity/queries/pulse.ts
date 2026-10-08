@@ -170,23 +170,107 @@ const FALLBACK_PHRASES: Phrase[] = [
     ['aprovecha el impulso antes de que se me pase', 'use the momentum before it wears off'],
   ]),
 
-  // ── Pasos · provisionales, una por casilla ──
-  ...set('steps', 'p1', 'any', 'light', [['el sofá y yo llegamos a un acuerdo', 'the couch and I reached an agreement']]),
-  ...set('steps', 'p2', 'any', 'light', [['de la cama al escritorio, ida y vuelta', 'bed to desk, round trip']]),
-  ...set('steps', 'p3', 'any', 'light', [['día de escritorio, se nota', 'desk day, it shows']]),
-  ...set('steps', 'p4', 'any', 'light', [['lo justo para decir que salí', 'just enough to say I went out']]),
-  ...set('steps', 'p5', 'any', 'light', [['la meta me vio pasar de cerca', 'the goal watched me walk past']]),
-  ...set('steps', 'p6', 'any', 'light', [['meta cumplida; la app está orgullosa', 'goal reached; the app is proud']]),
-  ...set('steps', 'p7', 'any', 'light', [['hito histórico; las rodillas piden reunión', 'historic milestone; the knees request a meeting']]),
-  ...set('steps', 'p8', 'any', 'light', [['Lima recorrida, rodillas en revisión', 'Lima covered, knees under review']]),
-  ...set('steps', 'p1', 'any', 'dark',  [['sedentario', 'sedentary']]),
-  ...set('steps', 'p2', 'any', 'dark',  [['movilidad mínima', 'minimal mobility']]),
-  ...set('steps', 'p3', 'any', 'dark',  [['actividad baja', 'low activity']]),
-  ...set('steps', 'p4', 'any', 'dark',  [['actividad moderada', 'moderate activity']]),
-  ...set('steps', 'p5', 'any', 'dark',  [['cerca del objetivo', 'near target']]),
-  ...set('steps', 'p6', 'any', 'dark',  [['objetivo cumplido', 'target met']]),
-  ...set('steps', 'p7', 'any', 'dark',  [['registro alto', 'high record']]),
-  ...set('steps', 'p8', 'any', 'dark',  [['registro excepcional', 'exceptional record']]),
+  // ── Pasos · matriz de Ever (2026-10-08). Van detrás de "ayer caminé N pasos ·": nada de "hoy" ni "ahora" ──
+
+  // Tierra · claro (observador urbano / ácido)
+  ...set('steps', 'p1', 'any', 'light', [
+    ['físicamente fusionado con la silla', 'physically fused with the chair'],
+    ['del sofá a la cafetera y de regreso', 'couch to coffee maker and back'],
+    ['ganó la casa por goleada', 'the house won by a landslide'],
+    ['radio de acción limitado a la cocina', 'range of action limited to the kitchen'],
+  ]),
+  ...set('steps', 'p2', 'any', 'light', [
+    ['salí lo justo para que no sospecharan', 'went out just enough to avoid suspicion'],
+    ['paseo corto con trámite de por medio', 'short walk with an errand in the middle'],
+    ['movilidad básica de supervivencia urbana', 'basic urban survival mobility'],
+    ['caminé solo para recordar que hay sol', 'walked just to remember the sun exists'],
+  ]),
+  ...set('steps', 'p3', 'any', 'light', [
+    ['ganó el escritorio otra vez', 'the desk won again'],
+    ['la silla me reclama con insistencia', 'the chair keeps calling me back'],
+    ['entre tazas de café y pendientes del backlog', 'between coffee cups and backlog items'],
+    ['salida rápida a tomar aire y volver a la cueva', 'quick trip for air, then back to the cave'],
+  ]),
+  ...set('steps', 'p4', 'any', 'light', [
+    ['hubo calle, vereda y aire fresco', 'there was street, sidewalk and fresh air'],
+    ['caminata estratégica para desarmar bloqueos', 'strategic walk to dismantle blockers'],
+    ['la silla puede esperar su turno', 'the chair can wait its turn'],
+    ['pasos suficientes para justificar mi dosis de café', 'enough steps to justify my coffee dose'],
+  ]),
+  ...set('steps', 'p5', 'any', 'light', [
+    ['sentarme habría sido un error táctico', 'sitting down would have been a tactical error'],
+    ['faltó solo una vuelta a la manzana', 'just one more lap around the block'],
+    ['resolví media arquitectura caminando', 'solved half an architecture while walking'],
+    ['la meta quedó a la vuelta de la esquina', 'the goal was just around the corner'],
+  ]),
+  ...set('steps', 'p6', 'any', 'light', [
+    ['suela y trámite completados', 'soles and errands, done'],
+    ['las piernas cumplieron su jornada legal', 'the legs worked their legal shift'],
+    ['el reloj cree que soy atleta; solo fui por pan a otro distrito', 'the watch thinks I’m an athlete; I just went for bread in another district'],
+    ['esquivé media ciudad y tres conversaciones', 'dodged half the city and three conversations'],
+  ]),
+  ...set('steps', 'p7', 'any', 'light', [
+    ['salí a caminar y se me fue de las manos', 'went for a walk and it got out of hand'],
+    ['esto definitivamente no pasa todos los días', 'this definitely doesn’t happen every day'],
+    ['me gané el derecho vitalicio al ascensor', 'earned lifetime elevator rights'],
+    ['caminata que debió haber sido en transporte', 'a walk that should have been a bus ride'],
+  ]),
+  ...set('steps', 'p8', 'any', 'light', [
+    ['rodillas en mantenimiento de emergencia', 'knees under emergency maintenance'],
+    ['debí volver en taxi hace diez kilómetros', 'should have taken a taxi ten kilometers ago'],
+    ['o huía de una reunión o cerraba cinco trámites', 'either fleeing a meeting or closing five errands'],
+    ['un poco más y cruzaba la frontera', 'a bit more and I’d have crossed the border'],
+  ]),
+
+  // Orbital · oscuro (bitácora / telemetría)
+  ...set('steps', 'p1', 'any', 'dark', [
+    ['en órbita doméstica', 'in domestic orbit'],
+    ['sin salir de la base lunar', 'never left the lunar base'],
+    ['misión principal: buscar café', 'primary mission: find coffee'],
+    ['propulsores en apagado preventivo', 'thrusters in preventive shutdown'],
+  ]),
+  ...set('steps', 'p2', 'any', 'dark', [
+    ['despegue breve', 'brief liftoff'],
+    ['exploración local sin riesgos', 'low-risk local exploration'],
+    ['impulso mínimo de escape', 'minimum escape thrust'],
+    ['operando a tiro de piedra de la base', 'operating a stone’s throw from base'],
+  ]),
+  ...set('steps', 'p3', 'any', 'dark', [
+    ['órbita de escritorio fija', 'fixed desk orbit'],
+    ['breve paseo hasta la escotilla', 'brief walk to the hatch'],
+    ['gravedad de oficina al máximo nivel', 'office gravity at maximum'],
+    ['telemetría estable, desplazamientos mínimos', 'stable telemetry, minimal displacement'],
+  ]),
+  ...set('steps', 'p4', 'any', 'dark', [
+    ['fuera de la estación espacial', 'outside the space station'],
+    ['ruta de reconocimiento en curso', 'reconnaissance route in progress'],
+    ['misión activa en terreno irregular', 'active mission on uneven terrain'],
+    ['dispersión mental reducida por movimiento', 'mental drift reduced by movement'],
+  ]),
+  ...set('steps', 'p5', 'any', 'dark', [
+    ['destino a la vista del radar', 'destination on radar'],
+    ['maniobra de aproximación final', 'final approach maneuver'],
+    ['último impulso de los propulsores', 'last thruster burn'],
+    ['aterrizaje pendiente de confirmación', 'landing pending confirmation'],
+  ]),
+  ...set('steps', 'p6', 'any', 'dark', [
+    ['misión cumplida sin novedad', 'mission complete, nothing to report'],
+    ['destino principal alcanzado', 'primary destination reached'],
+    ['secuencia de reingreso a la base', 're-entry sequence to base'],
+    ['batería física en balance óptimo', 'physical battery at optimal balance'],
+  ]),
+  ...set('steps', 'p7', 'any', 'dark', [
+    ['fuera de la órbita calculada', 'outside the calculated orbit'],
+    ['misión extendida en territorio ajeno', 'extended mission in foreign territory'],
+    ['entrada excepcional en la bitácora', 'exceptional logbook entry'],
+    ['alerta: entrando en reserva de combustible', 'alert: entering fuel reserve'],
+  ]),
+  ...set('steps', 'p8', 'any', 'dark', [
+    ['me pasé de planeta por error de cálculo', 'overshot the planet by miscalculation'],
+    ['solicito cápsula de rescate inmediata', 'requesting immediate rescue capsule'],
+    ['desgaste estructural severo en el hardware', 'severe structural wear on the hardware'],
+    ['deriva cósmica sin retorno asistido', 'cosmic drift, no assisted return'],
+  ]),
 ]
 
 const FALLBACK_LOCALES: Record<Locale, Locale[]> = {
