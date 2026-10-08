@@ -137,13 +137,13 @@ const FALLBACK_PHRASES: Phrase[] = [
   // ── Sueño · contacto (filtro humano, ambos modos) ──
   ...set('sleep', 's1', 'contact', 'any', [
     ['mejor mañana; si es urgente, que sea muy corto', 'tomorrow is better; if urgent, keep it very short'],
-    ['déjame un mensaje; lo ignoraré con elegancia', 'leave a message; I’ll ignore it gracefully'],
+    ['déjame un mensaje; respondo cuando vuelva a ser persona', 'leave a message; I’ll reply once I’m a person again'],
     ['si me llamas, asumo que algo se está quemando', 'if you call, I’ll assume something is on fire'],
   ]),
   ...set('sleep', 's2', 'contact', 'any', [
     ['sé breve y al grano, por favor', 'brief and to the point, please'],
     ['redacta pensando que cada palabra te cuesta diez dólares', 'write as if every word costs you ten dollars'],
-    ['si es reunión: solo audio y con cámara apagada', 'if it’s a meeting: audio only, camera off'],
+    ['si es reunión: cámara apagada, por el bien de todos', 'if it’s a meeting: camera off, for everyone’s sake'],
   ]),
   ...set('sleep', 's3', 'contact', 'any', [
     ['escribe al punto; el café ya está haciendo efecto', 'get to the point; the coffee is kicking in'],
