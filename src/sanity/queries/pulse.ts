@@ -69,75 +69,96 @@ const set = (kind: Kind, bucket: Bucket, page: Phrase['page'], mode: Phrase['mod
   pairs.map(([es, en]) => ({ kind, bucket, page, mode, text: { es, en } }))
 
 const FALLBACK_PHRASES: Phrase[] = [
-  // ── Sueño · home · claro ──
+  // Matriz de Ever (2026-10-08). Minúscula inicial y sin punto: la línea entera es metadata.
+
+  // ── Sueño · home · claro (ironía funcional) ──
   ...set('sleep', 's1', 'home', 'light', [
     ['pronóstico: no me hables antes del mediodía', 'forecast: don’t talk to me before noon'],
-    ['pronóstico: funciono por inercia y cafeína', 'forecast: running on inertia and caffeine'],
+    ['pronóstico: funciono por pura inercia y cafeína', 'forecast: running on pure inertia and caffeine'],
     ['pronóstico: toda reunión pudo ser un correo', 'forecast: every meeting could have been an email'],
+    ['pronóstico: en pie por puro rencor biológico', 'forecast: upright out of pure biological spite'],
   ]),
   ...set('sleep', 's2', 'home', 'light', [
-    ['pronóstico: respuestas cortas, café obligatorio', 'forecast: short answers, mandatory coffee'],
     ['pronóstico: paciencia con fecha de vencimiento', 'forecast: patience with an expiry date'],
     ['pronóstico: leo todo, entiendo la mitad', 'forecast: I read everything, understand half'],
+    ['pronóstico: entiendo los requerimientos, no prometo empatía', 'forecast: I get the requirements, no promises on empathy'],
+    ['pronóstico: funcional, pero con advertencia de rendimiento', 'forecast: functional, with a performance warning'],
   ]),
   ...set('sleep', 's3', 'home', 'light', [
-    ['pronóstico: funcional, con asterisco', 'forecast: functional, with an asterisk'],
-    ['pronóstico: aguanto hasta las cuatro', 'forecast: good until four p.m.'],
+    ['pronóstico: funcional, entre muchas comillas', 'forecast: functional, in heavy quotation marks'],
+    ['pronóstico: aguanto con dignidad hasta las cuatro', 'forecast: holding up with dignity until four'],
     ['pronóstico: nublado, con claros después del café', 'forecast: cloudy, clearing after coffee'],
+    ['pronóstico: el sentido del humor se activa a las 3:00 p.m.', 'forecast: sense of humor activates at 3:00 p.m.'],
   ]),
   ...set('sleep', 's4', 'home', 'light', [
-    ['pronóstico: paciencia disponible', 'forecast: patience available'],
-    ['pronóstico: hoy discuto con argumentos', 'forecast: today I argue with arguments'],
-    ['pronóstico: despejado, alguna duda aislada', 'forecast: clear, with isolated doubts'],
+    ['pronóstico: paciencia disponible y criterio despierto', 'forecast: patience available, judgment awake'],
+    ['pronóstico: hoy discuto con argumentos sólidos', 'forecast: today I argue with solid arguments'],
+    ['pronóstico: despejado, con alguna duda aislada', 'forecast: clear, with isolated doubts'],
+    ['pronóstico: buen día para alinear producto y diseño sin fricción', 'forecast: good day to align product and design without friction'],
   ]),
   ...set('sleep', 's5', 'home', 'light', [
-    ['pronóstico: peligrosamente optimista', 'forecast: dangerously optimistic'],
+    ['pronóstico: peligrosamente optimista; desconfíen', 'forecast: dangerously optimistic; be suspicious'],
     ['pronóstico: hoy sí leo los términos y condiciones', 'forecast: today I actually read the terms and conditions'],
     ['pronóstico: alguien va a recibir feedback constructivo', 'forecast: someone is getting constructive feedback'],
+    ['pronóstico: capaz de resolver problemas que nadie me pidió arreglar', 'forecast: able to solve problems nobody asked me to fix'],
   ]),
 
-  // ── Sueño · home · oscuro ──
+  // ── Sueño · home · oscuro (mínimo esfuerzo / crudo) ──
   ...set('sleep', 's1', 'home', 'dark', [
     ['disponibilidad mínima', 'minimal availability'],
-    ['modo ahorro de energía', 'power-saving mode'],
+    ['modo ahorro de energía extremo', 'extreme power-saving mode'],
+    ['no compilo ni bajo amenaza', 'won’t compile, not even under threat'],
   ]),
   ...set('sleep', 's2', 'home', 'dark', [
     ['disponibilidad reducida', 'reduced availability'],
-    ['capacidad parcial', 'partial capacity'],
+    ['modo degradación controlada', 'controlled degradation mode'],
+    ['capacidad parcial al 50%', 'partial capacity at 50%'],
+    ['respuestas limitadas a sí y no', 'answers limited to yes and no'],
   ]),
   ...set('sleep', 's3', 'home', 'dark', [
     ['operativo, con reservas', 'operational, with reservations'],
-    ['rendimiento estable, sin margen', 'stable output, no margin'],
+    ['rendimiento estándar sin fuegos artificiales', 'standard performance, no fireworks'],
+    ['procesando en segundo plano', 'processing in the background'],
+    ['tolerancia a la ambigüedad en 20%', 'ambiguity tolerance at 20%'],
   ]),
   ...set('sleep', 's4', 'home', 'dark', [
-    ['operativo', 'operational'],
     ['disponibilidad normal', 'normal availability'],
+    ['todos los servicios en línea', 'all services online'],
+    ['capacidad para refactorizar ideas complejas', 'capacity to refactor complex ideas'],
+    ['lucidez en niveles óptimos', 'clarity at optimal levels'],
   ]),
   ...set('sleep', 's5', 'home', 'dark', [
     ['capacidad completa', 'full capacity'],
-    ['disponibilidad plena', 'full availability'],
+    ['disponibilidad plena sin peros', 'full availability, no buts'],
+    ['demasiada lucidez para un solo backlog', 'too much clarity for a single backlog'],
+    ['modo resolutivo sin fricción', 'frictionless problem-solving mode'],
   ]),
 
-  // ── Sueño · contacto (ambos modos) ──
+  // ── Sueño · contacto (filtro humano, ambos modos) ──
   ...set('sleep', 's1', 'contact', 'any', [
-    ['mejor mañana', 'tomorrow would be better'],
-    ['si es urgente, que sea corto', 'if it’s urgent, keep it short'],
+    ['mejor mañana; si es urgente, que sea muy corto', 'tomorrow is better; if urgent, keep it very short'],
+    ['déjame un mensaje; lo ignoraré con elegancia', 'leave a message; I’ll ignore it gracefully'],
+    ['si me llamas, asumo que algo se está quemando', 'if you call, I’ll assume something is on fire'],
   ]),
   ...set('sleep', 's2', 'contact', 'any', [
-    ['sé breve', 'keep it short'],
-    ['al grano, por favor', 'straight to the point, please'],
+    ['sé breve y al grano, por favor', 'brief and to the point, please'],
+    ['redacta pensando que cada palabra te cuesta diez dólares', 'write as if every word costs you ten dollars'],
+    ['si es reunión: solo audio y con cámara apagada', 'if it’s a meeting: audio only, camera off'],
   ]),
   ...set('sleep', 's3', 'contact', 'any', [
-    ['buen momento, sin abusar', 'good timing, don’t push it'],
-    ['escribe; el café hará el resto', 'write; coffee will do the rest'],
+    ['escribe al punto; el café ya está haciendo efecto', 'get to the point; the coffee is kicking in'],
+    ['acepto feedback estructurado, no monólogos', 'structured feedback welcome, monologues not'],
+    ['buen momento para coordinar sin dramatismo', 'good time to coordinate, no drama'],
   ]),
   ...set('sleep', 's4', 'contact', 'any', [
-    ['buen día para escribirme', 'good day to write'],
-    ['hoy respondo con contexto', 'today I reply with context'],
+    ['buen día para escribirme; hoy respondo con contexto', 'good day to write; today I reply with context'],
+    ['excelente momento para destrabar el proyecto', 'great time to unblock the project'],
+    ['respondo con capturas, notas y diagramas', 'I reply with screenshots, notes and diagrams'],
   ]),
   ...set('sleep', 's5', 'contact', 'any', [
-    ['hoy hasta leo los adjuntos', 'today I even read attachments'],
-    ['hoy contesto hasta los hilos largos', 'today I even answer long threads'],
+    ['hoy hasta leo los adjuntos de cuarenta páginas', 'today I even read forty-page attachments'],
+    ['hoy contesto hasta los hilos muertos de mensajes', 'today I even answer dead message threads'],
+    ['aprovecha el impulso antes de que se me pase', 'use the momentum before it wears off'],
   ]),
 
   // ── Pasos ──
