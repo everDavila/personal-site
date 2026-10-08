@@ -1,4 +1,4 @@
-import { Footprints, type LucideProps } from 'lucide-react'
+import { MoonStar, Footprints, type LucideProps } from 'lucide-react'
 import type { Pulse, PulsePage } from '@/sanity/queries/pulse'
 
 type Props = {
@@ -21,18 +21,6 @@ const lineStyle: React.CSSProperties = {
 
 const SEP = ' · '
 
-// Lucide no trae un "zzz": mismo trazo y grilla 24px para que combine con Footprints
-function Zzz({ size = 24, strokeWidth = 2, ...rest }: LucideProps) {
-  return (
-    <svg width={size} height={size} viewBox="0 0 24 24" fill="none" stroke="currentColor"
-      strokeWidth={strokeWidth} strokeLinecap="round" strokeLinejoin="round" {...rest}>
-      <path d="M3 12h7l-7 8h7" />
-      <path d="M13 6h5l-5 6h5" />
-      <path d="M19 2h3l-3 3.5h3" />
-    </svg>
-  )
-}
-
 // Línea fina entre sueño y pasos
 const divider: React.CSSProperties = {
   marginTop: '0.5rem',
@@ -42,13 +30,12 @@ const divider: React.CSSProperties = {
 
 type Icon = (props: LucideProps) => React.ReactNode
 
-function Line({ icon: Icon, parts, phrase, style }: {
+function Line({ icon: Icon, head, phrase, style }: {
   icon: Icon
-  parts: string[]
+  head: string
   phrase: { dark: string | null; light: string | null }
   style?: React.CSSProperties
 }) {
-  const head = parts.join(SEP)
   return (
     <p style={{ ...lineStyle, ...style }}>
       {/* Centrado con la primera línea aunque el texto se parta en mobile */}
@@ -68,13 +55,13 @@ export function PulseStatus({ pulse, page, style }: Props) {
 
   if (page === 'contact') {
     if (!sleep) return null
-    return <Line icon={Zzz} parts={[labels.beforeWriting, labels.lastNight, sleep.value]} phrase={sleep.phrase} style={style} />
+    return <Line icon={MoonStar} head={`${labels.beforeWriting}${SEP}${labels.slept} ${sleep.value}`} phrase={sleep.phrase} style={style} />
   }
 
   return (
     <div style={{ display: 'flex', flexDirection: 'column', width: 'fit-content', maxWidth: '100%', ...style }}>
-      {sleep && <Line icon={Zzz} parts={[labels.lastNight, sleep.value]} phrase={sleep.phrase} />}
-      {steps && <Line icon={Footprints} style={sleep ? divider : undefined} parts={[labels.yesterday, `${steps.value} ${labels.steps}`]} phrase={steps.phrase} />}
+      {sleep && <Line icon={MoonStar} head={`${labels.slept} ${sleep.value}`} phrase={sleep.phrase} />}
+      {steps && <Line icon={Footprints} style={sleep ? divider : undefined} head={`${labels.walked} ${steps.value} ${labels.steps}`} phrase={steps.phrase} />}
     </div>
   )
 }

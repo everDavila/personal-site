@@ -13,7 +13,7 @@ export const pulseSnapshotType = defineType({
       title: 'Fecha (día en que me desperté, hora Lima)',
       type: 'date',
       validation: Rule => Rule.required(),
-      description: 'Si tiene más de un día de antigüedad, el sitio no muestra nada.',
+      description: 'Si no es de hoy, el sitio no muestra nada.',
     }),
     defineField({
       name: 'sleepMinutes',

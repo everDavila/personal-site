@@ -31,7 +31,7 @@ export type PulseLine = { value: string; phrase: Record<NarrativeMode, string | 
 export type Pulse = {
   sleep: PulseLine | null
   steps: PulseLine | null
-  labels: { lastNight: string; yesterday: string; steps: string; beforeWriting: string }
+  labels: { slept: string; walked: string; steps: string; beforeWriting: string }
 }
 
 // ── Rangos ────────────────────────────────────────────────────────────────
@@ -51,10 +51,10 @@ function stepsBucket(n: number): Bucket {
 // ── Textos de respaldo (hasta que existan frases en Sanity) ───────────────
 
 const LABELS: Partial<Record<Locale, Pulse['labels']>> = {
-  es: { lastNight: 'anoche', yesterday: 'ayer', steps: 'pasos', beforeWriting: 'antes de escribirme' },
-  en: { lastNight: 'last night', yesterday: 'yesterday', steps: 'steps', beforeWriting: 'before you write' },
-  pt: { lastNight: 'ontem à noite', yesterday: 'ontem', steps: 'passos', beforeWriting: 'antes de me escrever' },
-  zh: { lastNight: '昨晚', yesterday: '昨天', steps: '步', beforeWriting: '写信之前' },
+  es: { slept: 'dormí', walked: 'caminé', steps: 'pasos', beforeWriting: 'antes de escribirme' },
+  en: { slept: 'slept', walked: 'walked', steps: 'steps', beforeWriting: 'before you write' },
+  pt: { slept: 'dormi', walked: 'caminhei', steps: 'passos', beforeWriting: 'antes de me escrever' },
+  zh: { slept: '睡了', walked: '走了', steps: '步', beforeWriting: '写信之前' },
 }
 
 const FALLBACK_PHRASES: Phrase[] = [
@@ -96,14 +96,13 @@ function resolve<T>(map: Partial<Record<Locale, T>>, locale: Locale): T | null {
 
 // ── Fechas (siempre hora Lima) ────────────────────────────────────────────
 
-function limaDate(offsetDays = 0): string {
-  const d = new Date(Date.now() + offsetDays * 86_400_000)
-  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Lima' }).format(d)
+function limaDate(): string {
+  return new Intl.DateTimeFormat('en-CA', { timeZone: 'America/Lima' }).format(new Date())
 }
 
-/** Fresco = de hoy o de ayer. Más viejo, mejor callar que mentir. */
+/** Fresco = de hoy. "dormí 4h" sin fecha se lee como anoche: un registro viejo mentiría. */
 function isFresh(date: string): boolean {
-  return date >= limaDate(-1)
+  return date === limaDate()
 }
 
 // Semilla estable por día: la frase no cambia en cada recarga
