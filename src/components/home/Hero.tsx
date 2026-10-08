@@ -2,14 +2,17 @@ import { getTranslations, getLocale } from 'next-intl/server'
 import type { SiteSettings } from '@/sanity/queries/siteSettings'
 import { NARRATIVE_FALLBACK } from '@/sanity/queries/siteSettings'
 import { HeroSubtitle } from './HeroSubtitle'
+import { PulseStatus } from '@/components/ui/PulseStatus'
+import type { Pulse } from '@/sanity/queries/pulse'
 
 type Props = {
   settings:      SiteSettings | null
   initialSub?:   string | null
   subtitlePool?: string[]
+  pulse?:        Pulse | null
 }
 
-export async function Hero({ settings, initialSub, subtitlePool = [] }: Props) {
+export async function Hero({ settings, initialSub, subtitlePool = [], pulse = null }: Props) {
   const locale = await getLocale() as 'es' | 'en' | 'pt' | 'qu' | 'zh'
   const t      = await getTranslations('home.hero')
 
@@ -72,6 +75,9 @@ export async function Hero({ settings, initialSub, subtitlePool = [] }: Props) {
                   style={{ color: 'var(--color-muted)', fontSize: 'var(--text-body)', lineHeight: 1.75, margin: 0, maxWidth: '36ch' }} />
               </span>
             </div>
+
+            {/* Parte del humor del día */}
+            <PulseStatus pulse={pulse} page="home" style={{ marginTop: 'clamp(1.5rem, 3vw, 2rem)' }} />
 
           </div>
         </div>

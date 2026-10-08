@@ -10,6 +10,7 @@ import { getFeaturedProjects } from '@/sanity/queries/projects'
 import { getLatestPosts } from '@/sanity/queries/posts'
 import { getFeaturedPlaygroundItems } from '@/sanity/queries/playground'
 import { getPageSubtitleData } from '@/sanity/queries/editorialSubtitle'
+import { getPulse } from '@/sanity/queries/pulse'
 import { getMode } from '@/lib/mode'
 import type { Locale } from '@/lib/i18n'
 import { BLOG_FALLBACK } from '@/lib/i18n'
@@ -22,11 +23,12 @@ export default async function Home() {
 
   const settings = await getSiteSettings()
 
-  const [projects, labItems, posts, homeSubtitleData] = await Promise.all([
+  const [projects, labItems, posts, homeSubtitleData, pulse] = await Promise.all([
     getFeaturedProjects(),
     getFeaturedPlaygroundItems(settings?.labCount ?? 3),
     getLatestPosts(locale),
     getPageSubtitleData('home', locale, mode),
+    getPulse('home', locale),
   ])
 
   const fallbackLocale = BLOG_FALLBACK[locale]
@@ -38,7 +40,7 @@ export default async function Home() {
 
   return (
     <>
-      <Hero settings={settings} initialSub={homeSubtitleData.initial} subtitlePool={homeSubtitleData.pool} />
+      <Hero settings={settings} initialSub={homeSubtitleData.initial} subtitlePool={homeSubtitleData.pool} pulse={pulse} />
       <SelectedWork projects={projects} settings={settings} />
       <LabSection items={labItems} />
       {/* Philosophy oculta temporalmente */}
