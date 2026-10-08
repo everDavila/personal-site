@@ -53,10 +53,28 @@ export const pulseSnapshotType = defineType({
 
 // ── Pulso: frases por rango ───────────────────────────────────────────────
 
-const RANGE_LABELS: Record<string, string> = {
-  s1: '< 4h', s2: '4–5h', s3: '5–6h', s4: '6–7.5h', s5: '≥ 7.5h',
-  low: '< 4.000', mid: '4.000–10.000', high: '≥ 10.000',
-}
+const SLEEP_RANGES = [
+  { title: '< 4h', value: 's1' },
+  { title: '4–5h', value: 's2' },
+  { title: '5–6h', value: 's3' },
+  { title: '6–7.5h', value: 's4' },
+  { title: '≥ 7.5h', value: 's5' },
+]
+
+const STEPS_RANGES = [
+  { title: '< 1.500 · día de casa', value: 'p1' },
+  { title: '1.500–3.000 · lo mínimo', value: 'p2' },
+  { title: '3.000–5.000 · escritorio', value: 'p3' },
+  { title: '5.000–8.000 · día normal', value: 'p4' },
+  { title: '8.000–10.000 · casi meta', value: 'p5' },
+  { title: '10.000–15.000 · meta cumplida', value: 'p6' },
+  { title: '15.000–20.000 · hito histórico', value: 'p7' },
+  { title: '≥ 20.000 · caminata loca', value: 'p8' },
+]
+
+const RANGE_LABELS: Record<string, string> = Object.fromEntries(
+  [...SLEEP_RANGES, ...STEPS_RANGES].map(r => [r.value, r.title.split(' · ')[0]]),
+)
 
 export const pulsePhraseType = defineType({
   name: 'pulsePhrase',
@@ -85,13 +103,7 @@ export const pulsePhraseType = defineType({
       validation: Rule => Rule.custom((value, { document }) =>
         document?.kind === 'sleep' && !value ? 'Elige un rango' : true),
       options: {
-        list: [
-          { title: '< 4h', value: 's1' },
-          { title: '4–5h', value: 's2' },
-          { title: '5–6h', value: 's3' },
-          { title: '6–7.5h', value: 's4' },
-          { title: '≥ 7.5h', value: 's5' },
-        ],
+        list: SLEEP_RANGES,
         layout: 'radio',
       },
     }),
@@ -103,11 +115,7 @@ export const pulsePhraseType = defineType({
       validation: Rule => Rule.custom((value, { document }) =>
         document?.kind === 'steps' && !value ? 'Elige un rango' : true),
       options: {
-        list: [
-          { title: '< 4.000', value: 'low' },
-          { title: '4.000–10.000', value: 'mid' },
-          { title: '≥ 10.000', value: 'high' },
-        ],
+        list: STEPS_RANGES,
         layout: 'radio',
       },
     }),

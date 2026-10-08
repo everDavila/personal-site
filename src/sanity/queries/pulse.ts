@@ -15,7 +15,8 @@ export type PulseSnapshot = {
 type Kind = 'sleep' | 'steps'
 // Sueño en cinco rangos: no es lo mismo 3h que 4h 50m
 type SleepBucket = 's1' | 's2' | 's3' | 's4' | 's5'
-type StepsBucket = 'low' | 'mid' | 'high'
+// Pasos en ocho rangos: la meta de la app es 10k, 15k y 20k son hitos raros
+type StepsBucket = 'p1' | 'p2' | 'p3' | 'p4' | 'p5' | 'p6' | 'p7' | 'p8'
 type Bucket = SleepBucket | StepsBucket
 export type PulsePage = 'home' | 'contact'
 
@@ -49,10 +50,18 @@ function sleepBucket(min: number): SleepBucket {
 }
 
 function stepsBucket(n: number): StepsBucket {
-  if (n < 4000) return 'low'
-  if (n < 10000) return 'mid'
-  return 'high'
+  if (n < 1500) return 'p1'    // día de casa
+  if (n < 3000) return 'p2'    // lo mínimo
+  if (n < 5000) return 'p3'    // escritorio
+  if (n < 8000) return 'p4'    // día normal con salida
+  if (n < 10000) return 'p5'   // casi meta
+  if (n < 15000) return 'p6'   // meta cumplida (10k exactos cuentan)
+  if (n < 20000) return 'p7'   // hito histórico
+  return 'p8'                  // caminata de todo el día
 }
+
+// Menos que esto es más probable que sea un día sin pulsera que un día sin moverse
+const MIN_STEPS = 300
 
 // ── Textos de respaldo (hasta que existan frases en Sanity) ───────────────
 
@@ -161,13 +170,23 @@ const FALLBACK_PHRASES: Phrase[] = [
     ['aprovecha el impulso antes de que se me pase', 'use the momentum before it wears off'],
   ]),
 
-  // ── Pasos ──
-  ...set('steps', 'low',  'any', 'light', [['día de escritorio, se nota', 'desk day, it shows']]),
-  ...set('steps', 'mid',  'any', 'light', [['lo justo para decir que salí', 'just enough to say I went out']]),
-  ...set('steps', 'high', 'any', 'light', [['Lima recorrida, rodillas en revisión', 'Lima covered, knees under review']]),
-  ...set('steps', 'low',  'any', 'dark',  [['sedentario', 'sedentary']]),
-  ...set('steps', 'mid',  'any', 'dark',  [['moderado', 'moderate']]),
-  ...set('steps', 'high', 'any', 'dark',  [['activo', 'active']]),
+  // ── Pasos · provisionales, una por casilla ──
+  ...set('steps', 'p1', 'any', 'light', [['el sofá y yo llegamos a un acuerdo', 'the couch and I reached an agreement']]),
+  ...set('steps', 'p2', 'any', 'light', [['de la cama al escritorio, ida y vuelta', 'bed to desk, round trip']]),
+  ...set('steps', 'p3', 'any', 'light', [['día de escritorio, se nota', 'desk day, it shows']]),
+  ...set('steps', 'p4', 'any', 'light', [['lo justo para decir que salí', 'just enough to say I went out']]),
+  ...set('steps', 'p5', 'any', 'light', [['la meta me vio pasar de cerca', 'the goal watched me walk past']]),
+  ...set('steps', 'p6', 'any', 'light', [['meta cumplida; la app está orgullosa', 'goal reached; the app is proud']]),
+  ...set('steps', 'p7', 'any', 'light', [['hito histórico; las rodillas piden reunión', 'historic milestone; the knees request a meeting']]),
+  ...set('steps', 'p8', 'any', 'light', [['Lima recorrida, rodillas en revisión', 'Lima covered, knees under review']]),
+  ...set('steps', 'p1', 'any', 'dark',  [['sedentario', 'sedentary']]),
+  ...set('steps', 'p2', 'any', 'dark',  [['movilidad mínima', 'minimal mobility']]),
+  ...set('steps', 'p3', 'any', 'dark',  [['actividad baja', 'low activity']]),
+  ...set('steps', 'p4', 'any', 'dark',  [['actividad moderada', 'moderate activity']]),
+  ...set('steps', 'p5', 'any', 'dark',  [['cerca del objetivo', 'near target']]),
+  ...set('steps', 'p6', 'any', 'dark',  [['objetivo cumplido', 'target met']]),
+  ...set('steps', 'p7', 'any', 'dark',  [['registro alto', 'high record']]),
+  ...set('steps', 'p8', 'any', 'dark',  [['registro excepcional', 'exceptional record']]),
 ]
 
 const FALLBACK_LOCALES: Record<Locale, Locale[]> = {
@@ -283,7 +302,8 @@ export async function getPulse(page: PulsePage, locale: Locale): Promise<Pulse |
   }
 
   const sleep = line('sleep', snapshot.sleepMinutes, sleepBucket, formatSleep)
-  const steps = line('steps', snapshot.steps, stepsBucket, n => formatSteps(n, locale))
+  const stepsRaw = snapshot.steps != null && snapshot.steps >= MIN_STEPS ? snapshot.steps : null
+  const steps = line('steps', stepsRaw, stepsBucket, n => formatSteps(n, locale))
   if (!sleep && !steps) return null
 
   return { sleep, steps, labels: resolve(LABELS, locale)! }
