@@ -21,12 +21,7 @@ const lineStyle: React.CSSProperties = {
 
 const SEP = ' · '
 
-// Línea fina entre sueño y pasos
-const divider: React.CSSProperties = {
-  marginTop: '0.5rem',
-  paddingTop: '0.5rem',
-  borderTop: 'var(--border-width) solid var(--color-border)',
-}
+const fill = (template: string, value: string) => template.replace('{v}', value)
 
 type Icon = (props: LucideProps) => React.ReactNode
 
@@ -55,13 +50,13 @@ export function PulseStatus({ pulse, page, style }: Props) {
 
   if (page === 'contact') {
     if (!sleep) return null
-    return <Line icon={MoonStar} head={`${labels.beforeWriting}${SEP}${labels.slept} ${sleep.value}`} phrase={sleep.phrase} style={style} />
+    return <Line icon={MoonStar} head={labels.beforeWriting + SEP + fill(labels.slept, sleep.value)} phrase={sleep.phrase} style={style} />
   }
 
   return (
-    <div style={{ display: 'flex', flexDirection: 'column', width: 'fit-content', maxWidth: '100%', ...style }}>
-      {sleep && <Line icon={MoonStar} head={`${labels.slept} ${sleep.value}`} phrase={sleep.phrase} />}
-      {steps && <Line icon={Footprints} style={sleep ? divider : undefined} head={`${labels.walked} ${steps.value} ${labels.steps}`} phrase={steps.phrase} />}
+    <div style={{ display: 'flex', flexDirection: 'column', gap: '0.375rem', ...style }}>
+      {sleep && <Line icon={MoonStar} head={fill(labels.slept, sleep.value)} phrase={sleep.phrase} />}
+      {steps && <Line icon={Footprints} head={fill(labels.walked, steps.value)} phrase={steps.phrase} />}
     </div>
   )
 }

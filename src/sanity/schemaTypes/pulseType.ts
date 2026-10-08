@@ -53,6 +53,11 @@ export const pulseSnapshotType = defineType({
 
 // ── Pulso: frases por rango ───────────────────────────────────────────────
 
+const RANGE_LABELS: Record<string, string> = {
+  s1: '< 4h', s2: '4–5h', s3: '5–6h', s4: '6–7.5h', s5: '≥ 7.5h',
+  low: '< 4.000', mid: '4.000–10.000', high: '≥ 10.000',
+}
+
 export const pulsePhraseType = defineType({
   name: 'pulsePhrase',
   title: 'Pulso · frase',
@@ -73,16 +78,35 @@ export const pulsePhraseType = defineType({
       },
     }),
     defineField({
-      name: 'bucket',
-      title: 'Rango',
+      name: 'sleepBucket',
+      title: 'Rango de sueño',
       type: 'string',
-      validation: Rule => Rule.required(),
-      description: 'Sueño: bajo < 5h · medio 5–7h · alto ≥ 7h. Pasos: bajo < 4.000 · medio < 10.000 · alto ≥ 10.000.',
+      hidden: ({ document }) => document?.kind !== 'sleep',
+      validation: Rule => Rule.custom((value, { document }) =>
+        document?.kind === 'sleep' && !value ? 'Elige un rango' : true),
       options: {
         list: [
-          { title: 'Bajo', value: 'low' },
-          { title: 'Medio', value: 'mid' },
-          { title: 'Alto', value: 'high' },
+          { title: '< 4h', value: 's1' },
+          { title: '4–5h', value: 's2' },
+          { title: '5–6h', value: 's3' },
+          { title: '6–7.5h', value: 's4' },
+          { title: '≥ 7.5h', value: 's5' },
+        ],
+        layout: 'radio',
+      },
+    }),
+    defineField({
+      name: 'stepsBucket',
+      title: 'Rango de pasos',
+      type: 'string',
+      hidden: ({ document }) => document?.kind !== 'steps',
+      validation: Rule => Rule.custom((value, { document }) =>
+        document?.kind === 'steps' && !value ? 'Elige un rango' : true),
+      options: {
+        list: [
+          { title: '< 4.000', value: 'low' },
+          { title: '4.000–10.000', value: 'mid' },
+          { title: '≥ 10.000', value: 'high' },
         ],
         layout: 'radio',
       },
@@ -129,11 +153,12 @@ export const pulsePhraseType = defineType({
     }),
   ],
   preview: {
-    select: { text: 'text', kind: 'kind', bucket: 'bucket', page: 'page', mode: 'mode', active: 'active' },
-    prepare({ text, kind, bucket, page, mode, active }) {
+    select: { text: 'text', kind: 'kind', sleepBucket: 'sleepBucket', stepsBucket: 'stepsBucket', page: 'page', mode: 'mode', active: 'active' },
+    prepare({ text, kind, sleepBucket, stepsBucket, page, mode, active }) {
+      const range = RANGE_LABELS[(kind === 'sleep' ? sleepBucket : stepsBucket) as string] ?? '—'
       return {
         title: text?.es || text?.en || '(sin texto)',
-        subtitle: `${kind} · ${bucket} · ${page ?? 'any'} · ${mode ?? 'any'}${active === false ? ' · inactiva' : ''}`,
+        subtitle: `${kind === 'sleep' ? 'sueño' : 'pasos'} ${range} · ${page ?? 'any'} · ${mode ?? 'any'}${active === false ? ' · inactiva' : ''}`,
       }
     },
   },

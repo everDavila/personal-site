@@ -12,8 +12,11 @@ export type PulseSnapshot = {
   source: string
 }
 
-type Kind   = 'sleep' | 'steps'
-type Bucket = 'low' | 'mid' | 'high'
+type Kind = 'sleep' | 'steps'
+// Sueño en cinco rangos: no es lo mismo 3h que 4h 50m
+type SleepBucket = 's1' | 's2' | 's3' | 's4' | 's5'
+type StepsBucket = 'low' | 'mid' | 'high'
+type Bucket = SleepBucket | StepsBucket
 export type PulsePage = 'home' | 'contact'
 
 type LocalizedText = Partial<Record<Locale, string>>
@@ -31,18 +34,21 @@ export type PulseLine = { value: string; phrase: Record<NarrativeMode, string | 
 export type Pulse = {
   sleep: PulseLine | null
   steps: PulseLine | null
-  labels: { slept: string; walked: string; steps: string; beforeWriting: string }
+  // {v} se reemplaza por el valor: el orden de las palabras cambia según el idioma
+  labels: { slept: string; walked: string; beforeWriting: string }
 }
 
 // ── Rangos ────────────────────────────────────────────────────────────────
 
-function sleepBucket(min: number): Bucket {
-  if (min < 300) return 'low'
-  if (min < 420) return 'mid'
-  return 'high'
+function sleepBucket(min: number): SleepBucket {
+  if (min < 240) return 's1'   // < 4h
+  if (min < 300) return 's2'   // 4–5h
+  if (min < 360) return 's3'   // 5–6h
+  if (min < 450) return 's4'   // 6–7.5h
+  return 's5'                  // ≥ 7.5h
 }
 
-function stepsBucket(n: number): Bucket {
+function stepsBucket(n: number): StepsBucket {
   if (n < 4000) return 'low'
   if (n < 10000) return 'mid'
   return 'high'
@@ -51,31 +57,96 @@ function stepsBucket(n: number): Bucket {
 // ── Textos de respaldo (hasta que existan frases en Sanity) ───────────────
 
 const LABELS: Partial<Record<Locale, Pulse['labels']>> = {
-  es: { slept: 'dormí', walked: 'caminé', steps: 'pasos', beforeWriting: 'antes de escribirme' },
-  en: { slept: 'slept', walked: 'walked', steps: 'steps', beforeWriting: 'before you write' },
-  pt: { slept: 'dormi', walked: 'caminhei', steps: 'passos', beforeWriting: 'antes de me escrever' },
-  zh: { slept: '睡了', walked: '走了', steps: '步', beforeWriting: '写信之前' },
+  es: { slept: 'dormí {v}', walked: 'ayer caminé {v} pasos', beforeWriting: 'antes de escribirme' },
+  en: { slept: 'slept {v}', walked: 'walked {v} steps yesterday', beforeWriting: 'before you write' },
+  pt: { slept: 'dormi {v}', walked: 'ontem caminhei {v} passos', beforeWriting: 'antes de me escrever' },
+  zh: { slept: '睡了 {v}', walked: '昨天走了 {v} 步', beforeWriting: '写信之前' },
 }
 
+type Pair = [es: string, en: string]
+
+const set = (kind: Kind, bucket: Bucket, page: Phrase['page'], mode: Phrase['mode'], pairs: Pair[]): Phrase[] =>
+  pairs.map(([es, en]) => ({ kind, bucket, page, mode, text: { es, en } }))
+
 const FALLBACK_PHRASES: Phrase[] = [
-  // Sueño · home
-  { kind: 'sleep', bucket: 'low',  page: 'home', mode: 'light', text: { es: 'pronóstico: respuestas cortas, café obligatorio', en: 'forecast: short answers, mandatory coffee' } },
-  { kind: 'sleep', bucket: 'mid',  page: 'home', mode: 'light', text: { es: 'pronóstico: paciencia disponible', en: 'forecast: patience available' } },
-  { kind: 'sleep', bucket: 'high', page: 'home', mode: 'light', text: { es: 'pronóstico: peligrosamente optimista', en: 'forecast: dangerously optimistic' } },
-  { kind: 'sleep', bucket: 'low',  page: 'home', mode: 'dark',  text: { es: 'disponibilidad reducida', en: 'reduced availability' } },
-  { kind: 'sleep', bucket: 'mid',  page: 'home', mode: 'dark',  text: { es: 'operativo', en: 'operational' } },
-  { kind: 'sleep', bucket: 'high', page: 'home', mode: 'dark',  text: { es: 'capacidad completa', en: 'full capacity' } },
-  // Sueño · contacto
-  { kind: 'sleep', bucket: 'low',  page: 'contact', mode: 'any', text: { es: 'sé breve', en: 'keep it short' } },
-  { kind: 'sleep', bucket: 'mid',  page: 'contact', mode: 'any', text: { es: 'buen momento, sin abusar', en: 'good timing, don’t push it' } },
-  { kind: 'sleep', bucket: 'high', page: 'contact', mode: 'any', text: { es: 'hoy hasta leo los adjuntos', en: 'today I even read attachments' } },
-  // Pasos
-  { kind: 'steps', bucket: 'low',  page: 'any', mode: 'light', text: { es: 'día de escritorio, se nota', en: 'desk day, it shows' } },
-  { kind: 'steps', bucket: 'mid',  page: 'any', mode: 'light', text: { es: 'lo justo para decir que salí', en: 'just enough to say I went out' } },
-  { kind: 'steps', bucket: 'high', page: 'any', mode: 'light', text: { es: 'Lima recorrida, rodillas en revisión', en: 'Lima covered, knees under review' } },
-  { kind: 'steps', bucket: 'low',  page: 'any', mode: 'dark',  text: { es: 'sedentario', en: 'sedentary' } },
-  { kind: 'steps', bucket: 'mid',  page: 'any', mode: 'dark',  text: { es: 'moderado', en: 'moderate' } },
-  { kind: 'steps', bucket: 'high', page: 'any', mode: 'dark',  text: { es: 'activo', en: 'active' } },
+  // ── Sueño · home · claro ──
+  ...set('sleep', 's1', 'home', 'light', [
+    ['pronóstico: no me hables antes del mediodía', 'forecast: don’t talk to me before noon'],
+    ['pronóstico: funciono por inercia y cafeína', 'forecast: running on inertia and caffeine'],
+    ['pronóstico: toda reunión pudo ser un correo', 'forecast: every meeting could have been an email'],
+  ]),
+  ...set('sleep', 's2', 'home', 'light', [
+    ['pronóstico: respuestas cortas, café obligatorio', 'forecast: short answers, mandatory coffee'],
+    ['pronóstico: paciencia con fecha de vencimiento', 'forecast: patience with an expiry date'],
+    ['pronóstico: leo todo, entiendo la mitad', 'forecast: I read everything, understand half'],
+  ]),
+  ...set('sleep', 's3', 'home', 'light', [
+    ['pronóstico: funcional, con asterisco', 'forecast: functional, with an asterisk'],
+    ['pronóstico: aguanto hasta las cuatro', 'forecast: good until four p.m.'],
+    ['pronóstico: nublado, con claros después del café', 'forecast: cloudy, clearing after coffee'],
+  ]),
+  ...set('sleep', 's4', 'home', 'light', [
+    ['pronóstico: paciencia disponible', 'forecast: patience available'],
+    ['pronóstico: hoy discuto con argumentos', 'forecast: today I argue with arguments'],
+    ['pronóstico: despejado, alguna duda aislada', 'forecast: clear, with isolated doubts'],
+  ]),
+  ...set('sleep', 's5', 'home', 'light', [
+    ['pronóstico: peligrosamente optimista', 'forecast: dangerously optimistic'],
+    ['pronóstico: hoy sí leo los términos y condiciones', 'forecast: today I actually read the terms and conditions'],
+    ['pronóstico: alguien va a recibir feedback constructivo', 'forecast: someone is getting constructive feedback'],
+  ]),
+
+  // ── Sueño · home · oscuro ──
+  ...set('sleep', 's1', 'home', 'dark', [
+    ['disponibilidad mínima', 'minimal availability'],
+    ['modo ahorro de energía', 'power-saving mode'],
+  ]),
+  ...set('sleep', 's2', 'home', 'dark', [
+    ['disponibilidad reducida', 'reduced availability'],
+    ['capacidad parcial', 'partial capacity'],
+  ]),
+  ...set('sleep', 's3', 'home', 'dark', [
+    ['operativo, con reservas', 'operational, with reservations'],
+    ['rendimiento estable, sin margen', 'stable output, no margin'],
+  ]),
+  ...set('sleep', 's4', 'home', 'dark', [
+    ['operativo', 'operational'],
+    ['disponibilidad normal', 'normal availability'],
+  ]),
+  ...set('sleep', 's5', 'home', 'dark', [
+    ['capacidad completa', 'full capacity'],
+    ['disponibilidad plena', 'full availability'],
+  ]),
+
+  // ── Sueño · contacto (ambos modos) ──
+  ...set('sleep', 's1', 'contact', 'any', [
+    ['mejor mañana', 'tomorrow would be better'],
+    ['si es urgente, que sea corto', 'if it’s urgent, keep it short'],
+  ]),
+  ...set('sleep', 's2', 'contact', 'any', [
+    ['sé breve', 'keep it short'],
+    ['al grano, por favor', 'straight to the point, please'],
+  ]),
+  ...set('sleep', 's3', 'contact', 'any', [
+    ['buen momento, sin abusar', 'good timing, don’t push it'],
+    ['escribe; el café hará el resto', 'write; coffee will do the rest'],
+  ]),
+  ...set('sleep', 's4', 'contact', 'any', [
+    ['buen día para escribirme', 'good day to write'],
+    ['hoy respondo con contexto', 'today I reply with context'],
+  ]),
+  ...set('sleep', 's5', 'contact', 'any', [
+    ['hoy hasta leo los adjuntos', 'today I even read attachments'],
+    ['hoy contesto hasta los hilos largos', 'today I even answer long threads'],
+  ]),
+
+  // ── Pasos ──
+  ...set('steps', 'low',  'any', 'light', [['día de escritorio, se nota', 'desk day, it shows']]),
+  ...set('steps', 'mid',  'any', 'light', [['lo justo para decir que salí', 'just enough to say I went out']]),
+  ...set('steps', 'high', 'any', 'light', [['Lima recorrida, rodillas en revisión', 'Lima covered, knees under review']]),
+  ...set('steps', 'low',  'any', 'dark',  [['sedentario', 'sedentary']]),
+  ...set('steps', 'mid',  'any', 'dark',  [['moderado', 'moderate']]),
+  ...set('steps', 'high', 'any', 'dark',  [['activo', 'active']]),
 ]
 
 const FALLBACK_LOCALES: Record<Locale, Locale[]> = {
@@ -132,7 +203,8 @@ const snapshotQuery = groq`
 
 const phrasesQuery = groq`
   *[_type == "pulsePhrase" && active != false] {
-    kind, bucket,
+    kind,
+    "bucket": select(kind == "sleep" => sleepBucket, stepsBucket),
     "page": coalesce(page, "any"),
     "mode": coalesce(mode, "any"),
     text
