@@ -14,6 +14,7 @@ import { logTagType } from './logTagType'
 import { dimensionType } from './dimensionType'
 import { editorialSubtitleType } from './editorialSubtitleType'
 import { page404Type } from './page404Type'
+import { pulseSnapshotType, pulsePhraseType } from './pulseType'
 
 export const schema: { types: SchemaTypeDefinition[] } = {
   types: [
@@ -35,5 +36,7 @@ export const schema: { types: SchemaTypeDefinition[] } = {
     dimensionType,
     editorialSubtitleType,
     page404Type,
+    pulseSnapshotType,
+    pulsePhraseType,
   ],
 }

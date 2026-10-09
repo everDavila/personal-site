@@ -5,6 +5,8 @@ import { getLocale, getTranslations } from 'next-intl/server'
 import { getPageSubtitle } from '@/sanity/queries/editorialSubtitle'
 import { getMode } from '@/lib/mode'
 import { PageHeader } from '@/components/ui/PageHeader'
+import { PulseStatus } from '@/components/ui/PulseStatus'
+import { getPulse } from '@/sanity/queries/pulse'
 import type { Locale } from '@/lib/i18n'
 
 export const dynamic = 'force-dynamic'
@@ -22,10 +24,11 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
 export default async function ContactPage() {
   const locale = await getLocale() as Locale
   const mode   = await getMode()
-  const [settings, t, subtitle] = await Promise.all([
+  const [settings, t, subtitle, pulse] = await Promise.all([
     getSiteSettings(),
     getTranslations('contact'),
     getPageSubtitle('contact', locale, mode),
+    getPulse('contact', locale),
   ])
 
   const c          = settings?.labels?.contact
@@ -76,6 +79,7 @@ export default async function ContactPage() {
             {subtitle}
           </p>
         )}
+        <PulseStatus pulse={pulse} page="contact" style={{ marginTop: '1.25rem' }} />
       </PageHeader>
 
       <div style={{ display: 'flex', flexDirection: 'column', gap: '1.25rem' }}>

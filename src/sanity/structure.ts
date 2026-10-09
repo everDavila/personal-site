@@ -12,6 +12,7 @@ import {
   HomeIcon,
   EnvelopeIcon,
   EarthGlobeIcon,
+  ActivityIcon,
 } from '@sanity/icons'
 
 export const structure: StructureResolver = (S) =>
@@ -126,6 +127,25 @@ export const structure: StructureResolver = (S) =>
                   )
               )
             )
+        ),
+
+      S.listItem()
+        .title('Pulso')
+        .icon(ActivityIcon)
+        .child(
+          S.list()
+            .title('Pulso · sueño y pasos')
+            .items([
+              S.listItem()
+                .title('Último registro')
+                .child(
+                  S.document()
+                    .schemaType('pulseSnapshot')
+                    .documentId('pulseSnapshot')
+                    .title('Último registro')
+                ),
+              S.documentTypeListItem('pulsePhrase').title('Frases'),
+            ])
         ),
 
       S.listItem()

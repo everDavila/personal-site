@@ -45,10 +45,14 @@ export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' 
     ).values()
   )
 
-  const sorted = [...entries].sort((a, b) => {
-    const cmp = sortKey(a).localeCompare(sortKey(b))
-    return sortOrder === 'asc' ? cmp : -cmp
-  })
+  // Misma fecha y hora: desempata el orden de publicación, que también se invierte en desc
+  const sorted = entries
+    .map((entry, i) => ({ entry, i }))
+    .sort((a, b) => {
+      const cmp = sortKey(a.entry).localeCompare(sortKey(b.entry)) || a.i - b.i
+      return sortOrder === 'asc' ? cmp : -cmp
+    })
+    .map(({ entry }) => entry)
 
   const filtered = activeFilter === 'all' ? sorted : sorted.filter(e => e.tag?.slug === activeFilter)
 
