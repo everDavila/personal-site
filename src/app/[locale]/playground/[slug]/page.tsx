@@ -57,6 +57,8 @@ export default async function LabDetailPage({ params }: Props) {
   const idea  = (item.idea?.[loc] ?? item.idea?.es ?? item.idea?.en ?? null) as PortableTextBlock[] | null
   const why   = (item.why?.[loc]  ?? item.why?.es  ?? item.why?.en  ?? null) as PortableTextBlock[] | null
   const hasLog = !!item.logEntries?.length
+  // Ancla de la bitácora en el idioma de la página (se comparte en enlaces)
+  const logAnchor = ({ en: 'logbook', pt: 'diario' } as Partial<Record<Locale, string>>)[loc] ?? 'bitacora'
 
   return (
     <div style={{ maxWidth: 'var(--max-width, 82rem)', margin: '0 auto', padding: '0 var(--space-side, 2rem)' }}>
@@ -122,7 +124,7 @@ export default async function LabDetailPage({ params }: Props) {
         {(item.repoUrl || item.demoUrl || hasLog) && (
           <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
             {hasLog && (
-              <a href="#bitacora" className="link-accent"
+              <a href={`#${logAnchor}`} className="link-accent"
                 style={{ fontSize: 'var(--text-small)', fontWeight: 500 }}>
                 {t('section_log')} · {t('entries', { count: item.logEntries!.length })} ↓
               </a>
@@ -167,7 +169,7 @@ export default async function LabDetailPage({ params }: Props) {
 
       {/* ── 03 Bitácora ── */}
       {hasLog && (
-        <section id="bitacora" className="lab-section" style={{ scrollMarginTop: '5rem' }}>
+        <section id={logAnchor} className="lab-section" style={{ scrollMarginTop: '5rem' }}>
           <LabTimeline
             entries={item.logEntries!}
             locale={loc}
