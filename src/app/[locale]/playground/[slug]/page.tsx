@@ -56,6 +56,7 @@ export default async function LabDetailPage({ params }: Props) {
   const desc  = item.description ? localized(item.description, loc, 'es') : null
   const idea  = (item.idea?.[loc] ?? item.idea?.es ?? item.idea?.en ?? null) as PortableTextBlock[] | null
   const why   = (item.why?.[loc]  ?? item.why?.es  ?? item.why?.en  ?? null) as PortableTextBlock[] | null
+  const hasLog = !!item.logEntries?.length
 
   return (
     <div style={{ maxWidth: 'var(--max-width, 82rem)', margin: '0 auto', padding: '0 var(--space-side, 2rem)' }}>
@@ -118,8 +119,14 @@ export default async function LabDetailPage({ params }: Props) {
           </p>
         )}
 
-        {(item.repoUrl || item.demoUrl) && (
-          <div style={{ display: 'flex', gap: '1.25rem' }}>
+        {(item.repoUrl || item.demoUrl || hasLog) && (
+          <div style={{ display: 'flex', gap: '1.25rem', flexWrap: 'wrap' }}>
+            {hasLog && (
+              <a href="#bitacora" className="link-accent"
+                style={{ fontSize: 'var(--text-small)', fontWeight: 500 }}>
+                {t('section_log')} · {t('entries', { count: item.logEntries!.length })} ↓
+              </a>
+            )}
             {item.repoUrl && (
               <a href={item.repoUrl} target="_blank" rel="noopener noreferrer" className="link-accent"
                 style={{ fontSize: 'var(--text-small)', fontWeight: 500 }}>
@@ -159,10 +166,10 @@ export default async function LabDetailPage({ params }: Props) {
       )}
 
       {/* ── 03 Bitácora ── */}
-      {item.logEntries && item.logEntries.length > 0 && (
-        <section className="lab-section">
+      {hasLog && (
+        <section id="bitacora" className="lab-section" style={{ scrollMarginTop: '5rem' }}>
           <LabTimeline
-            entries={item.logEntries}
+            entries={item.logEntries!}
             locale={loc}
             defaultOrder={item.status === 'en_proceso' ? 'desc' : 'asc'}
           />
