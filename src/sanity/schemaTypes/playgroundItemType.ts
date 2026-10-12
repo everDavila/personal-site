@@ -159,6 +159,12 @@ export const playgroundItemType = defineType({
               to: [{ type: 'logTag' }],
             }),
             defineField({
+              name: 'title',
+              title: 'Título (opcional)',
+              description: 'Una línea con gracia que resume el momento. Si queda vacío, la entrada se ve como siempre.',
+              type: 'localizedString',
+            }),
+            defineField({
               name: 'description',
               title: 'Descripción',
               type: 'localizedText',
@@ -199,11 +205,12 @@ export const playgroundItemType = defineType({
               date:    'date',
               dimName: 'dimension.name.es',
               tagName: 'tag.name.es',
+              entryTitle: 'title.es',
             },
-            prepare({ date, dimName, tagName }) {
+            prepare({ date, dimName, tagName, entryTitle }) {
               return {
                 title:    `${dimName ?? '—'}${tagName ? ` · ${tagName}` : ''}`,
-                subtitle: date ?? '',
+                subtitle: [date, entryTitle].filter(Boolean).join(' — '),
               }
             },
           },

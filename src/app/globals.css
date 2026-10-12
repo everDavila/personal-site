@@ -1181,6 +1181,16 @@ body::after {
   color: var(--color-text);
 }
 
+.lab-entry-title {
+  font-family: var(--font-serif);
+  font-weight: 400;
+  font-size: 1.125rem;
+  line-height: 1.35;
+  letter-spacing: -0.01em;
+  color: var(--color-text);
+  margin: 0 0 0.4rem calc(2rem + 0.75rem);
+}
+
 .lab-entry-desc {
   font-size: 0.9375rem;
   line-height: 1.65;
@@ -1402,6 +1412,7 @@ body::after {
   .lab-entry-content { grid-area: content; }
   .lab-entry-date-text { font-size: 0.6875rem; }
   .lab-entry-time-text { font-size: 0.625rem; }
+  .lab-entry-title,
   .lab-entry-desc,
   .lab-img-links { margin-left: 0; }
 }

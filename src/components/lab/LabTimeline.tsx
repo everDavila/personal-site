@@ -144,6 +144,7 @@ export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' 
       {/* ── Timeline ── */}
       <div className="lab-timeline">
         {filtered.map(entry => {
+          const title    = entry.title?.[locale] ?? entry.title?.es ?? entry.title?.en ?? null
           const desc     = entry.description?.[locale] ?? entry.description?.es ?? entry.description?.en ?? null
           const dimLabel = entry.dimension?.name[locale] ?? entry.dimension?.name.es ?? entry.dimension?.name.en ?? ''
           const tagName  = entry.tag?.name[locale] ?? entry.tag?.name.es ?? entry.tag?.name.en ?? null
@@ -185,6 +186,8 @@ export function LabTimeline({ entries, locale, totalLabel, defaultOrder = 'asc' 
                     <span className={`lab-tag lab-tag--${colorKey}`}>{tagName}</span>
                   )}
                 </div>
+
+                {title && <h3 className="lab-entry-title">{title}</h3>}
 
                 {desc && (
                   <div className="lab-entry-desc">
