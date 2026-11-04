@@ -896,14 +896,14 @@ body::after {
   letter-spacing: -0.025em;
   color: var(--color-text);
   margin: 0 0 1.125rem;
-  max-width: 26ch;
+  max-width: 40ch;
 }
 
 .blog-featured-excerpt {
   font-size: var(--text-body);
   color: var(--color-muted);
   line-height: 1.7;
-  max-width: 54ch;
+  max-width: 72ch;
   margin: 0 0 1.625rem;
 }
 
