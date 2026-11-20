@@ -1,0 +1,181 @@
+<!doctype html>
+<html lang="es" data-mode="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototipo de estructura — home davila.uno</title>
+<style>
+  /* Solo para validar ESTRUCTURA. Colores y tipografía son los del sitio, sin diseño nuevo. */
+  :root { --serif: Georgia, 'Source Serif 4', serif; --sans: system-ui, -apple-system, 'Segoe UI', sans-serif; --mono: ui-monospace, 'Cascadia Code', monospace; }
+  [data-mode="dark"]  { --bg:#0F0F0D; --fg:#E8E6E0; --dim:#8A8880; --line:#26261F; --accent:#5A7C94; --note:#1B2229; }
+  [data-mode="light"] { --bg:#F5F4F0; --fg:#1A1A17; --dim:#77756C; --line:#DDDBD2; --accent:#3D6E5E; --note:#E6EEE9; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.55; font-size: 17px; }
+  a { color: inherit; text-decoration: none; }
+  a:hover, button:hover { opacity: .65; }
+  .wrap { max-width: 60rem; margin: 0 auto; padding: 0 1.5rem; }
+  .mono { font-family: var(--mono); font-size: .75rem; color: var(--dim); letter-spacing: .02em; }
+  h1, h2 { font-family: var(--serif); font-weight: 400; }
+  h2 { font-size: 1.4rem; margin-bottom: 1.25rem; }
+  section { padding: 3.5rem 0; border-top: 1px solid var(--line); position: relative; }
+
+  /* Barra de control del prototipo */
+  .ctl { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .ctl .wrap { display: flex; gap: 1rem; align-items: center; justify-content: space-between; padding-top: .6rem; padding-bottom: .6rem; flex-wrap: wrap; }
+  .ctl button { background: none; border: 1px solid var(--line); color: var(--fg); font: .75rem var(--mono); padding: .35rem .7rem; border-radius: 6px; cursor: pointer; }
+  .ctl button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+
+  /* Notas de estructura (se ven con el botón "Notas") */
+  .note { display: none; background: var(--note); border-left: 2px solid var(--accent); padding: .6rem .8rem; margin-bottom: 1.5rem; font: .75rem/1.5 var(--mono); color: var(--dim); }
+  body.show-notes .note { display: block; }
+  .note b { color: var(--accent); font-weight: 600; }
+
+  /* Nav */
+  nav .wrap { display: flex; justify-content: space-between; align-items: center; padding-top: 1.25rem; padding-bottom: 1.25rem; font-size: .875rem; }
+  nav ul { display: flex; gap: 1.25rem; list-style: none; padding: 0; }
+
+  /* Hero */
+  .hero { border-top: 0; padding-top: 5rem; }
+  .hero h1 { font-size: clamp(2.5rem, 7vw, 4.5rem); line-height: 1.05; letter-spacing: -.03em; max-width: 16ch; }
+  [data-mode="light"] .hero h1 { letter-spacing: -.015em; }
+  .hero .role { margin-top: 1.25rem; }
+  .cta { display: inline-block; margin-top: 2rem; border-bottom: 1px solid var(--fg); padding-bottom: 2px; font-size: .95rem; }
+
+  /* Trabajo */
+  .rows { list-style: none; padding: 0; }
+  .rows li { display: grid; grid-template-columns: 1fr auto; gap: .25rem 1rem; padding: 1rem 0; border-bottom: 1px solid var(--line); }
+  .rows .t { font-family: var(--serif); font-size: 1.2rem; }
+  .rows .d { grid-column: 1 / -1; color: var(--dim); font-size: .9rem; }
+
+  /* Cómo trabajo */
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .steps div p { color: var(--dim); font-size: .9rem; margin-top: .35rem; }
+  .steps .n { font: .75rem var(--mono); color: var(--accent); }
+  .ph { font-style: italic; color: var(--dim); }
+
+  /* Experiencia / escritura */
+  .line { display: grid; grid-template-columns: 1fr auto; gap: 1rem; padding: .7rem 0; border-bottom: 1px solid var(--line); }
+  .line span:last-child { font: .75rem var(--mono); color: var(--dim); }
+
+  /* Solo modo claro */
+  .light-only { display: none; }
+  [data-mode="light"] .light-only { display: block; }
+  [data-mode="light"] .dark-only { display: none; }
+  .facts { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .facts span { border: 1px solid var(--line); border-radius: 999px; padding: .25rem .8rem; font-size: .85rem; }
+
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-top: 2rem; padding-bottom: 3rem; font-size: .875rem; }
+  footer ul { display: flex; gap: 1.25rem; list-style: none; padding: 0; }
+
+  @media (max-width: 720px) { .steps { grid-template-columns: 1fr 1fr; } }
+</style>
+</head>
+<body class="show-notes">
+
+<div class="ctl"><div class="wrap">
+  <span class="mono">PROTOTIPO · solo estructura · textos marcados «ejemplo» o «por definir» no son definitivos</span>
+  <span style="display:flex; gap:.5rem">
+    <button id="bMode" aria-pressed="false">modo: oscuro</button>
+    <button id="bNotes" aria-pressed="true">notas: sí</button>
+  </span>
+</div></div>
+
+<nav><div class="wrap">
+  <a href="#" aria-label="Inicio">davila.uno</a>
+  <ul><li><a href="#trabajo">work</a></li><li><a href="#">blog</a></li><li><a href="#lab">lab</a></li><li><a href="#">about</a></li><li><a href="#cierre">contact</a></li></ul>
+</div></nav>
+
+<main class="wrap">
+
+  <section class="hero">
+    <p class="note"><b>1 · Hero</b> — Fabbian: una promesa y UN solo CTA. Aquí sin tono de venta. La frase cambia por modo (Sanity: headline / headlineLight). <b>Los dos titulares son de ejemplo, no los del sitio.</b> La línea mono viene de Adham (doble perfil), pequeña.</p>
+    <h1><span class="dark-only">Diseño plataformas digitales para el Estado.</span><span class="light-only">Hago que lo difícil de usar deje de serlo.</span></h1>
+    <p class="mono role">UX/UI · prototipos · código <span class="ph">(por definir)</span></p>
+    <a class="cta" href="#cierre">Escríbeme →</a>
+  </section>
+
+  <section id="trabajo">
+    <p class="note"><b>2 · Trabajo</b> — Adham: miniatura/título/categoría. Fabbian: 4–6 curados, no 16. Mejora propia: <b>una línea de rol o resultado</b> por proyecto (a Adham le falta). Las filas son ejemplo.</p>
+    <h2><span class="dark-only">Trabajo</span><span class="light-only">¿Qué he hecho?</span></h2>
+    <ul class="rows">
+      <li><a class="t" href="#">Proyecto A (ejemplo)</a><span class="mono">Plataforma pública · 2026</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+      <li><a class="t" href="#">Proyecto B (ejemplo)</a><span class="mono">Prototipo · 2025</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+      <li><a class="t" href="#">Proyecto C (ejemplo)</a><span class="mono">Sistema de diseño · 2024</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+    </ul>
+  </section>
+
+  <section id="como">
+    <p class="note"><b>3 · Cómo trabajo</b> — Fabbian: proceso en 4 pasos. Sin jerga de embudo ni conversión. <b>Los pasos los escribes tú</b>; estos son marcadores.</p>
+    <h2><span class="dark-only">Cómo trabajo</span><span class="light-only">¿Cómo lo hago?</span></h2>
+    <div class="steps">
+      <div><span class="n">01</span><p class="ph">Paso por definir</p></div>
+      <div><span class="n">02</span><p class="ph">Paso por definir</p></div>
+      <div><span class="n">03</span><p class="ph">Paso por definir</p></div>
+      <div><span class="n">04</span><p class="ph">Paso por definir</p></div>
+    </div>
+  </section>
+
+  <section id="lab">
+    <p class="note"><b>4 · Lab</b> — Fabbian: «proyectos personales» como prueba de iniciativa. Ya existe en el sitio. Una línea por proyecto. Estos 4 son reales; las líneas son borrador.</p>
+    <h2><span class="dark-only">Lab</span><span class="light-only">¿Qué construyo por gusto?</span></h2>
+    <ul class="rows">
+      <li><a class="t" href="#">Huella</a><span class="mono">Tools · 2026</span><span class="d">Planificador del viaje a China que sigue funcionando sin conexión.</span></li>
+      <li><a class="t" href="#">Nimbus</a><span class="mono">Interfaces · 2026</span><span class="d">Una app de clima con personalidad.</span></li>
+      <li><a class="t" href="#">Rènshi</a><span class="mono">Tools · 2026</span><span class="d">Vocabulario chino en contexto para clases online.</span></li>
+      <li><a class="t" href="#">LivingMusic</a><span class="mono">Interfaces · 2026</span><span class="d">Tipografía en movimiento sincronizada con la música.</span></li>
+    </ul>
+  </section>
+
+  <section class="light-only" id="humano">
+    <p class="note"><b>5 · Lo humano (solo modo claro)</b> — Adham: lo personal antes de lo profesional. Usa los <code>funFacts</code> que ya existen en Sanity. En modo oscuro esta sección no aparece.</p>
+    <h2>¿Quién hay detrás?</h2>
+    <div class="facts"><span>Lima</span><span>5 idiomas</span><span>quechua básico</span><span>dato curioso (por definir)</span></div>
+  </section>
+
+  <section id="exp">
+    <p class="note"><b>6 · Experiencia</b> — Fabbian: entidad · rol · año en una línea, en texto, sin logos (son entidades públicas y exigen permiso). Los años de ejemplo no son reales.</p>
+    <h2><span class="dark-only">Experiencia</span><span class="light-only">¿Dónde he trabajado?</span></h2>
+    <div class="line"><span>MEF · Analista de Prototipos UX/UI</span><span>año – hoy</span></div>
+    <div class="line"><span>CEPLAN · rol por definir</span><span>años</span></div>
+    <div class="line"><span>Programa Justicia Penal · rol por definir</span><span>años</span></div>
+    <div class="line"><span>Ministerio de Educación · rol por definir</span><span>años</span></div>
+  </section>
+
+  <section id="escritura">
+    <p class="note"><b>7 · Escritura</b> — lista compacta, se mantiene como hoy.</p>
+    <h2><span class="dark-only">Escritura</span><span class="light-only">¿Qué pienso?</span></h2>
+    <div class="line"><span>Título de artículo (ejemplo)</span><span>fecha</span></div>
+    <div class="line"><span>Título de artículo (ejemplo)</span><span>fecha</span></div>
+  </section>
+
+  <section id="cierre">
+    <p class="note"><b>8 · Cierre</b> — Fabbian repite el contacto 3 veces; aquí: hero, cierre y pie, siempre el mismo enlace. Sin chat. El correo lleva asunto prellenado.</p>
+    <h2><span class="dark-only">Contacto</span><span class="light-only">¿Hablamos?</span></h2>
+    <a class="cta" href="mailto:ever@davila.uno?subject=Hola%2C%20vi%20tu%20sitio">ever@davila.uno →</a>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <p class="note" style="width:100%"><b>9 · Pie</b> — Adham: mismo menú corto en el pie + «Volver arriba».</p>
+  <ul><li><a href="#trabajo">work</a></li><li><a href="#">blog</a></li><li><a href="#lab">lab</a></li><li><a href="#">about</a></li><li><a href="#cierre">contact</a></li></ul>
+  <a href="#" class="mono">volver arriba ↑</a>
+</div></footer>
+
+<script>
+  const root = document.documentElement, body = document.body;
+  const bMode = document.getElementById('bMode'), bNotes = document.getElementById('bNotes');
+  bMode.addEventListener('click', () => {
+    const light = root.dataset.mode === 'dark';
+    root.dataset.mode = light ? 'light' : 'dark';
+    bMode.textContent = 'modo: ' + (light ? 'claro' : 'oscuro');
+    bMode.setAttribute('aria-pressed', String(light));
+  });
+  bNotes.addEventListener('click', () => {
+    const on = body.classList.toggle('show-notes');
+    bNotes.textContent = 'notas: ' + (on ? 'sí' : 'no');
+    bNotes.setAttribute('aria-pressed', String(on));
+  });
+</script>
+</body>
+</html>
