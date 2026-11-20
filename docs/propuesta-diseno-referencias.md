@@ -1,90 +1,109 @@
-# Propuesta de diseño — qué tomar de fabbianz.com y adhamdannaway.com
+# Propuesta — estructura y forma de venderse (fabbianz.com y adhamdannaway.com)
 
-Rama: `worktree-propuesta-diseno-referencias`. Solo propuesta: no se tocó código del sitio.
+Rama: `worktree-propuesta-diseno-referencias`. Solo propuesta, sin código del sitio.
+Enfoque: estructura de la página y cómo cada uno se presenta. Color y tipografía quedan fuera.
 
-## De dónde sale el análisis (y sus límites)
+Límites: el análisis sale del texto de las páginas, no de verlas renderizadas. La página `/learn` de Adham da 404, así que su oferta educativa se infiere solo de su about y de su home.
 
-- Estructura y copy: lectura del texto de ambas páginas.
-- Tipografía, color, anchos y transiciones: CSS descargado de cada sitio. Es el CSS completo, no lo que se ve renderizado, así que puede incluir reglas sin uso.
-- No pude ver capturas (no hay navegador conectado). Lo visual (aire, ritmo, imágenes) queda sin verificar.
+## 1. Cómo se vende cada uno
 
-| | fabbianz.com | adhamdannaway.com |
+### Fabbian: vende un resultado a una empresa
+
+Orden de la página, tal como aparece:
+
+1. Hero: «Transformo usuarios en clientes». Una promesa, un CTA («Contactar»).
+2. «¿Cómo te puedo ayudar?»: proceso de 4 pasos (Discovery/Research, Arquitectura y Marketing, Experiencia e Interfaz, Implementación y Optimización).
+3. «¿Quién soy?»: «Consultor en UX con foco en eCommerce», más de 10 años, equipos multidisciplinarios.
+4. «¿Con quién he trabajado?»: empresas con logo, rol y año (Telefónica, Entel, BancoEstado, Interbank…).
+5. Proyectos personales: 6 tarjetas con título, una línea y «Ver más».
+6. «¿Hablamos?»: correo, LinkedIn, Twitter y agenda.
+
+Cómo funciona como venta:
+- **Un nicho y un problema:** eCommerce y conversión. La frase «usuarios en clientes» se repite en el hero, en el proceso y en la bio.
+- **Autoridad por trayectoria:** años y empresas reconocibles, cada una en una línea (empresa · rol · año). Sin testimonios ni cifras de resultados.
+- **El visitante es el protagonista:** los títulos le hablan («¿Cómo te puedo ayudar?»).
+- **Contacto tres veces:** botón del hero, sección final y un chat flotante.
+- **Los proyectos personales** muestran iniciativa, aparte del trabajo para clientes.
+
+### Adham: vende autoridad y productos propios, no servicios
+
+Orden de la página:
+
+1. Presentación con una promesa: «turning complex problems into simple, beautiful and intuitive designs».
+2. Su vida personal (cocina, jardinería), el doble perfil de diseñador y programador, datos curiosos y barras de habilidades en tono de broma.
+3. Prensa y charlas, como prueba social.
+4. Libro *Practical UI* como oferta principal.
+5. Sistema de diseño en Figma como segunda oferta.
+6. Historia personal y blog.
+
+Cómo funciona como venta:
+- **Autoridad, no oferta de servicios:** casi dos décadas, libro, charlas. Casi no hay contacto directo.
+- **Lo humano va primero:** el humor y lo personal abren la confianza antes de ofrecer algo.
+- **Portafolio de 16 proyectos** en una lista: miniatura, título y categoría. Sin problema, rol ni resultado en el listado. Orden cronológico inverso, sin filtros.
+- **Afirmaciones sin evidencia:** «used by millions of people», sin cifras ni clientes nombrados.
+- **Varios CTA a sus productos:** «Read the book», «View the design system», «View featured work».
+
+## 2. Qué tomar, adaptar o solo analizar
+
+### Implementar
+
+| De | Qué | En davila.uno |
 |---|---|---|
-| Fuente | Raleway 200–700 + Kristi (manuscrita, de acento) | Proxima Nova (comercial, pesos light a bold) |
-| Color | Azul vivo `#2789e9`, oscuro `#1c2431`, grises | `#333`, `#757575`, `#ddd`; acentos salmón `#e1ae9e` y dorado `#dfae36` |
-| Ancho | 1100 px | 68 rem / 1040 px |
-| Transiciones | `all` 300–450 ms | `opacity` y `color` 300 ms |
-| Modo oscuro | No | No |
-| Idea central | «Transformo usuarios en clientes»: venta de resultados | Diseñador y `<coder>`: autoridad con libro y cursos |
+| Fabbian | Experiencia en una línea: entidad · rol · año | Unificar el formato en home y `/experience`. Texto, no logos |
+| Fabbian | Contacto repetido en puntos clave (hero, cierre del home, pie) | Un solo enlace a `/contact` en esos tres lugares. Sin chat flotante |
+| Fabbian | Contacto con correo de asunto prellenado | En `/contact`, junto a LinkedIn y agenda |
+| Adham | Portafolio como tarjetas: miniatura, título, categoría | Mantener la lista actual y sumar **una línea de rol o resultado**, que es lo que a Adham le falta |
 
-## Qué implementar, adaptar o solo analizar
-
-### Implementar (encaja con el sistema actual)
-
-| De | Qué | Cómo queda en el sitio |
-|---|---|---|
-| Adham | Navegación corta en minúscula, repetida en el pie, con «Volver arriba» | Mismo menú en el footer. Enlace mono, pequeño y tenue |
-| Adham | Tarjeta de proyecto: título + categoría en texto pequeño | En Work: título en serif, categoría y año en mono tenue. Sin imagen obligatoria |
-| Adham | Transición solo de `opacity` | Ya es nuestra regla: `opacity: 0.65` al hover |
-| Fabbian | Contacto multicanal con `mailto:` de asunto prellenado | En `/contact`: correo, LinkedIn y agenda. El asunto ya viene escrito |
-| Fabbian | Experiencia en una línea: cargo · entidad · año | `ExperienceSnapshot` ya va por ahí. Unificar el formato |
-
-### Adaptar (la idea sí, la forma no)
+### Adaptar
 
 | De | Qué | Adaptación |
 |---|---|---|
-| Fabbian | Hero de una frase + un solo CTA | Un CTA («Escríbeme» o «Ver trabajo»), no dos. La frase cambia por modo y sin tono de venta |
-| Fabbian | Encabezados como preguntas («¿Quién soy?») | Solo en modo claro, que es el lúdico. En oscuro quedan afirmaciones |
-| Fabbian | Proceso en 4 pasos numerados | «Cómo trabajo» en About: números en mono, título serif, 2 líneas por paso. Los pasos y el texto los pones tú |
-| Adham | Hero con dos identidades (diseño y código) | Una línea mono tenue bajo el titular: `UX/UI · prototipos · código`. Sin bloques grandes |
-| Adham | `<coder>` como marca | Solo si te late. Es un guiño, no estructura |
+| Fabbian | Proceso en 4 pasos | «Cómo trabajo» sin jerga de embudo ni conversión. Es proceso UX público; los pasos los escribes tú |
+| Fabbian | Proyectos personales como prueba de iniciativa | Ya existe: el **Lab** (Huella, Nimbus, Rènshi, LivingMusic). Subirlo en el home con una línea por proyecto |
+| Fabbian | Títulos que le hablan al visitante | Solo en modo claro. En oscuro, afirmaciones directas |
+| Adham | Lo humano antes de lo profesional | Ya tienes `funFacts` en Sanity. Darles lugar antes de la experiencia, en modo claro |
+| Adham | Doble perfil (diseño y código) | Una línea tenue bajo el titular. No dos bloques |
+| Adham | Autoridad por prensa y charlas | Solo si tienes charlas, artículos o publicaciones para mostrar |
 
 ### Solo analizar (no copiar)
 
-- **Raleway, Proxima Nova y Kristi:** ya tenemos Source Serif + Inter + mono, validados con Linear, iA, Paco y Rauno. Una manuscrita rompe el tono editorial.
-- **Azul `#2789e9` y el dorado:** demasiado saturados. Nuestros acentos (`#5A7C94`, `#3D6E5E`) son apagados a propósito.
-- **Transiciones `all` de 450 ms:** chocan con la regla de hover solo por opacidad.
-- **Chat flotante que pide el nombre:** captación de leads. Es lo que el sitio quiere evitar.
-- **«Transformo usuarios en clientes»:** es marketing de conversión. El sitio debe parecer una persona, no un recruiter.
-- **Cursos, libro y sección «learn»:** modelo de negocio de Adham. No aplica hoy. Si algún día hay algo así, entra por el Lab.
-- **Logos de clientes:** son entidades públicas (MEF, CEPLAN, etc.). Usarlos exige permiso. Mejor la lista en texto, como ya está.
+- **Venta de conversión y eCommerce:** es el nicho de Fabbian. Tu terreno es plataformas digitales para el Estado y entidades privadas. Es otro posicionamiento.
+- **Logos de clientes:** son entidades públicas y exigen permiso.
+- **Chat que pide el nombre:** captación de leads.
+- **Libro y sistema de diseño como productos:** es su modelo de negocio. Hoy no tienes equivalente.
+- **16 proyectos en lista plana:** diluye. Mejor 4 a 6 curados.
+- **Barras de habilidades de broma:** es su humor, no el tuyo.
+- **Afirmaciones sin evidencia:** «millones de usuarios» sin dato. Si vas a afirmar algo, que sea con un dato.
+- **Contacto casi ausente (Adham):** funciona porque vende libros, no horas.
 
-## Boceto del home propuesto
+## 3. Esqueleto propuesto para el home
 
 ```
-nav:  davila.uno            work  blog  lab  about  contact     ○
+1. Hero        titular por modo + línea de rol + un CTA
+2. Trabajo     4–6 proyectos: título · categoría · año + una línea de rol/resultado
+3. Cómo trabajo  4 pasos (nuevo; texto tuyo)
+4. Lab         lo que construyo por gusto: 3–4 experimentos con una línea cada uno
+5. Experiencia entidad · rol · año
+6. Escritura   lista compacta
+7. Cierre      un enlace a /contact
 
-[hero]  titular serif (por modo)
-        UX/UI · prototipos · código           ← línea mono tenue (nueva)
-        [ Escríbeme ]                         ← un solo CTA
-
-[trabajo]   título serif ........ categoría · año   (mono, tenue)
-            título serif ........ categoría · año
-
-[cómo trabajo]   01 Descubrir   02 Estructurar   03 Diseñar   04 Probar   ← nuevo, 4 pasos
-[experiencia]    cargo · entidad · año   (una línea cada uno)
-[escritura]      lista compacta
-[lab]            2–3 experimentos
-
-footer:  mismo menú · volver arriba ↑
+Modo claro: funFacts antes de la experiencia y títulos como preguntas.
 ```
 
-## Cambios por orden de costo
+## 4. Decisión previa: ¿qué vende el sitio?
 
-1. Footer con el menú y «Volver arriba». Una hora.
-2. Contacto con `mailto:` prellenado. Una hora.
-3. Formato único cargo · entidad · año. Dos horas.
-4. Categoría y año en mono en la lista de Work. Dos horas.
-5. Hero con CTA único y línea mono. Medio día, más el texto por modo en Sanity.
-6. Sección «Cómo trabajo». Medio día, y necesita tu texto.
+Fabbian vende servicios, Adham vende autoridad y productos. Antes de tocar el home hay que fijar qué quieres que haga quien llega.
 
-## Decisiones tuyas
+1. **Trabajo o consultoría:** el hero y el cierre llevan un CTA claro y el proceso gana peso.
+2. **Ser leído y reconocido:** el Lab y el blog suben, y el contacto baja.
+3. **Ambas:** el home sirve a las dos cosas con un solo CTA suave.
 
-1. ¿Entra «Cómo trabajo»? Si sí, los 4 pasos son tuyos: no los invento.
-2. ¿El CTA del hero es «Escríbeme» o «Ver trabajo»?
-3. ¿Encabezados como preguntas en modo claro?
-4. ¿La línea `UX/UI · prototipos · código` te representa o suena a etiqueta de recruiter?
+Con la respuesta se decide cuánto del lado Fabbian entra.
 
-## Nota técnica
+## 5. Decisiones tuyas
 
-La skill `front-end-developer` pide Tailwind. Aquí rige el CLAUDE.md del proyecto: variables CSS e inline styles, sin clases Tailwind en producción. Esta propuesta sigue el segundo.
+1. ¿Qué vende el sitio hoy: trabajo, lectura o ambas?
+2. ¿Entra «Cómo trabajo»? Si sí, los 4 pasos son tuyos.
+3. ¿Tienes charlas, artículos o publicaciones para mostrar como autoridad?
+4. ¿Subimos el Lab al home con una línea por proyecto?
+5. ¿Una línea de rol o resultado por proyecto de Work? Hay que escribirla para cada uno.
