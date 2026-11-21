@@ -1,0 +1,446 @@
+<!doctype html>
+<html lang="es" data-mode="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototipo sitio completo — davila.uno</title>
+<style>
+  /* Prototipo navegable: home + páginas internas en un solo archivo (rutas con #).
+     Colores y tipografías del sitio (CLAUDE.md). «ejemplo» / «por definir» = no definitivo. Hover: solo opacity .65. */
+  :root { --serif: 'Source Serif 4', Georgia, serif; --sans: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; --mono: ui-monospace, 'Cascadia Code', monospace; }
+  [data-mode="dark"]  { --bg:#0F0F0D; --fg:#E8E6E0; --dim:#8A8880; --line:#26261F; --accent:#5A7C94; --note:#1B2229; }
+  [data-mode="light"] { --bg:#F5F4F0; --fg:#1A1A17; --dim:#77756C; --line:#DDDBD2; --accent:#3D6E5E; --note:#E6EEE9; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.6; font-size: 17px; }
+  a { color: inherit; text-decoration: none; cursor: pointer; }
+  a:hover, button:hover { opacity: .65; }
+  .wrap { max-width: 64rem; margin: 0 auto; padding: 0 1.5rem; }
+  .mono { font-family: var(--mono); font-size: .75rem; color: var(--dim); letter-spacing: .02em; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 400; }
+  h2 { font-size: 1.5rem; margin-bottom: 1.5rem; }
+  section { padding: 4rem 0; border-top: 1px solid var(--line); }
+  .ph { font-style: italic; color: var(--dim); }
+  .dark-only { display: inline; } .light-only { display: none; }
+  [data-mode="light"] .light-only { display: inline; } [data-mode="light"] .dark-only { display: none; }
+  section.light-only, div.light-only { display: none; }
+  [data-mode="light"] section.light-only, [data-mode="light"] div.light-only { display: block; }
+
+  .view { display: none; } .view.on { display: block; }
+
+  /* control del prototipo */
+  .ctl { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .ctl .wrap { display: flex; gap: 1rem; align-items: center; justify-content: space-between; padding-top: .6rem; padding-bottom: .6rem; flex-wrap: wrap; }
+  .ctl button { background: none; border: 1px solid var(--line); color: var(--fg); font: .75rem var(--mono); padding: .35rem .7rem; border-radius: 6px; cursor: pointer; }
+  .ctl button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+  .note { display: none; background: var(--note); border-left: 2px solid var(--accent); padding: .6rem .8rem; margin-bottom: 1.75rem; font: .75rem/1.5 var(--mono); color: var(--dim); }
+  body.show-notes .note { display: block; }
+  .note b { color: var(--accent); font-weight: 600; }
+  .tag { font: .65rem var(--mono); border: 1px solid var(--accent); color: var(--accent); border-radius: 4px; padding: 0 .35rem; margin-left: .4rem; vertical-align: middle; }
+
+  nav .wrap { display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; padding-bottom: 1.5rem; font-size: .875rem; }
+  nav ul { display: flex; gap: 1.5rem; list-style: none; padding: 0; align-items: center; flex-wrap: wrap; }
+  nav a[aria-current="page"] { border-bottom: 1px solid var(--fg); }
+  .toggle { width: 22px; height: 22px; border: 1px solid var(--fg); border-radius: 50%; display: inline-block; vertical-align: middle; }
+  [data-mode="light"] .toggle { border-color: var(--accent); background: var(--accent); }
+
+  /* cabecera de página (PageHeader): dos columnas si hay imagen */
+  .ph-head { padding: 3rem 0 3.5rem; }
+  .ph-head .grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 3rem; align-items: center; }
+  [data-mode="dark"] .ph-head .grid { grid-template-columns: 1fr; }
+  .ph-head h1 { font-size: clamp(2.2rem, 6vw, 4rem); line-height: 1.05; letter-spacing: -.03em; }
+  [data-mode="light"] .ph-head h1 { letter-spacing: -.015em; }
+  .ph-head .sub { margin-top: 1.25rem; color: var(--dim); max-width: 36rem; }
+  .img { aspect-ratio: 4/3; border: 1px dashed var(--line); border-radius: 4px; display: none; align-items: center; justify-content: center; text-align: center; color: var(--dim); font: .72rem/1.5 var(--mono); padding: 1rem; }
+  [data-mode="light"] .img { display: flex; }
+
+  .hero { border-top: 0; padding-top: 4rem; padding-bottom: 5rem; }
+  .hero .grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 3rem; align-items: center; }
+  [data-mode="dark"] .hero .grid { grid-template-columns: 1fr; }
+  .eyebrow { margin-bottom: 1.5rem; }
+  .hero h1 { font-size: clamp(2.6rem, 7.5vw, 6rem); line-height: 1.02; letter-spacing: -.03em; }
+  [data-mode="light"] .hero h1 { letter-spacing: -.015em; }
+  .hero .sub { margin-top: 1.75rem; max-width: 34rem; color: var(--dim); font-size: 1.05rem; }
+  .hero .role { margin-top: 1.25rem; }
+  .hero .img { aspect-ratio: 4/5; }
+  .cta { display: inline-block; margin-top: 2rem; border-bottom: 1px solid var(--fg); padding-bottom: 2px; font-size: .95rem; }
+
+  .rows { list-style: none; padding: 0; }
+  .rows li { display: grid; grid-template-columns: 1fr auto; gap: .25rem 1rem; padding: 1.1rem 0; border-bottom: 1px solid var(--line); }
+  .rows .t { font-family: var(--serif); font-size: 1.3rem; }
+  .rows .d { grid-column: 1 / -1; color: var(--dim); font-size: .92rem; }
+  .more { display: inline-block; margin-top: 1.5rem; font-size: .875rem; border-bottom: 1px solid var(--dim); }
+  .prose { max-width: 40rem; font-family: var(--serif); font-size: 1.35rem; line-height: 1.5; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .comp { list-style: none; padding: 0; }
+  .comp li { padding: .55rem 0; border-bottom: 1px solid var(--line); font-size: .95rem; display: flex; justify-content: space-between; }
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .steps p { color: var(--dim); font-size: .92rem; margin-top: .35rem; }
+  .steps .n { font: .75rem var(--mono); color: var(--accent); }
+  .facts { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .facts span, .chip { border: 1px solid var(--line); border-radius: 999px; padding: .3rem .9rem; font-size: .88rem; display: inline-block; }
+  .line { display: grid; grid-template-columns: 1fr auto; gap: 1rem; padding: .8rem 0; border-bottom: 1px solid var(--line); }
+  .line span:last-child, .line a:last-child { font: .75rem var(--mono); color: var(--dim); align-self: center; }
+  .close h2 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; letter-spacing: -.02em; }
+
+  /* artículo / detalle: lectura ~64ch */
+  .read { max-width: 64ch; margin: 0 auto; }
+  .read h1 { font-size: clamp(2rem, 5vw, 3rem); line-height: 1.1; letter-spacing: -.02em; margin: .75rem 0 1.5rem; }
+  .read p { margin-bottom: 1.1rem; }
+  .read h3 { font-size: 1.25rem; margin: 2rem 0 .75rem; }
+  .meta { display: flex; gap: 1rem; flex-wrap: wrap; }
+  .prevnext { display: grid; grid-template-columns: 1fr 1fr; gap: 1.5rem; margin-top: 3rem; padding-top: 1.5rem; border-top: 1px solid var(--line); }
+  .prevnext a:last-child { text-align: right; }
+  .prevnext .t { font-family: var(--serif); font-size: 1.05rem; display: block; margin-top: .25rem; }
+  .feature { padding: 1.5rem 0 2rem; border-bottom: 1px solid var(--line); margin-bottom: 1rem; }
+  .feature .t { font-family: var(--serif); font-size: clamp(1.6rem, 4vw, 2.4rem); line-height: 1.15; display: block; margin: .5rem 0; }
+  .grid3 { display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem; }
+  .dl { display: grid; grid-template-columns: 8rem 1fr; gap: .6rem 1.5rem; padding: 1.25rem 0; border-top: 1px solid var(--line); border-bottom: 1px solid var(--line); margin: 1.5rem 0 2rem; }
+  .dl dt { font: .75rem var(--mono); color: var(--dim); padding-top: .2rem; } .dl dd { margin: 0; }
+  .shot { aspect-ratio: 16/9; border: 1px dashed var(--line); border-radius: 4px; display: flex; align-items: center; justify-content: center; color: var(--dim); font: .72rem var(--mono); margin: 1.5rem 0; }
+  .entry { padding: 1.4rem 0; border-top: 1px solid var(--line); }
+  .entry h3 { margin: .35rem 0 .6rem; font-size: 1.2rem; }
+  .entry p { margin-bottom: .8rem; color: var(--fg); }
+  .filters { display: flex; gap: .5rem; flex-wrap: wrap; margin-bottom: 1.5rem; }
+  .form { display: grid; gap: 1rem; max-width: 28rem; }
+  .form div { border: 1px solid var(--line); border-radius: 6px; padding: .6rem .8rem; color: var(--dim); font-size: .92rem; }
+
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-top: 2.5rem; padding-bottom: 3.5rem; font-size: .875rem; border-top: 1px solid var(--line); }
+  footer ul { display: flex; gap: 1.5rem; list-style: none; padding: 0; }
+
+  #chooser { position: fixed; inset: 0; background: var(--bg); z-index: 20; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem; }
+  #chooser.on { display: flex; }
+  #chooser h2 { font-size: 2rem; margin: 0; }
+  #chooser .opts { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  #chooser button { background: none; color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.5rem; cursor: pointer; font: 1rem var(--sans); max-width: 16rem; }
+  #chooser button small { display: block; color: var(--dim); font: .72rem var(--mono); margin-top: .35rem; }
+
+  @media (max-width: 760px) {
+    .hero .grid, .ph-head .grid, .two, .grid3 { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .dl { grid-template-columns: 1fr; }
+  }
+</style>
+</head>
+<body class="show-notes">
+
+<div id="chooser">
+  <p class="mono">simulación de la primera visita · ModeChooser</p>
+  <h2>¿Cómo quieres leer este sitio?</h2>
+  <div class="opts">
+    <button data-pick="dark">Directo y técnico<small>modo oscuro · azul</small></button>
+    <button data-pick="light">Personal y curioso<small>modo claro · verde</small></button>
+  </div>
+</div>
+
+<div class="ctl"><div class="wrap">
+  <span class="mono">PROTOTIPO sitio completo · navega con el menú · «ejemplo» / «por definir» = no definitivo</span>
+  <span style="display:flex; gap:.5rem; flex-wrap:wrap">
+    <button id="bMode" aria-pressed="false">modo: oscuro</button>
+    <button id="bNotes" aria-pressed="true">notas: sí</button>
+    <button id="bChooser">ver ModeChooser</button>
+  </span>
+</div></div>
+
+<nav><div class="wrap">
+  <a href="#/">davila.uno</a>
+  <ul>
+    <li><a href="#/work" data-nav="work">work</a></li>
+    <li><a href="#/blog" data-nav="blog">blog</a></li>
+    <li><a href="#/lab" data-nav="lab">lab</a></li>
+    <li><a href="#/about" data-nav="about">about</a></li>
+    <li><a href="#/experience" data-nav="experience">experience</a></li>
+    <li><a href="#/contact" data-nav="contact">contact</a></li>
+    <li><span class="toggle" title="toggle de modo (○ / astronauta)"></span></li>
+  </ul>
+</div></nav>
+
+<main class="wrap">
+
+<!-- ============ HOME ============ -->
+<div class="view" data-route="/">
+  <section class="hero">
+    <p class="note"><b>HOME · 1 Hero</b> <span class="tag">existe</span><span class="tag">ajuste</span> — Titular por modo, sub, imagen por modo, subtítulo editorial. Nuevo (Adham): línea mono de doble perfil. Nuevo (Fabbian): UN solo CTA a contacto. <b>Titulares y sub son de ejemplo.</b></p>
+    <div class="grid">
+      <div>
+        <p class="mono eyebrow">Lima · 14:32 · primavera <span class="ph">(subtítulo editorial — ejemplo)</span></p>
+        <h1><span class="dark-only">Diseño plataformas digitales para el Estado.</span><span class="light-only">Hago que lo difícil de usar deje de serlo.</span></h1>
+        <p class="sub"><span class="dark-only">Más de 10 años en UX/UI para entidades públicas y privadas peruanas. Hoy en el MEF.</span><span class="light-only">Diez años entre ministerios, formularios eternos y gente que solo quería hacer su trámite. <span class="ph">(ejemplo)</span></span></p>
+        <p class="mono role">UX/UI · prototipos · código <span class="ph">(por definir)</span></p>
+        <a class="cta" href="#/contact">Escríbeme →</a>
+      </div>
+      <div class="img">[ imagen del astronauta<br>heroImageLight ]<br>solo modo claro</div>
+    </div>
+  </section>
+
+  <section>
+    <p class="note"><b>2 · Trabajo</b> <span class="tag">existe</span><span class="tag">ajuste</span> — 4–6 curados (no 16) y <b>una línea de rol o resultado</b> por proyecto. Filas de ejemplo.</p>
+    <h2><span class="dark-only">Trabajo</span><span class="light-only">¿Qué he hecho?</span></h2>
+    <ul class="rows">
+      <li><a class="t" href="#/work/proyecto-a">Proyecto A (ejemplo)</a><span class="mono">Plataforma pública · 2026</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+      <li><a class="t" href="#/work/proyecto-a">Proyecto B (ejemplo)</a><span class="mono">Prototipo · 2025</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+      <li><a class="t" href="#/work/proyecto-a">Proyecto C (ejemplo)</a><span class="mono">Sistema de diseño · 2024</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+      <li><a class="t" href="#/work/proyecto-a">Proyecto D (ejemplo)</a><span class="mono">Investigación · 2023</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+    </ul>
+    <a class="more" href="#/work">Ver todo el trabajo →</a>
+  </section>
+
+  <section>
+    <p class="note"><b>3 · Filosofía</b> <span class="tag">existe</span> — siteSettings.philosophy, texto por modo. Se evalúa si sigue aquí o pasa a /about.</p>
+    <p class="prose"><span class="dark-only">Texto de filosofía, modo oscuro. <span class="ph">(Sanity: philosophy.dark)</span></span><span class="light-only">Texto de filosofía, modo claro. <span class="ph">(Sanity: philosophy.light)</span></span></p>
+  </section>
+
+  <section>
+    <p class="note"><b>4 · Cómo trabajo</b> <span class="tag">nuevo</span> — Fabbian: proceso en 4 pasos, sin jerga de embudo. <b>Los pasos los escribes tú.</b></p>
+    <h2><span class="dark-only">Cómo trabajo</span><span class="light-only">¿Cómo lo hago?</span></h2>
+    <div class="steps">
+      <div><span class="n">01</span><p class="ph">Paso por definir</p></div>
+      <div><span class="n">02</span><p class="ph">Paso por definir</p></div>
+      <div><span class="n">03</span><p class="ph">Paso por definir</p></div>
+      <div><span class="n">04</span><p class="ph">Paso por definir</p></div>
+    </div>
+  </section>
+
+  <section>
+    <p class="note"><b>5 · Lab</b> <span class="tag">nuevo en home</span> — Fabbian: «proyectos personales» como prueba de iniciativa. 4 reales; líneas en borrador.</p>
+    <h2><span class="dark-only">Lab</span><span class="light-only">¿Qué construyo por gusto?</span></h2>
+    <ul class="rows">
+      <li><a class="t" href="#/lab/huella">Huella</a><span class="mono">Tools · 2026</span><span class="d">Planificador del viaje a China que sigue funcionando sin conexión.</span></li>
+      <li><a class="t" href="#/lab">Nimbus</a><span class="mono">Interfaces · 2026</span><span class="d">Una app de clima con personalidad.</span></li>
+      <li><a class="t" href="#/lab">Rènshi</a><span class="mono">Tools · 2026</span><span class="d">Vocabulario chino en contexto para clases online.</span></li>
+      <li><a class="t" href="#/lab">LivingMusic</a><span class="mono">Interfaces · 2026</span><span class="d">Tipografía en movimiento sincronizada con la música.</span></li>
+    </ul>
+    <a class="more" href="#/lab">Ver el Lab →</a>
+  </section>
+
+  <section>
+    <p class="note"><b>6 · Sobre mí + competencias</b> <span class="tag">existe</span> — Resumen con enlace a /about.</p>
+    <div class="two">
+      <div>
+        <h2><span class="dark-only">Sobre mí</span><span class="light-only">¿Quién soy?</span></h2>
+        <p class="prose" style="font-size:1.1rem"><span class="ph">Bio breve desde Sanity (about), según el modo.</span></p>
+        <a class="more" href="#/about">Más sobre mí →</a>
+      </div>
+      <div>
+        <h2><span class="dark-only">Competencias</span><span class="light-only">Lo que se me da bien</span></h2>
+        <ul class="comp"><li><span>Competencia 1</span><span class="mono">ejemplo</span></li><li><span>Competencia 2</span><span class="mono">ejemplo</span></li><li><span>Competencia 3</span><span class="mono">ejemplo</span></li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="light-only">
+    <p class="note"><b>7 · Lo humano (solo claro)</b> <span class="tag">nuevo en home</span> — Adham: lo personal antes de lo profesional. funFacts de Sanity, antes de la experiencia.</p>
+    <h2>¿Quién hay detrás?</h2>
+    <div class="facts"><span>Lima</span><span>5 idiomas</span><span>quechua básico</span><span>dato curioso (por definir)</span></div>
+  </section>
+
+  <section>
+    <p class="note"><b>8 · Experiencia</b> <span class="tag">existe</span><span class="tag">ajuste</span> — Formato unificado entidad · rol · año, sin logos.</p>
+    <h2><span class="dark-only">Experiencia</span><span class="light-only">¿Dónde he trabajado?</span></h2>
+    <div class="line"><span>MEF · Analista de Prototipos UX/UI</span><span>año – hoy</span></div>
+    <div class="line"><span>CEPLAN · rol por definir</span><span>años</span></div>
+    <div class="line"><span>Programa Justicia Penal · rol por definir</span><span>años</span></div>
+    <div class="line"><span>Ministerio de Educación · rol por definir</span><span>años</span></div>
+    <a class="more" href="#/experience">Experiencia completa →</a>
+  </section>
+
+  <section>
+    <p class="note"><b>9 · Escritura</b> <span class="tag">existe</span> — Lista compacta, fecha en mono.</p>
+    <h2><span class="dark-only">Escritura</span><span class="light-only">¿Qué pienso?</span></h2>
+    <div class="line"><a href="#/blog/articulo">Título de artículo (ejemplo)</a><span>fecha</span></div>
+    <div class="line"><a href="#/blog/articulo">Título de artículo (ejemplo)</a><span>fecha</span></div>
+    <a class="more" href="#/blog">Todo el blog →</a>
+  </section>
+
+  <section class="close">
+    <p class="note"><b>10 · Cierre</b> <span class="tag">nuevo</span> — Mismo enlace a /contact que el hero y el pie (3 repeticiones, sin chat).</p>
+    <h2><span class="dark-only">¿Trabajamos juntos?</span><span class="light-only">¿Hablamos?</span> <span class="ph" style="font-size:1rem">(ejemplo)</span></h2>
+    <a class="cta" href="#/contact">Escríbeme →</a>
+  </section>
+</div>
+
+<!-- ============ WORK (lista) ============ -->
+<div class="view" data-route="/work">
+  <div class="ph-head"><p class="note"><b>/work</b> <span class="tag">existe</span><span class="tag">ajuste</span> — PageHeader con imagen del personaje por modo (pageImages.work). Adham: miniatura + título + categoría. Mejora: una línea de rol o resultado. Con filtro por categoría si pasan de 6. Proyectos de ejemplo.</p>
+    <div class="grid">
+      <div><h1><span class="dark-only">Trabajo</span><span class="light-only">Lo que he hecho</span></h1><p class="sub">Plataformas, prototipos y sistemas para entidades públicas y privadas. <span class="ph">(sub de ejemplo)</span></p></div>
+      <div class="img">[ imagen del astronauta<br>pageImages.work.light ]</div>
+    </div>
+  </div>
+  <div class="filters mono"><span class="chip">Todos</span><span class="chip">Plataformas</span><span class="chip">Prototipos</span><span class="chip">Sistemas de diseño</span></div>
+  <ul class="rows">
+    <li><a class="t" href="#/work/proyecto-a">Proyecto A (ejemplo)</a><span class="mono">Plataforma pública · 2026</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+    <li><a class="t" href="#/work/proyecto-a">Proyecto B (ejemplo)</a><span class="mono">Prototipo · 2025</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+    <li><a class="t" href="#/work/proyecto-a">Proyecto C (ejemplo)</a><span class="mono">Sistema de diseño · 2024</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+    <li><a class="t" href="#/work/proyecto-a">Proyecto D (ejemplo)</a><span class="mono">Investigación · 2023</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+    <li><a class="t" href="#/work/proyecto-a">Proyecto E (ejemplo)</a><span class="mono">Plataforma · 2022</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+  </ul>
+</div>
+
+<!-- ============ WORK (detalle) ============ -->
+<div class="view" data-route="/work/proyecto-a">
+  <div class="read" style="padding:3rem 0">
+    <p class="note"><b>/work/[slug]</b> <span class="tag">existe</span><span class="tag">ajuste</span> — Estructura de caso: ficha (rol, entidad, año, equipo) + problema → qué hice → resultado. Lectura ~64ch. Fabbian pone rol y año; Adham no da detalle. Todo es ejemplo; el contenido viene de Sanity (project).</p>
+    <a class="mono" href="#/work">← Trabajo</a>
+    <h1>Proyecto A (ejemplo)</h1>
+    <p class="mono">Plataforma pública · 2026</p>
+    <dl class="dl">
+      <dt>Rol</dt><dd class="ph">por definir</dd>
+      <dt>Entidad</dt><dd class="ph">por definir (puede requerir permiso)</dd>
+      <dt>Año</dt><dd>2026</dd>
+      <dt>Alcance</dt><dd class="ph">investigación · prototipo · UI · por definir</dd>
+    </dl>
+    <div class="shot">[ imagen principal del proyecto ]</div>
+    <h3>El problema</h3><p class="ph">Qué necesitaba resolver la entidad y para quién. Por definir.</p>
+    <h3>Qué hice</h3><p class="ph">Decisiones de diseño y proceso. Por definir.</p>
+    <div class="shot">[ capturas / prototipos ]</div>
+    <h3>Resultado</h3><p class="ph">Solo con dato verificable. Si no hay cifra, se dice qué cambió. Por definir.</p>
+    <div class="prevnext"><a href="#/work"><span class="mono">← anterior</span><span class="t">Proyecto B (ejemplo)</span></a><a href="#/work"><span class="mono">siguiente →</span><span class="t">Proyecto C (ejemplo)</span></a></div>
+  </div>
+</div>
+
+<!-- ============ BLOG (lista) ============ -->
+<div class="view" data-route="/blog">
+  <div class="ph-head"><p class="note"><b>/blog</b> <span class="tag">existe</span> — Lista editorial actual: post destacado solo con tipografía (sin imagen) + lista compacta con fecha mono. Sin cambios de estructura. Si hay charlas o publicaciones, podrían ir como bloque aparte (Adham: prensa y charlas).</p>
+    <div class="grid">
+      <div><h1><span class="dark-only">Blog</span><span class="light-only">Lo que pienso</span></h1><p class="sub">Notas sobre diseño, plataformas y oficio. <span class="ph">(ejemplo)</span></p></div>
+      <div class="img">[ imagen del astronauta<br>pageImages.blog.light ]</div>
+    </div>
+  </div>
+  <div class="feature">
+    <span class="mono">destacado · fecha · 6 min</span>
+    <a class="t" href="#/blog/articulo">Título del artículo destacado (ejemplo)</a>
+    <p class="ph">Extracto de dos líneas. Por definir.</p>
+  </div>
+  <div class="line"><a href="#/blog/articulo">Título de artículo (ejemplo)</a><span>fecha · 4 min</span></div>
+  <div class="line"><a href="#/blog/articulo">Título de artículo (ejemplo)</a><span>fecha · 5 min</span></div>
+  <div class="line"><a href="#/blog/articulo">Título de artículo (ejemplo)</a><span>fecha · 3 min</span></div>
+  <div class="line"><a href="#/blog/articulo">Título de artículo (ejemplo)</a><span>fecha · 7 min</span></div>
+</div>
+
+<!-- ============ BLOG (artículo) ============ -->
+<div class="view" data-route="/blog/articulo">
+  <div class="read" style="padding:3rem 0">
+    <p class="note"><b>/blog/[slug]</b> <span class="tag">existe</span> — Entorno de lectura, máx. ~64ch, sin chrome alrededor. Fecha y tiempo en mono. Navegación anterior/siguiente al final. Texto de ejemplo.</p>
+    <a class="mono" href="#/blog">← Blog</a>
+    <h1>Título del artículo (ejemplo)</h1>
+    <div class="meta mono"><span>fecha</span><span>6 min</span><span>es</span></div>
+    <p style="margin-top:2rem" class="ph">Primer párrafo del artículo. En producción viene de Sanity (localizedBlockContent), con fallback de idioma: qu→es, zh→en.</p>
+    <p class="ph">Cuerpo del artículo. Titulares internos en serif, párrafos en sans, sin elementos decorativos.</p>
+    <h3>Subtítulo interno</h3>
+    <p class="ph">Más texto de ejemplo para mostrar la medida de línea de ~64 caracteres.</p>
+    <div class="prevnext"><a href="#/blog"><span class="mono">← anterior</span><span class="t">Artículo anterior (ejemplo)</span></a><a href="#/blog"><span class="mono">siguiente →</span><span class="t">Artículo siguiente (ejemplo)</span></a></div>
+  </div>
+</div>
+
+<!-- ============ LAB (lista) ============ -->
+<div class="view" data-route="/lab">
+  <div class="ph-head"><p class="note"><b>/lab</b> (hoy /playground — en Sanity: playgroundItem) <span class="tag">existe</span><span class="tag">ajuste</span> — Fabbian los llama «proyectos personales». Cada fila: título, categoría · año, estado y una línea. Filtro por categoría. Se sugiere mostrar el estado (en proceso / publicado) en mono.</p>
+    <div class="grid">
+      <div><h1><span class="dark-only">Lab</span><span class="light-only">Lo que construyo por gusto</span></h1><p class="sub">Proyectos propios, con su bitácora: decisiones, dudas y errores incluidos.</p></div>
+      <div class="img">[ imagen del astronauta<br>pageImages.playground.light ]</div>
+    </div>
+  </div>
+  <div class="filters mono"><span class="chip">Todos</span><span class="chip">Tools</span><span class="chip">Interfaces</span><span class="chip">Systems</span></div>
+  <ul class="rows">
+    <li><a class="t" href="#/lab/huella">Huella</a><span class="mono">Tools · 2026 · en proceso</span><span class="d">Planificador del viaje a China que sigue funcionando sin conexión.</span></li>
+    <li><a class="t" href="#/lab">Nimbus</a><span class="mono">Interfaces · 2026</span><span class="d">Una app de clima con personalidad.</span></li>
+    <li><a class="t" href="#/lab">Rènshi</a><span class="mono">Tools · 2026</span><span class="d">Vocabulario chino en contexto para clases online.</span></li>
+    <li><a class="t" href="#/lab">LivingMusic</a><span class="mono">Interfaces · 2026</span><span class="d">Tipografía en movimiento sincronizada con la música.</span></li>
+  </ul>
+</div>
+
+<!-- ============ LAB (detalle: Huella) ============ -->
+<div class="view" data-route="/lab/huella">
+  <div class="read" style="padding:3rem 0">
+    <p class="note"><b>/lab/[slug]</b> <span class="tag">existe</span> — Ficha + 01 La idea + 02 El porqué + 03 Bitácora (fecha · hora · dimensión · tag). Contenido real de Huella (primeras 3 entradas de las 11). Las imágenes de cada entrada siguen pendientes.</p>
+    <a class="mono" href="#/lab">← Lab</a>
+    <h1>Huella</h1>
+    <p class="mono">Tools · 2026 · en proceso</p>
+    <dl class="dl"><dt>Estado</dt><dd>En proceso</dd><dt>Demo</dt><dd>huella.davila.uno</dd><dt>Repo</dt><dd>privado</dd></dl>
+    <p>Un planificador de viaje que sigue funcionando cuando el WiFi del hotel decide que no.</p>
+    <h3>01 — La idea</h3>
+    <p>Una PWA para planificar y documentar mi viaje a China. Un mapa con una ruta de 35 ciudades, 78 atracciones con precio, presupuesto, noches por parada y un registro GPS.</p>
+    <h3>02 — El porqué</h3>
+    <p>Planear un viaje largo en hojas de cálculo es posible. También lo es cortarse el pelo con tijeras de cocina.</p>
+    <h3>03 — Bitácora</h3>
+    <div class="entry"><span class="mono">2026-11-16 · 10:00 · ◎ Producto · Decisión</span><h3>Las 78 atracciones y un presupuesto que se rebela</h3><p>Armé 78 atracciones de pago en 31 ciudades. Los precios salen de mi memoria y llevan la etiqueta «est.».</p><div class="shot">[ captura pendiente ]</div></div>
+    <div class="entry"><span class="mono">2026-11-17 · 09:30 · ◎ Producto · Decisión</span><h3>De GoChina a Huella</h3><p>GoChina era un nombre que me ataba a un país. Huella sirve para otros viajes y para el diario.</p></div>
+    <div class="entry"><span class="mono">2026-11-17 · 12:00 · ☁ Infraestructura · Pivote</span><h3>Supabase, adiós</h3><p>El plan gratuito permite dos proyectos activos y ya tenía dos. Me cambié a Firebase.</p></div>
+    <p class="mono">… 8 entradas más</p>
+  </div>
+</div>
+
+<!-- ============ ABOUT ============ -->
+<div class="view" data-route="/about">
+  <div class="ph-head"><p class="note"><b>/about</b> <span class="tag">existe</span><span class="tag">ajuste</span> — Bio por modo (about.dark / about.light). Adham: lo humano va primero. En modo claro, funFacts antes de lo profesional. Doble perfil en una línea. Autoridad (charlas/publicaciones) solo si existen. Descarga de CV.</p>
+    <div class="grid">
+      <div><h1><span class="dark-only">Sobre mí</span><span class="light-only">¿Quién soy?</span></h1><p class="sub">Ever Dávila · UX/UI · Lima, Perú.</p></div>
+      <div class="img">[ imagen del astronauta<br>pageImages.about.light ]</div>
+    </div>
+  </div>
+  <section style="border-top:0;padding-top:0"><p class="prose" style="font-size:1.15rem"><span class="ph">Bio desde Sanity (about), por modo. 10+ años en UX/UI para entidades públicas y privadas; hoy en el MEF.</span></p></section>
+  <section class="light-only"><h2>Datos curiosos</h2><div class="facts"><span>5 idiomas</span><span>quechua básico</span><span>chino básico</span><span>dato (por definir)</span></div></section>
+  <section><h2>Competencias</h2><ul class="comp"><li><span>Competencia 1</span><span class="mono">ejemplo</span></li><li><span>Competencia 2</span><span class="mono">ejemplo</span></li><li><span>Competencia 3</span><span class="mono">ejemplo</span></li></ul></section>
+  <section><h2>Idiomas</h2><div class="facts"><span>Español · nativo</span><span>Inglés · avanzado</span><span>Portugués · avanzado</span><span>Chino · básico</span><span>Quechua · básico</span></div><a class="more" href="#/experience">Ver experiencia →</a> &nbsp; <a class="more" href="#/about">Descargar CV</a></section>
+</div>
+
+<!-- ============ EXPERIENCE ============ -->
+<div class="view" data-route="/experience">
+  <div class="ph-head"><p class="note"><b>/experience</b> <span class="tag">existe</span><span class="tag">ajuste</span> — Singleton Sanity (workExperience + education). Mismo formato entidad · rol · año que el home (Fabbian), texto sin logos; con detalle expandible por cargo. Roles y años de ejemplo.</p>
+    <div class="grid">
+      <div><h1><span class="dark-only">Experiencia</span><span class="light-only">¿Dónde he trabajado?</span></h1><p class="sub">Entidades públicas y privadas peruanas.</p></div>
+      <div class="img">[ imagen del astronauta<br>pageImages.experience.light ]</div>
+    </div>
+  </div>
+  <div class="line"><span>MEF · Analista de Prototipos UX/UI</span><span>año – hoy</span></div>
+  <div class="line"><span>CEPLAN · rol por definir</span><span>años</span></div>
+  <div class="line"><span>Programa Justicia Penal · rol por definir</span><span>años</span></div>
+  <div class="line"><span>Ministerio de Educación · rol por definir</span><span>años</span></div>
+  <div class="line"><span>Ministerio del Interior · rol por definir</span><span>años</span></div>
+  <h2 style="margin-top:3rem">Formación</h2>
+  <div class="line"><span class="ph">Institución · título (por definir)</span><span>años</span></div>
+</div>
+
+<!-- ============ CONTACT ============ -->
+<div class="view" data-route="/contact">
+  <div class="ph-head"><p class="note"><b>/contact</b> <span class="tag">existe</span><span class="tag">ajuste</span> — contactIntro por modo. Fabbian: correo + LinkedIn + agenda. Nuevo: mailto con asunto prellenado. Sin chat que pide el nombre. Enlace de agenda solo si lo usas.</p>
+    <div class="grid">
+      <div><h1><span class="dark-only">Contacto</span><span class="light-only">¿Hablamos?</span></h1><p class="sub"><span class="ph">contactIntro desde Sanity, por modo.</span></p></div>
+      <div class="img">[ imagen del astronauta<br>pageImages.contact.light ]</div>
+    </div>
+  </div>
+  <a class="cta" style="margin-top:0" href="mailto:ever@davila.uno?subject=Hola%2C%20vi%20tu%20sitio">ever@davila.uno →</a>
+  <dl class="dl"><dt>LinkedIn</dt><dd class="ph">enlace (social)</dd><dt>Agenda</dt><dd class="ph">enlace, si lo usas (por definir)</dd><dt>CV</dt><dd class="ph">cvUrl</dd><dt>Ubicación</dt><dd>Lima, Perú</dd></dl>
+</div>
+
+</main>
+
+<footer><div class="wrap">
+  <p class="note" style="width:100%"><b>Pie (en todas las páginas)</b> <span class="tag">existe</span><span class="tag">ajuste</span> — Menú corto repetido + contacto (3.ª repetición) + volver arriba (Adham).</p>
+  <ul><li><a href="#/work">work</a></li><li><a href="#/blog">blog</a></li><li><a href="#/lab">lab</a></li><li><a href="#/about">about</a></li><li><a href="#/contact">contact</a></li></ul>
+  <span class="mono">footerText de Sanity · <a href="#" onclick="window.scrollTo(0,0);return false">volver arriba ↑</a></span>
+</div></footer>
+
+<script>
+  const root = document.documentElement, body = document.body;
+  const bMode = document.getElementById('bMode'), bNotes = document.getElementById('bNotes'), chooser = document.getElementById('chooser');
+  function setMode(m) { root.dataset.mode = m; bMode.textContent = 'modo: ' + (m === 'light' ? 'claro' : 'oscuro'); bMode.setAttribute('aria-pressed', String(m === 'light')); }
+  bMode.addEventListener('click', () => setMode(root.dataset.mode === 'dark' ? 'light' : 'dark'));
+  bNotes.addEventListener('click', () => { const on = body.classList.toggle('show-notes'); bNotes.textContent = 'notas: ' + (on ? 'sí' : 'no'); bNotes.setAttribute('aria-pressed', String(on)); });
+  document.getElementById('bChooser').addEventListener('click', () => chooser.classList.add('on'));
+  chooser.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => { setMode(b.dataset.pick); chooser.classList.remove('on'); }));
+
+  function route() {
+    const r = (location.hash.replace(/^#/, '') || '/').replace(/\/$/, '') || '/';
+    let found = false;
+    document.querySelectorAll('.view').forEach(v => { const on = v.dataset.route === r; v.classList.toggle('on', on); if (on) found = true; });
+    if (!found) document.querySelector('[data-route="/"]').classList.add('on');
+    const section = r.split('/')[1] || '';
+    document.querySelectorAll('nav a[data-nav]').forEach(a => a.toggleAttribute('aria-current', a.dataset.nav === section));
+    document.querySelectorAll('nav a[data-nav]').forEach(a => { if (a.dataset.nav === section) a.setAttribute('aria-current', 'page'); else a.removeAttribute('aria-current'); });
+    window.scrollTo(0, 0);
+  }
+  window.addEventListener('hashchange', route); route();
+</script>
+</body>
+</html>
