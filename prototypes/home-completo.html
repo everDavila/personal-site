@@ -1,0 +1,243 @@
+<!doctype html>
+<html lang="es" data-mode="dark">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Prototipo home completo — davila.uno</title>
+<style>
+  /* Prototipo del home con TODAS las secciones. Colores y tipografías del sitio (CLAUDE.md).
+     Textos marcados «ejemplo» / «por definir» no son definitivos. Hover: solo opacity .65. */
+  :root { --serif: 'Source Serif 4', Georgia, serif; --sans: Inter, system-ui, -apple-system, 'Segoe UI', sans-serif; --mono: ui-monospace, 'Cascadia Code', monospace; }
+  [data-mode="dark"]  { --bg:#0F0F0D; --fg:#E8E6E0; --dim:#8A8880; --line:#26261F; --accent:#5A7C94; --note:#1B2229; }
+  [data-mode="light"] { --bg:#F5F4F0; --fg:#1A1A17; --dim:#77756C; --line:#DDDBD2; --accent:#3D6E5E; --note:#E6EEE9; }
+  * { box-sizing: border-box; margin: 0; }
+  body { background: var(--bg); color: var(--fg); font-family: var(--sans); line-height: 1.6; font-size: 17px; }
+  a { color: inherit; text-decoration: none; }
+  a:hover, button:hover { opacity: .65; }
+  .wrap { max-width: 64rem; margin: 0 auto; padding: 0 1.5rem; }
+  .mono { font-family: var(--mono); font-size: .75rem; color: var(--dim); letter-spacing: .02em; }
+  h1, h2, h3 { font-family: var(--serif); font-weight: 400; }
+  h2 { font-size: 1.5rem; margin-bottom: 1.5rem; }
+  section { padding: 4rem 0; border-top: 1px solid var(--line); }
+  .ph { font-style: italic; color: var(--dim); }
+  .dark-only { display: inline; } .light-only { display: none; }
+  [data-mode="light"] .light-only { display: inline; } [data-mode="light"] .dark-only { display: none; }
+  section.light-only, div.light-only { display: none; }
+  [data-mode="light"] section.light-only, [data-mode="light"] div.light-only { display: block; }
+
+  /* control del prototipo */
+  .ctl { position: sticky; top: 0; z-index: 10; background: var(--bg); border-bottom: 1px solid var(--line); }
+  .ctl .wrap { display: flex; gap: 1rem; align-items: center; justify-content: space-between; padding-top: .6rem; padding-bottom: .6rem; flex-wrap: wrap; }
+  .ctl button { background: none; border: 1px solid var(--line); color: var(--fg); font: .75rem var(--mono); padding: .35rem .7rem; border-radius: 6px; cursor: pointer; }
+  .ctl button[aria-pressed="true"] { border-color: var(--accent); color: var(--accent); }
+  .note { display: none; background: var(--note); border-left: 2px solid var(--accent); padding: .6rem .8rem; margin-bottom: 1.75rem; font: .75rem/1.5 var(--mono); color: var(--dim); }
+  body.show-notes .note { display: block; }
+  .note b { color: var(--accent); font-weight: 600; }
+  .tag { font: .65rem var(--mono); border: 1px solid var(--accent); color: var(--accent); border-radius: 4px; padding: 0 .35rem; margin-left: .4rem; vertical-align: middle; }
+
+  /* nav */
+  nav .wrap { display: flex; justify-content: space-between; align-items: center; padding-top: 1.5rem; padding-bottom: 1.5rem; font-size: .875rem; }
+  nav ul { display: flex; gap: 1.5rem; list-style: none; padding: 0; align-items: center; }
+  .toggle { width: 22px; height: 22px; border: 1px solid var(--fg); border-radius: 50%; display: inline-block; vertical-align: middle; }
+  [data-mode="light"] .toggle { border-color: var(--accent); background: var(--accent); }
+
+  /* hero */
+  .hero { border-top: 0; padding-top: 4rem; padding-bottom: 5rem; }
+  .hero .grid { display: grid; grid-template-columns: 1.4fr 1fr; gap: 3rem; align-items: center; }
+  .eyebrow { margin-bottom: 1.5rem; }
+  .hero h1 { font-size: clamp(2.6rem, 7.5vw, 6rem); line-height: 1.02; letter-spacing: -.03em; }
+  [data-mode="light"] .hero h1 { letter-spacing: -.015em; }
+  .hero .sub { margin-top: 1.75rem; max-width: 34rem; color: var(--dim); font-size: 1.05rem; }
+  .hero .role { margin-top: 1.25rem; }
+  .cta { display: inline-block; margin-top: 2rem; border-bottom: 1px solid var(--fg); padding-bottom: 2px; font-size: .95rem; }
+  .img { aspect-ratio: 4/5; border: 1px dashed var(--line); border-radius: 4px; display: none; align-items: center; justify-content: center; text-align: center; color: var(--dim); font: .72rem/1.5 var(--mono); padding: 1rem; }
+  [data-mode="light"] .img { display: flex; }
+  [data-mode="dark"] .hero .grid { grid-template-columns: 1fr; }
+
+  /* filas */
+  .rows { list-style: none; padding: 0; }
+  .rows li { display: grid; grid-template-columns: 1fr auto; gap: .25rem 1rem; padding: 1.1rem 0; border-bottom: 1px solid var(--line); }
+  .rows .t { font-family: var(--serif); font-size: 1.3rem; }
+  .rows .d { grid-column: 1 / -1; color: var(--dim); font-size: .92rem; }
+  .more { display: inline-block; margin-top: 1.5rem; font-size: .875rem; border-bottom: 1px solid var(--dim); }
+
+  /* filosofía / about */
+  .prose { max-width: 40rem; font-family: var(--serif); font-size: 1.35rem; line-height: 1.5; }
+  .two { display: grid; grid-template-columns: 1fr 1fr; gap: 3rem; }
+  .comp { list-style: none; padding: 0; }
+  .comp li { padding: .55rem 0; border-bottom: 1px solid var(--line); font-size: .95rem; display: flex; justify-content: space-between; }
+
+  .steps { display: grid; grid-template-columns: repeat(4, 1fr); gap: 1.5rem; }
+  .steps p { color: var(--dim); font-size: .92rem; margin-top: .35rem; }
+  .steps .n { font: .75rem var(--mono); color: var(--accent); }
+  .facts { display: flex; flex-wrap: wrap; gap: .5rem; }
+  .facts span { border: 1px solid var(--line); border-radius: 999px; padding: .3rem .9rem; font-size: .88rem; }
+  .line { display: grid; grid-template-columns: 1fr auto; gap: 1rem; padding: .8rem 0; border-bottom: 1px solid var(--line); }
+  .line span:last-child { font: .75rem var(--mono); color: var(--dim); align-self: center; }
+
+  .close h2 { font-size: clamp(2rem, 5vw, 3.5rem); line-height: 1.1; letter-spacing: -.02em; }
+  footer .wrap { display: flex; justify-content: space-between; flex-wrap: wrap; gap: 1rem; padding-top: 2.5rem; padding-bottom: 3.5rem; font-size: .875rem; border-top: 1px solid var(--line); }
+  footer ul { display: flex; gap: 1.5rem; list-style: none; padding: 0; }
+
+  /* ModeChooser simulado */
+  #chooser { position: fixed; inset: 0; background: var(--bg); z-index: 20; display: none; align-items: center; justify-content: center; flex-direction: column; gap: 1.5rem; text-align: center; padding: 2rem; }
+  #chooser.on { display: flex; }
+  #chooser h2 { font-size: 2rem; margin: 0; }
+  #chooser .opts { display: flex; gap: 1rem; flex-wrap: wrap; justify-content: center; }
+  #chooser button { background: none; color: var(--fg); border: 1px solid var(--line); border-radius: 8px; padding: 1rem 1.5rem; cursor: pointer; font: 1rem var(--sans); max-width: 16rem; }
+  #chooser button small { display: block; color: var(--dim); font: .72rem var(--mono); margin-top: .35rem; }
+
+  @media (max-width: 760px) {
+    .hero .grid, .two { grid-template-columns: 1fr; }
+    .steps { grid-template-columns: 1fr 1fr; }
+    .img { aspect-ratio: 16/9; }
+  }
+</style>
+</head>
+<body class="show-notes">
+
+<div id="chooser">
+  <p class="mono">simulación de la primera visita · ModeChooser</p>
+  <h2>¿Cómo quieres leer este sitio?</h2>
+  <div class="opts">
+    <button data-pick="dark">Directo y técnico<small>modo oscuro · azul</small></button>
+    <button data-pick="light">Personal y curioso<small>modo claro · verde</small></button>
+  </div>
+</div>
+
+<div class="ctl"><div class="wrap">
+  <span class="mono">PROTOTIPO home completo · «ejemplo» / «por definir» = no definitivo</span>
+  <span style="display:flex; gap:.5rem; flex-wrap:wrap">
+    <button id="bMode" aria-pressed="false">modo: oscuro</button>
+    <button id="bNotes" aria-pressed="true">notas: sí</button>
+    <button id="bChooser">ver ModeChooser</button>
+  </span>
+</div></div>
+
+<nav><div class="wrap">
+  <a href="#">davila.uno</a>
+  <ul><li><a href="#trabajo">work</a></li><li><a href="#">blog</a></li><li><a href="#lab">lab</a></li><li><a href="#sobre">about</a></li><li><a href="#cierre">contact</a></li><li><span class="toggle" title="toggle de modo (○ / astronauta)"></span></li></ul>
+</div></nav>
+
+<main class="wrap">
+
+  <section class="hero">
+    <p class="note"><b>1 · Hero</b> <span class="tag">existe</span><span class="tag">ajuste</span> — Existe: titular por modo, sub, imagen por modo, subtítulo editorial. Nuevo (Adham): línea mono de doble perfil. Nuevo (Fabbian): UN solo CTA a contacto. <b>Titulares y sub son de ejemplo, no los del sitio.</b> Modo claro: imagen del astronauta (heroImageLight).</p>
+    <div class="grid">
+      <div>
+        <p class="mono eyebrow">Lima · 14:32 · primavera <span class="ph">(subtítulo editorial rotativo — ejemplo)</span></p>
+        <h1><span class="dark-only">Diseño plataformas digitales para el Estado.</span><span class="light-only">Hago que lo difícil de usar deje de serlo.</span></h1>
+        <p class="sub"><span class="dark-only">Más de 10 años en UX/UI para entidades públicas y privadas peruanas. Hoy en el MEF.</span><span class="light-only">Diez años entre ministerios, formularios eternos y gente que solo quería hacer su trámite. <span class="ph">(ejemplo)</span></span></p>
+        <p class="mono role">UX/UI · prototipos · código <span class="ph">(por definir)</span></p>
+        <a class="cta" href="#cierre">Escríbeme →</a>
+      </div>
+      <div class="img">[ imagen del astronauta<br>heroImageLight ]<br>solo modo claro</div>
+    </div>
+  </section>
+
+  <section id="trabajo">
+    <p class="note"><b>2 · Trabajo</b> <span class="tag">existe</span><span class="tag">ajuste</span> — SelectedWork actual. Cambio: 4–6 curados (no 16, como Adham) y <b>una línea de rol o resultado</b> por proyecto. Filas de ejemplo.</p>
+    <h2><span class="dark-only">Trabajo</span><span class="light-only">¿Qué he hecho?</span></h2>
+    <ul class="rows">
+      <li><a class="t" href="#">Proyecto A (ejemplo)</a><span class="mono">Plataforma pública · 2026</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+      <li><a class="t" href="#">Proyecto B (ejemplo)</a><span class="mono">Prototipo · 2025</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+      <li><a class="t" href="#">Proyecto C (ejemplo)</a><span class="mono">Sistema de diseño · 2024</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+      <li><a class="t" href="#">Proyecto D (ejemplo)</a><span class="mono">Investigación · 2023</span><span class="d">Rol: por definir. Resultado: por definir.</span></li>
+    </ul>
+    <a class="more" href="#">Ver todo el trabajo →</a>
+  </section>
+
+  <section id="filosofia">
+    <p class="note"><b>3 · Filosofía</b> <span class="tag">existe</span> — Sección actual (siteSettings.philosophy, texto por modo). Sin cambios; aquí solo marcada su posición. Se evalúa si sigue arriba del Lab o pasa a /about.</p>
+    <p class="prose"><span class="dark-only">Texto de filosofía, modo oscuro. <span class="ph">Viene de Sanity (philosophy.dark).</span></span><span class="light-only">Texto de filosofía, modo claro. <span class="ph">Viene de Sanity (philosophy.light).</span></span></p>
+  </section>
+
+  <section id="como">
+    <p class="note"><b>4 · Cómo trabajo</b> <span class="tag">nuevo</span> — Fabbian: proceso en 4 pasos, sin jerga de embudo ni conversión. <b>Los pasos los escribes tú.</b></p>
+    <h2><span class="dark-only">Cómo trabajo</span><span class="light-only">¿Cómo lo hago?</span></h2>
+    <div class="steps">
+      <div><span class="n">01</span><p class="ph">Paso por definir</p></div>
+      <div><span class="n">02</span><p class="ph">Paso por definir</p></div>
+      <div><span class="n">03</span><p class="ph">Paso por definir</p></div>
+      <div><span class="n">04</span><p class="ph">Paso por definir</p></div>
+    </div>
+  </section>
+
+  <section id="lab">
+    <p class="note"><b>5 · Lab</b> <span class="tag">nuevo en home</span> — Fabbian: «proyectos personales» como prueba de iniciativa. El Lab ya existe pero no está en el home. 4 proyectos reales; las líneas son borrador mío.</p>
+    <h2><span class="dark-only">Lab</span><span class="light-only">¿Qué construyo por gusto?</span></h2>
+    <ul class="rows">
+      <li><a class="t" href="#">Huella</a><span class="mono">Tools · 2026</span><span class="d">Planificador del viaje a China que sigue funcionando sin conexión.</span></li>
+      <li><a class="t" href="#">Nimbus</a><span class="mono">Interfaces · 2026</span><span class="d">Una app de clima con personalidad.</span></li>
+      <li><a class="t" href="#">Rènshi</a><span class="mono">Tools · 2026</span><span class="d">Vocabulario chino en contexto para clases online.</span></li>
+      <li><a class="t" href="#">LivingMusic</a><span class="mono">Interfaces · 2026</span><span class="d">Tipografía en movimiento sincronizada con la música.</span></li>
+    </ul>
+    <a class="more" href="#">Ver el Lab →</a>
+  </section>
+
+  <section id="sobre">
+    <p class="note"><b>6 · Sobre mí + competencias</b> <span class="tag">existe</span> — Bio breve (about.dark / about.light) y competencies[] de Sanity. Se mantiene como resumen con enlace a /about. Contenido de ejemplo.</p>
+    <div class="two">
+      <div>
+        <h2><span class="dark-only">Sobre mí</span><span class="light-only">¿Quién soy?</span></h2>
+        <p class="prose" style="font-size:1.1rem"><span class="ph">Bio breve desde Sanity (about), según el modo.</span></p>
+        <a class="more" href="#">Más sobre mí →</a>
+      </div>
+      <div>
+        <h2><span class="dark-only">Competencias</span><span class="light-only">Lo que se me da bien</span></h2>
+        <ul class="comp"><li><span>Competencia 1</span><span class="mono">ejemplo</span></li><li><span>Competencia 2</span><span class="mono">ejemplo</span></li><li><span>Competencia 3</span><span class="mono">ejemplo</span></li></ul>
+      </div>
+    </div>
+  </section>
+
+  <section class="light-only" id="humano">
+    <p class="note"><b>7 · Lo humano (solo modo claro)</b> <span class="tag">nuevo en home</span> — Adham: lo personal antes de lo profesional. Usa funFacts de Sanity. Va antes de la experiencia. En oscuro no aparece.</p>
+    <h2>¿Quién hay detrás?</h2>
+    <div class="facts"><span>Lima</span><span>5 idiomas</span><span>quechua básico</span><span>dato curioso (por definir)</span></div>
+  </section>
+
+  <section id="exp">
+    <p class="note"><b>8 · Experiencia</b> <span class="tag">existe</span><span class="tag">ajuste</span> — ExperienceSnapshot. Formato unificado entidad · rol · año (Fabbian), texto sin logos. Roles y años de ejemplo.</p>
+    <h2><span class="dark-only">Experiencia</span><span class="light-only">¿Dónde he trabajado?</span></h2>
+    <div class="line"><span>MEF · Analista de Prototipos UX/UI</span><span>año – hoy</span></div>
+    <div class="line"><span>CEPLAN · rol por definir</span><span>años</span></div>
+    <div class="line"><span>Programa Justicia Penal · rol por definir</span><span>años</span></div>
+    <div class="line"><span>Ministerio de Educación · rol por definir</span><span>años</span></div>
+    <div class="line"><span>Ministerio del Interior · rol por definir</span><span>años</span></div>
+    <a class="more" href="#">Experiencia completa →</a>
+  </section>
+
+  <section id="escritura">
+    <p class="note"><b>9 · Escritura</b> <span class="tag">existe</span> — Writing actual: lista compacta con fecha en mono. Sin cambios. Si hay charlas o publicaciones, aquí caben como autoridad (Adham).</p>
+    <h2><span class="dark-only">Escritura</span><span class="light-only">¿Qué pienso?</span></h2>
+    <div class="line"><span>Título de artículo (ejemplo)</span><span>fecha</span></div>
+    <div class="line"><span>Título de artículo (ejemplo)</span><span>fecha</span></div>
+    <div class="line"><span>Título de artículo (ejemplo)</span><span>fecha</span></div>
+    <a class="more" href="#">Todo el blog →</a>
+  </section>
+
+  <section id="cierre" class="close">
+    <p class="note"><b>10 · Cierre</b> <span class="tag">nuevo</span> — Fabbian repite el contacto 3 veces (hero, cierre, pie), siempre el mismo enlace. Sin chat. Correo con asunto prellenado.</p>
+    <h2><span class="dark-only">¿Trabajamos juntos?</span><span class="light-only">¿Hablamos?</span> <span class="ph" style="font-size:1rem">(ejemplo)</span></h2>
+    <a class="cta" href="mailto:ever@davila.uno?subject=Hola%2C%20vi%20tu%20sitio">ever@davila.uno →</a>
+  </section>
+
+</main>
+
+<footer><div class="wrap">
+  <p class="note" style="width:100%"><b>11 · Pie</b> <span class="tag">existe</span><span class="tag">ajuste</span> — Menú corto repetido + enlace de contacto (3.ª repetición) + volver arriba (Adham).</p>
+  <ul><li><a href="#trabajo">work</a></li><li><a href="#">blog</a></li><li><a href="#lab">lab</a></li><li><a href="#sobre">about</a></li><li><a href="#cierre">contact</a></li></ul>
+  <span class="mono">footerText de Sanity · <a href="#">volver arriba ↑</a></span>
+</div></footer>
+
+<script>
+  const root = document.documentElement, body = document.body;
+  const bMode = document.getElementById('bMode'), bNotes = document.getElementById('bNotes'), chooser = document.getElementById('chooser');
+  function setMode(m) { root.dataset.mode = m; bMode.textContent = 'modo: ' + (m === 'light' ? 'claro' : 'oscuro'); bMode.setAttribute('aria-pressed', String(m === 'light')); }
+  bMode.addEventListener('click', () => setMode(root.dataset.mode === 'dark' ? 'light' : 'dark'));
+  bNotes.addEventListener('click', () => { const on = body.classList.toggle('show-notes'); bNotes.textContent = 'notas: ' + (on ? 'sí' : 'no'); bNotes.setAttribute('aria-pressed', String(on)); });
+  document.getElementById('bChooser').addEventListener('click', () => chooser.classList.add('on'));
+  chooser.querySelectorAll('[data-pick]').forEach(b => b.addEventListener('click', () => { setMode(b.dataset.pick); chooser.classList.remove('on'); }));
+</script>
+</body>
+</html>
