@@ -91,7 +91,7 @@ El modo se gestiona con:
 Todas usan `PageHeader` de `src/components/ui/PageHeader.tsx` para el slot de imagen del personaje.
 
 - `page.tsx` — Home: Hero + SelectedWork + Philosophy + ExperienceSnapshot + Writing
-- `blog/page.tsx` — Lista editorial: post destacado (sin imagen, solo tipografía) + lista compacta
+- `blog/page.tsx` — Lista editorial: post destacado (con imagen al inicio, alineada arriba) + lista compacta
 - `blog/[slug]/page.tsx` — Artículo con prev/next navigation
 - `work/page.tsx`, `work/[slug]/page.tsx`
 - `about/page.tsx`, `experience/page.tsx`, `contact/page.tsx`, `playground/page.tsx`
@@ -99,7 +99,7 @@ Todas usan `PageHeader` de `src/components/ui/PageHeader.tsx` para el slot de im
 ### Componentes clave
 - `src/components/ui/PageHeader.tsx` — grid dos columnas cuando hay imagen, single column sin imagen
 - `src/components/ui/ModeChooser.tsx` — overlay primera visita para elegir modo
-- `src/components/blog/PostCard.tsx` — featured (sin cover image) + compact variant
+- `src/components/blog/PostCard.tsx` — featured (imagen al inicio, 280px) + compact variant
 - `src/components/nav/ThemeToggle.tsx` — toggle modo narrativo (○ / astronauta SVG flotante)
 - `src/components/home/Hero.tsx` — recibe `mode` prop, selecciona headline por modo
 
@@ -172,7 +172,7 @@ El sitio tiene un personaje (astronauta) que aparece en modo claro en las cabece
 **Funcionando en producción:**
 - Sistema de modo narrativo completo (dark/light, cookie, ModeChooser, ThemeToggle)
 - PageHeader con slot de imagen del personaje en todas las páginas
-- Blog: lista limpia sin imagen en post destacado + navegación prev/next en artículos
+- Blog: lista con imagen al inicio en todas las filas, también en el post destacado (desde nov 2026) + navegación prev/next en artículos
 - OG images generadas automáticamente via `/api/og` (edge runtime)
 - Metadatos sociales en post pages (generateMetadata)
 - 5 locales completos + editorial subtitle system

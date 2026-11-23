@@ -45,13 +45,34 @@ export function PostCard({ post, locale, featured = false }: Props) {
   const mins    = estimateReadTime(excerpt.value || title.value || '')
   const elabel  = editorialLabel(post.publishedAt, locale)
 
+  const imgUrl = post.mainImage?.asset?.url ?? null
+  const imgAlt = post.mainImage?.alt?.[locale] ?? post.mainImage?.alt?.es ?? ''
+
   if (featured) {
     return (
       <Link
         href={{ pathname: '/blog/[slug]', params: { slug: post.slugs[locale] } }}
         style={{ textDecoration: 'none', color: 'inherit', display: 'block' }}
       >
-        <article className="blog-featured">
+        <article className="blog-featured blog-featured--thumb">
+          {/* Imagen al inicio: que el destacado se lea como un artículo, no como una cabecera */}
+          <div className="lab-row-image blog-featured-image">
+            {imgUrl ? (
+              <Image
+                src={imgUrl}
+                alt={imgAlt}
+                width={560}
+                height={373}
+                sizes="280px"
+                priority
+                style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+              />
+            ) : (
+              <span style={{ fontSize: '1.5rem', opacity: 0.25 }}>◌</span>
+            )}
+          </div>
+
+          <div className="blog-featured-body">
           <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
             <p className="text-label" style={{ margin: 0 }}>{lbl('field', locale)}</p>
             {elabel && (
@@ -79,13 +100,11 @@ export function PostCard({ post, locale, featured = false }: Props) {
             <span aria-hidden="true">·</span>
             <span>{mins} {lbl('min', locale)}</span>
           </div>
+          </div>
         </article>
       </Link>
     )
   }
-
-  const imgUrl = post.mainImage?.asset?.url ?? null
-  const imgAlt = post.mainImage?.alt?.[locale] ?? post.mainImage?.alt?.es ?? ''
 
   return (
     <Link
