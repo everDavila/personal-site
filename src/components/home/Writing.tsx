@@ -67,7 +67,7 @@ export async function Writing({ posts, displayLocale, settings }: Props) {
         </div>
 
         {/* Lista de posts */}
-        <div>
+        <div className="writing-list">
           {posts.map(post => (
             <PostCard key={post._id} post={post} locale={locale} />
           ))}

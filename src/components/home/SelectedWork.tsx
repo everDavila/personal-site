@@ -1,4 +1,5 @@
 import { getLocale, getTranslations } from 'next-intl/server'
+import Image from 'next/image'
 import { Link } from '@/i18n/navigation'
 import type { ProjectSummary } from '@/sanity/queries/projects'
 import type { Locale } from '@/lib/i18n'
@@ -77,31 +78,52 @@ export async function SelectedWork({ projects, settings }: Props) {
 
         {/* Lista de proyectos */}
         <div className="projects-list">
-          {projects.map((project) => {
+          {projects.map((project, idx) => {
             const summary = project.summary?.[locale] || project.summary?.es || project.summary?.en || ''
             const role    = project.role?.[locale]    || project.role?.es    || project.role?.en    || ''
             const detail  = [role, project.year].filter(Boolean).join(' · ')
+            const imgUrl  = project.mainImage?.asset?.url ?? null
+            const imgAlt  = project.mainImage?.alt?.[locale] ?? project.mainImage?.alt?.es ?? ''
+            const isLead  = idx === 0
 
             return (
               <Link
                 key={project._id}
                 href={{ pathname: '/work/[slug]', params: { slug: project.slug } }}
-                className="project-row"
+                className="project-row project-row--thumb"
               >
-                <p className="project-row-headline">{summary}</p>
+                {/* Imagen al inicio de la fila */}
+                <div className="lab-row-image">
+                  {imgUrl ? (
+                    <Image
+                      src={imgUrl}
+                      alt={imgAlt}
+                      width={isLead ? 480 : 280}
+                      height={isLead ? 320 : 187}
+                      sizes={isLead ? '240px' : '140px'}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <span style={{ fontSize: '1.5rem', opacity: 0.25 }}>◌</span>
+                  )}
+                </div>
 
-                <div className="project-row-footer">
-                  <div className="project-row-meta-left">
-                    <p className="project-row-client">{project.client}</p>
-                    {detail && <p className="project-row-detail">{detail}</p>}
-                  </div>
-                  <span className="project-row-cta">
-                    <span className="n-slot">
-                      <span className="n-d">{exploreLabel.dark}</span>
-                      <span className="n-l">{exploreLabel.light}</span>
+                <div className="project-row-body">
+                  <p className="project-row-headline">{summary}</p>
+
+                  <div className="project-row-footer">
+                    <div className="project-row-meta-left">
+                      <p className="project-row-client">{project.client}</p>
+                      {detail && <p className="project-row-detail">{detail}</p>}
+                    </div>
+                    <span className="project-row-cta">
+                      <span className="n-slot">
+                        <span className="n-d">{exploreLabel.dark}</span>
+                        <span className="n-l">{exploreLabel.light}</span>
+                      </span>
+                      {' '}<span className="project-row-cta-arrow">→</span>
                     </span>
-                    {' '}<span className="project-row-cta-arrow">→</span>
-                  </span>
+                  </div>
                 </div>
               </Link>
             )

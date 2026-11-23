@@ -1,4 +1,5 @@
 import { getLocale } from 'next-intl/server'
+import Image from 'next/image'
 import { Link } from '@/i18n/navigation'
 import type { PlaygroundItem } from '@/sanity/queries/playground'
 import type { Locale } from '@/lib/i18n'
@@ -60,17 +61,31 @@ export async function LabSection({ items }: Props) {
           {items.map((item, idx) => {
             const title = localized(item.title, locale, 'es')
             const desc  = item.description ? localized(item.description, locale, 'es') : null
+            const imgUrl = item.image?.asset?.url ?? null
+            const imgAlt = item.image?.alt?.[locale] ?? item.image?.alt?.es ?? ''
+            const isLead = idx === 0
 
             return (
               <Link
                 key={item._id}
                 href={{ pathname: '/playground/[slug]', params: { slug: item.slugs[locale === 'en' ? 'en' : 'es'] } }}
-                className="project-row"
-                style={{ display: 'grid', gridTemplateColumns: '2.5rem 1fr auto', alignItems: 'center', gap: '1rem' }}
+                className="project-row project-row--thumb project-row--arrow"
               >
-                <span className="project-row-index" style={{ margin: 0 }}>
-                  {String(idx + 1).padStart(2, '0')}
-                </span>
+                {/* Imagen al inicio de la fila */}
+                <div className="lab-row-image">
+                  {imgUrl ? (
+                    <Image
+                      src={imgUrl}
+                      alt={imgAlt}
+                      width={isLead ? 480 : 280}
+                      height={isLead ? 320 : 187}
+                      sizes={isLead ? '240px' : '140px'}
+                      style={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                    />
+                  ) : (
+                    <span style={{ fontSize: '1.5rem', opacity: 0.25 }}>◌</span>
+                  )}
+                </div>
 
                 <div>
                   <p className="project-row-headline" style={{ margin: 0 }}>

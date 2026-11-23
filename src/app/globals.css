@@ -782,6 +782,57 @@ body {
   transform: translateX(3px);
 }
 
+/* Fila con imagen al inicio (Misiones, Lab) — la primera es la destacada */
+.project-row--thumb {
+  display: grid;
+  grid-template-columns: 140px minmax(0, 1fr);
+  column-gap: 2rem;
+  align-items: center;
+}
+.project-row--thumb.project-row--arrow {
+  grid-template-columns: 140px minmax(0, 1fr) auto;
+}
+.project-row--thumb .lab-row-image {
+  width: 100%;
+}
+.project-row-body {
+  min-width: 0;
+}
+.projects-list .project-row--thumb:first-child {
+  grid-template-columns: 240px minmax(0, 1fr);
+}
+.projects-list .project-row--thumb.project-row--arrow:first-child {
+  grid-template-columns: 240px minmax(0, 1fr) auto;
+}
+/* El titular de la fila destacada de Lab no necesita competir con la imagen */
+.projects-list .project-row--arrow:first-child .project-row-headline {
+  font-size: clamp(1.4rem, 3vw, 2.1rem);
+}
+
+/* Escritura — la primera nota lleva imagen más grande, igual que Misiones y Lab */
+.writing-list .lab-row:first-child .lab-row-image {
+  width: 240px;
+}
+.writing-list .lab-row:first-child .lab-row-title {
+  font-size: clamp(1.25rem, 2.6vw, 1.75rem);
+}
+
+@media (max-width: 640px) {
+  .project-row--thumb,
+  .project-row--thumb.project-row--arrow,
+  .projects-list .project-row--thumb:first-child,
+  .projects-list .project-row--thumb.project-row--arrow:first-child {
+    grid-template-columns: 90px minmax(0, 1fr);
+    column-gap: 1rem;
+  }
+  .project-row--thumb.project-row--arrow > .project-row-cta-arrow {
+    display: none;
+  }
+  .writing-list .lab-row:first-child .lab-row-image {
+    width: 90px;
+  }
+}
+
 @media (max-width: 600px) {
   .project-row-headline {
     font-size: clamp(0.95rem, 4vw, 1.1rem);
