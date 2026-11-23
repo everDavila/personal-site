@@ -787,10 +787,13 @@ body {
   display: grid;
   grid-template-columns: 140px minmax(0, 1fr);
   column-gap: 2rem;
-  align-items: center;
+  align-items: start;
 }
 .project-row--thumb.project-row--arrow {
   grid-template-columns: 140px minmax(0, 1fr) auto;
+}
+.project-row--thumb.project-row--arrow > .project-row-cta-arrow {
+  align-self: center;
 }
 .project-row--thumb .lab-row-image {
   width: 100%;
