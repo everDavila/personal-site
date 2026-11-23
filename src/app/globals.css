@@ -930,7 +930,7 @@ body::after {
    EDITORIAL BLOG — featured post
 ───────────────────────────────────────── */
 .blog-featured {
-  padding-block: 3rem 2.75rem;
+  padding-block: 2rem 2.25rem;
   padding-inline: var(--spacing-container);
   margin-inline: calc(-1 * var(--spacing-container));
   border-bottom: var(--border-width) solid var(--color-border);
@@ -964,21 +964,25 @@ body::after {
 
 .blog-featured-title {
   font-family: var(--font-serif);
-  font-size: clamp(1.75rem, 4vw, 2.625rem);
+  font-size: clamp(1.4rem, 2.8vw, 1.9rem);
   font-weight: 400;
-  line-height: 1.2;
-  letter-spacing: -0.025em;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
   color: var(--color-text);
-  margin: 0 0 1.125rem;
+  margin: 0.6rem 0 0.75rem;
   max-width: 40ch;
 }
 
 .blog-featured-excerpt {
-  font-size: var(--text-body);
+  font-size: var(--text-small);
   color: var(--color-muted);
-  line-height: 1.7;
-  max-width: 72ch;
-  margin: 0 0 1.625rem;
+  line-height: 1.65;
+  max-width: 62ch;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 3;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
 }
 
 .blog-meta {

@@ -22,7 +22,6 @@ function editorialLabel(publishedAt: string, locale: Locale): string | null {
 
 const LABELS = {
   new:   { es: 'Nuevo',          en: 'New',        pt: 'Novo',           qu: 'Musuq',    zh: '最新'     },
-  field: { es: 'Notas de campo', en: 'Field Notes', pt: 'Notas de campo', qu: 'Willakuy', zh: '田野笔记' },
   min:   { es: 'min',            en: 'min',         pt: 'min',            qu: 'min',      zh: '分钟'     },
   read:  { es: 'Leer apunte',    en: 'Read log',    pt: 'Ler registro',   qu: 'Leer',     zh: '阅读'     },
   readL: { es: 'Leer nota',      en: 'Read note',   pt: 'Ler nota',       qu: 'Leer',     zh: '阅读笔记'  },
@@ -73,33 +72,23 @@ export function PostCard({ post, locale, featured = false }: Props) {
           </div>
 
           <div className="blog-featured-body">
-          <div style={{ display: 'flex', alignItems: 'center', gap: '1rem', marginBottom: '1.5rem' }}>
-            <p className="text-label" style={{ margin: 0 }}>{lbl('field', locale)}</p>
-            {elabel && (
-              <span style={{
-                fontSize: 'var(--text-label)',
-                color: 'var(--color-accent)',
-                letterSpacing: '0.08em',
-                textTransform: 'uppercase',
-              }}>
-                — {elabel}
-              </span>
+            {/* Misma metadata y mismo orden que las filas compactas: fecha, tiempo y etiqueta arriba */}
+            <div className="lab-row-meta">
+              <time style={{ color: 'var(--color-muted)' }}>{date}</time>
+              <span style={{ color: 'var(--color-muted)' }}>{mins} {lbl('min', locale)}</span>
+              {elabel && (
+                <span style={{ color: 'var(--color-accent)', textTransform: 'uppercase' }}>{elabel}</span>
+              )}
+            </div>
+            <h2 className="blog-featured-title">
+              {title.value || '—'}
+              {title.isFallback && title.fallbackLocale && (
+                <FallbackBadge fallbackLocale={title.fallbackLocale} />
+              )}
+            </h2>
+            {excerpt.value && (
+              <p className="blog-featured-excerpt">{excerpt.value}</p>
             )}
-          </div>
-          <h2 className="blog-featured-title">
-            {title.value || '—'}
-            {title.isFallback && title.fallbackLocale && (
-              <FallbackBadge fallbackLocale={title.fallbackLocale} />
-            )}
-          </h2>
-          {excerpt.value && (
-            <p className="blog-featured-excerpt">{excerpt.value}</p>
-          )}
-          <div className="blog-meta">
-            <time>{date}</time>
-            <span aria-hidden="true">·</span>
-            <span>{mins} {lbl('min', locale)}</span>
-          </div>
           </div>
         </article>
       </Link>
