@@ -14,7 +14,7 @@ export async function generateMetadata({ params }: { params: Promise<{ locale: s
   const { locale } = await params
   const settings = await getSiteSettings()
   const { title, description } = resolveSeo(settings?.seoAbout, locale as Locale, {
-    title: 'Enfoque — Ever Davila',
+    title: 'Conóceme — Ever Davila',
     description: 'UX/UI Designer especializado en sistemas digitales complejos para el sector público peruano.',
   })
   return pageMetadata({ locale: locale as Locale, href: '/about', title, description, image: ogImageUrl(settings?.ogImage?.asset?.url) })
@@ -31,7 +31,10 @@ export default async function AboutPage() {
 
   const a          = settings?.labels?.about
   const titleDark  = narrativeText(settings?.pageTitles?.about, 'dark',  locale, NARRATIVE_FALLBACK.dark.pageTitles.about)  ?? lbl(a?.title, locale, t('title'))
-  const titleLight = narrativeText(settings?.pageTitles?.about, 'light', locale, NARRATIVE_FALLBACK.light.pageTitles.about) ?? titleDark
+  // En modo claro el título de la página debe coincidir con el rótulo del menú (labels.nav.about).
+  // Solo se separa si en Sanity se define un título propio en pageTitles.about.
+  const titleLight = narrativeText(settings?.pageTitles?.about, 'light', locale)
+    ?? lbl(settings?.labels?.nav?.about, locale, narrativeText(null, 'light', locale, NARRATIVE_FALLBACK.light.pageTitles.about) ?? titleDark)
   const seeExp  = lbl(a?.seeExperience, locale, t('see_experience'))
   const social  = settings?.social
 
