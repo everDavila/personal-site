@@ -45,3 +45,6 @@ yarn-error.log*
 next-env.d.ts
 
 .vercel
+
+# Capturas para la bitácora (solo en la PC, no se suben)
+/bitacora-capturas/

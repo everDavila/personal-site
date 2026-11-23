@@ -182,3 +182,19 @@ El sitio tiene un personaje (astronauta) que aparece en modo claro en las cabece
 - Subir imágenes del personaje astronauta a Sanity (por página, por modo)
 - Hero image para modo claro (heroImageLight en siteSettings.hero)
 - Agregar ModeToggle también en mobile menu si se desea
+
+<!-- bitacora-capturas -->
+## Capturas para la bitácora (siempre activo)
+
+Esta regla corre siempre, aunque nadie haya dicho "para bitácora". La captura se toma al probar, no al escribir la bitácora: días después, reproducir una pantalla cuesta más que la captura misma.
+
+- Capturar en el momento en que algo se prueba y funciona, o cuando se rompe de forma visible. Arreglo visible: antes y después con el mismo encuadre (guarda el "antes" ANTES de tocar el código).
+- No capturar microcambios ni migraciones o scripts sin efecto en pantalla. No inventar una pantalla para un hito invisible.
+- Si puedes abrir la app (navegador, Playwright), la tomas tú al terminar la prueba, en el estado real que probaste: escritorio a 1440 px y celular a 390 px si el cambio es responsive; claro y oscuro solo si toca el tema. Si hace falta una sesión, un dispositivo real o una persona, pídele la captura a Ever en ese momento y dile exactamente qué mostrar (Win+Shift+S captura; Win+Shift+R video).
+- Guardar en `bitacora-capturas/AAAA-MM-DD/NN-que-muestra.png` en la raíz del checkout principal, nunca dentro de un worktree (se borra). Antes y después: `03a-...-antes.png` y `03b-...-despues.png`. Recorridos o animaciones: video corto (MP4/WebM) o 3 a 5 capturas numeradas.
+- La carpeta va en `.gitignore` (comprueba que lo esté): las imágenes se quedan en la PC. El script que toma las capturas va DENTRO del repo y sí se versiona; no lo dejes fuera del proyecto.
+- Difumina correos, nombres de personas reales, tokens, IDs de sesión y ubicaciones exactas antes de guardar.
+- Registro: en `BITACORA.md`, al final de la entrada técnica, una línea `Capturas:` con los archivos. Hito probado sin captura: `Captura pendiente: <qué mostrar>` en esa entrada y avísale a Ever; no lo omitas en silencio.
+- En el borrador público, cada entrada visual lleva archivo + pie en español e inglés. Como la carpeta no se sube a git, para publicar hay que cargarlas en el campo "Imágenes y videos" de la entrada en Sanity.
+- Nunca des por hecho un cambio visual que no hayas visto.
+<!-- /bitacora-capturas -->
